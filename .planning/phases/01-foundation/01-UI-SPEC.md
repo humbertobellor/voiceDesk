@@ -1,10 +1,11 @@
 ---
 phase: 1
 slug: foundation
-status: draft
+status: approved
 shadcn_initialized: false
 preset: none
 created: 2026-05-04
+reviewed_at: 2026-05-04
 ---
 
 # Phase 1 — UI Design Contract
@@ -62,6 +63,7 @@ Exceptions:
 - Touch targets (buttons, nav items on mobile): minimum 44px height — use `min-h-[44px]` even if visual height is shorter
 - Sidebar nav items: 48px height on desktop (`h-12`), 44px on mobile bottom tab bar (`h-11`)
 - "Complete Setup" banner: 64px height (`h-16`) to ensure it reads as a persistent attention element
+- Active nav item left padding: 12px (`pl-[12px]`) — compensates for the 4px `border-l-4` left border; inactive items use `px-4` (16px total horizontal padding); active items use 16px − 4px border = 12px padding, preserving identical visual text indent across states. Grid-aligned (4 × 3).
 
 ---
 
@@ -71,7 +73,7 @@ Font family: `Inter` loaded via `next/font/google`. Apply as `font-sans` via Tai
 
 | Role | Size | Tailwind | Weight | Tailwind Weight | Line Height | Usage |
 |------|------|----------|--------|-----------------|-------------|-------|
-| Body | 14px | `text-sm` | 400 (Regular) | `font-normal` | 1.5 | Form labels, table cells, secondary copy, nav sub-items |
+| Body | 14px | `text-sm` | 400 (Regular) | `font-normal` | 1.5 | Form labels, table cells, secondary copy, nav sub-items, section labels, muted captions |
 | Body Large | 16px | `text-base` | 400 (Regular) | `font-normal` | 1.5 | Primary paragraph text, input values, button labels, error messages |
 | Heading | 20px | `text-xl` | 600 (Semibold) | `font-semibold` | 1.2 | Card headings, section titles, empty state headings, banner title |
 | Display | 28px | `text-[28px]` | 600 (Semibold) | `font-semibold` | 1.2 | Auth page heading ("Welcome to VoiceDesk"), phone capture page heading |
@@ -189,13 +191,13 @@ Note: Use dark text (`#0F172A`) on the orange accent button background, not whit
 | Component | shadcn Component | Variants / Notes |
 |-----------|-----------------|-----------------|
 | Logo area | Custom | VoiceDesk wordmark + small mic icon in `#F97316`. Height 64px (`h-16`). Left padding 24px. |
-| Nav section label | `p` | "NAVIGATION" — 12px, weight 600, `text-[#94A3B8]`, letter-spacing `tracking-wider`, padding-top 24px, padding-x 16px |
+| Nav section label | `p` | "NAVIGATION" — 14px, weight 600, `text-[#94A3B8]`, letter-spacing `tracking-wider`, padding-top 24px, padding-x 16px |
 | Nav item (inactive) | Custom `Link` wrapper | `flex items-center gap-3 px-4 py-3 rounded-lg mx-2 text-[#94A3B8] hover:bg-[#1E293B] hover:text-[#F8FAFC]`, height 48px |
-| Nav item (active) | Same + active modifier | `text-[#F8FAFC] bg-[#1E293B]` + orange left border: `border-l-4 border-[#F97316] -ml-0.5 pl-[14px]` |
+| Nav item (active) | Same + active modifier | `text-[#F8FAFC] bg-[#1E293B]` + orange left border: `border-l-4 border-[#F97316] pl-[12px]` |
 | Nav icon | Lucide React | 20px (`size-5`). Calls: `PhoneCall`. Leads: `Users`. Settings: `Settings`. |
 | Nav item label | `span` | 16px, weight 400 (inactive), weight 600 (active) |
 | Settings sub-items | Collapsible or always-visible indented links | Shown when on any `/settings/*` route. Indent 16px. Items: "Agent Config" (`Bot` icon), "Notifications" (`Bell` icon), "Account & Billing" (`CreditCard` icon). 14px, 40px height. |
-| User area (bottom) | Custom | At bottom of sidebar. Avatar (initials-based, `bg-[#334155]`), business name, email in `text-[#94A3B8]` 12px, Sign Out button as `Button` variant="ghost" size="sm". |
+| User area (bottom) | Custom | At bottom of sidebar. Avatar (initials-based, `bg-[#334155]`), business name, email in `text-[#94A3B8]` 14px, Sign Out button as `Button` variant="ghost" size="sm". |
 
 #### Main Content Area
 
@@ -212,7 +214,7 @@ Note: Use dark text (`#0F172A`) on the orange accent button background, not whit
 | Banner container | `div` full-width, `bg-[#F97316]/15 border border-[#F97316]/30 rounded-xl p-4 mb-6` |
 | Banner heading | "Complete your setup" — 16px, weight 600, `text-[#F8FAFC]` |
 | Banner subtext | "Your VoiceDesk receptionist isn't active yet. Complete these steps to go live." — 14px, `text-[#94A3B8]` |
-| 4-step progress dots | `flex gap-2 mt-3`. Each step: 8px circle. Filled (current/complete): `bg-[#F97316]`. Pending: `bg-[#334155]`. Step labels: 12px `text-[#94A3B8]` below each dot. |
+| 4-step progress dots | `flex gap-2 mt-3`. Each step: 8px circle. Filled (current/complete): `bg-[#F97316]`. Pending: `bg-[#334155]`. Step labels: 14px `text-[#94A3B8]` below each dot. |
 | Step labels (4 steps) | "1. Add phone", "2. Configure agent", "3. Connect calendar", "4. Test call" |
 | CTA button | `Button` size="sm", `bg-[#F97316] text-[#0F172A]`, label "Continue Setup →", right-aligned inside banner |
 
@@ -274,7 +276,7 @@ See Copywriting Contract section for exact copy per empty state.
 | Login page subheading | "Sign in to your VoiceDesk account" |
 | Google OAuth button label | "Continue with Google" |
 | Email section divider | "or continue with email" |
-| Email submit button label | "Sign in" |
+| Email submit button label | "Sign in to VoiceDesk" |
 | Switch to signup | "New to VoiceDesk? Create an account" |
 | Signup page heading | "Create your account" |
 | Signup page subheading | "Start answering calls in minutes" |
