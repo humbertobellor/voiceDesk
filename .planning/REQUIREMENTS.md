@@ -3,7 +3,7 @@
 **Project:** VoiceDesk  
 **Milestone:** v1.0 — Revenue-generating MVP  
 **Target:** 90-day soft launch to 20–30 contractors  
-**Last updated:** 2026-05-03 after initialization
+**Last updated:** 2026-05-03 after roadmap creation
 
 ---
 
@@ -82,31 +82,29 @@ Explicit exclusions — not deferred, not planned:
 
 ## Traceability
 
-*Filled by roadmapper — maps REQ-IDs to phases after ROADMAP.md is created.*
-
 | REQ-ID | Phase | Status |
 |--------|-------|--------|
-| CALL-01 | TBD | Pending |
-| CALL-02 | TBD | Pending |
-| CALL-03 | TBD | Pending |
-| CALL-04 | TBD | Pending |
-| SCHED-01 | TBD | Pending |
-| SCHED-02 | TBD | Pending |
-| SCHED-03 | TBD | Pending |
-| SCHED-04 | TBD | Pending |
-| NOTIF-01 | TBD | Pending |
-| NOTIF-02 | TBD | Pending |
-| NOTIF-03 | TBD | Pending |
-| EMRG-01 | TBD | Pending |
-| EMRG-02 | TBD | Pending |
-| EMRG-03 | TBD | Pending |
-| PORTAL-01 | TBD | Pending |
-| PORTAL-02 | TBD | Pending |
-| PORTAL-03 | TBD | Pending |
-| PORTAL-04 | TBD | Pending |
-| PORTAL-05 | TBD | Pending |
-| BILL-01 | TBD | Pending |
-| BILL-02 | TBD | Pending |
-| BILL-03 | TBD | Pending |
-| ONBOARD-01 | TBD | Pending |
-| ONBOARD-02 | TBD | Pending |
+| CALL-01 | Phase 3 — Webhook Core | Pending |
+| CALL-02 | Phase 3 — Webhook Core | Pending |
+| CALL-03 | Phase 3 — Webhook Core | Pending |
+| CALL-04 | Phase 3 — Webhook Core | Pending |
+| SCHED-01 | Phase 4 — Scheduling & Lead Capture | Pending |
+| SCHED-02 | Phase 4 — Scheduling & Lead Capture | Pending |
+| SCHED-03 | Phase 4 — Scheduling & Lead Capture | Pending |
+| SCHED-04 | Phase 4 — Scheduling & Lead Capture | Pending |
+| NOTIF-01 | Phase 5 — Notifications | Pending |
+| NOTIF-02 | Phase 5 — Notifications | Pending |
+| NOTIF-03 | Phase 5 — Notifications | Pending |
+| EMRG-01 | Phase 3 — Webhook Core | Pending |
+| EMRG-02 | Phase 3 — Webhook Core | Pending |
+| EMRG-03 | Phase 5 — Notifications | Pending |
+| PORTAL-01 | Phase 6 — Portal UI | Pending |
+| PORTAL-02 | Phase 6 — Portal UI | Pending |
+| PORTAL-03 | Phase 6 — Portal UI | Pending |
+| PORTAL-04 | Phase 6 — Portal UI | Pending |
+| PORTAL-05 | Phase 6 — Portal UI | Pending |
+| BILL-01 | Phase 7 — Billing & Onboarding | Pending |
+| BILL-02 | Phase 7 — Billing & Onboarding | Pending |
+| BILL-03 | Phase 7 — Billing & Onboarding | Pending |
+| ONBOARD-01 | Phase 7 — Billing & Onboarding | Pending |
+| ONBOARD-02 | Phase 7 — Billing & Onboarding | Pending |
