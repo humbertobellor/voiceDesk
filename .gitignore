@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+
+# Next.js
+.next/
+out/
+build/
+
+# Environment variables (real secrets — never commit)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+# Keep .env.example and .env.test.example checked in
+
+# Build artifacts
+coverage/
+playwright-report/
+test-results/
+
+# Vercel
+.vercel/
+
+# macOS
+.DS_Store
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
