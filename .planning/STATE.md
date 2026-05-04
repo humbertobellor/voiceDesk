@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: — Revenue-Ready MVP
 status: In Progress
-last_updated: "2026-05-04T10:32:00Z"
+last_updated: "2026-05-04T10:44:00Z"
 progress:
   total_phases: 7
   completed_phases: 0
   total_plans: 5
-  completed_plans: 1
-  percent: 5
+  completed_plans: 2
+  percent: 10
 ---
 
 # VoiceDesk — Project State
@@ -29,7 +29,7 @@ Status: In Progress
 Started: 2026-05-04
 Target: —
 
-Current Plan: 01-02 (Supabase schema + RLS migrations)
+Current Plan: 01-03 ([BLOCKING] supabase db push + Supabase clients + AES-256-GCM + zod + DB types)
 
 ---
 
@@ -38,6 +38,7 @@ Current Plan: 01-02 (Supabase schema + RLS migrations)
 | Phase | Plan | Completed | Duration | Summary |
 |-------|------|-----------|----------|---------|
 | 01-foundation | 01 | 2026-05-04 | 6 min | Next.js scaffold, Tailwind v4, Wave 0 tests |
+| 01-foundation | 02 | 2026-05-04 | 12 min | 9 Supabase tables + 33 RLS policies + LANG-02 CHECK + D-16 idempotency |
 
 ---
 
@@ -78,6 +79,10 @@ Current Plan: 01-02 (Supabase schema + RLS migrations)
 - SUPABASE_SERVICE_ROLE_KEY never gets NEXT_PUBLIC_ prefix — enforced by .env.example grep
 - Wave 0 stub pattern: test files import future modules; stubs throw "not yet implemented" for correct TDD RED phase flow
 - src/lib/crypto/tokens.ts stub (throw-on-call) added in Plan 01 so tsc exits 0; Plan 03 replaces with real AES-256-GCM
+- LANG-02 enforced at DB layer: supported_languages <@ ARRAY['en','es','ht'] AND array_length >= 1 (Pitfall 5 pattern)
+- RLS policies use (SELECT auth.uid()) wrapper — not bare auth.uid() — for query plan caching (40 occurrences in migration 2)
+- webhook_events deny-all RLS (Pattern C): USING(false)/WITH CHECK(false) for authenticated and anon; service role bypasses automatically
+- JSONB defaults appear in migration 1 (canonical) AND migration 3 (re-affirmation guard) — both must be updated together
 
 ### Architecture Reference
 
@@ -101,6 +106,6 @@ Current Plan: 01-02 (Supabase schema + RLS migrations)
 
 _Use this section to log the last known state before ending a session, so the next session can resume without re-reading everything._
 
-Last session: 2026-05-04T10:32:00Z
-Stopped at: Completed 01-01-PLAN.md (scaffold + Wave 0 tests)
-Resume: Run Plan 02 — Supabase schema + RLS migrations
+Last session: 2026-05-04T10:44:00Z
+Stopped at: Completed 01-02-PLAN.md (Supabase schema + RLS migrations)
+Resume: Run Plan 03 — [BLOCKING] supabase db push + Supabase clients + AES-256-GCM + zod validations + DB types
