@@ -1,6 +1,21 @@
+---
+gsd_state_version: 1.0
+milestone: v1.0
+milestone_name: — Revenue-Ready MVP
+status: Not Started
+last_updated: "2026-05-04T10:05:56.609Z"
+progress:
+  total_phases: 7
+  completed_phases: 0
+  total_plans: 5
+  completed_plans: 0
+  percent: 0
+---
+
 # VoiceDesk — Project State
 
 ## Project Reference
+
 See: .planning/PROJECT.md (updated 2026-05-03)
 **Core value:** Every missed call is lost revenue — VoiceDesk ensures contractors never lose a booked job to voicemail again.
 **Current focus:** Phase 1
@@ -8,6 +23,7 @@ See: .planning/PROJECT.md (updated 2026-05-03)
 ---
 
 ## Current Phase
+
 Phase: 1 — Foundation
 Status: Not Started
 Started: —
@@ -16,6 +32,7 @@ Target: —
 ---
 
 ## Phase History
+
 (none yet)
 
 ---
@@ -41,6 +58,7 @@ Target: —
 ## Accumulated Context
 
 ### Key Decisions Locked
+
 - Retell managed Twilio integration — NOT raw TwiML/SIP
 - Webhook-first architecture — all business logic in `call_ended` / `call_analyzed` handlers
 - Return HTTP 200 immediately, process async via Vercel `waitUntil()`
@@ -52,12 +70,14 @@ Target: —
 - Background jobs via Inngest (not raw Vercel cron or queue)
 
 ### Architecture Reference
+
 - Stack: Retell, Twilio, Supabase, Next.js 14 (App Router), Vercel Pro, Stripe, Inngest, grammY (Telegram)
 - Webhook: `/api/webhooks/retell` → idempotency check → return 200 → `waitUntil()` → DB + Calendar + Notifications
 - Storage: Supabase Storage (private bucket, 60-second TTL signed URLs for recordings)
 - Auth: Supabase Auth (`@supabase/ssr`), service role key server-only
 
 ### Open Questions (from research)
+
 - Retell webhook retry policy — exact retry window and backoff (verify live docs)
 - `call_analyzed` vs `call_ended` — confirm which carries full transcript
 - Google OAuth scope — `calendar.events` + `calendar.freebusy` vs narrower scope
@@ -71,4 +91,4 @@ Target: —
 
 _Use this section to log the last known state before ending a session, so the next session can resume without re-reading everything._
 
-Last session: 2026-05-03 — Roadmap created. No phases started. Phase 1 is next.
+Last session: 2026-05-04T04:34:31.649Z

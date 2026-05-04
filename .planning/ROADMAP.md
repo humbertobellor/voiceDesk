@@ -31,7 +31,12 @@
   3. The `webhook_events` idempotency table exists with a unique constraint on `source + event_type + external_id`
   4. Agent configuration defaults (business name, hours, services, emergency keywords) are persisted to `contractor_settings` on account creation
   5. Contractor can select supported languages (English, Spanish, Haitian Creole, or all three) in agent config — selection is stored and will drive Retell agent configuration in Phase 2
-**Plans:** TBD
+**Plans:** 5 plans
+- [ ] 01-01-PLAN.md — Project scaffold (Next.js + deps + Tailwind + Inter) + Wave 0 test infrastructure (vitest + playwright + 5 test stubs)
+- [ ] 01-02-PLAN.md — SQL migrations: 9 tables + RLS enable + 33 policies + LANG-02 CHECK + D-16 idempotency key + D-17 token columns
+- [ ] 01-03-PLAN.md — [BLOCKING] supabase db push live + Supabase clients (server/browser/service) + AES-256-GCM utility + zod validations + database types
+- [ ] 01-04-PLAN.md — Auth flow: middleware + login/signup/callback + phone capture (D-02) + account creation API (contractors + contractor_settings + notification_settings)
+- [ ] 01-05-PLAN.md — Dashboard shell (Sidebar + SetupBanner + EmptyState + BottomTabBar + 6 page slots) + RLS isolation test seeded and passing live (D-18)
 **UI hint:** yes
 **Notes:** Every subsequent phase depends on this schema being correct and RLS being airtight. Do not advance to Phase 2 until an unprivileged-user RLS test passes on every table. OAuth token encryption utility must be written here before any Google callback route. CRITICAL: Verify Retell's native support for Haitian Creole before Phase 2 begins — if not natively supported, a custom LLM endpoint with a Haitian Creole-capable model (e.g., GPT-4o with Creole prompting) may be required. South Florida market makes this non-optional.
 
