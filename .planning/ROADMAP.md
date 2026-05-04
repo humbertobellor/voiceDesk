@@ -34,7 +34,7 @@
 **Plans:** 5 plans
 - [x] 01-01-PLAN.md — Project scaffold (Next.js + deps + Tailwind + Inter) + Wave 0 test infrastructure (vitest + playwright + 5 test stubs) ✓ 2026-05-04
 - [x] 01-02-PLAN.md — SQL migrations: 9 tables + RLS enable + 33 policies + LANG-02 CHECK + D-16 idempotency key + D-17 token columns ✓ 2026-05-04
-- [ ] 01-03-PLAN.md — [BLOCKING] supabase db push live + Supabase clients (server/browser/service) + AES-256-GCM utility + zod validations + database types
+- [x] 01-03-PLAN.md — [BLOCKING] supabase db push live + Supabase clients (server/browser/service) + AES-256-GCM utility + zod validations + database types ✓ 2026-05-04
 - [ ] 01-04-PLAN.md — Auth flow: middleware + login/signup/callback + phone capture (D-02) + account creation API (contractors + contractor_settings + notification_settings)
 - [ ] 01-05-PLAN.md — Dashboard shell (Sidebar + SetupBanner + EmptyState + BottomTabBar + 6 page slots) + RLS isolation test seeded and passing live (D-18)
 **UI hint:** yes

@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: — Revenue-Ready MVP
 status: In Progress
-last_updated: "2026-05-04T10:44:00Z"
+last_updated: "2026-05-04T17:48:00Z"
 progress:
   total_phases: 7
   completed_phases: 0
   total_plans: 5
-  completed_plans: 2
-  percent: 10
+  completed_plans: 3
+  percent: 20
 ---
 
 # VoiceDesk — Project State
@@ -18,7 +18,7 @@ progress:
 
 See: .planning/PROJECT.md (updated 2026-05-03)
 **Core value:** Every missed call is lost revenue — VoiceDesk ensures contractors never lose a booked job to voicemail again.
-**Current focus:** Phase 01 — Foundation (Plan 01 complete, Plans 02-05 pending)
+**Current focus:** Phase 01 — Foundation (Plans 01-03 complete, Plans 04-05 pending)
 
 ---
 
@@ -29,7 +29,7 @@ Status: In Progress
 Started: 2026-05-04
 Target: —
 
-Current Plan: 01-03 ([BLOCKING] supabase db push + Supabase clients + AES-256-GCM + zod + DB types)
+Current Plan: 01-04 (Auth flow: middleware + login/signup + phone capture + account creation API)
 
 ---
 
@@ -39,6 +39,7 @@ Current Plan: 01-03 ([BLOCKING] supabase db push + Supabase clients + AES-256-GC
 |-------|------|-----------|----------|---------|
 | 01-foundation | 01 | 2026-05-04 | 6 min | Next.js scaffold, Tailwind v4, Wave 0 tests |
 | 01-foundation | 02 | 2026-05-04 | 12 min | 9 Supabase tables + 33 RLS policies + LANG-02 CHECK + D-16 idempotency |
+| 01-foundation | 03 | 2026-05-04 | 15 min | Migrations pushed live; AES-256-GCM crypto; Supabase clients; zod schemas; DB types |
 
 ---
 
