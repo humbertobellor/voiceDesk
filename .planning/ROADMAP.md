@@ -32,7 +32,7 @@
   4. Agent configuration defaults (business name, hours, services, emergency keywords) are persisted to `contractor_settings` on account creation
   5. Contractor can select supported languages (English, Spanish, Haitian Creole, or all three) in agent config — selection is stored and will drive Retell agent configuration in Phase 2
 **Plans:** 5 plans
-- [ ] 01-01-PLAN.md — Project scaffold (Next.js + deps + Tailwind + Inter) + Wave 0 test infrastructure (vitest + playwright + 5 test stubs)
+- [x] 01-01-PLAN.md — Project scaffold (Next.js + deps + Tailwind + Inter) + Wave 0 test infrastructure (vitest + playwright + 5 test stubs) ✓ 2026-05-04
 - [ ] 01-02-PLAN.md — SQL migrations: 9 tables + RLS enable + 33 policies + LANG-02 CHECK + D-16 idempotency key + D-17 token columns
 - [ ] 01-03-PLAN.md — [BLOCKING] supabase db push live + Supabase clients (server/browser/service) + AES-256-GCM utility + zod validations + database types
 - [ ] 01-04-PLAN.md — Auth flow: middleware + login/signup/callback + phone capture (D-02) + account creation API (contractors + contractor_settings + notification_settings)
@@ -141,7 +141,7 @@
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 0/TBD | Not started | - |
+| 1. Foundation | 1/5 | In Progress | - |
 | 2. Provisioning | 0/TBD | Not started | - |
 | 3. Webhook Core | 0/TBD | Not started | - |
 | 4. Scheduling & Lead Capture | 0/TBD | Not started | - |

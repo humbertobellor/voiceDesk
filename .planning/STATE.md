@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: — Revenue-Ready MVP
-status: Not Started
-last_updated: "2026-05-04T10:05:56.609Z"
+status: In Progress
+last_updated: "2026-05-04T10:32:00Z"
 progress:
   total_phases: 7
   completed_phases: 0
   total_plans: 5
-  completed_plans: 0
-  percent: 0
+  completed_plans: 1
+  percent: 5
 ---
 
 # VoiceDesk — Project State
@@ -18,22 +18,26 @@ progress:
 
 See: .planning/PROJECT.md (updated 2026-05-03)
 **Core value:** Every missed call is lost revenue — VoiceDesk ensures contractors never lose a booked job to voicemail again.
-**Current focus:** Phase 1
+**Current focus:** Phase 01 — Foundation (Plan 01 complete, Plans 02-05 pending)
 
 ---
 
 ## Current Phase
 
 Phase: 1 — Foundation
-Status: Not Started
-Started: —
+Status: In Progress
+Started: 2026-05-04
 Target: —
+
+Current Plan: 01-02 (Supabase schema + RLS migrations)
 
 ---
 
 ## Phase History
 
-(none yet)
+| Phase | Plan | Completed | Duration | Summary |
+|-------|------|-----------|----------|---------|
+| 01-foundation | 01 | 2026-05-04 | 6 min | Next.js scaffold, Tailwind v4, Wave 0 tests |
 
 ---
 
@@ -50,6 +54,7 @@ Target: —
 | Metric | Target | Current |
 |--------|--------|---------|
 | Phases complete | 7 | 0 |
+| Plans complete | 5 | 1 |
 | Requirements delivered | 24 | 0 |
 | Beta contractors | 20–30 | 0 |
 
@@ -68,10 +73,15 @@ Target: —
 - Stripe trial requires card-on-file
 - Intent classification: keyword match + LLM confirmation for emergencies; gas smell and CO alarm are non-configurable hard triggers
 - Background jobs via Inngest (not raw Vercel cron or queue)
+- Next.js 16.2.4 used (RESEARCH.md assumption A1 — current stable, not capped at 14)
+- Tailwind CSS v4 uses @import 'tailwindcss' (not v3 @tailwind directives)
+- SUPABASE_SERVICE_ROLE_KEY never gets NEXT_PUBLIC_ prefix — enforced by .env.example grep
+- Wave 0 stub pattern: test files import future modules; stubs throw "not yet implemented" for correct TDD RED phase flow
+- src/lib/crypto/tokens.ts stub (throw-on-call) added in Plan 01 so tsc exits 0; Plan 03 replaces with real AES-256-GCM
 
 ### Architecture Reference
 
-- Stack: Retell, Twilio, Supabase, Next.js 14 (App Router), Vercel Pro, Stripe, Inngest, grammY (Telegram)
+- Stack: Retell, Twilio, Supabase, Next.js 16 (App Router), Vercel Pro, Stripe, Inngest, grammY (Telegram)
 - Webhook: `/api/webhooks/retell` → idempotency check → return 200 → `waitUntil()` → DB + Calendar + Notifications
 - Storage: Supabase Storage (private bucket, 60-second TTL signed URLs for recordings)
 - Auth: Supabase Auth (`@supabase/ssr`), service role key server-only
@@ -91,4 +101,6 @@ Target: —
 
 _Use this section to log the last known state before ending a session, so the next session can resume without re-reading everything._
 
-Last session: 2026-05-04T04:34:31.649Z
+Last session: 2026-05-04T10:32:00Z
+Stopped at: Completed 01-01-PLAN.md (scaffold + Wave 0 tests)
+Resume: Run Plan 02 — Supabase schema + RLS migrations
