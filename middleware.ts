@@ -1,0 +1,69 @@
+// middleware.ts
+// Source: RESEARCH.md Pattern 2 + Pitfall 4 (phone capture bypass).
+// CRITICAL: getUser() not getSession() — see RESEARCH.md Pitfall 2 + Anti-Patterns.
+import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
+import { createServerClient } from '@supabase/ssr'
+
+export async function middleware(request: NextRequest) {
+  const response = NextResponse.next({ request: { headers: request.headers } })
+
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll: () => request.cookies.getAll(),
+        // CRITICAL: write cookies to BOTH request and response (Pitfall 3)
+        setAll: (cookies) => {
+          cookies.forEach(({ name, value, options }) => {
+            request.cookies.set(name, value)
+            response.cookies.set(name, value, options)
+          })
+        },
+      },
+    }
+  )
+
+  // MUST call getUser() to refresh session (Pitfall 2)
+  const { data: { user } } = await supabase.auth.getUser()
+  const path = request.nextUrl.pathname
+
+  // Unauthenticated users hit /dashboard or /setup → /auth/login
+  if (!user && (path.startsWith('/dashboard') || path.startsWith('/setup'))) {
+    return NextResponse.redirect(new URL('/auth/login', request.url))
+  }
+
+  // Authenticated users on /auth/* (login/signup pages) → /dashboard if they have a phone, else /setup/phone
+  if (user && path.startsWith('/auth/') && !path.startsWith('/auth/callback')) {
+    const { data: contractor } = await supabase
+      .from('contractors')
+      .select('phone_number')
+      .eq('user_id', user.id)
+      .maybeSingle()
+    if (!contractor?.phone_number) {
+      return NextResponse.redirect(new URL('/setup/phone', request.url))
+    }
+    return NextResponse.redirect(new URL('/dashboard', request.url))
+  }
+
+  // Phone capture gate (D-02 + Pitfall 4): authenticated user accessing /dashboard
+  // must have a contractors row with phone_number set. Both "no row" and "row with null phone"
+  // route to /setup/phone.
+  if (user && path.startsWith('/dashboard')) {
+    const { data: contractor } = await supabase
+      .from('contractors')
+      .select('phone_number')
+      .eq('user_id', user.id)
+      .maybeSingle()
+    if (!contractor?.phone_number) {
+      return NextResponse.redirect(new URL('/setup/phone', request.url))
+    }
+  }
+
+  return response
+}
+
+export const config = {
+  matcher: ['/((?!_next/static|_next/image|favicon.ico|api/onboarding/create-account).*)'],
+}
