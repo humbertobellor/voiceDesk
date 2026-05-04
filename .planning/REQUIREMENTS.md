@@ -16,6 +16,11 @@
 - [ ] **CALL-03**: Agent asks trade-specific qualification questions (HVAC: system age, heating vs. cooling; Plumbing: active leak vs. repair; Electrical: safety vs. repair) before capturing contact details
 - [ ] **CALL-04**: Agent uses a different script for after-hours calls (acknowledges off-hours, still captures lead and offers scheduling for next available slot)
 
+### Multi-Language Support
+
+- [ ] **LANG-01**: Agent detects or prompts for caller language at the start of each call and conducts the entire conversation — qualification questions, scheduling confirmation, and emergency escalation — in the caller's language (English, Spanish, or Haitian Creole)
+- [ ] **LANG-02**: Contractor can select which languages their agent supports (English, Spanish, Haitian Creole, or all three) in the agent configuration portal; all supported languages are available from day one of deployment
+
 ### Scheduling
 
 - [ ] **SCHED-01**: Agent books estimate appointments into the contractor's Google Calendar during the call, using contractor-configured availability windows to determine open slots
@@ -59,7 +64,7 @@ Features explicitly deferred to post-PMF validation:
 
 - **ServiceTitan integration** — Complex field-management API; relevant only after 30%+ of customers request it
 - **Housecall Pro integration** — Same rationale as ServiceTitan
-- **Spanish language support** — High-priority v2; significant Retell prompt engineering and testing required
+- **Additional language support beyond English/Spanish/Haitian Creole** — Portuguese, French, Mandarin etc. are post-PMF additions
 - **iOS/Android mobile app** — Web portal sufficient for v1; mobile is a retention feature not a launch requirement
 - **Outbound call campaigns** — TCPA compliance complexity; not core to product identity
 - **Advanced analytics dashboard** — Call volume trends, lead conversion rates, revenue attribution; nice-to-have after retention is proven
@@ -76,7 +81,7 @@ Explicit exclusions — not deferred, not planned:
 - **AI price quoting** — Liability risk; contractors explicitly do not want AI quoting jobs
 - **Live call transfer on emergency** — Mid-call transfer requires active call patching (different Twilio product), complex to implement reliably; real-time notification within 30s covers the safety need
 - **Web chat widget** — Out of scope for v1; phone is the channel this product lives in
-- **Multi-language support** — English-only for v1
+- **Accent-based language auto-detection without prompt** — Retell's language detection requires explicit selection or a greeting prompt; passive accent detection is not reliable enough for emergency classification
 
 ---
 
@@ -84,6 +89,8 @@ Explicit exclusions — not deferred, not planned:
 
 | REQ-ID | Phase | Status |
 |--------|-------|--------|
+| LANG-01 | Phase 1 — Foundation | Pending |
+| LANG-02 | Phase 1 — Foundation | Pending |
 | CALL-01 | Phase 3 — Webhook Core | Pending |
 | CALL-02 | Phase 3 — Webhook Core | Pending |
 | CALL-03 | Phase 3 — Webhook Core | Pending |

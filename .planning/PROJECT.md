@@ -16,7 +16,7 @@ Every missed call is lost revenue — VoiceDesk ensures contractors never lose a
 
 ### Active
 
-- [ ] AI voice agent answers inbound calls using Retell and handles natural-language contractor queries
+- [ ] AI voice agent answers inbound calls using Retell in English, Spanish, or Haitian Creole (caller's language detected or prompted at call start)
 - [ ] Intent classification: lead qualification, estimate scheduling, or emergency escalation
 - [ ] Book estimate appointments into Google Calendar via OAuth
 - [ ] Emergency dispatch: SMS, WhatsApp, and Telegram alerts to contractor for high-urgency calls
@@ -31,7 +31,7 @@ Every missed call is lost revenue — VoiceDesk ensures contractors never lose a
 
 - ServiceTitan / Housecall Pro / field-management integrations — complexity too high for v1; add after PMF validation
 - Outbound calling — TCPA risk, not core to the product
-- Multi-language support — English-only for v1; Spanish is high-priority v2
+- Additional languages beyond English/Spanish/Haitian Creole — Portuguese, French, etc. are post-PMF
 - iOS/Android mobile app — web portal sufficient for v1
 - Custom voice cloning — Retell stock voices cover v1
 - Automated follow-up sequences — out of scope; inbound-only focus

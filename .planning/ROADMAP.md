@@ -2,14 +2,14 @@
 
 ## Milestone 1: v1.0 — Revenue-Ready MVP
 
-**Goal:** A contractor can sign up, configure their AI receptionist, receive a dedicated phone number, and immediately start capturing leads, booking appointments, and receiving real-time notifications — with Stripe billing collecting revenue.
-**Target:** 90-day soft launch to 20–30 contractors
+**Goal:** A contractor can sign up, configure their AI receptionist (in English, Spanish, or Haitian Creole), receive a dedicated phone number, and immediately start capturing leads, booking appointments, and receiving real-time notifications — with Stripe billing collecting revenue.
+**Target:** 90-day soft launch to 20–30 contractors (South Florida market: Spanish and Haitian Creole support from day one)
 
 ---
 
 ## Phases
 
-- [ ] **Phase 1: Foundation** - Supabase schema, RLS, auth, and minimal contractor account creation
+- [ ] **Phase 1: Foundation** - Supabase schema, RLS, auth, account creation, and multi-language agent configuration (English, Spanish, Haitian Creole)
 - [ ] **Phase 2: Provisioning** - Twilio number provisioning and Retell agent creation per contractor
 - [ ] **Phase 3: Webhook Core** - Retell webhook handler, call persistence, and intent classification
 - [ ] **Phase 4: Scheduling & Lead Capture** - Google Calendar OAuth, availability windows, appointment booking, and lead records
@@ -22,17 +22,18 @@
 ## Phase Details
 
 ### Phase 1: Foundation
-**Goal:** Contractors can create an account and the database is ready to hold all call, lead, and configuration data with zero risk of data leakage between tenants.
+**Goal:** Contractors can create an account, the database is ready to hold all call and configuration data with zero cross-tenant leakage, and the agent configuration schema supports English, Spanish, and Haitian Creole from day one.
 **Depends on:** Nothing (first phase)
-**Requirements:** (no standalone requirements — this phase gates all others; PORTAL-04 schema, CALL-01 schema)
+**Requirements:** LANG-01, LANG-02 (schema and config layer), (schema gates all others)
 **Success Criteria** (what must be TRUE):
   1. A contractor can sign up with email and password and land on a dashboard shell
   2. All database tables exist with RLS enabled and verified as an unprivileged Supabase user — no tenant can read another tenant's rows
   3. The `webhook_events` idempotency table exists with a unique constraint on `source + event_type + external_id`
   4. Agent configuration defaults (business name, hours, services, emergency keywords) are persisted to `contractor_settings` on account creation
+  5. Contractor can select supported languages (English, Spanish, Haitian Creole, or all three) in agent config — selection is stored and will drive Retell agent configuration in Phase 2
 **Plans:** TBD
 **UI hint:** yes
-**Notes:** Every subsequent phase depends on this schema being correct and RLS being airtight. Do not advance to Phase 2 until an unprivileged-user RLS test passes on every table. OAuth token encryption utility must be written here before any Google callback route.
+**Notes:** Every subsequent phase depends on this schema being correct and RLS being airtight. Do not advance to Phase 2 until an unprivileged-user RLS test passes on every table. OAuth token encryption utility must be written here before any Google callback route. CRITICAL: Verify Retell's native support for Haitian Creole before Phase 2 begins — if not natively supported, a custom LLM endpoint with a Haitian Creole-capable model (e.g., GPT-4o with Creole prompting) may be required. South Florida market makes this non-optional.
 
 ---
 
@@ -47,7 +48,7 @@
   4. The provisioned number and Retell agent ID are stored in the contractor's database row and retrievable via the server API
 **Plans:** TBD
 **UI hint:** no
-**Notes:** Use Retell's managed Twilio integration (link Twilio Account SID + Auth Token in Retell dashboard) — do NOT use raw TwiML/SIP. Verify exact Retell API call sequence for number import against current docs before writing provisioning code.
+**Notes:** Use Retell's managed Twilio integration (link Twilio Account SID + Auth Token in Retell dashboard) — do NOT use raw TwiML/SIP. Verify exact Retell API call sequence for number import against current docs before writing provisioning code. Retell agent must be created with the contractor's configured language set — verify Haitian Creole support in Retell before this phase; fall back to custom LLM endpoint if not natively supported.
 
 ---
 
