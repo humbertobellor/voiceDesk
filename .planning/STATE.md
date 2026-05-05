@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: — Revenue-Ready MVP
 status: In Progress
-last_updated: "2026-05-04T17:48:00Z"
+last_updated: "2026-05-04T19:15:00Z"
 progress:
   total_phases: 7
   completed_phases: 0
   total_plans: 5
-  completed_plans: 3
+  completed_plans: 4
   percent: 20
 ---
 
@@ -18,7 +18,7 @@ progress:
 
 See: .planning/PROJECT.md (updated 2026-05-03)
 **Core value:** Every missed call is lost revenue — VoiceDesk ensures contractors never lose a booked job to voicemail again.
-**Current focus:** Phase 01 — Foundation (Plans 01-03 complete, Plans 04-05 pending)
+**Current focus:** Phase 01 — Foundation (Plans 01-04 complete, Plan 05 pending)
 
 ---
 
@@ -29,7 +29,7 @@ Status: In Progress
 Started: 2026-05-04
 Target: —
 
-Current Plan: 01-04 (Auth flow: middleware + login/signup + phone capture + account creation API)
+Current Plan: 01-05 (Dashboard shell + RLS isolation tests)
 
 ---
 
@@ -40,6 +40,7 @@ Current Plan: 01-04 (Auth flow: middleware + login/signup + phone capture + acco
 | 01-foundation | 01 | 2026-05-04 | 6 min | Next.js scaffold, Tailwind v4, Wave 0 tests |
 | 01-foundation | 02 | 2026-05-04 | 12 min | 9 Supabase tables + 33 RLS policies + LANG-02 CHECK + D-16 idempotency |
 | 01-foundation | 03 | 2026-05-04 | 15 min | Migrations pushed live; AES-256-GCM crypto; Supabase clients; zod schemas; DB types |
+| 01-foundation | 04 | 2026-05-04 | 35 min | Auth flow: middleware + login/signup + OAuth callback + phone capture + account creation API |
 
 ---
 
