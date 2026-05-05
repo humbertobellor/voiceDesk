@@ -6,6 +6,10 @@ node_modules/
 out/
 build/
 
+#claire
+.claire/
+# Supabase
+.supabaase/.temp
 # Environment variables (real secrets — never commit)
 .env
 .env.local
