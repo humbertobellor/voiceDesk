@@ -15,6 +15,8 @@ export function SignupForm() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
   const [isGoogleLoading, setIsGoogleLoading] = useState(false)
+  const [confirmationSent, setConfirmationSent] = useState(false)
+  const [confirmedEmail, setConfirmedEmail] = useState('')
 
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<SignupFormData>({
     resolver: zodResolver(signupSchema),
@@ -42,7 +44,7 @@ export function SignupForm() {
   const onSubmit = async (data: SignupFormData) => {
     setSubmitError(null)
     const supabase = createSupabaseBrowser()
-    const { error } = await supabase.auth.signUp({
+    const { data: signUpData, error } = await supabase.auth.signUp({
       email: data.email,
       password: data.password,
     })
@@ -54,8 +56,31 @@ export function SignupForm() {
       }
       return
     }
-    // Auto-logged-in after signUp (no email confirmation in dev); redirect to phone capture
+    // If session is null, email confirmation is required before the user can sign in
+    if (!signUpData.session) {
+      setConfirmedEmail(data.email)
+      setConfirmationSent(true)
+      return
+    }
     window.location.href = '/setup/phone'
+  }
+
+  if (confirmationSent) {
+    return (
+      <div className="w-full max-w-[400px] mx-auto">
+        <div className="bg-[#1E293B] border border-[#334155] rounded-xl p-8 text-center">
+          <div className="text-4xl mb-4">📬</div>
+          <h1 className="text-[22px] font-semibold text-[#F8FAFC] mb-2">Check your email</h1>
+          <p className="text-sm text-[#94A3B8] mb-4">
+            We sent a confirmation link to <span className="text-[#F8FAFC]">{confirmedEmail}</span>.
+            Click it to activate your account, then sign in.
+          </p>
+          <Link href="/auth/login" className="text-sm text-[#F97316] hover:underline">
+            Back to sign in
+          </Link>
+        </div>
+      </div>
+    )
   }
 
   return (
