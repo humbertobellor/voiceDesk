@@ -33,7 +33,10 @@ export async function updateLanguages(input: LanguageFormData): Promise<UpdateRe
     .from('contractor_settings')
     .update({ supported_languages: parsed.data.supported_languages })
     .eq('contractor_id', contractor.id)
-  if (uErr) return { ok: false, error: uErr.message }
+  if (uErr) {
+    console.error('[updateLanguages] update failed:', uErr.message)
+    return { ok: false, error: 'Failed to save language settings. Please try again.' }
+  }
 
   return { ok: true }
 }

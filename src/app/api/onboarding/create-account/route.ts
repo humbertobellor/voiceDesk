@@ -43,7 +43,8 @@ export async function POST(req: Request) {
       })
       .eq('id', existing.id)
     if (uErr) {
-      return NextResponse.json({ error: uErr.message }, { status: 500 })
+      console.error('[create-account] contractor update failed:', uErr.message)
+      return NextResponse.json({ error: 'Failed to update account.' }, { status: 500 })
     }
     contractor_id = existing.id
   } else {
@@ -59,7 +60,8 @@ export async function POST(req: Request) {
       .select()
       .single()
     if (cErr || !contractor) {
-      return NextResponse.json({ error: cErr?.message ?? 'Failed to create contractor' }, { status: 500 })
+      console.error('[create-account] contractor insert failed:', cErr?.message)
+      return NextResponse.json({ error: 'Failed to create contractor.' }, { status: 500 })
     }
     contractor_id = contractor.id
 
@@ -73,9 +75,13 @@ export async function POST(req: Request) {
         business_name: body.data.business_name,
       })
     if (sErr) {
+      console.error('[create-account] contractor_settings insert failed:', sErr.message)
       // Roll back contractor row to keep state consistent
-      await serviceClient.from('contractors').delete().eq('id', contractor_id)
-      return NextResponse.json({ error: sErr.message }, { status: 500 })
+      const { error: rbErr } = await serviceClient.from('contractors').delete().eq('id', contractor_id)
+      if (rbErr) {
+        console.error('[create-account] ROLLBACK FAILED — orphaned contractor row:', contractor_id, rbErr.message)
+      }
+      return NextResponse.json({ error: 'Failed to complete account setup.' }, { status: 500 })
     }
 
     // 7. Insert notification_settings row (empty; populated in Plan 06 / Phase 5)
@@ -83,9 +89,16 @@ export async function POST(req: Request) {
       .from('notification_settings')
       .insert({ contractor_id })
     if (nErr) {
-      await serviceClient.from('contractor_settings').delete().eq('contractor_id', contractor_id)
-      await serviceClient.from('contractors').delete().eq('id', contractor_id)
-      return NextResponse.json({ error: nErr.message }, { status: 500 })
+      console.error('[create-account] notification_settings insert failed:', nErr.message)
+      // Attempt rollback — CASCADE on contractors DELETE removes contractor_settings automatically
+      const { error: rbErr } = await serviceClient
+        .from('contractors')
+        .delete()
+        .eq('id', contractor_id)
+      if (rbErr) {
+        console.error('[create-account] ROLLBACK FAILED — orphaned contractor row:', contractor_id, rbErr.message)
+      }
+      return NextResponse.json({ error: 'Failed to complete account setup.' }, { status: 500 })
     }
   }
 
