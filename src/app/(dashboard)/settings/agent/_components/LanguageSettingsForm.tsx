@@ -2,7 +2,6 @@
 // src/app/(dashboard)/settings/agent/_components/LanguageSettingsForm.tsx
 // Source: per D-03 server-action pattern + Plan 03 languageSchema (zod min(1)).
 import { useState, useTransition } from 'react'
-import { useRouter } from 'next/navigation'
 import { Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
@@ -20,7 +19,6 @@ interface LanguageSettingsFormProps {
 }
 
 export function LanguageSettingsForm({ current }: LanguageSettingsFormProps) {
-  const router = useRouter()
   const [selected, setSelected] = useState<Set<Language>>(new Set(current))
   const [isPending, startTransition] = useTransition()
   const [feedback, setFeedback] = useState<{ kind: 'success' | 'error'; message: string } | null>(null)
@@ -40,15 +38,14 @@ export function LanguageSettingsForm({ current }: LanguageSettingsFormProps) {
     })
   }
 
-  function onSubmit(formData: FormData) {
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    // Prevent default so React 19 doesn't auto-reset the form after the action.
+    e.preventDefault()
     const supported = Array.from(selected)
     startTransition(async () => {
       const result = await updateLanguages({ supported_languages: supported })
       if (result.ok) {
         setFeedback({ kind: 'success', message: 'Languages updated.' })
-        // router.refresh() re-fetches the server component without remounting this
-        // client component, so selected state is preserved across the refresh.
-        router.refresh()
       } else {
         setFeedback({ kind: 'error', message: result.error })
       }
@@ -56,7 +53,7 @@ export function LanguageSettingsForm({ current }: LanguageSettingsFormProps) {
   }
 
   return (
-    <form action={onSubmit} className="bg-[#1E293B] border border-[#334155] rounded-xl p-6 max-w-[480px]">
+    <form onSubmit={handleSubmit} className="bg-[#1E293B] border border-[#334155] rounded-xl p-6 max-w-[480px]">
       <fieldset disabled={isPending}>
         <legend className="text-base font-semibold text-[#F8FAFC] mb-1">Supported languages</legend>
         <p className="text-sm text-[#94A3B8] mb-4">
