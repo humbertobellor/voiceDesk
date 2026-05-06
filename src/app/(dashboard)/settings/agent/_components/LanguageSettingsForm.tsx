@@ -43,6 +43,9 @@ export function LanguageSettingsForm({ current }: LanguageSettingsFormProps) {
     startTransition(async () => {
       const result = await updateLanguages({ supported_languages: supported })
       if (result.ok) {
+        // Explicitly restore selection after revalidatePath triggers a route refresh,
+        // which remounts this component and resets useState to stale cached data.
+        setSelected(new Set(supported as Language[]))
         setFeedback({ kind: 'success', message: 'Languages updated.' })
       } else {
         setFeedback({ kind: 'error', message: result.error })
