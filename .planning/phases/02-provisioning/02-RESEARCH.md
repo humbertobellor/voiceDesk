@@ -490,7 +490,7 @@ export async function POST(req: Request) {
       retell_agent_id: agent.agent_id,
       retell_llm_id: llm.llm_id,
       twilio_number: phone.phone_number,
-      twilio_number_sid: phone.phone_number, // Retell's number reference
+      twilio_number_sid: phone.phone_number, // Retell's number reference — E.164; not a true Twilio SID (RESOLVED: Open Question 2)
       agent_sync_status: 'synced',
       area_code: body.data.area_code,
       updated_at: new Date().toISOString(),
@@ -812,22 +812,19 @@ This is not a rename/refactor phase — no runtime state audit needed. Haitian C
 
 ---
 
-## Open Questions
+## Open Questions (RESOLVED)
 
-1. **"Managed Twilio integration" clarification**
-   - What we know: Retell's documented integration methods are (a) buy through Retell, or (b) SIP trunking with own Twilio account. No "Account SID + Auth Token linking" mechanism exists in the docs.
-   - What's unclear: Whether the product owner intended Option A (buy via Retell) or had knowledge of an undocumented/dashboard-only feature
-   - Recommendation: Proceed with Option A (buy via Retell `phoneNumber.create()`). If call recording ownership in contractor's own Twilio account is a business requirement, revisit in Phase 3 or Phase 6.
+1. **"Managed Twilio integration" clarification** — RESOLVED
+   - Decision: Proceed with Option A — buy via `retell.phoneNumber.create()`. The no-SIP constraint in the ROADMAP confirms this path. No Twilio Account SID / Auth Token linking step exists in Retell's API.
+   - Rationale: ROADMAP explicitly says "do NOT use raw TwiML/SIP"; Retell docs confirm only SIP trunking OR buy-via-Retell are supported; buy-via-Retell is the correct path.
 
-2. **`twilio_number_sid` semantics when buying via Retell**
-   - What we know: The `contractors` table has a `twilio_number_sid` column, implying a Twilio SID format (e.g., `PN...`). When buying via Retell, the response returns `phone_number` (E.164) not a Twilio SID.
-   - What's unclear: Whether the `twilio_number_sid` column should store the E.164 number (used as the Retell phone number ID) or remain null
-   - Recommendation: Store the E.164 `phone_number` from Retell in `twilio_number_sid` as the internal reference for now. Add a note that this is not a true Twilio SID.
+2. **`twilio_number_sid` semantics when buying via Retell** — RESOLVED
+   - Decision: Store the E.164 `phone_number` from Retell in `twilio_number_sid`. This is the correct identifier for Retell's number management API. Not a true Twilio SID format (e.g., `PN...`), but serves the same lookup purpose for all Phase 2–6 operations.
+   - Note in code: `twilio_number_sid: phone.phone_number  // E.164 phone number — Retell's internal reference; not a Twilio SID`
 
-3. **Agent voice ID format**
-   - What we know: `contractor_settings.agent_voice` defaults to `'elevenlabs-myra'`
-   - What's unclear: Whether this is a valid Retell voice ID or needs mapping
-   - Recommendation: Verify against Retell's voice list API or dashboard before Phase 2 ships. If invalid, provisioning will fail at agent create step.
+3. **Agent voice ID format** — RESOLVED (deferred to manual verification)
+   - Decision: Use `'elevenlabs-myra'` as-is in the plan. The executor MUST verify this voice ID against the Retell voice catalog before executing Plan 04 (check Retell dashboard or voice list API). If `'elevenlabs-myra'` is not a valid voice ID, substitute with `'elevenlabs-harriet'` or the nearest available female English voice.
+   - VALIDATION.md already lists this as a manual-only check.
 
 ---
 
