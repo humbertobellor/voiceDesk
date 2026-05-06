@@ -18,6 +18,12 @@ function getEncryptionKey(): Buffer {
       'Generate with: node -e "console.log(require(\'crypto\').randomBytes(32).toString(\'hex\'))"'
     )
   }
+  if (!/^[0-9a-fA-F]{64}$/.test(hex)) {
+    throw new Error(
+      'OAUTH_ENCRYPTION_KEY contains non-hex characters. ' +
+      'Value must contain only 0-9 and a-f characters.'
+    )
+  }
   return Buffer.from(hex, 'hex')
 }
 
