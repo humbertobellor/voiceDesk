@@ -8,7 +8,9 @@ import type { NextRequest } from 'next/server'
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url)
   const code = searchParams.get('code')
-  const next = searchParams.get('next') ?? '/setup/phone'
+  const rawNext = searchParams.get('next') ?? '/setup/phone'
+  // Accept only relative paths that start with / but not // (prevents open redirect via protocol-relative URLs)
+  const next = rawNext.startsWith('/') && !rawNext.startsWith('//') ? rawNext : '/setup/phone'
 
   if (!code) {
     return NextResponse.redirect(`${origin}/auth/login?error=no_code`)
