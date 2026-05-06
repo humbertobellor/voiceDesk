@@ -1,7 +1,6 @@
 // src/app/actions/settings.ts
 // Source: D-03 server-action pattern from CONTEXT.md; Plan 03 languageSchema; service role for mutations.
 'use server'
-import { revalidatePath } from 'next/cache'
 import { createSupabaseServer } from '@/lib/supabase/server'
 import { createServiceRoleClient } from '@/lib/supabase/service'
 import { languageSchema, type LanguageFormData } from '@/lib/validations/onboarding'
@@ -36,6 +35,5 @@ export async function updateLanguages(input: LanguageFormData): Promise<UpdateRe
     .eq('contractor_id', contractor.id)
   if (uErr) return { ok: false, error: uErr.message }
 
-  revalidatePath('/settings/agent')
   return { ok: true }
 }
