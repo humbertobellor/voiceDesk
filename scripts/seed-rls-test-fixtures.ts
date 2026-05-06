@@ -18,10 +18,10 @@ const anon = createClient(url, anonKey, { auth: { autoRefreshToken: false, persi
 
 async function seedUser(email: string, password: string, businessName: string) {
   // Clean up any prior fixture user with this email (idempotent re-seed)
-  const { data: existingList } = await admin.auth.admin.listUsers()
-  const existing = existingList?.users?.find((u) => u.email === email)
-  if (existing) {
-    await admin.auth.admin.deleteUser(existing.id)
+  // Use getUserByEmail instead of listUsers() to avoid the default perPage=50 pagination limit
+  const { data: existingUser } = await admin.auth.admin.getUserByEmail(email)
+  if (existingUser?.user) {
+    await admin.auth.admin.deleteUser(existingUser.user.id)
   }
 
   // 1. Create user
