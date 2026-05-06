@@ -1,7 +1,6 @@
 // src/app/(dashboard)/settings/agent/page.tsx — Server Component
 import { redirect } from 'next/navigation'
 import { createSupabaseServer } from '@/lib/supabase/server'
-import { createServiceRoleClient } from '@/lib/supabase/service'
 import { LanguageSettingsForm } from './_components/LanguageSettingsForm'
 import type { Language } from '@/types/database'
 
@@ -20,11 +19,9 @@ export default async function AgentConfigPage() {
     .maybeSingle()
   if (!contractor) redirect('/setup/phone')
 
-  // Read current supported_languages via service role (consistent with mutation pattern;
-  // RLS would also allow this read for the owning user, but we use service role to mirror
-  // the write path used by the updateLanguages server action — see src/app/actions/settings.ts)
-  const serviceClient = createServiceRoleClient()
-  const { data: settings } = await serviceClient
+  // Read current supported_languages using the user's own client (RLS enforces ownership).
+  // No need for service role on a read that the authenticated user is already authorized for.
+  const { data: settings } = await supabase
     .from('contractor_settings')
     .select('supported_languages')
     .eq('contractor_id', contractor.id)
