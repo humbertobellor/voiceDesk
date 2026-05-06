@@ -2,6 +2,7 @@
 // Source: RESEARCH.md Code Examples — Account Creation route.
 // CRITICAL: This file is server-only. SUPABASE_SERVICE_ROLE_KEY must NEVER have NEXT_PUBLIC_ prefix.
 // Service role bypasses RLS — use only in API routes for operations the user's anon client cannot perform.
+import 'server-only'
 import { createClient } from '@supabase/supabase-js'
 
 export function createServiceRoleClient() {
