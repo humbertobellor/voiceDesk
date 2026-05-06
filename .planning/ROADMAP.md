@@ -51,9 +51,26 @@
   2. A test call to that number is answered by the Retell AI agent (not voicemail) within 3 rings
   3. The Retell agent uses the contractor's configured business name and service list in its greeting
   4. The provisioned number and Retell agent ID are stored in the contractor's database row and retrievable via the server API
-**Plans:** TBD
+**Plans:** 5 plans
+- [ ] 02-01a-PLAN.md — Wave 0 test stubs + npm install (retell-sdk, inngest) + migration SQL write
+- [ ] 02-01b-PLAN.md — [BLOCKING] supabase db push + Haitian Creole code cleanup + VALIDATION.md sign-off *(blocked on 02-01a)*
+- [ ] 02-02-PLAN.md — Retell client singleton + system-prompt builder + language mapper *(blocked on 02-01b)*
+- [ ] 02-03-PLAN.md — Inngest client + retell-agent-sync function (with onFailure) + /api/inngest route *(blocked on 02-01b)*
+- [ ] 02-04-PLAN.md — POST /api/provisioning/create + PATCH /api/provisioning/update-agent *(blocked on 02-02, 02-03)*
+
+**Wave dependency notes:**
+- **Wave 1a** (`02-01a`): no dependencies — installs packages and writes migration SQL
+- **Wave 1b** (`02-01b`) *(blocked on Wave 1a completion)*: pushes migration to live DB, removes HC from codebase
+- **Wave 2** (`02-02`, `02-03`) *(blocked on Wave 1b completion)*: Retell utilities and Inngest setup (parallel)
+- **Wave 3** (`02-04`) *(blocked on Wave 2 completion)*: provisioning API routes
+
+**Cross-cutting constraints:**
+- `import 'server-only'` required in all Retell and Inngest lib modules
+- `createServiceRoleClient()` used only in API routes and Inngest functions — never in client components
+- RETELL_API_KEY never prefixed with NEXT_PUBLIC_
+
 **UI hint:** no
-**Notes:** Use Retell's managed Twilio integration (link Twilio Account SID + Auth Token in Retell dashboard) — do NOT use raw TwiML/SIP. Verify exact Retell API call sequence for number import against current docs before writing provisioning code. Retell agent must be created with the contractor's configured language set — verify Haitian Creole support in Retell before this phase; fall back to custom LLM endpoint if not natively supported.
+**Notes:** Use Retell's provisioning API (`retell.phoneNumber.create({ area_code })`) — NOT raw TwiML/SIP and NOT Twilio Account SID/Auth Token linking (that flow is not documented in Retell v2). Retell v2 architecture separates LLM entity (system prompt) from Agent entity — create LLM first (`llm.create()`), then Agent referencing LLM ID. The `retell_llm_id` column (added in this phase) is required for all future system prompt updates via `PATCH /update-retell-llm/{llm_id}`. Haitian Creole is confirmed absent from Retell's supported language codes — D-01 (HC removal) is fully executed in this phase.
 
 ---
 
