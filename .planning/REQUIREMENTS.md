@@ -18,8 +18,8 @@
 
 ### Multi-Language Support
 
-- [ ] **LANG-01**: Agent detects or prompts for caller language at the start of each call and conducts the entire conversation — qualification questions, scheduling confirmation, and emergency escalation — in the caller's language (English, Spanish, or Haitian Creole)
-- [ ] **LANG-02**: Contractor can select which languages their agent supports (English, Spanish, Haitian Creole, or all three) in the agent configuration portal; all supported languages are available from day one of deployment
+- [ ] **LANG-01**: Agent detects or prompts for caller language at the start of each call and conducts the entire conversation — qualification questions, scheduling confirmation, and emergency escalation — in the caller's language (English, Spanish, or Haitian Creole) _(schema precondition delivered Phase 1; runtime behavior Phase 2–3)_
+- [x] **LANG-02**: Contractor can select which languages their agent supports (English, Spanish, Haitian Creole, or all three) in the agent configuration portal; all supported languages are available from day one of deployment ✓ Phase 1
 
 ### Scheduling
 
@@ -89,8 +89,8 @@ Explicit exclusions — not deferred, not planned:
 
 | REQ-ID | Phase | Status |
 |--------|-------|--------|
-| LANG-01 | Phase 1 — Foundation | Pending |
-| LANG-02 | Phase 1 — Foundation | Pending |
+| LANG-01 | Phase 1 — Foundation (schema); Phase 2–3 (runtime) | Partial — schema done |
+| LANG-02 | Phase 1 — Foundation | Validated 2026-05-05 |
 | CALL-01 | Phase 3 — Webhook Core | Pending |
 | CALL-02 | Phase 3 — Webhook Core | Pending |
 | CALL-03 | Phase 3 — Webhook Core | Pending |

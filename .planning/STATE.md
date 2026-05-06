@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: — Revenue-Ready MVP
 status: In Progress
-last_updated: "2026-05-04T19:15:00Z"
+last_updated: "2026-05-05T21:00:00Z"
 progress:
   total_phases: 7
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 5
-  completed_plans: 4
-  percent: 20
+  completed_plans: 5
+  percent: 14
 ---
 
 # VoiceDesk — Project State
@@ -18,18 +18,18 @@ progress:
 
 See: .planning/PROJECT.md (updated 2026-05-03)
 **Core value:** Every missed call is lost revenue — VoiceDesk ensures contractors never lose a booked job to voicemail again.
-**Current focus:** Phase 01 — Foundation (Plans 01-04 complete, Plan 05 pending)
+**Current focus:** Phase 02 — Provisioning (ready to plan)
 
 ---
 
 ## Current Phase
 
-Phase: 1 — Foundation
-Status: In Progress
-Started: 2026-05-04
+Phase: 2 — Provisioning
+Status: Not started
+Started: —
 Target: —
 
-Current Plan: 01-05 (Dashboard shell + RLS isolation tests)
+Current Plan: —
 
 ---
 
@@ -41,6 +41,7 @@ Current Plan: 01-05 (Dashboard shell + RLS isolation tests)
 | 01-foundation | 02 | 2026-05-04 | 12 min | 9 Supabase tables + 33 RLS policies + LANG-02 CHECK + D-16 idempotency |
 | 01-foundation | 03 | 2026-05-04 | 15 min | Migrations pushed live; AES-256-GCM crypto; Supabase clients; zod schemas; DB types |
 | 01-foundation | 04 | 2026-05-04 | 35 min | Auth flow: middleware + login/signup + OAuth callback + phone capture + account creation API |
+| 01-foundation | 05 | 2026-05-04 | — | Dashboard shell + Sidebar + RLS isolation tests (19/19 pass) — phase complete |
 
 ---
 
@@ -56,9 +57,9 @@ Current Plan: 01-05 (Dashboard shell + RLS isolation tests)
 
 | Metric | Target | Current |
 |--------|--------|---------|
-| Phases complete | 7 | 0 |
-| Plans complete | 5 | 1 |
-| Requirements delivered | 24 | 0 |
+| Phases complete | 7 | 1 |
+| Plans complete | 5 | 5 |
+| Requirements delivered | 24 | 1 |
 | Beta contractors | 20–30 | 0 |
 
 ---
@@ -108,6 +109,6 @@ Current Plan: 01-05 (Dashboard shell + RLS isolation tests)
 
 _Use this section to log the last known state before ending a session, so the next session can resume without re-reading everything._
 
-Last session: 2026-05-04T10:44:00Z
-Stopped at: Completed 01-02-PLAN.md (Supabase schema + RLS migrations)
-Resume: Run Plan 03 — [BLOCKING] supabase db push + Supabase clients + AES-256-GCM + zod validations + DB types
+Last session: 2026-05-05T21:00:00Z
+Stopped at: Phase 1 complete — all 5 plans executed, code review fixed, human verification approved
+Resume: /gsd-discuss-phase 2 or /gsd-plan-phase 2 — Provisioning (Twilio + Retell per contractor)

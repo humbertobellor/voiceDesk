@@ -9,7 +9,7 @@
 
 ## Phases
 
-- [ ] **Phase 1: Foundation** - Supabase schema, RLS, auth, account creation, and multi-language agent configuration (English, Spanish, Haitian Creole)
+- [x] **Phase 1: Foundation** - Supabase schema, RLS, auth, account creation, and multi-language agent configuration (English, Spanish, Haitian Creole) ✓ 2026-05-05
 - [ ] **Phase 2: Provisioning** - Twilio number provisioning and Retell agent creation per contractor
 - [ ] **Phase 3: Webhook Core** - Retell webhook handler, call persistence, and intent classification
 - [ ] **Phase 4: Scheduling & Lead Capture** - Google Calendar OAuth, availability windows, appointment booking, and lead records
@@ -36,7 +36,7 @@
 - [x] 01-02-PLAN.md — SQL migrations: 9 tables + RLS enable + 33 policies + LANG-02 CHECK + D-16 idempotency key + D-17 token columns ✓ 2026-05-04
 - [x] 01-03-PLAN.md — [BLOCKING] supabase db push live + Supabase clients (server/browser/service) + AES-256-GCM utility + zod validations + database types ✓ 2026-05-04
 - [x] 01-04-PLAN.md — Auth flow: middleware + login/signup/callback + phone capture (D-02) + account creation API (contractors + contractor_settings + notification_settings) ✓ 2026-05-04
-- [x] 01-05-PLAN.md — Dashboard shell (Sidebar + SetupBanner + EmptyState + BottomTabBar + 6 page slots) + RLS isolation test seeded and passing live (D-18)
+- [x] 01-05-PLAN.md — Dashboard shell (Sidebar + SetupBanner + EmptyState + BottomTabBar + 6 page slots) + RLS isolation test seeded and passing live (D-18) ✓ 2026-05-04
 **UI hint:** yes
 **Notes:** Every subsequent phase depends on this schema being correct and RLS being airtight. Do not advance to Phase 2 until an unprivileged-user RLS test passes on every table. OAuth token encryption utility must be written here before any Google callback route. CRITICAL: Verify Retell's native support for Haitian Creole before Phase 2 begins — if not natively supported, a custom LLM endpoint with a Haitian Creole-capable model (e.g., GPT-4o with Creole prompting) may be required. South Florida market makes this non-optional.
 
@@ -141,7 +141,7 @@
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 2/5 | In Progress | - |
+| 1. Foundation | 5/5 | Complete | 2026-05-05 |
 | 2. Provisioning | 0/TBD | Not started | - |
 | 3. Webhook Core | 0/TBD | Not started | - |
 | 4. Scheduling & Lead Capture | 0/TBD | Not started | - |
