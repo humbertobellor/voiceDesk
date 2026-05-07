@@ -13,7 +13,7 @@ export async function updateLanguages(input: LanguageFormData): Promise<UpdateRe
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { ok: false, error: 'Not signed in.' }
 
-  // 2. Validate input against Plan 03 zod schema (LANG-02 floor: ['en'|'es'|'ht'][], min 1)
+  // 2. Validate input against zod schema (supported: ['en'|'es'], min 1; D-01 Phase 2 removes 'ht')
   const parsed = languageSchema.safeParse(input)
   if (!parsed.success) {
     return { ok: false, error: parsed.error.issues[0]?.message ?? 'Invalid language selection.' }

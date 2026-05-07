@@ -11,7 +11,6 @@ import type { Language } from '@/types/database'
 const ALL_LANGUAGES: { code: Language; label: string }[] = [
   { code: 'en', label: 'English' },
   { code: 'es', label: 'Spanish' },
-  { code: 'ht', label: 'Haitian Creole' },
 ]
 
 interface LanguageSettingsFormProps {

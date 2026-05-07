@@ -2,7 +2,7 @@
 // Hand-rolled types matching .planning/phases/01-foundation/01-RESEARCH.md Full Database Schema.
 // Future: replace with `supabase gen types typescript --linked > src/types/database.ts` output.
 
-export type Language = 'en' | 'es' | 'ht'
+export type Language = 'en' | 'es'
 export type SubscriptionStatus = 'trialing' | 'active' | 'past_due' | 'canceled'
 export type TradeType = 'hvac' | 'plumbing' | 'electrical' | 'multi'
 export type CallStatus = 'in_progress' | 'completed' | 'failed'
@@ -23,6 +23,8 @@ export interface Contractor {
   twilio_number: string | null
   twilio_number_sid: string | null
   retell_agent_id: string | null
+  retell_llm_id: string | null
+  agent_sync_status: 'synced' | 'failed' | 'pending' | null
   stripe_customer_id: string | null
   stripe_subscription_id: string | null
   subscription_status: SubscriptionStatus
@@ -51,7 +53,6 @@ export interface BusinessHours {
 export interface EmergencyKeywords {
   en: string[]
   es: string[]
-  ht: string[]
 }
 
 export interface ContractorSettings {

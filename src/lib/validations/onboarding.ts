@@ -26,10 +26,10 @@ export const phoneSchema = z.object({
 export type PhoneFormData = z.infer<typeof phoneSchema>
 
 // LANG-02: language selection in agent config settings
-// Supported languages: en (English), es (Spanish), ht (Haitian Creole)
+// D-01 Phase 2: HC removed. Supported languages: en (English), es (Spanish) only.
 export const languageSchema = z.object({
   supported_languages: z
-    .array(z.enum(['en', 'es', 'ht']))
+    .array(z.enum(['en', 'es']))
     .min(1, 'At least one language must be selected.'),
 })
 export type LanguageFormData = z.infer<typeof languageSchema>

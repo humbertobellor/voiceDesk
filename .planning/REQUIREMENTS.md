@@ -90,7 +90,7 @@ Explicit exclusions — not deferred, not planned:
 | REQ-ID | Phase | Status |
 |--------|-------|--------|
 | LANG-01 | Phase 1 — Foundation (schema); Phase 2–3 (runtime) | Partial — schema done |
-| LANG-02 | Phase 1 — Foundation | Validated 2026-05-05 |
+| LANG-02 | Phase 1 — Foundation | Out of Scope (D-01 Phase 2 — HC removed from product) |
 | CALL-01 | Phase 3 — Webhook Core | Pending |
 | CALL-02 | Phase 3 — Webhook Core | Pending |
 | CALL-03 | Phase 3 — Webhook Core | Pending |
