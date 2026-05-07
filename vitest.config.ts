@@ -16,6 +16,11 @@ export default defineConfig({
     exclude: ['tests/**/*.spec.ts', 'node_modules/**'],
   },
   resolve: {
-    alias: { '@': path.resolve(__dirname, './src') },
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+      // Shim 'server-only' so server-side modules can be unit tested.
+      // The real package throws in non-Next.js environments (e.g., Vitest jsdom/node).
+      'server-only': path.resolve(__dirname, './tests/__mocks__/server-only.ts'),
+    },
   },
 })
