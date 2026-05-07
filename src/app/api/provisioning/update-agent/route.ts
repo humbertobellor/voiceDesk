@@ -39,7 +39,12 @@ export async function PATCH(_req: Request) {
     return NextResponse.json({ error: 'Contractor not provisioned.' }, { status: 404 })
   }
 
-  const settings = (contractor.contractor_settings as unknown[])[0] as Parameters<typeof buildSystemPrompt>[0]
+  // Supabase returns one-to-one FK joins as a single object (not an array).
+  const settings = contractor.contractor_settings as Parameters<typeof buildSystemPrompt>[0] | null
+  if (!settings) {
+    console.error('[provisioning/update-agent] contractor_settings missing for contractor:', contractor.id)
+    return NextResponse.json({ error: 'Contractor settings not configured.' }, { status: 422 })
+  }
 
   // 3. Set agent_sync_status to 'pending' BEFORE Retell call (D-12 key link: pending must precede Retell)
   await serviceClient

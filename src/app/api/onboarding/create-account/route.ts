@@ -47,6 +47,15 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Failed to update account.' }, { status: 500 })
     }
     contractor_id = existing.id
+
+    // Ensure contractor_settings exists (upsert guards against missing row on re-submission)
+    const { error: sUpsertErr } = await serviceClient
+      .from('contractor_settings')
+      .upsert({ contractor_id, business_name: body.data.business_name }, { onConflict: 'contractor_id' })
+    if (sUpsertErr) {
+      console.error('[create-account] contractor_settings upsert failed:', sUpsertErr.message)
+      return NextResponse.json({ error: 'Failed to update account settings.' }, { status: 500 })
+    }
   } else {
     // 5. Insert contractors row
     const { data: contractor, error: cErr } = await serviceClient

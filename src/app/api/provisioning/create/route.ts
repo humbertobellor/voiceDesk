@@ -50,7 +50,8 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Already provisioned.' }, { status: 409 })
   }
 
-  const settings = (contractor.contractor_settings as unknown[])[0] as {
+  // Supabase returns one-to-one FK joins as a single object (not an array).
+  const settings = contractor.contractor_settings as {
     business_name: string
     trade_type: string
     service_area: string
@@ -58,6 +59,10 @@ export async function POST(req: Request) {
     emergency_keywords: { en: string[]; es: string[] }
     after_hours_message: string
     agent_voice: string
+  } | null
+  if (!settings) {
+    console.error('[provisioning/create] contractor_settings missing for contractor:', contractor.id)
+    return NextResponse.json({ error: 'Contractor settings not configured. Please complete onboarding.' }, { status: 422 })
   }
 
   const retell = getRetellClient()
@@ -89,6 +94,9 @@ export async function POST(req: Request) {
     }) as { agent_id: string }
   } catch (err) {
     console.error('[provisioning/create] agent.create failed:', err instanceof Error ? err.message : err)
+    try { await retell.llm.delete(llm.llm_id) } catch (cleanupErr) {
+      console.error('[provisioning/create] ORPHANED LLM — llm_id:', llm.llm_id, '— manual cleanup required')
+    }
     return NextResponse.json({ error: 'Failed to create AI agent. Please try again.' }, { status: 500 })
   }
 
@@ -101,7 +109,21 @@ export async function POST(req: Request) {
       nickname: settings.business_name,
     }) as { phone_number: string }
   } catch (err) {
-    console.error('[provisioning/create] phoneNumber.create failed:', err instanceof Error ? err.message : err)
+    const retellMsg = (err as { error?: { message?: string } }).error?.message ?? ''
+    console.error('[provisioning/create] phoneNumber.create failed:', retellMsg || (err instanceof Error ? err.message : err))
+    // Best-effort cleanup of already-created Retell resources
+    try {
+      await retell.agent.delete(agent.agent_id)
+      await retell.llm.delete(llm.llm_id)
+    } catch (cleanupErr) {
+      console.error('[provisioning/create] ORPHANED Retell resources — agent_id:', agent.agent_id, 'llm_id:', llm.llm_id, '— manual cleanup required')
+    }
+    if (retellMsg.toLowerCase().includes('card') || retellMsg.toLowerCase().includes('payment')) {
+      return NextResponse.json({ error: 'Retell account requires a payment method. Add a card at retell.ai/dashboard/billing.' }, { status: 402 })
+    }
+    if (retellMsg.toLowerCase().includes('kyc')) {
+      return NextResponse.json({ error: 'Retell account requires identity verification (KYC). Purchase a number manually in the Retell dashboard first.' }, { status: 402 })
+    }
     return NextResponse.json(
       { error: `No numbers available in area code ${body.data.area_code}. Try: 786, 954, or 561.` },
       { status: 422 }
