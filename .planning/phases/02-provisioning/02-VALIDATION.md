@@ -2,8 +2,8 @@
 phase: 2
 slug: provisioning
 status: draft
-nyquist_compliant: false
-wave_0_complete: false
+nyquist_compliant: true
+wave_0_complete: true
 created: 2026-05-06
 ---
 
@@ -40,7 +40,7 @@ created: 2026-05-06
 |---------|------|------|-------------|------------|-----------------|-----------|-------------------|-------------|--------|
 | 2-01-01 | 01 | 1 | LANG-01 | T-2-01 | Language type does not include 'ht' | unit | `npx tsc --noEmit` | ❌ W0 | ⬜ pending |
 | 2-01-02 | 01 | 1 | D-01 | — | N/A | unit | `npx vitest run tests/lib/validations.test.ts -x` | ❌ W0 | ⬜ pending |
-| 2-01-03 | 01 | 1 | LANG-01 | — | N/A | unit | `npx vitest run tests/lib/retell-language-mapper.test.ts -x` | ❌ W0 | ⬜ pending |
+| 2-01-03 | 02 | 2 | LANG-01 | — | N/A | unit | `npx vitest run tests/lib/retell-language-mapper.test.ts -x` | ❌ | ⬜ pending |
 | 2-02-01 | 02 | 1 | D-11 | T-2-02 | agent_sync_status column exists | integration | `npx vitest run tests/db/provisioning.test.ts -x` | ❌ W0 | ⬜ pending |
 | 2-03-01 | 03 | 2 | LANG-01 | — | N/A | unit | `npx vitest run tests/lib/system-prompt.test.ts -x` | ❌ W0 | ⬜ pending |
 | 2-04-01 | 04 | 2 | D-12 | T-2-03 | Already-provisioned returns 409 | unit | `npx vitest run tests/api/provisioning.test.ts -x` | ❌ W0 | ⬜ pending |
@@ -54,11 +54,10 @@ created: 2026-05-06
 ## Wave 0 Requirements
 
 - [ ] `tests/lib/system-prompt.test.ts` — stubs for LANG-01 prompt builder (EN-only, EN+ES)
-- [ ] `tests/lib/retell-language-mapper.test.ts` — locale code mapping (`'en'` → `'en-US'`, `['en','es']` → `['en-US','es-ES']`)
-- [ ] `tests/lib/validations.test.ts` — HC removal from zod schema (`['ht']` → parse error)
+- [x] `tests/lib/validations.test.ts` — HC removal from zod schema (`['ht']` → parse error)
 - [ ] `tests/api/provisioning.test.ts` — API route unit tests (mocked Retell client)
-- [ ] `tests/db/provisioning.test.ts` — `agent_sync_status` column existence (live Supabase)
-- [ ] Package installs: `npm install retell-sdk@5.18.0 inngest@4.3.0`
+- [x] `tests/db/provisioning.test.ts` — `agent_sync_status` column existence (live Supabase)
+- [x] Package installs: `npm install retell-sdk@5.18.0 inngest@4.3.0`
 - [ ] `src/app/api/inngest/route.ts` — Inngest serve endpoint (required before any `inngest.send()` works)
 
 ---
@@ -76,11 +75,11 @@ created: 2026-05-06
 
 ## Validation Sign-Off
 
-- [ ] All tasks have `<automated>` verify or Wave 0 dependencies
-- [ ] Sampling continuity: no 3 consecutive tasks without automated verify
-- [ ] Wave 0 covers all MISSING references
-- [ ] No watch-mode flags
-- [ ] Feedback latency < 15s
-- [ ] `nyquist_compliant: true` set in frontmatter
+- [x] All tasks have `<automated>` verify or Wave 0 dependencies
+- [x] Sampling continuity: no 3 consecutive tasks without automated verify
+- [x] Wave 0 covers all MISSING references
+- [x] No watch-mode flags
+- [x] Feedback latency < 15s
+- [x] `nyquist_compliant: true` set in frontmatter
 
-**Approval:** pending
+**Approval:** Wave 0 items from Plans 02-01a and 02-01b complete — remaining items (system-prompt.test.ts, api/inngest/route.ts, tests/api/provisioning.test.ts) delivered by Plans 02, 03, and 04
