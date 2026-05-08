@@ -11,7 +11,7 @@
 
 - [x] **Phase 1: Foundation** - Supabase schema, RLS, auth, account creation, and multi-language agent configuration (English, Spanish, Haitian Creole) ✓ 2026-05-05
 - [ ] **Phase 2: Provisioning** - Twilio number provisioning and Retell agent creation per contractor
-- [ ] **Phase 3: Webhook Core** - Retell webhook handler, call persistence, and intent classification
+- [x] **Phase 3: Webhook Core** - Retell webhook handler, call persistence, and intent classification ✓ 2026-05-08
 - [ ] **Phase 4: Scheduling & Lead Capture** - Google Calendar OAuth, availability windows, appointment booking, and lead records
 - [ ] **Phase 5: Notifications** - SMS, WhatsApp, and Telegram multi-channel dispatch for all call outcomes
 - [ ] **Phase 6: Portal UI** - Contractor dashboard: call log, recordings, lead list, agent configuration, real-time updates
@@ -85,10 +85,10 @@
   4. After-hours calls (outside contractor-configured windows) produce a `calls` row with `is_after_hours: true` and use the after-hours script branch
   5. A duplicate webhook delivery for the same call produces exactly one `calls` row — idempotency table prevents duplicates
 **Plans:** 4 plans
-- [ ] 03-01-PLAN.md — npm install (openai, date-fns-tz) + migration SQL (analysis_status + notify_on_general_inquiry) + [BLOCKING] supabase db push + test stubs (webhook, classification, after-hours)
-- [ ] 03-02-PLAN.md — Foundation libs: webhook-types.ts + openai/client.ts + emergency-keywords.ts + after-hours/detect.ts *(blocked on 03-01)*
-- [ ] 03-03-PLAN.md — Classification services (classify-intent + extract-trade) + webhook route.ts + handlers.ts (processCallEnded + processCallAnalyzed) *(blocked on 03-02)*
-- [ ] 03-04-PLAN.md — Inngest retell-call-classify function + retell-analysis-timeout cron + register both in /api/inngest route *(blocked on 03-03)*
+- [x] 03-01-PLAN.md — npm install (openai, date-fns-tz) + migration SQL (analysis_status + notify_on_general_inquiry) + [BLOCKING] supabase db push + test stubs (webhook, classification, after-hours)
+- [x] 03-02-PLAN.md — Foundation libs: webhook-types.ts + openai/client.ts + emergency-keywords.ts + after-hours/detect.ts ✓ 2026-05-08
+- [x] 03-03-PLAN.md — Classification services (classify-intent + extract-trade) + webhook route.ts + handlers.ts (processCallEnded + processCallAnalyzed) ✓ 2026-05-08
+- [x] 03-04-PLAN.md — Inngest retell-call-classify function + retell-analysis-timeout cron + register both in /api/inngest route ✓ 2026-05-08
 
 **Wave dependency notes:**
 - **Wave 1** (`03-01`): no dependencies — installs packages, writes migration SQL, runs db push, creates test stubs
@@ -182,7 +182,7 @@
 |-------|----------------|--------|-----------|
 | 1. Foundation | 5/5 | Complete | 2026-05-05 |
 | 2. Provisioning | 0/TBD | Not started | - |
-| 3. Webhook Core | 0/4 | Planned | - |
+| 3. Webhook Core | 4/4 | Complete | 2026-05-08 |
 | 4. Scheduling & Lead Capture | 0/TBD | Not started | - |
 | 5. Notifications | 0/TBD | Not started | - |
 | 6. Portal UI | 0/TBD | Not started | - |
