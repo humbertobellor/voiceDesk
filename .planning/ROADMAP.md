@@ -84,9 +84,31 @@
   3. Other emergency keywords trigger a clarifying question ("Is this happening right now?") before classifying as emergency; a caller who says "no" is classified as a lead, not an emergency
   4. After-hours calls (outside contractor-configured windows) produce a `calls` row with `is_after_hours: true` and use the after-hours script branch
   5. A duplicate webhook delivery for the same call produces exactly one `calls` row — idempotency table prevents duplicates
-**Plans:** TBD
+**Plans:** 4 plans
+- [ ] 03-01-PLAN.md — npm install (openai, date-fns-tz) + migration SQL (analysis_status + notify_on_general_inquiry) + [BLOCKING] supabase db push + test stubs (webhook, classification, after-hours)
+- [ ] 03-02-PLAN.md — Foundation libs: webhook-types.ts + openai/client.ts + emergency-keywords.ts + after-hours/detect.ts *(blocked on 03-01)*
+- [ ] 03-03-PLAN.md — Classification services (classify-intent + extract-trade) + webhook route.ts + handlers.ts (processCallEnded + processCallAnalyzed) *(blocked on 03-02)*
+- [ ] 03-04-PLAN.md — Inngest retell-call-classify function + retell-analysis-timeout cron + register both in /api/inngest route *(blocked on 03-03)*
+
+**Wave dependency notes:**
+- **Wave 1** (`03-01`): no dependencies — installs packages, writes migration SQL, runs db push, creates test stubs
+- **Wave 2** (`03-02`): blocked on 03-01 — all foundation lib modules (parallel within plan)
+- **Wave 3** (`03-03`): blocked on 03-02 — classification services + webhook route + handlers
+- **Wave 4** (`03-04`): blocked on 03-03 — Inngest functions + route registration + full test suite green
+
+**Cross-cutting constraints:**
+- `import 'server-only'` required in all new lib and Inngest modules
+- `createServiceRoleClient()` only in webhook route and Inngest functions — never in client components
+- OPENAI_API_KEY never prefixed with NEXT_PUBLIC_
+- contractor_id is NEVER accepted from webhook payload — always derived from agent_id lookup (T-03-02)
+- `req.text()` called BEFORE `req.json()` in webhook route — `verify()` needs raw string body
+- `after()` from `next/server` (NOT `@vercel/functions`) — export `maxDuration = 30` on route file
+- `call_analysis.call_summary` is the summary field (NOT `call.summary`)
+- `transcript_object` (array) stored in `calls.transcript` JSONB (NOT the `transcript` string)
+- `duration_ms` is milliseconds — divide by 1000 for `calls.duration_seconds`
+
 **UI hint:** no
-**Notes:** Webhook handler must return HTTP 200 within 10 seconds — all downstream processing runs inside Vercel `waitUntil()`. Verify Retell webhook signature header name and `call_ended` vs `call_analyzed` event timing against live Retell docs before writing a single line of handler logic. `call_analyzed` is the canonical source for transcript and summary (fires 1–3 min after call end).
+**Notes:** Webhook handler must return HTTP 200 within 10 seconds — all downstream processing runs inside `after()` from `next/server`. `call_analyzed` is the canonical source for transcript and summary (fires 1–3 min after call end). Hard-coded emergency keywords (gas smell, CO alarm) checked before any LLM call — EMRG-02 compliance. UPSERT on `calls.retell_call_id` provides idempotency — D-05.
 
 ---
 
@@ -160,7 +182,7 @@
 |-------|----------------|--------|-----------|
 | 1. Foundation | 5/5 | Complete | 2026-05-05 |
 | 2. Provisioning | 0/TBD | Not started | - |
-| 3. Webhook Core | 0/TBD | Not started | - |
+| 3. Webhook Core | 0/4 | Planned | - |
 | 4. Scheduling & Lead Capture | 0/TBD | Not started | - |
 | 5. Notifications | 0/TBD | Not started | - |
 | 6. Portal UI | 0/TBD | Not started | - |
