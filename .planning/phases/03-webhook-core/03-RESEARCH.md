@@ -859,7 +859,7 @@ Relevant existing runtime state that Phase 3 reads (but does not change):
 
 ---
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **`maxDuration` for the webhook route**
    - What we know: Vercel Pro allows up to 300s maxDuration for Node.js functions; `after()` inherits the same budget.

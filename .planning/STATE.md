@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: — Revenue-Ready MVP
 current_plan: —
-status: Complete
-stopped_at: Phase 2 complete — all plans done, UAT passed, ready for Phase 3
-last_updated: "2026-05-06T20:40:00.000Z"
+status: Ready to execute
+stopped_at: Phase 3 planned — 4 plans in 4 waves, verification passed, ready to execute
+last_updated: "2026-05-08T00:00:00.000Z"
 progress:
   total_phases: 7
   completed_phases: 2
-  total_plans: 10
+  total_plans: 14
   completed_plans: 5
   percent: 14
 ---
@@ -26,9 +26,9 @@ See: .planning/PROJECT.md (updated 2026-05-03)
 
 ## Current Phase
 
-Phase: 2 — Provisioning
-Status: Verifying
-Started: 2026-05-06
+Phase: 3 — Webhook Core
+Status: Ready to execute
+Started: 2026-05-08
 Target: —
 
 Current Plan: —
@@ -96,13 +96,24 @@ Current Plan: —
 - Storage: Supabase Storage (private bucket, 60-second TTL signed URLs for recordings)
 - Auth: Supabase Auth (`@supabase/ssr`), service role key server-only
 
-### Open Questions (from research)
+### Key Decisions Locked (Phase 3 additions)
 
-- Retell webhook retry policy — exact retry window and backoff (verify live docs)
-- `call_analyzed` vs `call_ended` — confirm which carries full transcript
-- Google OAuth scope — `calendar.events` + `calendar.freebusy` vs narrower scope
-- Intent classification model — GPT-4o-mini vs GPT-4o for turn latency (benchmark before Phase 3)
-- Recording retention window — 90 days vs 1 year (unit economics at 30 contractors × 50 calls/month ≈ 6GB/month)
+- `after()` from `next/server` replaces `waitUntil()` from `@vercel/functions` — canonical for Next.js 15.1+; `@vercel/functions` not installed
+- Retell webhook signature: `import { verify } from 'retell-sdk'` (named export, async); header `x-retell-signature`; `req.text()` must precede `req.json()`
+- Retell payload: summary is `call_analysis.call_summary`; duration is `duration_ms` (ms); transcript array is `transcript_object`
+- Retell delivery: 10s timeout per attempt, up to 3 retries (4 total); `call_analyzed` can arrive before `call_ended` — UPSERT handles race
+- Intent classification: GPT-4o-mini (classification) → GPT-4o (trade extraction); `zodResponseFormat` from `openai/helpers/zod` for structured output
+- Hard emergency keywords (gas smell, CO alarm) are TypeScript constants — checked before any LLM call; cannot be overridden
+- `export const maxDuration = 30` on webhook route file (Vercel segment config)
+- contractor lookup uses `agent_id` from payload — never `contractor_id` from payload (security: T-03-02)
+- `openai` and `date-fns-tz` not yet installed — Wave 0 must install before handler code
+
+### Open Questions (from research — RESOLVED for Phase 3)
+
+- ~~Retell webhook retry policy~~ → 10s timeout, 3 retries (4 total attempts); confirmed from live docs
+- ~~`call_analyzed` vs `call_ended` timing~~ → `call_analyzed` carries full transcript; fires 1–3 min after call end
+- Google OAuth scope — `calendar.events` + `calendar.freebusy` vs narrower scope (Phase 4)
+- Recording retention window — 90 days vs 1 year (Phase 6 decision)
 - WhatsApp opt-in consent wording — may need legal review before Wefunder/Republic raise
 
 ---
@@ -112,5 +123,5 @@ Current Plan: —
 _Use this section to log the last known state before ending a session, so the next session can resume without re-reading everything._
 
 Last session: 2026-05-08T00:00:00Z
-Stopped at: Phase 3 context gathered — CONTEXT.md written, all decisions locked
-Resume: /gsd-plan-phase 3 — Webhook Core ready to plan
+Stopped at: Phase 3 planned — 4 plans, 4 waves, verification passed
+Resume: /gsd-execute-phase 3 — Webhook Core ready to execute
