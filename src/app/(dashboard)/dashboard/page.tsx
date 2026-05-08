@@ -39,7 +39,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
             ? 'Calendar connection failed: security check failed. Please try again.'
             : calendarError === 'missing_tokens'
               ? 'Calendar connection failed: authorization was incomplete. Please reconnect and allow all permissions.'
-              : `Calendar connection failed: ${calendarError}. Please try again.`}
+              : 'Calendar connection failed. Please try again.'}
         </div>
       )}
       <EmptyState
