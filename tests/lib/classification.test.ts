@@ -6,25 +6,27 @@ import { describe, it, expect, vi } from 'vitest'
 vi.mock('server-only', () => ({}))
 vi.mock('openai')
 
+import { hasHardEmergencyKeyword } from '@/lib/classification/emergency-keywords'
+
 describe('hasHardEmergencyKeyword (EMRG-02)', () => {
   it('returns true for "gas smell" in English', async () => {
-    throw new Error('not yet implemented')
+    expect(hasHardEmergencyKeyword('gas smell detected in the house')).toBe(true)
   })
 
   it('returns true for "co alarm" in English', async () => {
-    throw new Error('not yet implemented')
+    expect(hasHardEmergencyKeyword('CO alarm going off')).toBe(true)
   })
 
   it('returns true for "olor a gas" in Spanish', async () => {
-    throw new Error('not yet implemented')
+    expect(hasHardEmergencyKeyword('olor a gas en la cocina')).toBe(true)
   })
 
   it('returns true for "alarma de co" in Spanish', async () => {
-    throw new Error('not yet implemented')
+    expect(hasHardEmergencyKeyword('alarma de co activada')).toBe(true)
   })
 
   it('returns false for non-hard-coded keyword "no heat" (EMRG-01 — must go to LLM)', async () => {
-    throw new Error('not yet implemented')
+    expect(hasHardEmergencyKeyword('no heat in the house')).toBe(false)
   })
 })
 
