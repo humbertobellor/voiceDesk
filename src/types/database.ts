@@ -105,6 +105,7 @@ export interface Lead {
   preferred_time: string | null
   notes: string | null
   status: LeadStatus
+  booking_conflict: boolean
   created_at: string
   updated_at: string
 }
@@ -121,6 +122,7 @@ export interface Appointment {
   service_address: string | null
   notes: string | null
   status: AppointmentStatus
+  google_sync_status: 'pending' | 'synced' | 'failed' | 'skipped'
   created_at: string
 }
 
