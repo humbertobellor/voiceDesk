@@ -116,5 +116,187 @@ export const retellCallClassify = inngest.createFunction(
         throw new Error(error.message)
       }
     })
+
+    // Step 5: Create lead record (D-12)
+    // shouldCreate: lead/emergency always; info only if call >= 15s; no_action → null (no DB write)
+    const lead = await step.run('create-lead', async () => {
+      const shouldCreate =
+        finalIntent === 'lead' ||
+        finalIntent === 'emergency' ||
+        (finalIntent === 'info' && (durationMs ?? 0) >= 15000)
+
+      if (!shouldCreate) return null
+
+      const db = createServiceRoleClient()
+      const hasAppointment = !!(tradeData as { confirmed_appointment_time?: string | null })?.confirmed_appointment_time
+
+      // Load caller details from calls row (set during Phase 3 webhook handler)
+      const { data: callRow } = await db
+        .from('calls')
+        .select('caller_name, caller_phone')
+        .eq('id', callId)
+        .maybeSingle()
+
+      const { data, error } = await db.from('leads').insert({
+        contractor_id: contractorId,
+        call_id: callId,
+        caller_name: callRow?.caller_name ?? null,
+        caller_phone: callRow?.caller_phone ?? '',
+        service_requested: (tradeData as { issue_description?: string | null; repair_type?: string | null })?.issue_description
+          ?? (tradeData as { repair_type?: string | null })?.repair_type
+          ?? null,
+        urgency: (tradeData as { urgency?: string })?.urgency ?? 'normal',
+        status: hasAppointment ? 'booked' : 'new',
+        notes: (tradeData as { service_address?: string | null })?.service_address
+          ? `Service address: ${(tradeData as { service_address?: string | null }).service_address}`
+          : null,
+      }).select('id').maybeSingle()
+
+      if (error) {
+        console.error('[retell-call-classify] create-lead failed:', error.message)
+        throw new Error(error.message)
+      }
+      return data
+    })
+
+    // Step 6: Create appointment record (D-09, D-10)
+    // Only runs when confirmed_appointment_time was extracted (SCHED-03)
+    const appointment = await step.run('create-appointment', async () => {
+      const rawTime = (tradeData as { confirmed_appointment_time?: string | null })?.confirmed_appointment_time
+      if (!rawTime) return null
+
+      // Risk 4: Strip trailing 'Z' — treat extracted time as contractor local time, not UTC
+      const localStr = rawTime.replace(/Z$/, '')
+      if (isNaN(Date.parse(localStr))) {
+        console.warn('[retell-call-classify] create-appointment: invalid confirmed_appointment_time from LLM:', rawTime)
+        return null
+      }
+
+      // Convert contractor-local datetime to UTC for DB storage
+      const startsAt = fromZonedTime(new Date(localStr), contractorTimezone)
+      const durationMin = (settings as ContractorSettings | null)?.appointment_duration_minutes ?? 120
+      const endsAt = addMinutes(startsAt, durationMin)
+
+      const db = createServiceRoleClient()
+      const { data, error } = await db.from('appointments').insert({
+        contractor_id: contractorId,
+        lead_id: lead?.id ?? null,
+        call_id: callId,
+        starts_at: startsAt.toISOString(),
+        ends_at: endsAt.toISOString(),
+        service_address: (tradeData as { service_address?: string | null })?.service_address ?? null,
+        google_sync_status: 'pending',
+      }).select('id, starts_at, ends_at').maybeSingle()
+
+      if (error) {
+        if (error.code === '23505') {
+          // D-10: UNIQUE(contractor_id, starts_at) violated — slot already taken by another call.
+          // Mark the LEAD as booking_conflict=true (NOT appointments — UNIQUE prevents a second row).
+          // Contractor sees this lead in Phase 6 portal and calls back the customer.
+          console.warn('[retell-call-classify] create-appointment: booking conflict for slot', localStr)
+          if (lead?.id) {
+            await db.from('leads')
+              .update({ booking_conflict: true, status: 'new' })
+              .eq('id', lead.id)
+          }
+          return null
+        }
+        console.error('[retell-call-classify] create-appointment failed:', error.message)
+        throw new Error(error.message)
+      }
+      return data
+    })
+
+    // Step 7: Create Google Calendar event (D-13, D-14, D-15)
+    await step.run('create-calendar-event', async () => {
+      if (!appointment) return  // No appointment (null confirmed_appointment_time or booking conflict)
+
+      const calendarClient = await getCalendarClient(contractorId)
+      const db = createServiceRoleClient()
+
+      if (!calendarClient) {
+        // D-15: No calendar connected — set status to skipped and continue
+        await db.from('appointments')
+          .update({ google_sync_status: 'skipped' })
+          .eq('id', appointment.id)
+        return
+      }
+
+      const serviceAddr = (tradeData as { service_address?: string | null })?.service_address ?? 'TBD'
+      const businessName = (settings as ContractorSettings | null)?.business_name ?? 'Contractor'
+
+      // Load lead for caller details
+      const { data: leadRow } = lead?.id
+        ? await db.from('leads').select('caller_name, caller_phone, service_requested').eq('id', lead.id).maybeSingle()
+        : { data: null }
+
+      try {
+        const response = await calendarClient.events.insert({
+          calendarId: 'primary',
+          sendUpdates: 'none',  // D: Do NOT email attendees — prevents attendee spoofing (T-04-05-05)
+          requestBody: {
+            summary: `${businessName} — Estimate`,
+            description: [
+              `Caller: ${leadRow?.caller_name ?? 'Unknown'} (${leadRow?.caller_phone ?? ''})`,
+              `Service: ${leadRow?.service_requested ?? 'General'}`,
+              `Address: ${serviceAddr}`,
+              `Booked via VoiceDesk`,
+            ].join('\n'),
+            start: {
+              dateTime: appointment.starts_at,
+              timeZone: contractorTimezone,
+            },
+            end: {
+              dateTime: appointment.ends_at,
+              timeZone: contractorTimezone,
+            },
+          },
+        })
+
+        // D-14: Update appointment with google_event_id and synced status
+        await db.from('appointments').update({
+          google_event_id: response.data.id ?? null,
+          google_sync_status: 'synced',
+        }).eq('id', appointment.id)
+      } catch (err: unknown) {
+        console.error('[retell-call-classify] create-calendar-event failed:', err instanceof Error ? err.message : err)
+        // Re-throw so Inngest retries (up to 5 times via function-level retries setting)
+        throw err
+      }
+    })
+
+    // Step 8a: Compute updated slot list for system prompt rebuild (memoized DB query)
+    const syncPayload = await step.run('compute-sync-payload', async () => {
+      if (!settings || !contractor.retell_llm_id) return null
+
+      // Load existing appointments to compute fresh available slots
+      const db = createServiceRoleClient()
+      const { data: existingAppts } = await db
+        .from('appointments')
+        .select('starts_at')
+        .eq('contractor_id', contractorId)
+      const existingStarts = (existingAppts ?? []).map(a => new Date(a.starts_at))
+      const updatedSlots = computeAvailableSlots({
+        businessHours: (settings as ContractorSettings).business_hours,
+        appointmentDurationMinutes: (settings as ContractorSettings).appointment_duration_minutes ?? 120,
+        existingStarts,
+        timezone: contractorTimezone,
+      })
+
+      return {
+        contractorId,
+        llmId: contractor.retell_llm_id,
+        compiledPrompt: buildSystemPrompt(settings as ContractorSettings, updatedSlots),
+        beginMessage: buildBeginMessage(settings as ContractorSettings),
+      }
+    })
+
+    // Step 8b: Trigger system prompt rebuild (D-08) — step.sendEvent is memoized on retry
+    if (syncPayload) {
+      await step.sendEvent('trigger-agent-sync', {
+        name: 'retell/agent.sync',
+        data: syncPayload,
+      })
+    }
   }
 )

@@ -41,6 +41,7 @@ export interface BusinessHoursDay {
 }
 
 export interface BusinessHours {
+  [day: string]: BusinessHoursDay
   monday: BusinessHoursDay
   tuesday: BusinessHoursDay
   wednesday: BusinessHoursDay
@@ -63,6 +64,7 @@ export interface ContractorSettings {
   service_area: string
   supported_languages: Language[]
   business_hours: BusinessHours
+  appointment_duration_minutes: number
   emergency_keywords: EmergencyKeywords
   after_hours_message: string
   agent_voice: string

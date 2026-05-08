@@ -13,6 +13,7 @@ const baseSettings: ContractorSettings = {
   service_area: 'Miami-Dade County',
   supported_languages: ['en'],
   business_hours: {} as ContractorSettings['business_hours'],
+  appointment_duration_minutes: 120,
   emergency_keywords: { en: ['gas smell', 'no heat'], es: ['olor a gas'] },
   after_hours_message: 'We are currently closed.',
   agent_voice: 'elevenlabs-myra',
