@@ -1,6 +1,7 @@
 // tests/lib/classification.test.ts
 // Covers: EMRG-01 (non-hard-coded emergency keywords pass to LLM), EMRG-02 (gas/CO always emergency),
-//         CALL-02 (LLM classification returns valid enum), CALL-03 (trade-specific extraction)
+//         CALL-02 (LLM classification returns valid enum), CALL-03 (trade-specific extraction),
+//         D-11 (confirmed_appointment_time + service_address in all four schemas)
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 
 vi.mock('server-only', () => ({}))
@@ -181,5 +182,162 @@ describe('extractTradeData (CALL-03)', () => {
 
     expect(result).toBeNull()
     expect(mockParse).not.toHaveBeenCalled()
+  })
+})
+
+// D-11: Phase 4 schema extension — confirmed_appointment_time + service_address in all four schemas
+describe('extractTradeData D-11 schema extension', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+    process.env.OPENAI_API_KEY = 'test-key'
+  })
+
+  it('hvac schema includes confirmed_appointment_time when LLM returns it', async () => {
+    mockParse.mockResolvedValueOnce({
+      choices: [
+        {
+          message: {
+            parsed: {
+              system_age: '5 years',
+              issue_type: 'cooling',
+              urgency: 'normal',
+              confirmed_appointment_time: '2026-05-12T10:00:00',
+              service_address: '123 Main St, Miami FL',
+            },
+          },
+        },
+      ],
+    })
+
+    const { extractTradeData } = await import('@/lib/classification/extract-trade')
+    const result = await extractTradeData('AC service scheduled for Tuesday at 10am at 123 Main St', 'hvac')
+
+    expect(result).not.toBeNull()
+    expect(result).toMatchObject({
+      confirmed_appointment_time: '2026-05-12T10:00:00',
+      service_address: '123 Main St, Miami FL',
+    })
+  })
+
+  it('hvac schema returns null for confirmed_appointment_time when no appointment confirmed', async () => {
+    mockParse.mockResolvedValueOnce({
+      choices: [
+        {
+          message: {
+            parsed: {
+              system_age: null,
+              issue_type: 'cooling',
+              urgency: 'urgent',
+              confirmed_appointment_time: null,
+              service_address: null,
+            },
+          },
+        },
+      ],
+    })
+
+    const { extractTradeData } = await import('@/lib/classification/extract-trade')
+    const result = await extractTradeData('AC not working, need someone ASAP', 'hvac')
+
+    expect(result).not.toBeNull()
+    expect(result).toMatchObject({ confirmed_appointment_time: null, service_address: null })
+  })
+
+  it('plumbing schema includes confirmed_appointment_time and service_address (D-11)', async () => {
+    mockParse.mockResolvedValueOnce({
+      choices: [
+        {
+          message: {
+            parsed: {
+              leak_type: 'slow',
+              repair_type: null,
+              urgency: 'normal',
+              confirmed_appointment_time: '2026-05-14T09:00:00',
+              service_address: '456 Oak Ave, Fort Lauderdale',
+            },
+          },
+        },
+      ],
+    })
+
+    const { extractTradeData } = await import('@/lib/classification/extract-trade')
+    const result = await extractTradeData('Slow leak booked for Thursday 9am', 'plumbing')
+
+    expect(result).not.toBeNull()
+    expect(result).toMatchObject({
+      confirmed_appointment_time: '2026-05-14T09:00:00',
+      service_address: '456 Oak Ave, Fort Lauderdale',
+    })
+  })
+
+  it('electrical schema includes confirmed_appointment_time and service_address (D-11)', async () => {
+    mockParse.mockResolvedValueOnce({
+      choices: [
+        {
+          message: {
+            parsed: {
+              safety_issue: false,
+              repair_type: 'outlet',
+              urgency: 'normal',
+              confirmed_appointment_time: '2026-05-15T14:00:00',
+              service_address: null,
+            },
+          },
+        },
+      ],
+    })
+
+    const { extractTradeData } = await import('@/lib/classification/extract-trade')
+    const result = await extractTradeData('Outlet repair booked for Friday 2pm, no address given', 'electrical')
+
+    expect(result).not.toBeNull()
+    expect(result).toMatchObject({
+      confirmed_appointment_time: '2026-05-15T14:00:00',
+      service_address: null,
+    })
+  })
+
+  it('general schema includes confirmed_appointment_time and service_address (D-11)', async () => {
+    mockParse.mockResolvedValueOnce({
+      choices: [
+        {
+          message: {
+            parsed: {
+              issue_description: 'general repair',
+              urgency: 'normal',
+              confirmed_appointment_time: '2026-05-13T11:00:00',
+              service_address: '789 Pine Rd, Hialeah FL',
+            },
+          },
+        },
+      ],
+    })
+
+    const { extractTradeData } = await import('@/lib/classification/extract-trade')
+    const result = await extractTradeData('General repair booked for Wednesday at 11am', undefined)
+
+    expect(result).not.toBeNull()
+    expect(result).toMatchObject({
+      confirmed_appointment_time: '2026-05-13T11:00:00',
+      service_address: '789 Pine Rd, Hialeah FL',
+    })
+  })
+
+  it('buildExtractionPrompt includes ISO format instructions for confirmed_appointment_time (D-11)', async () => {
+    // The prompt must instruct the LLM to use YYYY-MM-DDTHH:MM:SS without timezone suffix
+    // and to return null when no appointment was confirmed.
+    // We verify this by checking what is passed to mockParse.
+    mockParse.mockResolvedValueOnce({
+      choices: [{ message: { parsed: { issue_description: null, urgency: 'normal', confirmed_appointment_time: null, service_address: null } } }],
+    })
+
+    const { extractTradeData } = await import('@/lib/classification/extract-trade')
+    await extractTradeData('No appointment scheduled', 'hvac')
+
+    const callArgs = mockParse.mock.calls[0][0]
+    const systemPrompt: string = callArgs.messages[0].content
+    expect(systemPrompt).toContain('confirmed_appointment_time in ISO format (YYYY-MM-DDTHH:MM:SS) without timezone suffix')
+    expect(systemPrompt).toContain('return null for confirmed_appointment_time')
+    expect(systemPrompt).toContain('service_address')
   })
 })
