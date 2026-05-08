@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: — Revenue-Ready MVP
-current_plan: 5
+current_plan: 6
 status: in_progress
-stopped_at: Phase 4 Plan 04 complete — extract-trade.ts schemas extended with confirmed_appointment_time + service_address (D-11); ready for Plan 05
-last_updated: "2026-05-08T20:20:00Z"
+stopped_at: Phase 4 Plan 05 complete — retell-call-classify extended with create-lead, create-appointment, create-calendar-event, compute-sync-payload, trigger-agent-sync steps; tsc clean; ready for Plan 06
+last_updated: "2026-05-08T21:00:00Z"
 progress:
   total_phases: 7
   completed_phases: 3
   total_plans: 26
-  completed_plans: 18
-  percent: 69
+  completed_plans: 19
+  percent: 73
 ---
 
 # VoiceDesk — Project State
@@ -27,11 +27,11 @@ See: .planning/PROJECT.md (updated 2026-05-03)
 ## Current Phase
 
 Phase: 4 — Scheduling & Lead Capture
-Status: In Progress — Wave 2 complete (Plans 02, 03, 04 done); Wave 3 (Plan 05) next
+Status: In Progress — Wave 3 complete (Plan 05 done); Wave 4 (Plan 06) next
 Started: 2026-05-08
 Target: —
 
-Current Plan: 5
+Current Plan: 6
 
 ---
 
@@ -48,6 +48,7 @@ Current Plan: 5
 | 04-scheduling | 02 | 2026-05-08 | — | Google OAuth lib (createOAuth2Client) + getCalendarClient (refresh-on-use) |
 | 04-scheduling | 03 | 2026-05-08 | ~7 min | computeAvailableSlots() + buildSlotSection() + buildSystemPrompt() extended |
 | 04-scheduling | 04 | 2026-05-08 | ~3 min | extract-trade.ts schemas extended: confirmed_appointment_time + service_address (D-11); 18/18 tests pass |
+| 04-scheduling | 05 | 2026-05-08 | ~20 min | retell-call-classify extended: create-lead (D-12), create-appointment (D-10), create-calendar-event (D-14/D-15), trigger-agent-sync (D-08) |
 
 ---
 
@@ -93,6 +94,16 @@ Current Plan: 5
 - webhook_events deny-all RLS (Pattern C): USING(false)/WITH CHECK(false) for authenticated and anon; service role bypasses automatically
 - JSONB defaults appear in migration 1 (canonical) AND migration 3 (re-affirmation guard) — both must be updated together
 
+### Key Decisions Locked (Phase 4 Plan 05 additions)
+
+- D-12 intent filter: shouldCreate = lead || emergency || (info && durationMs >= 15000); no_action → no lead row
+- D-10 confirmed: booking_conflict on leads (not appointments); 23505 UNIQUE violation → leads.booking_conflict=true + status='new'
+- D-15: getCalendarClient null → google_sync_status='skipped'; function continues (not a failure path)
+- Risk 4 mitigation: rawTime.replace(/Z$/, '') strips trailing Z; LLM times treated as contractor-local, not UTC
+- compute-sync-payload wrapped in step.run for Inngest memoization — consistent slot list on retry
+- appointment_duration_minutes added to ContractorSettings TypeScript type (was missing; exists in DB migration)
+- BusinessHours index signature [day: string] added to database.ts to satisfy slots.ts BusinessHours import
+
 ### Key Decisions Locked (Phase 4 additions)
 
 - googleapis@^171.4.0 installed as production dependency for Google Calendar API + OAuth2Client
@@ -136,6 +147,6 @@ Current Plan: 5
 
 _Use this section to log the last known state before ending a session, so the next session can resume without re-reading everything._
 
-Last session: 2026-05-08T20:20:00Z
-Stopped at: Phase 4 Plan 04 complete — D-11 schema extension done (confirmed_appointment_time + service_address in all four extraction schemas); 18/18 tests pass
-Resume: /gsd-execute-phase 4 — Phase 4 Plan 05 (extend retell-call-classify Inngest function with create-lead, create-appointment, create-calendar-event steps) ready to execute
+Last session: 2026-05-08T21:00:00Z
+Stopped at: Phase 4 Plan 05 complete — retell-call-classify extended with full booking pipeline (create-lead D-12, create-appointment D-10, create-calendar-event D-14/D-15, trigger-agent-sync D-08); tsc --noEmit exits 0
+Resume: /gsd-execute-phase 4 — Phase 4 Plan 06 (OAuth routes + connect-calendar page + dashboard banner) ready to execute

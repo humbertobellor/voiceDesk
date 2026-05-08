@@ -124,10 +124,10 @@
   5. A `leads` row is created for every call classified as lead or emergency, containing caller name, phone, issue description, appointment status, and initial status of "Pending"
 **Plans:** 6 plans
 - [x] 04-01-PLAN.md — npm install googleapis + migration SQL (appointment_duration_minutes, google_sync_status, booking_conflict on leads) + [BLOCKING] supabase db push + 4 Wave-0 test stubs ✓ 2026-05-08
-- [ ] 04-02-PLAN.md — Google OAuth lib: src/lib/google/client.ts (createOAuth2Client) + src/lib/google/auth.ts (getCalendarClient refresh-on-use)
-- [ ] 04-03-PLAN.md — Slot computation: src/lib/scheduling/slots.ts (computeAvailableSlots) + src/lib/scheduling/inject-slots.ts (buildSlotSection) + extend buildSystemPrompt()
+- [x] 04-02-PLAN.md — Google OAuth lib: src/lib/google/client.ts (createOAuth2Client) + src/lib/google/auth.ts (getCalendarClient refresh-on-use) ✓ 2026-05-08
+- [x] 04-03-PLAN.md — Slot computation: src/lib/scheduling/slots.ts (computeAvailableSlots) + src/lib/scheduling/inject-slots.ts (buildSlotSection) + extend buildSystemPrompt() ✓ 2026-05-08
 - [x] 04-04-PLAN.md — Extend extract-trade.ts schemas: confirmed_appointment_time + service_address fields (.nullish()) + extraction prompt update ✓ 2026-05-08
-- [ ] 04-05-PLAN.md — Extend retell-call-classify.ts: load-contractor step + create-lead + create-appointment + create-calendar-event + trigger-agent-sync steps
+- [x] 04-05-PLAN.md — Extend retell-call-classify.ts: load-contractor step + create-lead + create-appointment + create-calendar-event + trigger-agent-sync steps ✓ 2026-05-08
 - [ ] 04-06-PLAN.md — OAuth routes (/api/auth/google/initiate + /api/auth/google/callback) + /dashboard/connect-calendar page + dashboard success banner
 
 **Wave dependency notes:**
@@ -207,7 +207,7 @@
 | 1. Foundation | 5/5 | Complete | 2026-05-05 |
 | 2. Provisioning | 5/5 | Complete | 2026-05-07 |
 | 3. Webhook Core | 4/4 | Complete | 2026-05-08 |
-| 4. Scheduling & Lead Capture | 4/6 | In Progress | - |
+| 4. Scheduling & Lead Capture | 5/6 | In Progress | - |
 | 5. Notifications | 0/TBD | Not started | - |
 | 6. Portal UI | 0/TBD | Not started | - |
 | 7. Billing & Onboarding | 0/TBD | Not started | - |
