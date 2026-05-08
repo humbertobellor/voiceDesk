@@ -10,7 +10,7 @@
 ## Phases
 
 - [x] **Phase 1: Foundation** - Supabase schema, RLS, auth, account creation, and multi-language agent configuration (English, Spanish, Haitian Creole) ✓ 2026-05-05
-- [ ] **Phase 2: Provisioning** - Twilio number provisioning and Retell agent creation per contractor
+- [x] **Phase 2: Provisioning** - Twilio number provisioning and Retell agent creation per contractor ✓ 2026-05-07
 - [x] **Phase 3: Webhook Core** - Retell webhook handler, call persistence, and intent classification ✓ 2026-05-08
 - [ ] **Phase 4: Scheduling & Lead Capture** - Google Calendar OAuth, availability windows, appointment booking, and lead records
 - [ ] **Phase 5: Notifications** - SMS, WhatsApp, and Telegram multi-channel dispatch for all call outcomes
@@ -52,11 +52,11 @@
   3. The Retell agent uses the contractor's configured business name and service list in its greeting
   4. The provisioned number and Retell agent ID are stored in the contractor's database row and retrievable via the server API
 **Plans:** 5 plans
-- [ ] 02-01a-PLAN.md — Wave 0 test stubs + npm install (retell-sdk, inngest) + migration SQL write
-- [ ] 02-01b-PLAN.md — [BLOCKING] supabase db push + Haitian Creole code cleanup + VALIDATION.md sign-off *(blocked on 02-01a)*
-- [ ] 02-02-PLAN.md — Retell client singleton + system-prompt builder + language mapper *(blocked on 02-01b)*
-- [ ] 02-03-PLAN.md — Inngest client + retell-agent-sync function (with onFailure) + /api/inngest route *(blocked on 02-01b)*
-- [ ] 02-04-PLAN.md — POST /api/provisioning/create + PATCH /api/provisioning/update-agent *(blocked on 02-02, 02-03)*
+- [x] 02-01a-PLAN.md — Wave 0 test stubs + npm install (retell-sdk, inngest) + migration SQL write ✓ 2026-05-07
+- [x] 02-01b-PLAN.md — [BLOCKING] supabase db push + Haitian Creole code cleanup + VALIDATION.md sign-off ✓ 2026-05-07
+- [x] 02-02-PLAN.md — Retell client singleton + system-prompt builder + language mapper ✓ 2026-05-07
+- [x] 02-03-PLAN.md — Inngest client + retell-agent-sync function (with onFailure) + /api/inngest route ✓ 2026-05-07
+- [x] 02-04-PLAN.md — POST /api/provisioning/create + PATCH /api/provisioning/update-agent ✓ 2026-05-07
 
 **Wave dependency notes:**
 - **Wave 1a** (`02-01a`): no dependencies — installs packages and writes migration SQL
@@ -122,9 +122,33 @@
   3. A Google Calendar event is created in the contractor's calendar within 5 minutes of call end with the correct appointment details
   4. If two calls arrive close together targeting the same slot, only one appointment is created — the second caller is offered the next open slot (DB-level lock prevents race conditions)
   5. A `leads` row is created for every call classified as lead or emergency, containing caller name, phone, issue description, appointment status, and initial status of "Pending"
-**Plans:** TBD
-**UI hint:** no
-**Notes:** OAuth tokens are encrypted with AES-256-GCM before writing to `calendar_credentials` — encryption utility from Phase 1 is required here. Request `calendar.events` + `calendar.freebusy` scopes on first grant to avoid re-auth later. Use DB-level row lock (SELECT FOR UPDATE) for booking conflict prevention. Move Google OAuth app to production mode before the first beta contractor connects — testing mode silently expires tokens after 7 days.
+**Plans:** 6 plans
+- [ ] 04-01-PLAN.md — npm install googleapis + migration SQL (appointment_duration_minutes, google_sync_status, booking_conflict on leads) + [BLOCKING] supabase db push + 4 Wave-0 test stubs
+- [ ] 04-02-PLAN.md — Google OAuth lib: src/lib/google/client.ts (createOAuth2Client) + src/lib/google/auth.ts (getCalendarClient refresh-on-use)
+- [ ] 04-03-PLAN.md — Slot computation: src/lib/scheduling/slots.ts (computeAvailableSlots) + src/lib/scheduling/inject-slots.ts (buildSlotSection) + extend buildSystemPrompt()
+- [ ] 04-04-PLAN.md — Extend extract-trade.ts schemas: confirmed_appointment_time + service_address fields (.nullish()) + extraction prompt update
+- [ ] 04-05-PLAN.md — Extend retell-call-classify.ts: load-contractor step + create-lead + create-appointment + create-calendar-event + trigger-agent-sync steps
+- [ ] 04-06-PLAN.md — OAuth routes (/api/auth/google/initiate + /api/auth/google/callback) + /dashboard/connect-calendar page + dashboard success banner
+
+**Wave dependency notes:**
+- **Wave 0** (`04-01`): no dependencies — installs googleapis, writes migration SQL, pushes DB, creates test stubs
+- **Wave 1** (`04-02`, `04-03`) *(parallel, blocked on 04-01)*: Google OAuth libs + slot computation libs (no shared files)
+- **Wave 2** (`04-04`) *(blocked on 04-02 + 04-03)*: extend classification schemas + buildSystemPrompt() signature
+- **Wave 3** (`04-05`) *(blocked on 04-02 + 04-03 + 04-04)*: extend retell-call-classify Inngest function with 4 new steps
+- **Wave 4** (`04-06`) *(blocked on 04-05)*: OAuth routes + connect-calendar page + dashboard banner
+
+**Cross-cutting constraints:**
+- `import 'server-only'` required in src/lib/google/client.ts, src/lib/google/auth.ts, src/lib/scheduling/slots.ts
+- `import 'server-only'` NOT used in src/lib/scheduling/inject-slots.ts (pure string transform, no secrets)
+- `encryptToken()`/`decryptToken()` from src/lib/crypto/tokens.ts used for ALL calendar token reads/writes
+- `booking_conflict BOOLEAN` goes on LEADS table (not appointments) — UNIQUE(contractor_id, starts_at) on appointments makes a second row impossible
+- `prompt: 'consent'` is REQUIRED in generateAuthUrl() — omitting causes null refresh_token on re-auth
+- `tokens.expiry_date` from googleapis is MILLISECONDS (not seconds) — convert with new Date(ms).toISOString()
+- `contractor_id` in OAuth callback derived from JWT user.id only — never from URL params (STRIDE: EoP)
+- GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIRECT_URI never prefixed with NEXT_PUBLIC_
+
+**UI hint:** yes (connect-calendar page + dashboard banner)
+**Notes:** OAuth tokens are encrypted with AES-256-GCM before writing to `calendar_credentials` — Phase 1 encryptToken() utility required. D-10 architectural fix: booking_conflict placed on leads (not appointments) due to UNIQUE(contractor_id, starts_at) constraint — second row for same slot is impossible. Google OAuth app must be in Production mode before beta; CASA Tier 2 security assessment required for calendar.events scope (3-8 weeks). Slot computation is pre-computed from contractor_settings.business_hours, NOT from live Calendar API mid-call.
 
 ---
 
@@ -167,7 +191,7 @@
 **Success Criteria** (what must be TRUE):
   1. A new contractor can complete Stripe Checkout with a credit card, start a 14-day free trial, and land in the onboarding wizard without any manual intervention
   2. The onboarding wizard guides the contractor through agent configuration → Google Calendar connection → Twilio number provisioning → call forwarding instructions (with AT&T, Verizon, and T-Mobile carrier codes shown) in a linear, gated flow
-  3. The wizard does not advance to "go live" status until an inbound test call is detected on the contractor's VoiceDesk number — the portal polls every 5 seconds and auto-advances on detection
+  3. The wizard does not advance to "go live" status until an inbound test call is detected and logged for the contractor's VoiceDesk number — the portal polls every 5 seconds and auto-advances on detection
   4. A contractor with a failed payment receives a WhatsApp/SMS alert, and their Retell agent is deactivated within 72 hours of the final failed Stripe retry — they cannot incur Retell/Twilio costs on an unpaid subscription
   5. A contractor can access the Stripe Customer Portal from account settings to change plan, update payment method, or cancel — without contacting support
 **Plans:** TBD
@@ -181,9 +205,9 @@
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 5/5 | Complete | 2026-05-05 |
-| 2. Provisioning | 0/TBD | Not started | - |
+| 2. Provisioning | 5/5 | Complete | 2026-05-07 |
 | 3. Webhook Core | 4/4 | Complete | 2026-05-08 |
-| 4. Scheduling & Lead Capture | 0/TBD | Not started | - |
+| 4. Scheduling & Lead Capture | 0/6 | Ready to execute | - |
 | 5. Notifications | 0/TBD | Not started | - |
 | 6. Portal UI | 0/TBD | Not started | - |
 | 7. Billing & Onboarding | 0/TBD | Not started | - |
