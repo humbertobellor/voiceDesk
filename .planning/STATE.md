@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: — Revenue-Ready MVP
-current_plan: 2
+current_plan: 5
 status: in_progress
-stopped_at: Phase 4 Plan 01 complete — Wave 0 infrastructure done; ready for Plan 02
-last_updated: "2026-05-08T19:56:38Z"
+stopped_at: Phase 4 Plan 04 complete — extract-trade.ts schemas extended with confirmed_appointment_time + service_address (D-11); ready for Plan 05
+last_updated: "2026-05-08T20:20:00Z"
 progress:
   total_phases: 7
   completed_phases: 3
   total_plans: 26
-  completed_plans: 15
-  percent: 58
+  completed_plans: 18
+  percent: 69
 ---
 
 # VoiceDesk — Project State
@@ -27,11 +27,11 @@ See: .planning/PROJECT.md (updated 2026-05-03)
 ## Current Phase
 
 Phase: 4 — Scheduling & Lead Capture
-Status: In Progress — Wave 0 complete; Wave 1 (Plan 02) next
+Status: In Progress — Wave 2 complete (Plans 02, 03, 04 done); Wave 3 (Plan 05) next
 Started: 2026-05-08
 Target: —
 
-Current Plan: 2
+Current Plan: 5
 
 ---
 
@@ -45,6 +45,9 @@ Current Plan: 2
 | 01-foundation | 04 | 2026-05-04 | 35 min | Auth flow: middleware + login/signup + OAuth callback + phone capture + account creation API |
 | 01-foundation | 05 | 2026-05-04 | — | Dashboard shell + Sidebar + RLS isolation tests (19/19 pass) — phase complete |
 | 04-scheduling | 01 | 2026-05-08 | 12 min | googleapis installed, Phase 4 migration live, 4 Wave-0 TDD stub files (19 RED tests) |
+| 04-scheduling | 02 | 2026-05-08 | — | Google OAuth lib (createOAuth2Client) + getCalendarClient (refresh-on-use) |
+| 04-scheduling | 03 | 2026-05-08 | ~7 min | computeAvailableSlots() + buildSlotSection() + buildSystemPrompt() extended |
+| 04-scheduling | 04 | 2026-05-08 | ~3 min | extract-trade.ts schemas extended: confirmed_appointment_time + service_address (D-11); 18/18 tests pass |
 
 ---
 
@@ -97,6 +100,8 @@ Current Plan: 2
 - google_sync_status NOT NULL DEFAULT 'pending' CHECK enum on appointments — mirrors analysis_status pattern from Phase 3; no ambiguous NULL state
 - CASA Tier 2 restricted-scope notice required for calendar.events scope before beta contractors connect — documented in .env.example
 - Wave-0 TDD stubs use vi.hoisted + vi.mock for googleapis and supabase service — all 19 stubs throw 'not yet implemented'
+- appointmentFields shared object used to spread confirmed_appointment_time + service_address into all four extraction schemas (D-11) — avoids duplication, ensures parity across HvacSchema/PlumbingSchema/ElectricalSchema/GeneralSchema
+- confirmed_appointment_time and service_address use .nullish() NOT .optional() per OpenAI structured outputs requirement; prompt instructs ISO format YYYY-MM-DDTHH:MM:SS without timezone suffix
 
 ### Architecture Reference
 
@@ -131,6 +136,6 @@ Current Plan: 2
 
 _Use this section to log the last known state before ending a session, so the next session can resume without re-reading everything._
 
-Last session: 2026-05-08T19:56:38Z
-Stopped at: Phase 4 Plan 01 complete — Wave 0 infrastructure done (googleapis, migration, 4 test stubs)
-Resume: /gsd-execute-phase 4 — Phase 4 Plan 02 (OAuth flow + token refresh) ready to execute
+Last session: 2026-05-08T20:20:00Z
+Stopped at: Phase 4 Plan 04 complete — D-11 schema extension done (confirmed_appointment_time + service_address in all four extraction schemas); 18/18 tests pass
+Resume: /gsd-execute-phase 4 — Phase 4 Plan 05 (extend retell-call-classify Inngest function with create-lead, create-appointment, create-calendar-event steps) ready to execute
