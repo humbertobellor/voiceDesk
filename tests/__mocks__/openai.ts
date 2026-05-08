@@ -2,6 +2,7 @@
 // Vitest manual mock for the 'openai' package.
 // Prevents real API calls during unit tests.
 // Pattern: same as existing server-only mock pattern in the project.
+import { vi } from 'vitest'
 
 const mockParse = vi.fn()
 
