@@ -981,22 +981,19 @@ cookieStore.set('oauth_state', state, {
 
 ---
 
-## Open Questions
+## Open Questions (RESOLVED)
 
-1. **D-10 Resolution Required**
+1. **D-10 Resolution Required** *(RESOLVED: booking_conflict placed on `leads` table)*
    - What we know: `appointments` UNIQUE(contractor_id, starts_at) prevents two rows with the same slot. `booking_conflict` on `appointments` is impossible.
-   - What's unclear: Planner needs to confirm whether `booking_conflict` goes on `leads` (recommended) or a different approach.
-   - Recommendation: Add `booking_conflict BOOLEAN DEFAULT false` to `leads` table. Mark the losing lead's status as `'new'` with a conflict note. Appointment table is unaffected.
+   - Resolution: `booking_conflict BOOLEAN NOT NULL DEFAULT false` added to `leads` table in Phase 4 migration. On 23505 UNIQUE violation in `create-appointment` step, the losing caller's lead is updated with `booking_conflict=true, status='new'`. Appointment table unaffected. Plans 01 (migration) and 05 (Inngest step) implement this.
 
-2. **Google OAuth app production mode timeline**
+2. **Google OAuth app production mode timeline** *(RESOLVED: Phase 4 ships in testing mode; production mode initiated in parallel)*
    - What we know: Moving to production mode requires CASA Tier 2 security assessment (3-8 weeks per official docs)
-   - What's unclear: Whether the assessment must be complete before ANY beta contractor connects calendar
-   - Recommendation: Phase 4 can ship with testing mode to internal/beta users (accepting the 7-day token expiry limitation). Initiate production mode verification process in parallel. STATE.md blocker notes this.
+   - Resolution: Phase 4 ships to internal/beta users in testing mode (accepting 7-day token expiry limitation). Production mode verification process must be initiated immediately when Phase 4 ships to beta. STATE.md blocker documents this constraint.
 
-3. **`retell-call-classify` event payload extension for contractor data**
+3. **`retell-call-classify` event payload extension for contractor data** *(RESOLVED: load-contractor step added as step 0)*
    - What we know: The current function receives only `callId, contractorId, transcriptText, durationMs`. Phase 4 needs `retell_llm_id`, `contractor.timezone`, and `contractor_settings` for slot computation and agent sync trigger.
-   - What's unclear: Should these be loaded inside the function (extra DB query) or passed in the event payload?
-   - Recommendation: Load inside the function in an early `step.run('load-contractor')`. Keep the event payload minimal — loading from DB is idempotent and tested.
+   - Resolution: Plan 05 Task 1 adds a `step.run('load-contractor')` as the first step that loads `contractors` joined to `contractor_settings(*)` by `contractorId`. Result is available to all subsequent steps via closure. Event payload remains minimal.
 
 ---
 
