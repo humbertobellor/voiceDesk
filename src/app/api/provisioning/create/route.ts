@@ -50,8 +50,8 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Already provisioned.' }, { status: 409 })
   }
 
-  // Supabase returns one-to-one FK joins as a single object (not an array).
-  const settings = contractor.contractor_settings as {
+  // Supabase infers contractor_settings as any[] due to the generic join type; cast via unknown.
+  const settings = contractor.contractor_settings as unknown as {
     business_name: string
     trade_type: string
     service_area: string

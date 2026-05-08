@@ -40,7 +40,7 @@ export async function PATCH(_req: Request) {
   }
 
   // Supabase returns one-to-one FK joins as a single object (not an array).
-  const settings = contractor.contractor_settings as Parameters<typeof buildSystemPrompt>[0] | null
+  const settings = contractor.contractor_settings as unknown as Parameters<typeof buildSystemPrompt>[0] | null
   if (!settings) {
     console.error('[provisioning/update-agent] contractor_settings missing for contractor:', contractor.id)
     return NextResponse.json({ error: 'Contractor settings not configured.' }, { status: 422 })
