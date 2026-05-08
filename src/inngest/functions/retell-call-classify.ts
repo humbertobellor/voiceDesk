@@ -13,6 +13,12 @@ import { createServiceRoleClient } from '@/lib/supabase/service'
 import { hasHardEmergencyKeyword } from '@/lib/classification/emergency-keywords'
 import { classifyIntent } from '@/lib/classification/classify-intent'
 import { extractTradeData } from '@/lib/classification/extract-trade'
+import { getCalendarClient } from '@/lib/google/auth'
+import { computeAvailableSlots } from '@/lib/scheduling/slots'
+import { buildSystemPrompt, buildBeginMessage } from '@/lib/retell/system-prompt'
+import { addMinutes } from 'date-fns'
+import { fromZonedTime } from 'date-fns-tz'
+import type { ContractorSettings } from '@/types/database'
 
 export const retellCallClassify = inngest.createFunction(
   {
@@ -29,6 +35,11 @@ export const retellCallClassify = inngest.createFunction(
         .from('calls')
         .update({ analysis_status: 'analysis_failed' })
         .eq('id', callId)
+      // Phase 4 extension: also set google_sync_status='failed' on any pending appointments for this call
+      await db.from('appointments')
+        .update({ google_sync_status: 'failed' })
+        .eq('call_id', callId)
+        .eq('google_sync_status', 'pending')
     },
   },
   async ({ event, step }) => {
@@ -45,6 +56,24 @@ export const retellCallClassify = inngest.createFunction(
         `[retell-call-classify] invalid event data: missing callId or contractorId`
       )
     }
+
+    // Step 0: Load contractor + settings — needed for slot computation, agent sync, and timezone (Risk 5)
+    const contractor = await step.run('load-contractor', async () => {
+      const db = createServiceRoleClient()
+      const { data, error } = await db
+        .from('contractors')
+        .select('id, retell_llm_id, timezone, contractor_settings(*)')
+        .eq('id', contractorId)
+        .maybeSingle()
+      if (error || !data) {
+        throw new NonRetriableError(
+          `[retell-call-classify] contractor ${contractorId} not found`
+        )
+      }
+      return data
+    })
+    const settings = contractor.contractor_settings as unknown as ContractorSettings | null
+    const contractorTimezone = contractor.timezone ?? 'America/New_York'
 
     const safeTranscript = transcriptText ?? ''
 
