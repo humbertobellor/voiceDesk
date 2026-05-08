@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: — Revenue-Ready MVP
-current_plan: 1
-status: ready
-stopped_at: Phase 4 planned — 6/6 plans ready to execute
-last_updated: "2026-05-08T16:00:00.000Z"
+current_plan: 2
+status: in_progress
+stopped_at: Phase 4 Plan 01 complete — Wave 0 infrastructure done; ready for Plan 02
+last_updated: "2026-05-08T19:56:38Z"
 progress:
   total_phases: 7
   completed_phases: 3
-  total_plans: 20
-  completed_plans: 14
-  percent: 70
+  total_plans: 26
+  completed_plans: 15
+  percent: 58
 ---
 
 # VoiceDesk — Project State
@@ -20,18 +20,18 @@ progress:
 
 See: .planning/PROJECT.md (updated 2026-05-03)
 **Core value:** Every missed call is lost revenue — VoiceDesk ensures contractors never lose a booked job to voicemail again.
-**Current focus:** Phase 3 — Webhook Core
+**Current focus:** Phase 4 — Scheduling & Lead Capture
 
 ---
 
 ## Current Phase
 
 Phase: 4 — Scheduling & Lead Capture
-Status: Ready to plan
-Started: —
+Status: In Progress — Wave 0 complete; Wave 1 (Plan 02) next
+Started: 2026-05-08
 Target: —
 
-Current Plan: 1
+Current Plan: 2
 
 ---
 
@@ -44,6 +44,7 @@ Current Plan: 1
 | 01-foundation | 03 | 2026-05-04 | 15 min | Migrations pushed live; AES-256-GCM crypto; Supabase clients; zod schemas; DB types |
 | 01-foundation | 04 | 2026-05-04 | 35 min | Auth flow: middleware + login/signup + OAuth callback + phone capture + account creation API |
 | 01-foundation | 05 | 2026-05-04 | — | Dashboard shell + Sidebar + RLS isolation tests (19/19 pass) — phase complete |
+| 04-scheduling | 01 | 2026-05-08 | 12 min | googleapis installed, Phase 4 migration live, 4 Wave-0 TDD stub files (19 RED tests) |
 
 ---
 
@@ -89,6 +90,14 @@ Current Plan: 1
 - webhook_events deny-all RLS (Pattern C): USING(false)/WITH CHECK(false) for authenticated and anon; service role bypasses automatically
 - JSONB defaults appear in migration 1 (canonical) AND migration 3 (re-affirmation guard) — both must be updated together
 
+### Key Decisions Locked (Phase 4 additions)
+
+- googleapis@^171.4.0 installed as production dependency for Google Calendar API + OAuth2Client
+- booking_conflict placed on leads table (NOT appointments) per D-10 — UNIQUE constraint on appointments(contractor_id, starts_at) makes a second same-slot row impossible regardless of column values
+- google_sync_status NOT NULL DEFAULT 'pending' CHECK enum on appointments — mirrors analysis_status pattern from Phase 3; no ambiguous NULL state
+- CASA Tier 2 restricted-scope notice required for calendar.events scope before beta contractors connect — documented in .env.example
+- Wave-0 TDD stubs use vi.hoisted + vi.mock for googleapis and supabase service — all 19 stubs throw 'not yet implemented'
+
 ### Architecture Reference
 
 - Stack: Retell, Twilio, Supabase, Next.js 16 (App Router), Vercel Pro, Stripe, Inngest, grammY (Telegram)
@@ -122,6 +131,6 @@ Current Plan: 1
 
 _Use this section to log the last known state before ending a session, so the next session can resume without re-reading everything._
 
-Last session: 2026-05-08T00:00:00Z
-Stopped at: Phase 3 planned — 4 plans, 4 waves, verification passed
-Resume: /gsd-execute-phase 3 — Webhook Core ready to execute
+Last session: 2026-05-08T19:56:38Z
+Stopped at: Phase 4 Plan 01 complete — Wave 0 infrastructure done (googleapis, migration, 4 test stubs)
+Resume: /gsd-execute-phase 4 — Phase 4 Plan 02 (OAuth flow + token refresh) ready to execute

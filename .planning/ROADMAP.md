@@ -123,7 +123,7 @@
   4. If two calls arrive close together targeting the same slot, only one appointment is created — the second caller is offered the next open slot (DB-level lock prevents race conditions)
   5. A `leads` row is created for every call classified as lead or emergency, containing caller name, phone, issue description, appointment status, and initial status of "Pending"
 **Plans:** 6 plans
-- [ ] 04-01-PLAN.md — npm install googleapis + migration SQL (appointment_duration_minutes, google_sync_status, booking_conflict on leads) + [BLOCKING] supabase db push + 4 Wave-0 test stubs
+- [x] 04-01-PLAN.md — npm install googleapis + migration SQL (appointment_duration_minutes, google_sync_status, booking_conflict on leads) + [BLOCKING] supabase db push + 4 Wave-0 test stubs ✓ 2026-05-08
 - [ ] 04-02-PLAN.md — Google OAuth lib: src/lib/google/client.ts (createOAuth2Client) + src/lib/google/auth.ts (getCalendarClient refresh-on-use)
 - [ ] 04-03-PLAN.md — Slot computation: src/lib/scheduling/slots.ts (computeAvailableSlots) + src/lib/scheduling/inject-slots.ts (buildSlotSection) + extend buildSystemPrompt()
 - [ ] 04-04-PLAN.md — Extend extract-trade.ts schemas: confirmed_appointment_time + service_address fields (.nullish()) + extraction prompt update
