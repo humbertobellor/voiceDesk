@@ -6,8 +6,10 @@
 // D-07: after-hours still captures lead.
 // No 'server-only' needed — this module contains no secrets; the Retell client (client.ts) is server-only.
 import type { ContractorSettings } from '@/types/database'
+import { buildSlotSection } from '@/lib/scheduling/inject-slots'
+import type { SlotWindow } from '@/lib/scheduling/slots'
 
-export function buildSystemPrompt(settings: ContractorSettings): string {
+export function buildSystemPrompt(settings: ContractorSettings, availableSlots?: SlotWindow[]): string {
   const hasSpanish = settings.supported_languages.includes('es')
   const languageInstruction = hasSpanish
     ? `You speak English and Spanish. At the start of every call, greet the caller in English and say: "Para español, oprima dos" (For Spanish, press two). If the caller presses 2 or asks to switch to Spanish, conduct the ENTIRE remainder of the call in Spanish.`
@@ -15,7 +17,7 @@ export function buildSystemPrompt(settings: ContractorSettings): string {
 
   const emergencyKeywords = settings.emergency_keywords.en.join(', ')
 
-  return `You are ${settings.business_name}'s AI receptionist — professional, warm, and helpful.
+  const existingContent = `You are ${settings.business_name}'s AI receptionist — professional, warm, and helpful.
 
 ${languageInstruction}
 
@@ -29,7 +31,9 @@ Your role:
 Business: ${settings.business_name}
 Trade: ${settings.trade_type}
 Service area: ${settings.service_area}
-After-hours message: "${settings.after_hours_message}"`.trim()
+After-hours message: "${settings.after_hours_message}"`
+
+  return `${existingContent}${buildSlotSection(availableSlots ?? [])}`.trim()
 }
 
 export function buildBeginMessage(settings: ContractorSettings): string {
