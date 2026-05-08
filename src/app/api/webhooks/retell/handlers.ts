@@ -79,12 +79,28 @@ export async function processCallEnded(call: RetellCallPayload): Promise<void> {
 export async function processCallAnalyzed(call: RetellCallPayload): Promise<void> {
   const db = createServiceRoleClient()
 
+  // CR-01: calls.contractor_id is NOT NULL. When call_analyzed arrives before call_ended,
+  // we must resolve contractor_id via agent_id lookup — not leave it null in the upsert.
+  // The UPSERT will INSERT a new row only when call_ended hasn't run yet; in that case
+  // contractor_id is required. When call_ended already ran, the UPDATE path ignores contractor_id.
+  const { data: contractor } = await db
+    .from('contractors')
+    .select('id')
+    .eq('retell_agent_id', call.agent_id)
+    .maybeSingle()
+
+  if (!contractor) {
+    console.error('[webhook/call_analyzed] no contractor found for agent_id:', call.agent_id)
+    return
+  }
+
   // Always persist transcript + summary FIRST — even if Inngest send fails later
   const { data: callRow, error: upsertError } = await db
     .from('calls')
     .upsert(
       {
         retell_call_id: call.call_id,
+        contractor_id: contractor.id,  // CR-01: required for INSERT path (race with call_ended)
         // D-09: call_analysis.call_summary is the field (NOT call.summary)
         summary: call.call_analysis?.call_summary ?? null,
         // Store transcript_object (structured array) in JSONB — NOT the plain transcript string
@@ -107,9 +123,11 @@ export async function processCallAnalyzed(call: RetellCallPayload): Promise<void
   }
 
   // D-08: Fire Inngest classification job — handles LLM retries on failure
+  // CR-03: idempotencyKey prevents duplicate classify jobs on Retell retry delivery
   try {
     await inngest.send({
       name: 'retell/call.classify',
+      id: `retell-classify-${call.call_id}`,  // CR-03: idempotency key — Retell retries same call_id
       data: {
         callId: callRow.id,
         contractorId: callRow.contractor_id,

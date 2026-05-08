@@ -22,10 +22,18 @@ export const HARD_EMERGENCY_KEYWORDS: Record<string, readonly string[]> = {
     'detector de co',
     'alarma de monóxido',
   ],
+  ht: [
+    'sant gaz',
+    'koule gaz',
+    'alàm ko',
+    'monoksid kabòn',
+    'detektè ko',
+    'alàm monoksid',
+  ],
 } as const
 
 /**
- * Returns true if the transcript contains any hard-coded emergency keyword (EN or ES).
+ * Returns true if the transcript contains any hard-coded emergency keyword (EN, ES, or HT).
  * Case-insensitive. These keywords cannot be disabled by contractor configuration (EMRG-02).
  */
 export function hasHardEmergencyKeyword(transcriptText: string): boolean {

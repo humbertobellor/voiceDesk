@@ -16,18 +16,32 @@ export const maxDuration = 30
 export const runtime = 'nodejs'
 
 export async function POST(req: Request) {
+  // CR-04: Guard missing env var — undefined passed to crypto throws TypeError → HTTP 500
+  const retellApiKey = process.env.RETELL_API_KEY
+  if (!retellApiKey) {
+    console.error('[webhook/retell] RETELL_API_KEY is not set — cannot verify signature')
+    return new Response('Internal Server Error', { status: 500 })
+  }
+
   // MUST call req.text() BEFORE req.json() — verify() needs the raw string body
   const rawBody = await req.text()
   const signature = req.headers.get('x-retell-signature') ?? ''
 
   // T-03-01: Verify HMAC signature before trusting any payload content
-  const isValid = await verify(rawBody, process.env.RETELL_API_KEY!, signature)
+  const isValid = await verify(rawBody, retellApiKey, signature)
   if (!isValid) {
     console.error('[webhook/retell] invalid signature — rejecting request')
     return new Response('Unauthorized', { status: 401 })
   }
 
-  const event = JSON.parse(rawBody) as RetellWebhookEvent
+  // WR-04: Guard malformed-but-authentic body
+  let event: RetellWebhookEvent
+  try {
+    event = JSON.parse(rawBody) as RetellWebhookEvent
+  } catch {
+    console.error('[webhook/retell] malformed JSON body after signature verification')
+    return new Response('Bad Request', { status: 400 })
+  }
 
   // Return 200 immediately — critical architecture rule (CLAUDE.md)
   // All downstream processing deferred to after()
