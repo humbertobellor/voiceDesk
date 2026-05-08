@@ -60,7 +60,7 @@ export async function GET(req: Request) {
       contractor_id: contractor.id,
       access_token: encryptToken(tokens.access_token),
       refresh_token: encryptToken(tokens.refresh_token),
-      token_expiry: new Date(tokens.expiry_date!).toISOString(),
+      token_expiry: tokens.expiry_date != null ? new Date(tokens.expiry_date).toISOString() : null,
       scope: tokens.scope ?? null,
     }, { onConflict: 'contractor_id' })
 

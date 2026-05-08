@@ -45,8 +45,9 @@ export async function getCalendarClient(contractorId: string) {
   }
 
   const oauth2Client = createOAuth2Client()
-  // token_expiry from Supabase is an ISO string — convert to ms for comparison
-  const expiryMs = new Date(creds.token_expiry).getTime()
+  // token_expiry from Supabase is an ISO string — convert to ms for comparison.
+  // Treat null/undefined as epoch 0 (already expired) so a refresh is forced immediately.
+  const expiryMs = creds.token_expiry != null ? new Date(creds.token_expiry).getTime() : 0
   const needsRefresh = expiryMs - Date.now() < REFRESH_BUFFER_MS
 
   let accessToken = decryptToken(creds.access_token)
