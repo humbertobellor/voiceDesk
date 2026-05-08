@@ -12,7 +12,7 @@
 - [x] **Phase 1: Foundation** - Supabase schema, RLS, auth, account creation, and multi-language agent configuration (English, Spanish, Haitian Creole) ✓ 2026-05-05
 - [x] **Phase 2: Provisioning** - Twilio number provisioning and Retell agent creation per contractor ✓ 2026-05-07
 - [x] **Phase 3: Webhook Core** - Retell webhook handler, call persistence, and intent classification ✓ 2026-05-08
-- [ ] **Phase 4: Scheduling & Lead Capture** - Google Calendar OAuth, availability windows, appointment booking, and lead records
+- [x] **Phase 4: Scheduling & Lead Capture** - Google Calendar OAuth, availability windows, appointment booking, and lead records ✓ 2026-05-08
 - [ ] **Phase 5: Notifications** - SMS, WhatsApp, and Telegram multi-channel dispatch for all call outcomes
 - [ ] **Phase 6: Portal UI** - Contractor dashboard: call log, recordings, lead list, agent configuration, real-time updates
 - [ ] **Phase 7: Billing & Onboarding** - Stripe Checkout, subscription gating, onboarding wizard with mandatory test call gate
@@ -128,7 +128,7 @@
 - [x] 04-03-PLAN.md — Slot computation: src/lib/scheduling/slots.ts (computeAvailableSlots) + src/lib/scheduling/inject-slots.ts (buildSlotSection) + extend buildSystemPrompt() ✓ 2026-05-08
 - [x] 04-04-PLAN.md — Extend extract-trade.ts schemas: confirmed_appointment_time + service_address fields (.nullish()) + extraction prompt update ✓ 2026-05-08
 - [x] 04-05-PLAN.md — Extend retell-call-classify.ts: load-contractor step + create-lead + create-appointment + create-calendar-event + trigger-agent-sync steps ✓ 2026-05-08
-- [ ] 04-06-PLAN.md — OAuth routes (/api/auth/google/initiate + /api/auth/google/callback) + /dashboard/connect-calendar page + dashboard success banner
+- [x] 04-06-PLAN.md — OAuth routes (/api/auth/google/initiate + /api/auth/google/callback) + /dashboard/connect-calendar page + dashboard success banner ✓ 2026-05-08
 
 **Wave dependency notes:**
 - **Wave 0** (`04-01`): no dependencies — installs googleapis, writes migration SQL, pushes DB, creates test stubs
@@ -207,7 +207,7 @@
 | 1. Foundation | 5/5 | Complete | 2026-05-05 |
 | 2. Provisioning | 5/5 | Complete | 2026-05-07 |
 | 3. Webhook Core | 4/4 | Complete | 2026-05-08 |
-| 4. Scheduling & Lead Capture | 5/6 | In Progress | - |
+| 4. Scheduling & Lead Capture | 6/6 | Complete | 2026-05-08 |
 | 5. Notifications | 0/TBD | Not started | - |
 | 6. Portal UI | 0/TBD | Not started | - |
 | 7. Billing & Onboarding | 0/TBD | Not started | - |

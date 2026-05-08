@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: — Revenue-Ready MVP
 current_plan: 6
-status: in_progress
-stopped_at: Phase 4 Plan 05 complete — retell-call-classify extended with create-lead, create-appointment, create-calendar-event, compute-sync-payload, trigger-agent-sync steps; tsc clean; ready for Plan 06
-last_updated: "2026-05-08T21:00:00Z"
+status: phase_complete
+stopped_at: Phase 4 complete — Plan 06 done; Google Calendar OAuth routes + connect-calendar page + dashboard banners; human UAT verified; calendar_credentials written with encrypted tokens; Phase 4 (6/6 plans) complete
+last_updated: "2026-05-08T22:00:00Z"
 progress:
   total_phases: 7
-  completed_phases: 3
+  completed_phases: 4
   total_plans: 26
-  completed_plans: 19
-  percent: 73
+  completed_plans: 20
+  percent: 77
 ---
 
 # VoiceDesk — Project State
@@ -27,11 +27,12 @@ See: .planning/PROJECT.md (updated 2026-05-03)
 ## Current Phase
 
 Phase: 4 — Scheduling & Lead Capture
-Status: In Progress — Wave 3 complete (Plan 05 done); Wave 4 (Plan 06) next
+Status: Complete — All 6 plans complete; human UAT verified; ready for Phase 5
 Started: 2026-05-08
+Completed: 2026-05-08
 Target: —
 
-Current Plan: 6
+Current Plan: 6 (complete)
 
 ---
 
@@ -49,6 +50,7 @@ Current Plan: 6
 | 04-scheduling | 03 | 2026-05-08 | ~7 min | computeAvailableSlots() + buildSlotSection() + buildSystemPrompt() extended |
 | 04-scheduling | 04 | 2026-05-08 | ~3 min | extract-trade.ts schemas extended: confirmed_appointment_time + service_address (D-11); 18/18 tests pass |
 | 04-scheduling | 05 | 2026-05-08 | ~20 min | retell-call-classify extended: create-lead (D-12), create-appointment (D-10), create-calendar-event (D-14/D-15), trigger-agent-sync (D-08) |
+| 04-scheduling | 06 | 2026-05-08 | ~30 min | Google Calendar OAuth: initiate/callback routes + connect-calendar page + dashboard banners; human UAT verified; SCHED-01 complete |
 
 ---
 
@@ -147,6 +149,6 @@ Current Plan: 6
 
 _Use this section to log the last known state before ending a session, so the next session can resume without re-reading everything._
 
-Last session: 2026-05-08T21:00:00Z
-Stopped at: Phase 4 Plan 05 complete — retell-call-classify extended with full booking pipeline (create-lead D-12, create-appointment D-10, create-calendar-event D-14/D-15, trigger-agent-sync D-08); tsc --noEmit exits 0
-Resume: /gsd-execute-phase 4 — Phase 4 Plan 06 (OAuth routes + connect-calendar page + dashboard banner) ready to execute
+Last session: 2026-05-08T22:00:00Z
+Stopped at: Phase 4 complete — Plan 06 done (Google Calendar OAuth routes + connect-calendar page + dashboard banners); human UAT verified; calendar_credentials row written with encrypted tokens; Phase 4 (6/6 plans) complete
+Resume: /gsd-plan-phase 5 — Phase 5 Notifications (SMS/WhatsApp/Telegram within 60s of call end)
