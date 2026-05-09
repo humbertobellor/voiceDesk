@@ -81,6 +81,13 @@ export async function POST(req: Request) {
   }
 
   // 6. Create Retell Agent (references the LLM)
+  // APP_URL must be set — without it Retell has no webhook destination and call events are silently dropped.
+  const appUrl = process.env.APP_URL
+  if (!appUrl) {
+    console.error('[provisioning/create] APP_URL is not set — Retell webhook will not fire')
+    return NextResponse.json({ error: 'Server misconfiguration: APP_URL is not set.' }, { status: 500 })
+  }
+
   let agent: { agent_id: string }
   try {
     agent = await retell.agent.create({
@@ -91,6 +98,8 @@ export async function POST(req: Request) {
       // Cast via unknown to bridge our string return type to Retell's strict locale union.
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       language: toRetellLanguage(settings.supported_languages) as any,
+      webhook_url: `${appUrl}/api/webhooks/retell`,
+      webhook_events: ['call_ended', 'call_analyzed'],
     }) as { agent_id: string }
   } catch (err) {
     console.error('[provisioning/create] agent.create failed:', err instanceof Error ? err.message : err)

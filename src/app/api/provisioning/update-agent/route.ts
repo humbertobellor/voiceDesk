@@ -30,7 +30,7 @@ export async function PATCH(_req: Request) {
   // Settings are already updated in Supabase by the Phase 6 caller (D-11 satisfied upstream).
   const { data: contractor, error: loadErr } = await serviceClient
     .from('contractors')
-    .select('id, retell_llm_id, agent_sync_status, contractor_settings(*)')
+    .select('id, retell_agent_id, retell_llm_id, agent_sync_status, contractor_settings(*)')
     .eq('user_id', user.id)
     .maybeSingle()
 
@@ -56,12 +56,25 @@ export async function PATCH(_req: Request) {
   const beginMessage = buildBeginMessage(settings)
 
   // 4. Attempt Retell sync; queue Inngest retry on failure (D-12)
+  // Also syncs webhook_url on the agent to recover contractors provisioned before APP_URL was set.
+  const appUrl = process.env.APP_URL
   try {
     const retell = getRetellClient()
-    await retell.llm.update(contractor.retell_llm_id, {
-      general_prompt: compiledPrompt,
-      begin_message: beginMessage,
-    })
+    const updates: Array<Promise<unknown>> = [
+      retell.llm.update(contractor.retell_llm_id, {
+        general_prompt: compiledPrompt,
+        begin_message: beginMessage,
+      }),
+    ]
+    if (appUrl && contractor.retell_agent_id) {
+      updates.push(
+        retell.agent.update(contractor.retell_agent_id, {
+          webhook_url: `${appUrl}/api/webhooks/retell`,
+          webhook_events: ['call_ended', 'call_analyzed'],
+        })
+      )
+    }
+    await Promise.all(updates)
     // Success: mark synced
     await serviceClient
       .from('contractors')
