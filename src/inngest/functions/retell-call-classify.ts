@@ -298,5 +298,14 @@ export const retellCallClassify = inngest.createFunction(
         data: syncPayload,
       })
     }
+
+    // Step 9: Fire retell/call.notify event (Phase 5 Notifications)
+    // D-01: retell-notify-dispatch handles all notification logic independently.
+    // D-03: Fires after every classification — filtering by intent inside retell-notify-dispatch.
+    // D-04: Idempotency handled by retell-notify-dispatch function's idempotency key.
+    await step.sendEvent('trigger-notify', {
+      name: 'retell/call.notify',
+      data: { callId, contractorId },
+    })
   }
 )
