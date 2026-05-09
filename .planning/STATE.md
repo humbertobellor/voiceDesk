@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: — Revenue-Ready MVP
-current_plan: 6
-status: phase_complete
-stopped_at: Phase 4 complete — Plan 06 done; Google Calendar OAuth routes + connect-calendar page + dashboard banners; human UAT verified; calendar_credentials written with encrypted tokens; Phase 4 (6/6 plans) complete
-last_updated: "2026-05-08T22:00:00Z"
+current_plan: 0
+status: ready_to_execute
+stopped_at: Phase 5 planned — 4 plans in 4 waves; SMS/WhatsApp/Telegram dispatch + Telegram bot linking flow; ready to execute
+last_updated: "2026-05-09T00:00:00Z"
 progress:
   total_phases: 7
   completed_phases: 4
-  total_plans: 26
+  total_plans: 30
   completed_plans: 20
   percent: 77
 ---
@@ -20,19 +20,19 @@ progress:
 
 See: .planning/PROJECT.md (updated 2026-05-03)
 **Core value:** Every missed call is lost revenue — VoiceDesk ensures contractors never lose a booked job to voicemail again.
-**Current focus:** Phase 4 — Scheduling & Lead Capture
+**Current focus:** Phase 5 — Notifications
 
 ---
 
 ## Current Phase
 
-Phase: 4 — Scheduling & Lead Capture
-Status: Complete — All 6 plans complete; human UAT verified; ready for Phase 5
-Started: 2026-05-08
-Completed: 2026-05-08
+Phase: 5 — Notifications
+Status: Ready to execute — 4 plans planned; execute with /gsd-execute-phase 5
+Started: 2026-05-09
+Completed: —
 Target: —
 
-Current Plan: 6 (complete)
+Current Plan: 0 (planning complete)
 
 ---
 
@@ -149,6 +149,6 @@ Current Plan: 6 (complete)
 
 _Use this section to log the last known state before ending a session, so the next session can resume without re-reading everything._
 
-Last session: 2026-05-08T22:00:00Z
-Stopped at: Phase 4 complete — Plan 06 done (Google Calendar OAuth routes + connect-calendar page + dashboard banners); human UAT verified; calendar_credentials row written with encrypted tokens; Phase 4 (6/6 plans) complete
-Resume: /gsd-plan-phase 5 — Phase 5 Notifications (SMS/WhatsApp/Telegram within 60s of call end)
+Last session: 2026-05-09T00:00:00Z
+Stopped at: Phase 5 planned — 4 plans (05-01 through 05-04) in 4 waves; SMS/WhatsApp/Telegram dispatch + Telegram bot linking flow; verification passed after 1 revision (blocker: deep link used auth UID instead of contractor.id — fixed)
+Resume: /gsd-execute-phase 5 — Phase 5 Notifications execution
