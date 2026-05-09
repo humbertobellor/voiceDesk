@@ -162,9 +162,28 @@
   3. A Telegram notification fires for every new lead and emergency to the contractor's linked Telegram account; the contractor can link their account during onboarding via a bot start link without any manual token entry
   4. Emergency notifications via all configured channels carry the word "EMERGENCY" prominently and include the caller's callback number; they arrive within 30 seconds of call end
   5. The `notification_log` table records send status per channel per call — failures are visible and retried by Inngest without duplicate sends
-**Plans:** TBD
-**UI hint:** no
-**Notes:** CRITICAL — Submit WhatsApp Business Account (WABA) registration and all notification templates (emergency alert, new lead, payment failed) in week 1 of the build, in parallel with Phase 1 coding. WABA approval takes 3–7 business days. Blocking launch if started late. Use `Promise.allSettled` for multi-channel sends — one channel failure must not block others.
+**Plans:** 4 plans
+- [ ] 05-01-PLAN.md — npm install (twilio, grammy) + 4 notification lib stubs (sms/whatsapp/telegram/log) + RED test scaffolds + .env.example additions
+- [ ] 05-02-PLAN.md — Implement notification libs: real Twilio SMS, WhatsApp template sends (Content SID constants), grammY Telegram, notification_log DB helpers (GREEN tests)
+- [ ] 05-03-PLAN.md — retell-notify-dispatch Inngest function (Promise.allSettled, D-09 WA fallback, D-12 pending-before-send) + extend retell-call-classify to fire retell/call.notify event
+- [ ] 05-04-PLAN.md — POST /api/webhooks/telegram (grammY, upserts telegram_chat_id) + dashboard Telegram setup banner + register retellNotifyDispatch in /api/inngest/route.ts
+
+**Wave dependency notes:**
+- **Wave 1** (`05-01`): no dependencies — installs packages, creates stubs, creates RED tests, documents env vars
+- **Wave 2** (`05-02`): blocked on 05-01 — implements all four notification lib files (GREEN tests)
+- **Wave 3** (`05-03`): blocked on 05-02 — Inngest dispatch function + classify extension
+- **Wave 4** (`05-04`): blocked on 05-03 — Telegram webhook route + dashboard banner + Inngest registration
+
+**Cross-cutting constraints:**
+- `import 'server-only'` required in all notification lib files and Inngest function
+- `createServiceRoleClient()` for notification_log writes in Inngest function — never in client components
+- TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_WHATSAPP_FROM, TWILIO_FROM_NUMBER, TELEGRAM_BOT_TOKEN — NEVER prefix with NEXT_PUBLIC_
+- WhatsApp Content SIDs stored as TypeScript constants (WHATSAPP_CONTENT_SIDS) for v1 (D-16)
+- `Promise.allSettled` mandatory for multi-channel dispatch (D-08) — one failure must not block others
+- notification_log row written BEFORE send (status='pending'), updated AFTER (status='sent'/'failed') — D-12
+
+**UI hint:** yes (dashboard Telegram setup banner)
+**Notes:** CRITICAL — Submit WhatsApp Business Account (WABA) registration and notification templates (voicedesk_new_lead, voicedesk_emergency) in week 1 of build. WABA approval takes 3–7 business days. Register @VoiceDeskBot with @BotFather before Phase 5 ships. After first Vercel deploy, run: POST https://api.telegram.org/bot{TOKEN}/setWebhook with url={APP_URL}/api/webhooks/telegram to activate the webhook.
 
 ---
 
@@ -208,6 +227,6 @@
 | 2. Provisioning | 5/5 | Complete | 2026-05-07 |
 | 3. Webhook Core | 4/4 | Complete | 2026-05-08 |
 | 4. Scheduling & Lead Capture | 6/6 | Complete | 2026-05-08 |
-| 5. Notifications | 0/TBD | Not started | - |
+| 5. Notifications | 0/4 | Planned | - |
 | 6. Portal UI | 0/TBD | Not started | - |
 | 7. Billing & Onboarding | 0/TBD | Not started | - |
