@@ -58,7 +58,10 @@ bot.command('start', async (ctx) => {
 
 // grammY webhookCallback wraps the bot handler in a standard Web API Request/Response handler
 // D-22: Use 'std/http' adapter for Next.js App Router (Web API Request/Response)
-const handleUpdate = webhookCallback(bot, 'std/http')
+// T-05-04-01: 5th param validates X-Telegram-Bot-Api-Secret-Token header sent by Telegram.
+// Set TELEGRAM_WEBHOOK_SECRET to any strong random string, pass the same value to setWebhook.
+const webhookSecret = process.env.TELEGRAM_WEBHOOK_SECRET ?? ''
+const handleUpdate = webhookCallback(bot, 'std/http', undefined, undefined, webhookSecret)
 
 export async function POST(req: Request) {
   // Guard missing bot token — return 503 so Telegram retries later
