@@ -1,0 +1,77 @@
+// src/app/api/webhooks/telegram/route.ts
+// Telegram bot webhook handler for @VoiceDeskBot.
+// D-22: grammY webhook mode (not polling — serverless compatible).
+// D-19: Processes /start <contractor_uuid> messages from Telegram deep link.
+// D-20: Upserts telegram_chat_id — re-linking always overwrites.
+// Security: grammY webhookCallback validates the secret_token header set via setWebhook registration.
+// Note: Unlike retell/route.ts, this is synchronous — grammY handles the response inline (no after() needed).
+import 'server-only'
+import { Bot, webhookCallback } from 'grammy'
+import { createServiceRoleClient } from '@/lib/supabase/service'
+
+// Validate env var at module load — fails fast before any request is processed
+const botToken = process.env.TELEGRAM_BOT_TOKEN
+if (!botToken) {
+  console.error('[webhook/telegram] TELEGRAM_BOT_TOKEN is not set — bot will not function')
+}
+
+const bot = new Bot(botToken ?? 'placeholder')
+
+// D-19: Handle /start <contractor_uuid> — sent by Telegram when contractor clicks the deep link
+// Deep link format: https://t.me/VoiceDeskBot?start=<contractor_uuid>
+// Telegram delivers this as message.text = "/start <contractor_uuid>"
+bot.command('start', async (ctx) => {
+  const text = ctx.message?.text ?? ''
+  // Extract the payload after "/start " (the contractor UUID)
+  const parts = text.split(' ')
+  const contractorId = parts[1]?.trim()
+
+  if (!contractorId) {
+    await ctx.reply('❌ Invalid link. Please use the setup link from your VoiceDesk dashboard.')
+    return
+  }
+
+  const chatId = ctx.chat.id.toString()
+
+  // D-20: Upsert telegram_chat_id — re-linking always overwrites; no error if already linked
+  const db = createServiceRoleClient()
+  const { error } = await db
+    .from('notification_settings')
+    .upsert(
+      {
+        contractor_id: contractorId,
+        telegram_chat_id: chatId,
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: 'contractor_id' }
+    )
+
+  if (error) {
+    console.error('[webhook/telegram] upsert failed for contractorId:', contractorId, error.message)
+    await ctx.reply('❌ Connection failed. Please try the link again or contact support.')
+    return
+  }
+
+  // D-19: Confirmation message (per 05-CONTEXT.md specifics section)
+  await ctx.reply('✅ VoiceDesk connected. You will receive call alerts here.')
+})
+
+// grammY webhookCallback wraps the bot handler in a standard Web API Request/Response handler
+// D-22: Use 'std/http' adapter for Next.js App Router (Web API Request/Response)
+const handleUpdate = webhookCallback(bot, 'std/http')
+
+export async function POST(req: Request) {
+  // Guard missing bot token — return 503 so Telegram retries later
+  if (!botToken) {
+    console.error('[webhook/telegram] cannot process update — TELEGRAM_BOT_TOKEN not set')
+    return new Response('Service Unavailable', { status: 503 })
+  }
+
+  try {
+    return await handleUpdate(req)
+  } catch (err) {
+    console.error('[webhook/telegram] handleUpdate error:', err instanceof Error ? err.message : err)
+    // Return 200 to prevent Telegram from retrying malformed updates indefinitely
+    return new Response('OK', { status: 200 })
+  }
+}
