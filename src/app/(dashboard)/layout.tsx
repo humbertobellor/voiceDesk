@@ -5,6 +5,8 @@ import { createSupabaseServer } from '@/lib/supabase/server'
 import { Sidebar } from '@/components/dashboard/Sidebar'
 import { SetupBanner } from '@/components/dashboard/SetupBanner'
 import { BottomTabBar } from '@/components/dashboard/BottomTabBar'
+import { DashboardProviders } from '@/components/dashboard/DashboardProviders'
+import { OnboardingWizardWrapper } from '@/components/onboarding/OnboardingWizardWrapper'
 
 export default async function DashboardLayout({
   children,
@@ -25,15 +27,19 @@ export default async function DashboardLayout({
   if (!contractor?.phone_number) redirect('/setup/phone')
 
   return (
-    <div className="min-h-screen bg-[#1E293B]">
-      <Sidebar businessName={contractor.business_name} userEmail={user.email} />
-      <main className="md:ml-60 min-h-screen pb-14 md:pb-0">
-        <div className="p-4 md:p-8">
-          <SetupBanner contractorName={contractor.business_name} />
-          {children}
-        </div>
-      </main>
-      <BottomTabBar />
-    </div>
+    <DashboardProviders contractorId={contractor.id}>
+      <div className="min-h-screen bg-[#1E293B]">
+        <Sidebar businessName={contractor.business_name} userEmail={user.email} />
+        <main className="md:ml-60 min-h-screen pb-14 md:pb-0">
+          <div className="p-4 md:p-8">
+            <SetupBanner contractorName={contractor.business_name} />
+            {children}
+          </div>
+        </main>
+        <BottomTabBar />
+      </div>
+      {/* Onboarding wizard for non-active subscriptions */}
+      <OnboardingWizardWrapper contractorId={contractor.id} />
+    </DashboardProviders>
   )
 }
