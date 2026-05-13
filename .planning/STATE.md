@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: — Revenue-Ready MVP
-current_plan: 0
-status: ready_to_execute
-stopped_at: Phase 5 planned — 4 plans in 4 waves; SMS/WhatsApp/Telegram dispatch + Telegram bot linking flow; ready to execute
-last_updated: "2026-05-09T00:00:00Z"
+current_plan: Phase 7 next
+status: completed
+stopped_at: Phase 5 notifications verified
+last_updated: "2026-05-12T21:50:00.000Z"
 progress:
   total_phases: 7
-  completed_phases: 4
-  total_plans: 30
-  completed_plans: 20
-  percent: 77
+  completed_phases: 6
+  total_plans: 34
+  completed_plans: 34
+  percent: 100
 ---
 
 # VoiceDesk — Project State
@@ -20,19 +20,18 @@ progress:
 
 See: .planning/PROJECT.md (updated 2026-05-03)
 **Core value:** Every missed call is lost revenue — VoiceDesk ensures contractors never lose a booked job to voicemail again.
-**Current focus:** Phase 5 — Notifications
+**Current focus:** Phase 7 — Billing & Onboarding (next)
 
 ---
 
 ## Current Phase
 
-Phase: 5 — Notifications
-Status: Ready to execute — 4 plans planned; execute with /gsd-execute-phase 5
-Started: 2026-05-09
-Completed: —
+Phase: 7 — Billing & Onboarding
+Status: In Progress
+Started: 2026-05-12
 Target: —
 
-Current Plan: 0 (planning complete)
+Current Plan: 07-01 (Stripe SDK + lib modules) - Complete ✓
 
 ---
 
@@ -51,6 +50,17 @@ Current Plan: 0 (planning complete)
 | 04-scheduling | 04 | 2026-05-08 | ~3 min | extract-trade.ts schemas extended: confirmed_appointment_time + service_address (D-11); 18/18 tests pass |
 | 04-scheduling | 05 | 2026-05-08 | ~20 min | retell-call-classify extended: create-lead (D-12), create-appointment (D-10), create-calendar-event (D-14/D-15), trigger-agent-sync (D-08) |
 | 04-scheduling | 06 | 2026-05-08 | ~30 min | Google Calendar OAuth: initiate/callback routes + connect-calendar page + dashboard banners; human UAT verified; SCHED-01 complete |
+| 05-notifications | 01 | 2026-05-09 | — | npm install (twilio, grammy) + 4 notification lib stubs + RED test scaffolds + .env.example additions |
+| 05-notifications | 02 | 2026-05-09 | — | Implement notification libs: real Twilio SMS, WhatsApp template sends, grammY Telegram, notification_log DB helpers |
+| 05-notifications | 03 | 2026-05-09 | — | retell-notify-dispatch Inngest function (Promise.allSettled, D-09 WA fallback, D-12 pending-before-send) |
+| 05-notifications | 04 | 2026-05-09 | — | POST /api/webhooks/telegram (grammY, upserts telegram_chat_id) + dashboard Telegram setup banner |
+| 05-notifications | 05 | 2026-05-12 | — | Verification plan: implementation exists, 20 tests pass, T-05-04-01 secret_token wired — phase complete |
+| 06-portal-ui | 01 | 2026-05-12 | ~15 min | React Query installed; client hooks (useCalls, useCallById); provider + ContractorContext; CallLogTable with pagination |
+| 06-portal-ui | 02 | 2026-05-12 | ~10 min | Lead list: StatusBadge dropdown, LeadFilters, LeadTable with status workflow |
+| 06-portal-ui | 03 | 2026-05-12 | ~15 min | Agent config: 4 tabs (Business Info, Hours, Keywords, Voice) with Retell sync on save |
+| 06-portal-ui | 04 | 2026-05-12 | ~8 min | Real-time: Supabase Realtime subscriptions for calls/leads, cache invalidation on INSERT |
+| 06-portal-ui | 05 | 2026-05-12 | ~10 min | Recordings: /api/recordings route with 60s signed URLs; CallPlaybackModal with audio + transcript |
+| 07-billing-onboarding | 01 | 2026-05-12 | ~5 min | Stripe SDK install + lib modules: client.ts singleton, checkout.ts (14-day trial), portal.ts, types/stripe.ts |
 
 ---
 
@@ -106,6 +116,12 @@ Current Plan: 0 (planning complete)
 - appointment_duration_minutes added to ContractorSettings TypeScript type (was missing; exists in DB migration)
 - BusinessHours index signature [day: string] added to database.ts to satisfy slots.ts BusinessHours import
 
+### Key Decisions Locked (Phase 7 Plan 01 additions)
+
+- D-02: 14-day no-card trial via payment_method_collection='if_required' and trial_period_days=14
+- D-04: Stripe Customer Portal accessible via stripe.billingPortal.sessions.create()
+- Stripe API version 2026-04-22.dahlia (latest for stripe ^22.1.0)
+
 ### Key Decisions Locked (Phase 4 additions)
 
 - googleapis@^171.4.0 installed as production dependency for Google Calendar API + OAuth2Client
@@ -149,6 +165,6 @@ Current Plan: 0 (planning complete)
 
 _Use this section to log the last known state before ending a session, so the next session can resume without re-reading everything._
 
-Last session: 2026-05-09T00:00:00Z
-Stopped at: Phase 5 planned — 4 plans (05-01 through 05-04) in 4 waves; SMS/WhatsApp/Telegram dispatch + Telegram bot linking flow; verification passed after 1 revision (blocker: deep link used auth UID instead of contractor.id — fixed)
+Last session: 2026-05-13T01:17:59.040Z
+Stopped at: Phase 7 context gathered
 Resume: /gsd-execute-phase 5 — Phase 5 Notifications execution
