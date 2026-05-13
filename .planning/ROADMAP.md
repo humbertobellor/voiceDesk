@@ -13,8 +13,8 @@
 - [x] **Phase 2: Provisioning** - Twilio number provisioning and Retell agent creation per contractor ✓ 2026-05-07
 - [x] **Phase 3: Webhook Core** - Retell webhook handler, call persistence, and intent classification ✓ 2026-05-08
 - [x] **Phase 4: Scheduling & Lead Capture** - Google Calendar OAuth, availability windows, appointment booking, and lead records ✓ 2026-05-08
-- [ ] **Phase 5: Notifications** - SMS, WhatsApp, and Telegram multi-channel dispatch for all call outcomes
-- [ ] **Phase 6: Portal UI** - Contractor dashboard: call log, recordings, lead list, agent configuration, real-time updates
+- [x] **Phase 5: Notifications** - SMS, WhatsApp, and Telegram multi-channel dispatch for all call outcomes ✓ 2026-05-12
+- [x] **Phase 6: Portal UI** - Contractor dashboard: call log, recordings, lead list, agent configuration, real-time updates ✓ 2026-05-12
 - [ ] **Phase 7: Billing & Onboarding** - Stripe Checkout, subscription gating, onboarding wizard with mandatory test call gate
 
 ---
@@ -162,17 +162,19 @@
   3. A Telegram notification fires for every new lead and emergency to the contractor's linked Telegram account; the contractor can link their account during onboarding via a bot start link without any manual token entry
   4. Emergency notifications via all configured channels carry the word "EMERGENCY" prominently and include the caller's callback number; they arrive within 30 seconds of call end
   5. The `notification_log` table records send status per channel per call — failures are visible and retried by Inngest without duplicate sends
-**Plans:** 4 plans
-- [ ] 05-01-PLAN.md — npm install (twilio, grammy) + 4 notification lib stubs (sms/whatsapp/telegram/log) + RED test scaffolds + .env.example additions
-- [ ] 05-02-PLAN.md — Implement notification libs: real Twilio SMS, WhatsApp template sends (Content SID constants), grammY Telegram, notification_log DB helpers (GREEN tests)
-- [ ] 05-03-PLAN.md — retell-notify-dispatch Inngest function (Promise.allSettled, D-09 WA fallback, D-12 pending-before-send) + extend retell-call-classify to fire retell/call.notify event
-- [ ] 05-04-PLAN.md — POST /api/webhooks/telegram (grammY, upserts telegram_chat_id) + dashboard Telegram setup banner + register retellNotifyDispatch in /api/inngest/route.ts
+**Plans:** 5 plans
+- [x] 05-01-PLAN.md — npm install (twilio, grammy) + 4 notification lib stubs (sms/whatsapp/telegram/log) + RED test scaffolds + .env.example additions ✓ 2026-05-09
+- [x] 05-02-PLAN.md — Implement notification libs: real Twilio SMS, WhatsApp template sends (Content SID constants), grammY Telegram, notification_log DB helpers (GREEN tests) ✓ 2026-05-09
+- [x] 05-03-PLAN.md — retell-notify-dispatch Inngest function (Promise.allSettled, D-09 WA fallback, D-12 pending-before-send) + extend retell-call-classify to fire retell/call.notify event ✓ 2026-05-09
+- [x] 05-04-PLAN.md — POST /api/webhooks/telegram (grammY, upserts telegram_chat_id) + dashboard Telegram setup banner + register retellNotifyDispatch in /api/inngest/route.ts ✓ 2026-05-09
+- [ ] 05-05-PLAN.md — Phase 5 verification: confirm all implementations exist, verify Telegram secret_token validation wired (T-05-04-01), verify 20 tests passing, document D-07 caller_name deferral
 
 **Wave dependency notes:**
 - **Wave 1** (`05-01`): no dependencies — installs packages, creates stubs, creates RED tests, documents env vars
 - **Wave 2** (`05-02`): blocked on 05-01 — implements all four notification lib files (GREEN tests)
 - **Wave 3** (`05-03`): blocked on 05-02 — Inngest dispatch function + classify extension
 - **Wave 4** (`05-04`): blocked on 05-03 — Telegram webhook route + dashboard banner + Inngest registration
+- **Wave 5** (`05-05`): verification plan — confirms all implementations and resolves verification gaps
 
 **Cross-cutting constraints:**
 - `import 'server-only'` required in all notification lib files and Inngest function
@@ -197,7 +199,27 @@
   3. The lead list shows all leads with contact details, issue description, and appointment status; contractor can change a lead's status to Won, Lost, or Pending and the change persists
   4. The agent configuration form lets the contractor update business name, services offered, service area, emergency keywords, after-hours message, and agent voice — and saving the form updates the live Retell agent system prompt
   5. The dashboard updates in real time (via Supabase Realtime subscription) when a new call arrives or completes, without a page refresh — new calls appear at the top of the call log within 10 seconds of call end
-**Plans:** TBD
+**Plans:** 5 plans
+- [x] 06-01-PLAN.md — React Query setup + call log table with pagination ✓ 2026-05-12
+- [x] 06-02-PLAN.md — Lead list with status workflow and filtering ✓ 2026-05-12
+- [x] 06-03-PLAN.md — Agent configuration tabs (Business Info | Hours | Keywords | Voice) with async Retell sync ✓ 2026-05-12
+- [x] 06-04-PLAN.md — Supabase Realtime integration for live dashboard updates ✓ 2026-05-12
+- [x] 06-05-PLAN.md — Call playback modal with 60s signed URL audio + transcript ✓ 2026-05-12
+
+**Wave dependency notes:**
+- **Wave 1** (`06-01`): no dependencies — installs React Query, builds call log table
+- **Wave 2** (`06-02`) *(blocked on 06-01)*: lead list table with status dropdown and filters
+- **Wave 3** (`06-03`) *(blocked on 06-02)*: agent config tabs with async Retell sync
+- **Wave 4** (`06-04`) *(blocked on 06-01 + 06-02)*: Supabase Realtime subscription for live updates
+- **Wave 5** (`06-05`) *(blocked on 06-04)*: call playback modal with signed URL audio + transcript
+
+**Cross-cutting constraints:**
+- `@tanstack/react-query` required for data fetching and cache management
+- Supabase Realtime subscriptions must filter by contractor_id to prevent cross-tenant data exposure
+- Recording signed URLs must have 60-second TTL — never expose raw storage URLs
+- Service role key must never reach the client — all signed URLs generated server-side
+- Retell agent sync triggered via Inngest after settings save (non-blocking)
+
 **UI hint:** yes
 **Notes:** Recordings are stored in a private Supabase Storage bucket. URLs must be server-generated signed URLs with 60-second TTL — never expose the storage URL directly to the browser. Service role key must never reach the client.
 
@@ -213,7 +235,13 @@
   3. The wizard does not advance to "go live" status until an inbound test call is detected and logged for the contractor's VoiceDesk number — the portal polls every 5 seconds and auto-advances on detection
   4. A contractor with a failed payment receives a WhatsApp/SMS alert, and their Retell agent is deactivated within 72 hours of the final failed Stripe retry — they cannot incur Retell/Twilio costs on an unpaid subscription
   5. A contractor can access the Stripe Customer Portal from account settings to change plan, update payment method, or cancel — without contacting support
-**Plans:** TBD
+**Plans:** 5 plans
+- [x] 07-01-PLAN.md — Stripe SDK install + lib modules (client, checkout, portal) ✓ 2026-05-12
+- [ ] 07-02-PLAN.md — Stripe webhook handler (checkout.completed, payment_failed, subscription.updated)
+- [ ] 07-03-PLAN.md — Onboarding wizard modal with 5 steps (Agent Config → Calendar → Phone → Forwarding → Test Call)
+- [ ] 07-04-PLAN.md — Test call verification via Supabase Realtime + 5s polling fallback
+- [ ] 07-05-PLAN.md — Payment failure Inngest function (deactivation + notification) + Customer Portal access
+
 **UI hint:** yes
 **Notes:** Check `subscription_status` from Supabase on every Retell agent API request — not just at login. Handle `invoice.payment_failed` Stripe webhook immediately. Stripe trial requires card-on-file (reduces abuse, matches demographics). WhatsApp opt-in consent checkbox and timestamp must be captured during onboarding for Meta compliance.
 
@@ -227,6 +255,6 @@
 | 2. Provisioning | 5/5 | Complete | 2026-05-07 |
 | 3. Webhook Core | 4/4 | Complete | 2026-05-08 |
 | 4. Scheduling & Lead Capture | 6/6 | Complete | 2026-05-08 |
-| 5. Notifications | 0/4 | Planned | - |
-| 6. Portal UI | 0/TBD | Not started | - |
-| 7. Billing & Onboarding | 0/TBD | Not started | - |
+| 5. Notifications | 5/5 | Complete | 2026-05-12 |
+| 6. Portal UI | 5/5 | Complete | 2026-05-12 |
+| 7. Billing & Onboarding | 1/5 | In Progress | 2026-05-12 |
