@@ -9,6 +9,7 @@ import { retellAgentSync } from '@/inngest/functions/retell-agent-sync'
 import { retellCallClassify } from '@/inngest/functions/retell-call-classify'
 import { retellAnalysisTimeout } from '@/inngest/functions/retell-analysis-timeout'
 import { retellNotifyDispatch } from '@/inngest/functions/retell-notify-dispatch'
+import { stripePaymentFailureHandler } from '@/inngest/functions/stripe-payment-failure'
 
 export const { GET, POST, PUT } = serve({
   client: inngest,
@@ -17,5 +18,6 @@ export const { GET, POST, PUT } = serve({
     retellCallClassify,
     retellAnalysisTimeout,
     retellNotifyDispatch,
+    stripePaymentFailureHandler,
   ],
 })
