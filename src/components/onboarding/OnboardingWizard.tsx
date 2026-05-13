@@ -31,6 +31,10 @@ export function OnboardingWizard({ contractorId, onComplete }: OnboardingWizardP
   const [isOpen, setIsOpen] = useState(true)
   const [currentStep, setCurrentStep] = useState(0)
   const [completedSteps, setCompletedSteps] = useState<Set<number>>(new Set())
+  const [testCallVerified, setTestCallVerified] = useState(false)
+
+  // FIXED: canComplete check requires test call verification on the final step
+  const canComplete = currentStep === STEPS.length - 1 ? testCallVerified : true
 
   const canProceed = (stepIndex: number) => {
     // Can always go back, can go forward if current step is completed
@@ -67,7 +71,7 @@ export function OnboardingWizard({ contractorId, onComplete }: OnboardingWizardP
       case 3:
         return <CallForwardingStep contractorId={contractorId} onComplete={() => setCompletedSteps(prev => new Set(prev).add(3))} />
       case 4:
-        return <TestCallStep contractorId={contractorId} onComplete={handleComplete} />
+        return <TestCallStep contractorId={contractorId} onComplete={handleComplete} onVerified={() => setTestCallVerified(true)} />
       default:
         return null
     }
@@ -140,7 +144,12 @@ export function OnboardingWizard({ contractorId, onComplete }: OnboardingWizardP
             {currentStep === STEPS.length - 1 ? (
               <button
                 onClick={handleComplete}
-                className="flex items-center gap-2 px-6 py-2 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-lg transition-colors"
+                disabled={!canComplete}
+                className={`flex items-center gap-2 px-6 py-2 text-sm font-medium rounded-lg transition-colors ${
+                  canComplete
+                    ? 'text-white bg-green-600 hover:bg-green-700'
+                    : 'text-gray-400 bg-gray-600 cursor-not-allowed'
+                }`}
               >
                 Complete Setup
                 <Check className="w-4 h-4" />

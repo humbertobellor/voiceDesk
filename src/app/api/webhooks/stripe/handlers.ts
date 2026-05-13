@@ -120,15 +120,18 @@ export async function handlePaymentFailed(invoice: Invoice) {
   }
 
   const contractorId = contractor.id
-  const subscriptionId = invoice.subscription as string
+  // invoice.subscription is the subscription ID string (not a nested object in recent Stripe API)
+  const subscriptionId = (invoice as any).subscription ?? invoice.id
 
   // Trigger Inngest event for deactivation + notification
   // This triggers Plan 5's Inngest function for D-10 (immediate deactivation) + D-11 (alert)
+  // FIXED: Align with stripe-payment-failure.ts expected fields
   await inngest.send({
     name: 'stripe/payment.failed',
     data: {
       contractorId,
-      customerId,
+      stripeCustomerId: customerId, // Renamed to match Inngest handler
+      failureReason: invoice.hosted_invoice_url ?? undefined, // Added failure reason
       subscriptionId,
       invoiceId: invoice.id,
     },

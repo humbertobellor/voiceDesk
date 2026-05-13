@@ -3,21 +3,30 @@
 import { useState, useEffect } from 'react'
 import { Phone, CheckCircle, Loader2, PhoneIncoming, Wifi, WifiOff } from 'lucide-react'
 import { useTestCallVerification } from '@/lib/realtime/testCallVerification'
+import { markContractorLive } from '@/app/actions/onboarding'
 
 interface TestCallStepProps {
   contractorId: string
   voiceDeskNumber?: string
   onComplete?: () => void
+  onVerified?: () => void // Callback when test call is detected
 }
 
-export function TestCallStep({ contractorId, voiceDeskNumber = '+1 (555) 123-4567', onComplete }: TestCallStepProps) {
+export function TestCallStep({ contractorId, voiceDeskNumber = '+1 (555) 123-4567', onComplete, onVerified }: TestCallStepProps) {
   const [status, setStatus] = useState<'waiting' | 'detecting' | 'verified'>('waiting')
 
   // Use Supabase Realtime subscription for test call detection
   const { isConnected, testCallDetected, subscriptionStatus } = useTestCallVerification({
     contractorId,
-    onTestCallDetected: (callId) => {
+    onTestCallDetected: async (callId) => {
       setStatus('verified')
+      onVerified?.() // Notify parent component that verification is complete
+
+      // FIXED: Mark contractor as live in database
+      const result = await markContractorLive(contractorId)
+      if (!result.ok) {
+        console.error('[TestCallStep] failed to mark contractor as live:', result.error)
+      }
     }
   })
 
