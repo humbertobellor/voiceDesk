@@ -1,22 +1,48 @@
-import { PhoneCall } from 'lucide-react'
-import { EmptyState } from '@/components/dashboard/EmptyState'
+'use client'
+
+import { useState } from 'react'
+import { useContractor } from '@/contexts/ContractorContext'
+import { useCallsSubscription } from '@/lib/realtime/callsSubscription'
+import { CallLogTable } from '@/components/calls/CallLogTable'
+import { CallPlaybackModal } from '@/components/calls/CallPlaybackModal'
 
 export const metadata = { title: 'Calls — VoiceDesk' }
 
 export default function CallsPage() {
+  const { contractorId } = useContractor()
+  const [selectedCallId, setSelectedCallId] = useState<string | null>(null)
+  const [realtimeStatus, setRealtimeStatus] = useState<'connecting' | 'connected' | 'disconnected'>('connecting')
+
+  // Set up real-time subscription
+  useCallsSubscription(contractorId ?? '', (callId) => {
+    // New call arrived - could show a notification
+    console.log('New call:', callId)
+  })
+
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-xl font-semibold text-[#F8FAFC] mb-1">Calls</h1>
-        <p className="text-sm text-[#94A3B8]">Recent inbound calls</p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-xl font-semibold text-[#F8FAFC] mb-1">Calls</h1>
+            <p className="text-sm text-[#94A3B8]">Recent inbound calls</p>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-green-500"></span>
+            <span className="text-xs text-gray-400">Live</span>
+          </div>
+        </div>
         <div className="border-b border-[#334155] mt-6" />
       </div>
-      <EmptyState
-        icon={PhoneCall}
-        heading="No calls yet"
-        body="Your AI receptionist isn't active yet. Complete setup to start answering calls."
-        cta={{ label: 'Complete Setup', href: '/settings/agent' }}
-      />
+
+      <CallLogTable onCallClick={(callId) => setSelectedCallId(callId)} />
+
+      {selectedCallId && (
+        <CallPlaybackModal
+          callId={selectedCallId}
+          onClose={() => setSelectedCallId(null)}
+        />
+      )}
     </div>
   )
 }

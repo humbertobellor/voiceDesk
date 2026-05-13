@@ -15,7 +15,7 @@
 - [x] **Phase 4: Scheduling & Lead Capture** - Google Calendar OAuth, availability windows, appointment booking, and lead records ✓ 2026-05-08
 - [x] **Phase 5: Notifications** - SMS, WhatsApp, and Telegram multi-channel dispatch for all call outcomes ✓ 2026-05-12
 - [x] **Phase 6: Portal UI** - Contractor dashboard: call log, recordings, lead list, agent configuration, real-time updates ✓ 2026-05-12
-- [ ] **Phase 7: Billing & Onboarding** - Stripe Checkout, subscription gating, onboarding wizard with mandatory test call gate
+- [x] **Phase 7: Billing & Onboarding** - Stripe Checkout, subscription gating, onboarding wizard with mandatory test call gate ✓ 2026-05-12
 
 ---
 
@@ -257,4 +257,4 @@
 | 4. Scheduling & Lead Capture | 6/6 | Complete | 2026-05-08 |
 | 5. Notifications | 5/5 | Complete | 2026-05-12 |
 | 6. Portal UI | 5/5 | Complete | 2026-05-12 |
-| 7. Billing & Onboarding | 1/5 | In Progress | 2026-05-12 |
+| 7. Billing & Onboarding | 5/5 | Complete | 2026-05-12 |

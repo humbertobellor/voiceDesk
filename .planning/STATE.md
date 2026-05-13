@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: — Revenue-Ready MVP
-current_plan: Phase 7 next
+current_plan: All 5 plans complete
 status: completed
-stopped_at: Phase 5 notifications verified
-last_updated: "2026-05-12T21:50:00.000Z"
+stopped_at: Phase 7 context gathered
+last_updated: "2026-05-13T03:48:12.291Z"
 progress:
   total_phases: 7
   completed_phases: 6
-  total_plans: 34
-  completed_plans: 34
-  percent: 100
+  total_plans: 36
+  completed_plans: 35
+  percent: 97
 ---
 
 # VoiceDesk — Project State
@@ -27,11 +27,12 @@ See: .planning/PROJECT.md (updated 2026-05-03)
 ## Current Phase
 
 Phase: 7 — Billing & Onboarding
-Status: In Progress
+Status: Complete ✓
 Started: 2026-05-12
+Completed: 2026-05-12
 Target: —
 
-Current Plan: 07-01 (Stripe SDK + lib modules) - Complete ✓
+Current Plan: All 5 plans complete
 
 ---
 
@@ -61,6 +62,10 @@ Current Plan: 07-01 (Stripe SDK + lib modules) - Complete ✓
 | 06-portal-ui | 04 | 2026-05-12 | ~8 min | Real-time: Supabase Realtime subscriptions for calls/leads, cache invalidation on INSERT |
 | 06-portal-ui | 05 | 2026-05-12 | ~10 min | Recordings: /api/recordings route with 60s signed URLs; CallPlaybackModal with audio + transcript |
 | 07-billing-onboarding | 01 | 2026-05-12 | ~5 min | Stripe SDK install + lib modules: client.ts singleton, checkout.ts (14-day trial), portal.ts, types/stripe.ts |
+| 07-billing-onboarding | 02 | 2026-05-12 | — | Stripe webhook handler: route.ts + handlers.ts (checkout.completed, payment_failed, subscription.updated), idempotency via webhook_events |
+| 07-billing-onboarding | 03 | 2026-05-12 | ~15 min | Onboarding wizard: 5-step modal (Agent Config → Calendar → Phone → Forwarding → Go Live) with tab navigation |
+| 07-billing-onboarding | 04 | 2026-05-12 | — | Test call verification: Supabase Realtime subscription to calls table, auto-advance on call detection |
+| 07-billing-onboarding | 05 | 2026-05-12 | ~5 min | Payment failure handling: Inngest function for deactivation + SMS/WhatsApp alert + Customer Portal button in settings |
 
 ---
 
