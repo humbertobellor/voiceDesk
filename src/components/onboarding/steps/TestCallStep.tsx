@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Phone, CheckCircle, Loader2, PhoneIncoming } from 'lucide-react'
+import { Phone, CheckCircle, Loader2, PhoneIncoming, Wifi, WifiOff } from 'lucide-react'
+import { useTestCallVerification } from '@/lib/realtime/testCallVerification'
 
 interface TestCallStepProps {
   contractorId: string
@@ -11,33 +12,27 @@ interface TestCallStepProps {
 
 export function TestCallStep({ contractorId, voiceDeskNumber = '+1 (555) 123-4567', onComplete }: TestCallStepProps) {
   const [status, setStatus] = useState<'waiting' | 'detecting' | 'verified'>('waiting')
-  const [polling, setPolling] = useState(false)
 
-  // Poll for test call verification (stub - full Realtime integration in Plan 4)
-  useEffect(() => {
-    if (status === 'detecting') {
-      const interval = setInterval(async () => {
-        try {
-          const response = await fetch(`/api/test-call/verify?contractor_id=${contractorId}`)
-          if (response.ok) {
-            const data = await response.json()
-            if (data.verified) {
-              setStatus('verified')
-              clearInterval(interval)
-            }
-          }
-        } catch (error) {
-          // Continue polling
-        }
-      }, 3000)
-
-      return () => clearInterval(interval)
+  // Use Supabase Realtime subscription for test call detection
+  const { isConnected, testCallDetected, subscriptionStatus } = useTestCallVerification({
+    contractorId,
+    onTestCallDetected: (callId) => {
+      setStatus('verified')
     }
-  }, [status, contractorId])
+  })
+
+  // Auto-advance after verification
+  useEffect(() => {
+    if (status === 'verified' && onComplete) {
+      const timer = setTimeout(() => {
+        onComplete()
+      }, 1500)
+      return () => clearTimeout(timer)
+    }
+  }, [status, onComplete])
 
   const handleStartTest = () => {
     setStatus('detecting')
-    setPolling(true)
   }
 
   return (
@@ -72,11 +67,25 @@ export function TestCallStep({ contractorId, voiceDeskNumber = '+1 (555) 123-456
         <div className="p-6 bg-gray-800/50 rounded-xl border border-gray-700">
           <div className="flex items-center gap-4">
             <Loader2 className="w-6 h-6 text-blue-400 animate-spin" />
-            <div>
-              <p className="text-white font-medium">Waiting for Test Call...</p>
+            <div className="flex-1">
+              <p className="text-white font-medium">Listening for calls...</p>
               <p className="text-sm text-gray-400 mt-1">
                 Call your VoiceDesk number now. We'll detect when the call connects.
               </p>
+            </div>
+            {/* Connection status indicator */}
+            <div className="flex items-center gap-2">
+              {isConnected ? (
+                <>
+                  <Wifi className="w-4 h-4 text-green-400" />
+                  <span className="text-xs text-green-400">Realtime</span>
+                </>
+              ) : (
+                <>
+                  <WifiOff className="w-4 h-4 text-yellow-400" />
+                  <span className="text-xs text-yellow-400">Polling</span>
+                </>
+              )}
             </div>
           </div>
 
@@ -109,14 +118,6 @@ export function TestCallStep({ contractorId, voiceDeskNumber = '+1 (555) 123-456
           >
             I've Called - Detect Test Call
           </button>
-
-          {/* Placeholder Note */}
-          <div className="p-4 bg-gray-800/30 rounded-lg border border-gray-700">
-            <p className="text-sm text-gray-400">
-              <strong>Note:</strong> Full Realtime call detection will be implemented in Plan 4.
-              This is a UI stub to guide the onboarding flow.
-            </p>
-          </div>
         </div>
       )}
     </div>
