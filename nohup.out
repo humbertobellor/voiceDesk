@@ -1,0 +1,123 @@
+
+> voicedesk@0.1.0 dev
+> next dev
+
+▲ Next.js 16.2.4 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.0.101:3000
+- Environments: .env.local
+✓ Ready in 495ms
+⚠ `experimental.typedRoutes` has been moved to `typedRoutes`. Please update your next.config.ts file accordingly.
+⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of /Users/humbertobello/package-lock.json as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles: 
+   * /Users/humbertobello/development/ai/claude-code/voiceDesk/package-lock.json
+
+- Experiments (use with caution):
+  ✓ typedRoutes
+
+ GET /dashboard/connect-calendar 404 in 583ms (next.js: 215ms, application-code: 369ms)
+ GET /settings/agent 200 in 1890ms (next.js: 424ms, application-code: 1466ms)
+ GET /dashboard/connect-calendar 404 in 49ms (next.js: 5ms, application-code: 45ms)
+ GET /dashboard 200 in 695ms (next.js: 26ms, application-code: 669ms)
+ GET /settings/agent 200 in 689ms (next.js: 4ms, application-code: 685ms)
+ GET /leads 200 in 51ms (next.js: 26ms, application-code: 25ms)
+ GET /calls 200 in 45ms (next.js: 22ms, application-code: 24ms)
+ GET /settings/agent 200 in 843ms (next.js: 3ms, application-code: 840ms)
+ POST /settings/agent 200 in 354ms (next.js: 3ms, application-code: 351ms)
+  └─ ƒ updateLanguages({"supported_languages":["es","en"]}) in 324ms src/app/actions/settings.ts
+ GET /settings/agent 200 in 427ms (next.js: 3ms, application-code: 425ms)
+ GET /settings/agent 200 in 410ms (next.js: 2ms, application-code: 407ms)
+ GET /settings/agent 200 in 601ms (next.js: 2ms, application-code: 598ms)
+ GET /settings/agent 200 in 457ms (next.js: 3ms, application-code: 454ms)
+[?25h
+
+> voicedesk@0.1.0 dev
+> next dev
+
+▲ Next.js 16.2.4 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.0.101:3000
+- Environments: .env.local
+✓ Ready in 457ms
+⚠ `experimental.typedRoutes` has been moved to `typedRoutes`. Please update your next.config.ts file accordingly.
+⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of /Users/humbertobello/package-lock.json as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles: 
+   * /Users/humbertobello/development/ai/claude-code/voiceDesk/package-lock.json
+
+- Experiments (use with caution):
+  ✓ typedRoutes
+
+ GET /settings/agent 200 in 2.5s (next.js: 679ms, application-code: 1808ms)
+ GET /settings/agent 200 in 597ms (next.js: 4ms, application-code: 593ms)
+ GET /dashboard/connect-calendar 404 in 72ms (next.js: 27ms, application-code: 45ms)
+ GET /auth/login 200 in 179ms (next.js: 22ms, application-code: 157ms)
+ GET /dashboard/connect-calendar 404 in 47ms (next.js: 4ms, application-code: 43ms)
+ GET /dashboard/connect-calendar 404 in 38ms (next.js: 4ms, application-code: 34ms)
+ GET /connect-calendar 307 in 1409ms (next.js: 1267ms, application-code: 142ms)
+ GET /auth/login 200 in 66ms (next.js: 2ms, application-code: 64ms)
+ GET /connect-calendar 200 in 964ms (next.js: 3ms, application-code: 961ms)
+○ Compiling /api/auth/google/initiate ...
+⨯ Error: Google OAuth env vars missing: GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIRECT_URI
+    at createOAuth2Client (src/lib/google/client.ts:23:11)
+    at GET (src/app/api/auth/google/initiate/route.ts:14:42)
+  21 |   const redirectUri = process.env.GOOGLE_REDIRECT_URI
+  22 |   if (!clientId || !clientSecret || !redirectUri) {
+> 23 |     throw new Error(
+     |           ^
+  24 |       'Google OAuth env vars missing: GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIR...
+  25 |     )
+  26 |   }
+ GET /api/auth/google/initiate 500 in 5.6s (next.js: 5.4s, application-code: 166ms)
+ GET /connect-calendar 200 in 965ms (next.js: 3ms, application-code: 962ms)
+⨯ Error: Google OAuth env vars missing: GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIRECT_URI
+    at createOAuth2Client (src/lib/google/client.ts:23:11)
+    at GET (src/app/api/auth/google/initiate/route.ts:14:42)
+  21 |   const redirectUri = process.env.GOOGLE_REDIRECT_URI
+  22 |   if (!clientId || !clientSecret || !redirectUri) {
+> 23 |     throw new Error(
+     |           ^
+  24 |       'Google OAuth env vars missing: GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIR...
+  25 |     )
+  26 |   }
+ GET /api/auth/google/initiate 500 in 113ms (next.js: 3ms, application-code: 110ms)
+  Reload env: .env.local
+ GET /settings/agent 200 in 345ms (next.js: 152ms, application-code: 193ms)
+[?25h
+
+> voicedesk@0.1.0 dev
+> next dev
+
+▲ Next.js 16.2.4 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.0.101:3000
+- Environments: .env.local
+✓ Ready in 501ms
+⚠ `experimental.typedRoutes` has been moved to `typedRoutes`. Please update your next.config.ts file accordingly.
+⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of /Users/humbertobello/package-lock.json as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles: 
+   * /Users/humbertobello/development/ai/claude-code/voiceDesk/package-lock.json
+
+- Experiments (use with caution):
+  ✓ typedRoutes
+
+ GET /settings/agent 200 in 2.4s (next.js: 289ms, application-code: 2.1s)
+ GET /auth/login 200 in 189ms (next.js: 23ms, application-code: 167ms)
+ GET /auth/callback?code=fcd0288f-b54d-4bea-8ff5-fe58d583d479 307 in 443ms (next.js: 118ms, application-code: 325ms)
+ GET /setup/phone 307 in 496ms (next.js: 37ms, application-code: 459ms)
+ GET /dashboard 200 in 322ms (next.js: 17ms, application-code: 305ms)
+ GET /connect-calendar 200 in 648ms (next.js: 23ms, application-code: 625ms)
+ GET /api/auth/google/initiate 307 in 1072ms (next.js: 1060ms, application-code: 12ms)
+ GET /api/auth/google/callback?state=20ee5956b5ee6be885017525db236c3caaf610a872e3fa968522bf53df453959&iss=https://accounts.google.com&code=4/0AeoWuM9eoOHYbkPC58kcgL0rLBmNnwjU166lkkfWfJY6P-71L_UtDJmKcRhT9ZgDewSgLg&scope=https://www.googleapis.com/auth/calendar.events 307 in 3.3s (next.js: 1665ms, application-code: 1607ms)
+ GET /dashboard?calendarConnected=1 200 in 368ms (next.js: 3ms, application-code: 365ms)
+ GET /dashboard?calendarConnected=1 200 in 128ms (next.js: 9ms, application-code: 119ms)
+ GET /settings/agent 200 in 1099ms (next.js: 47ms, application-code: 1052ms)
+[?25h

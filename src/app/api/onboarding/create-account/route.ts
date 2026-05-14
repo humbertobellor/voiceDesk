@@ -44,6 +44,7 @@ export async function POST(req: Request) {
     const { error: uErr } = await serviceClient
       .from('contractors')
       .update({
+        email: user.email,
         phone_number: normalizedPhone,
         business_name: body.data.business_name,
         area_code: body.data.area_code,
@@ -70,6 +71,7 @@ export async function POST(req: Request) {
       .from('contractors')
       .insert({
         user_id: user.id,
+        email: user.email,
         phone_number: normalizedPhone,
         business_name: body.data.business_name,
         area_code: body.data.area_code,

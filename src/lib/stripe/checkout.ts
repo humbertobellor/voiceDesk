@@ -29,10 +29,10 @@ export async function createCheckoutSession({
   const stripe = getStripeClient()
   const db = createServiceRoleClient()
 
-  // Get contractor info (no email column in contractors, get from auth.users)
+  // Get contractor info including email
   const { data: contractor, error: contractorError } = await db
     .from('contractors')
-    .select('user_id, business_name')
+    .select('user_id, business_name, email')
     .eq('id', contractorId)
     .single()
 
@@ -41,16 +41,9 @@ export async function createCheckoutSession({
     throw new Error('Contractor not found')
   }
 
-  // Get user's email from auth.users
-  const { data: userData, error: userError } = await db
-    .from('auth.users')
-    .select('email')
-    .eq('id', contractor.user_id)
-    .single()
-
-  if (userError || !userData?.email) {
-    console.error('[stripe/checkout] user email not found:', contractor.user_id, userError)
-    throw new Error('User email not found')
+  if (!contractor.email) {
+    console.error('[stripe/checkout] contractor email not found:', contractorId)
+    throw new Error('Contractor email not found')
   }
 
   const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? process.env.APP_URL
@@ -67,7 +60,7 @@ export async function createCheckoutSession({
         contractor_id: contractorId,
       },
     },
-    customer_email: userData.email,
+    customer_email: contractor.email,
     line_items: [
       {
         price: priceId,
