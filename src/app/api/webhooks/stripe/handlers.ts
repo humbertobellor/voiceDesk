@@ -71,7 +71,7 @@ export async function handleCheckoutCompleted(session: CheckoutSession) {
   }
 
   // Determine tier from price_id in session
-  const priceId = session.price as string
+  const priceId = session.price_id
   const tierMap: Record<string, string> = {
     'price_1TWnwOPUnGyJvc3kBUtjnla1': 'basic',    // Basic plan
     'price_1TWnzFPUnGyJvc3kCPGRXcLT': 'professional', // Professional plan
