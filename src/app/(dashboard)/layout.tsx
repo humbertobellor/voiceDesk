@@ -19,7 +19,7 @@ export default async function DashboardLayout({
 
   const { data: contractor } = await supabase
     .from('contractors')
-    .select('id, business_name, phone_number')
+    .select('id, business_name, phone_number, twilio_number')
     .eq('user_id', user.id)
     .maybeSingle()
 
@@ -29,7 +29,7 @@ export default async function DashboardLayout({
   return (
     <DashboardProviders contractorId={contractor.id}>
       <div className="min-h-screen bg-[#1E293B]">
-        <Sidebar businessName={contractor.business_name} userEmail={user.email} />
+        <Sidebar businessName={contractor.business_name} userEmail={user.email} phoneNumber={contractor.twilio_number} />
         <main className="md:ml-60 min-h-screen pb-14 md:pb-0">
           <div className="p-4 md:p-8">
             <SetupBanner contractorName={contractor.business_name} />
