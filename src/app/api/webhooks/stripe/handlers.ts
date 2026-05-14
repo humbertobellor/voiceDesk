@@ -17,7 +17,8 @@ type Subscription = Stripe.Subscription
 async function checkAndInsertIdempotency(
   source: string,
   eventType: string,
-  externalId: string
+  externalId: string,
+  payload: object
 ): Promise<boolean> {
   const db = createServiceRoleClient()
 
@@ -26,6 +27,8 @@ async function checkAndInsertIdempotency(
     source,
     event_type: eventType,
     external_id: externalId,
+    payload,
+    processed: true,
     processed_at: new Date().toISOString(),
   })
 
@@ -57,7 +60,8 @@ export async function handleCheckoutCompleted(session: CheckoutSession) {
   const isNew = await checkAndInsertIdempotency(
     'stripe',
     'checkout.session.completed',
-    session.id
+    session.id,
+    session
   )
   if (!isNew) return
 
@@ -98,7 +102,8 @@ export async function handlePaymentFailed(invoice: Invoice) {
   const isNew = await checkAndInsertIdempotency(
     'stripe',
     'invoice.payment_failed',
-    invoice.id
+    invoice.id,
+    invoice
   )
   if (!isNew) return
 
@@ -154,7 +159,8 @@ export async function handleSubscriptionUpdated(subscription: Subscription) {
   const isNew = await checkAndInsertIdempotency(
     'stripe',
     'customer.subscription.updated',
-    subscription.id
+    subscription.id,
+    subscription
   )
   if (!isNew) return
 
