@@ -70,14 +70,16 @@ export async function handleCheckoutCompleted(session: CheckoutSession) {
     return
   }
 
-  // Determine tier from price_id in session
-  const priceId = session.price_id
+  // Determine tier from line_items (first item's price_id)
+  // Stripe checkout session includes line_items with price info
+  const lineItems = (session as any).line_items?.data as Array<{ price?: { id?: string } }> | undefined
+  const priceId = lineItems?.[0]?.price?.id ?? ''
   const tierMap: Record<string, string> = {
     'price_1TWnwOPUnGyJvc3kBUtjnla1': 'basic',    // Basic plan
     'price_1TWnzFPUnGyJvc3kCPGRXcLT': 'professional', // Professional plan
     'price_1TWo0zPUnGyJvc3k9qnsukB5': 'enterprise',  // Enterprise plan
   }
-  const subscriptionTier = tierMap[priceId ?? ''] ?? 'basic'
+  const subscriptionTier = tierMap[priceId] ?? 'basic'
 
   // Update contractor with Stripe customer and subscription
   await db
