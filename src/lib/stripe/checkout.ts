@@ -43,7 +43,7 @@ export async function createCheckoutSession({
 
   // Get user's email from auth.users
   const { data: userData, error: userError } = await db
-    .from('users')
+    .from('auth.users')
     .select('email')
     .eq('id', contractor.user_id)
     .single()
