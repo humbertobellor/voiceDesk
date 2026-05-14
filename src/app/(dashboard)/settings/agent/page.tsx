@@ -7,8 +7,6 @@ import { BusinessHoursForm } from '@/components/agent/BusinessHoursForm'
 import { KeywordsForm } from '@/components/agent/KeywordsForm'
 import { VoiceForm } from '@/components/agent/VoiceForm'
 
-export const metadata = { title: 'Agent Config — VoiceDesk' }
-
 export default function AgentConfigPage() {
   const [activeTab, setActiveTab] = useState('business')
 

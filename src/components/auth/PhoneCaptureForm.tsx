@@ -18,17 +18,35 @@ export function PhoneCaptureForm() {
 
   const onSubmit = async (data: PhoneFormData) => {
     setSubmitError(null)
-    const res = await fetch('/api/onboarding/create-account', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    })
-    if (!res.ok) {
-      const body = await res.json().catch(() => ({}))
-      setSubmitError(body.error ?? 'Something went wrong. Please try again.')
-      return
+
+    // Add timeout to prevent indefinite hanging
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 15000) // 15 second timeout
+
+    try {
+      const res = await fetch('/api/onboarding/create-account', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+        signal: controller.signal,
+      })
+
+      clearTimeout(timeoutId)
+
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}))
+        setSubmitError(body.error ?? 'Something went wrong. Please try again.')
+        return
+      }
+      window.location.href = '/pricing'
+    } catch (error) {
+      clearTimeout(timeoutId)
+      if (error instanceof Error && error.name === 'AbortError') {
+        setSubmitError('Request timed out. Please try again.')
+      } else {
+        setSubmitError('Network error. Please check your connection and try again.')
+      }
     }
-    window.location.href = '/dashboard'
   }
 
   const handleSignOut = async () => {

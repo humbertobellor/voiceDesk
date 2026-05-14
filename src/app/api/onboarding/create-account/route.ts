@@ -6,6 +6,12 @@ import { createSupabaseServer } from '@/lib/supabase/server'
 import { createServiceRoleClient } from '@/lib/supabase/service'
 import { phoneSchema } from '@/lib/validations/onboarding'
 
+// Normalize phone number to E.164 format for storage
+function normalizePhoneNumber(phone: string): string {
+  const digits = phone.replace(/[\s\-\(\)\.]/g, '').replace(/^\+?1?/, '')
+  return `+1${digits}`
+}
+
 export async function POST(req: Request) {
   // 1. Verify caller is authenticated (anon client + getUser, NOT getSession)
   const supabase = await createSupabaseServer()
@@ -34,10 +40,11 @@ export async function POST(req: Request) {
 
   if (existing) {
     // Already exists — update phone_number and business_name (handles re-submission)
+    const normalizedPhone = normalizePhoneNumber(body.data.phone_number)
     const { error: uErr } = await serviceClient
       .from('contractors')
       .update({
-        phone_number: body.data.phone_number,
+        phone_number: normalizedPhone,
         business_name: body.data.business_name,
         area_code: body.data.area_code,
       })
@@ -58,11 +65,12 @@ export async function POST(req: Request) {
     }
   } else {
     // 5. Insert contractors row
+    const normalizedPhone = normalizePhoneNumber(body.data.phone_number)
     const { data: contractor, error: cErr } = await serviceClient
       .from('contractors')
       .insert({
         user_id: user.id,
-        phone_number: body.data.phone_number,
+        phone_number: normalizedPhone,
         business_name: body.data.business_name,
         area_code: body.data.area_code,
       })

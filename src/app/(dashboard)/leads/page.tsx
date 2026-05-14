@@ -7,8 +7,6 @@ import { LeadFiltersComponent } from '@/components/leads/LeadFilters'
 import { LeadTable } from '@/components/leads/LeadTable'
 import type { LeadFilters } from '@/lib/query/client'
 
-export const metadata = { title: 'Leads — VoiceDesk' }
-
 export default function LeadsPage() {
   const { contractorId } = useContractor()
   const [filters, setFilters] = useState<LeadFilters>({})

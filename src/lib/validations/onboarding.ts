@@ -14,14 +14,22 @@ export const signupSchema = z.object({
 export type SignupFormData = z.infer<typeof signupSchema>
 
 // Phone capture step (D-02 — required gate before dashboard)
-// US numbers only in this release (UI-SPEC.md Surface 2). E.164 format: +1XXXXXXXXXX.
-// libphonenumber-js refinement will be added in Plan 04 if the regex proves insufficient.
+// US numbers only in this release. Accepts multiple formats:
+// - +13055551234 (E.164)
+// - 3055551234 (10 digits)
+// - (305) 555-1234 (with formatting)
+// Normalizes to E.164 for storage.
 export const phoneSchema = z.object({
   phone_number: z
     .string()
-    .regex(/^\+1\d{10}$/, 'Enter a valid US phone number, e.g. +13055551234.'),
+    .min(10, 'Phone number is too short.')
+    .refine((val) => {
+      // Remove all formatting characters, keep only digits and leading +
+      const digits = val.replace(/[\s\-\(\)\.]/g, '').replace(/^\+?1?/, '')
+      return digits.length === 10 && /^\d{10}$/.test(digits)
+    }, 'Enter a valid 10-digit US phone number (e.g., 3055551234 or +1 305 555 1234).'),
   business_name: z.string().min(1, 'Business name is required.'),
-  area_code: z.string().regex(/^\d{3}$/, 'Enter a 3-digit US area code.'),
+  area_code: z.string().regex(/^\d{3}$/, 'Enter a 3-digit US area code (e.g., 305).'),
 })
 export type PhoneFormData = z.infer<typeof phoneSchema>
 

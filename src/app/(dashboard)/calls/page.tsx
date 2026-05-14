@@ -6,8 +6,6 @@ import { useCallsSubscription } from '@/lib/realtime/callsSubscription'
 import { CallLogTable } from '@/components/calls/CallLogTable'
 import { CallPlaybackModal } from '@/components/calls/CallPlaybackModal'
 
-export const metadata = { title: 'Calls — VoiceDesk' }
-
 export default function CallsPage() {
   const { contractorId } = useContractor()
   const [selectedCallId, setSelectedCallId] = useState<string | null>(null)
