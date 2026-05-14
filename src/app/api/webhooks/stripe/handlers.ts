@@ -70,8 +70,14 @@ export async function handleCheckoutCompleted(session: CheckoutSession) {
     return
   }
 
-  // Determine tier from price (simplified — in production, lookup price_id mapping)
-  const subscriptionTier = 'basic' // Default tier, would derive from session.price
+  // Determine tier from price_id in session
+  const priceId = session.price as string
+  const tierMap: Record<string, string> = {
+    'price_1TWnwOPUnGyJvc3kBUtjnla1': 'basic',    // Basic plan
+    'price_1TWnzFPUnGyJvc3kCPGRXcLT': 'professional', // Professional plan
+    'price_1TWo0zPUnGyJvc3k9qnsukB5': 'enterprise',  // Enterprise plan
+  }
+  const subscriptionTier = tierMap[priceId ?? ''] ?? 'basic'
 
   // Update contractor with Stripe customer and subscription
   await db
