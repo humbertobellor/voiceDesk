@@ -51,6 +51,9 @@ export async function createCheckoutSession({
     throw new Error('APP_URL or NEXT_PUBLIC_APP_URL is not set')
   }
 
+  // Ensure base URL doesn't include paths
+  const baseUrl = appUrl.replace(/\/api\/auth\/google\/callback$/, '')
+
   const session = await stripe.checkout.sessions.create({
     mode: 'subscription',
     payment_method_collection: 'if_required', // D-02: No card required for trial
@@ -67,8 +70,8 @@ export async function createCheckoutSession({
         quantity: 1,
       },
     ],
-    success_url: `${appUrl}/dashboard?checkout=success`,
-    cancel_url: `${appUrl}/dashboard?checkout=cancelled`,
+    success_url: `${baseUrl}/dashboard?checkout=success`,
+    cancel_url: `${baseUrl}/dashboard?checkout=cancelled`,
     metadata: {
       contractor_id: contractorId,
     },
