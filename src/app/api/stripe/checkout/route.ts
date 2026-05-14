@@ -8,9 +8,9 @@ import { createServiceRoleClient } from '@/lib/supabase/service'
 
 // Map tier names to environment variable names for price IDs
 const TIER_PRICE_MAP: Record<string, string> = {
-  basic: 'STRIPE_BASIC_PRICE_ID',
-  professional: 'STRIPE_PRO_PRICE_ID',
-  enterprise: 'STRIPE_ENTERPRISE_PRICE_ID',
+  basic: 'STRIPE_BASIC_PLAN_ID',
+  professional: 'STRIPE_PROFESSIONAL_PLAN_ID',
+  enterprise: 'STRIPE_ENTERPRISE_PLAN_ID',
 }
 
 export async function POST(request: Request) {
@@ -58,10 +58,11 @@ export async function POST(request: Request) {
       )
     }
 
-    // Only allow checkout if not already subscribed (prevent duplicate checkouts)
-    if (contractor.subscription_status && contractor.subscription_status !== 'none') {
+    // Only block if they have an active subscription - allow trialing to proceed (e.g., upgrade flow)
+    // Also allow if status is null/undefined (new subscriber)
+    if (contractor.subscription_status === 'active') {
       return NextResponse.json(
-        { error: 'Contractor already has a subscription' },
+        { error: 'Contractor already has an active subscription' },
         { status: 400 }
       )
     }
