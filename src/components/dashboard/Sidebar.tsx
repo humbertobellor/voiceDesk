@@ -3,7 +3,7 @@
 // Source: PATTERNS.md Sidebar + UI-SPEC Surface 3.
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { PhoneCall, Users, Settings, Bot, Bell, CreditCard, LogOut, Mic } from 'lucide-react'
+import { PhoneCall, Users, Settings, Bot, Bell, CreditCard, LogOut, Mic, Phone } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { createSupabaseBrowser } from '@/lib/supabase/browser'
 import type { Route } from 'next'
@@ -11,6 +11,7 @@ import type { Route } from 'next'
 interface SidebarProps {
   businessName?: string | null
   userEmail?: string | null
+  phoneNumber?: string | null
 }
 
 const mainNav = [
@@ -25,7 +26,7 @@ const settingsSubNav = [
   { href: '/settings/account' as Route, icon: CreditCard, label: 'Account & Billing' },
 ]
 
-export function Sidebar({ businessName, userEmail }: SidebarProps) {
+export function Sidebar({ businessName, userEmail, phoneNumber }: SidebarProps) {
   const pathname = usePathname()
   const onSettings = pathname.startsWith('/settings')
 
@@ -104,6 +105,12 @@ export function Sidebar({ businessName, userEmail }: SidebarProps) {
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-sm font-semibold text-[#F8FAFC] truncate">{businessName ?? 'VoiceDesk'}</p>
+            {phoneNumber && (
+              <p className="text-xs text-[#F97316] flex items-center gap-1 truncate">
+                <Phone size={10} />
+                {phoneNumber}
+              </p>
+            )}
             <p className="text-xs text-[#94A3B8] truncate">{userEmail ?? ''}</p>
           </div>
         </div>
