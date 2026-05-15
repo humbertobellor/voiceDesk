@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Phone, Check, Loader2, AlertCircle } from 'lucide-react'
 
 interface PhoneProvisioningStepProps {
@@ -13,12 +13,46 @@ interface ProvisionedNumber {
   sid: string
 }
 
+interface ContractorData {
+  area_code: string | null
+}
+
 export function PhoneProvisioningStep({ contractorId, onComplete }: PhoneProvisioningStepProps) {
   const [status, setStatus] = useState<'idle' | 'provisioning' | 'ready' | 'error'>('idle')
   const [provisionedNumber, setProvisionedNumber] = useState<ProvisionedNumber | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [contractorData, setContractorData] = useState<ContractorData | null>(null)
+  const [loadingAreaCode, setLoadingAreaCode] = useState(true)
+
+  useEffect(() => {
+    fetchContractorData()
+  }, [contractorId])
+
+  const fetchContractorData = async () => {
+    try {
+      const supabase = await import('@/lib/supabase/browser').then(m => m.createSupabaseBrowser())
+      const { data: contractor } = await supabase
+        .from('contractors')
+        .select('area_code')
+        .eq('id', contractorId)
+        .maybeSingle()
+      if (contractor?.area_code) {
+        setContractorData(contractor)
+      }
+    } catch (err) {
+      console.error('Failed to fetch contractor data:', err)
+    } finally {
+      setLoadingAreaCode(false)
+    }
+  }
 
   const handleProvision = async () => {
+    if (!contractorData?.area_code) {
+      setError('Area code not configured. Please go back and set your area code in agent settings.')
+      setStatus('error')
+      return
+    }
+
     setStatus('provisioning')
     setError(null)
 
@@ -26,17 +60,21 @@ export function PhoneProvisioningStep({ contractorId, onComplete }: PhoneProvisi
       const response = await fetch('/api/provisioning/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ contractor_id: contractorId })
+        body: JSON.stringify({
+          contractor_id: contractorId,
+          area_code: contractorData.area_code
+        })
       })
 
+      const data = await response.json()
+
       if (!response.ok) {
-        throw new Error('Failed to provision phone number')
+        throw new Error(data.error || 'Failed to provision phone number')
       }
 
-      const data = await response.json()
       setProvisionedNumber({
-        phoneNumber: data.phone_number,
-        sid: data.sid
+        phoneNumber: data.twilio_number,
+        sid: data.twilio_number
       })
       setStatus('ready')
     } catch (err) {
@@ -98,6 +136,14 @@ export function PhoneProvisioningStep({ contractorId, onComplete }: PhoneProvisi
               >
                 Try Again
               </button>
+            </div>
+          </div>
+        ) : loadingAreaCode ? (
+          <div className="flex items-center gap-4">
+            <Loader2 className="w-6 h-6 text-blue-400 animate-spin" />
+            <div>
+              <p className="text-white font-medium">Loading...</p>
+              <p className="text-sm text-gray-400">Fetching your area code</p>
             </div>
           </div>
         ) : (
