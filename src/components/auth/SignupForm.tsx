@@ -2,13 +2,22 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Loader2, Eye, EyeOff } from 'lucide-react'
+import { Loader2, Eye, EyeOff, Check, X } from 'lucide-react'
 import { createSupabaseBrowser } from '@/lib/supabase/browser'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import Link from 'next/link'
 import { signupSchema, type SignupFormData } from '@/lib/validations/onboarding'
+
+function PasswordRequirement({ met, label }: { met: boolean; label: string }) {
+  return (
+    <span className={`flex items-center gap-1.5 text-xs ${met ? 'text-[#22C55E]' : 'text-[#64748B]'}`}>
+      {met ? <Check size={12} /> : <X size={12} />}
+      {label}
+    </span>
+  )
+}
 
 export function SignupForm() {
   const [showPassword, setShowPassword] = useState(false)
@@ -18,9 +27,24 @@ export function SignupForm() {
   const [confirmationSent, setConfirmationSent] = useState(false)
   const [confirmedEmail, setConfirmedEmail] = useState('')
 
-  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<SignupFormData>({
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors, isSubmitting, touchedFields },
+  } = useForm<SignupFormData>({
     resolver: zodResolver(signupSchema),
+    mode: 'onTouched',
   })
+
+  const passwordValue = watch('password') ?? ''
+  const passwordTouched = touchedFields.password
+
+  const passwordChecks = {
+    length: passwordValue.length >= 8,
+    uppercase: /[A-Z]/.test(passwordValue),
+    number: /[0-9]/.test(passwordValue),
+  }
 
   const handleGoogleSignUp = async () => {
     setIsGoogleLoading(true)
@@ -30,8 +54,8 @@ export function SignupForm() {
       options: {
         redirectTo: `${window.location.origin}/auth/callback`,
         queryParams: {
-          access_type: 'offline', // Phase 4 calendar refresh tokens
-          prompt: 'consent',      // forces refresh_token on every re-auth
+          access_type: 'offline',
+          prompt: 'consent',
         },
       },
     })
@@ -56,7 +80,6 @@ export function SignupForm() {
       }
       return
     }
-    // If session is null, email confirmation is required before the user can sign in
     if (!signUpData.session) {
       setConfirmedEmail(data.email)
       setConfirmationSent(true)
@@ -95,7 +118,6 @@ export function SignupForm() {
           </div>
         )}
 
-        {/* D-01 PRIMARY: Google OAuth, full-width orange CTA */}
         <Button
           type="button"
           onClick={handleGoogleSignUp}
@@ -109,27 +131,35 @@ export function SignupForm() {
           )}
         </Button>
 
-        {/* "or continue with email" divider */}
         <div className="flex items-center my-6">
           <div className="flex-1 border-t border-[#334155]" />
           <span className="mx-3 text-sm text-[#94A3B8]">or continue with email</span>
           <div className="flex-1 border-t border-[#334155]" />
         </div>
 
-        {/* D-01 SECONDARY: email/password */}
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-4">
+          {/* Email */}
           <div>
             <Label htmlFor="email" className="text-sm text-[#94A3B8]">Email</Label>
             <Input
               id="email"
               type="email"
               autoComplete="email"
-              className="bg-[#0F172A] border-[#334155] text-[#F8FAFC] focus-visible:ring-[#F97316] min-h-[44px] mt-1"
+              aria-invalid={!!errors.email}
+              aria-describedby={errors.email ? 'email-error' : undefined}
+              className={`mt-1 bg-[#0F172A] border-[#334155] text-[#F8FAFC] focus-visible:ring-[#F97316] min-h-[44px] ${
+                errors.email ? 'border-[#EF4444] focus-visible:ring-[#EF4444]' : ''
+              }`}
               {...register('email')}
             />
-            {errors.email && <p className="text-sm text-[#EF4444] mt-1">{errors.email.message}</p>}
+            {errors.email && (
+              <p id="email-error" role="alert" className="text-xs text-[#EF4444] mt-1">
+                {errors.email.message}
+              </p>
+            )}
           </div>
 
+          {/* Password */}
           <div>
             <Label htmlFor="password" className="text-sm text-[#94A3B8]">Password</Label>
             <div className="relative mt-1">
@@ -137,7 +167,11 @@ export function SignupForm() {
                 id="password"
                 type={showPassword ? 'text' : 'password'}
                 autoComplete="new-password"
-                className="bg-[#0F172A] border-[#334155] text-[#F8FAFC] focus-visible:ring-[#F97316] min-h-[44px] pr-10"
+                aria-invalid={!!errors.password}
+                aria-describedby="password-requirements"
+                className={`bg-[#0F172A] border-[#334155] text-[#F8FAFC] focus-visible:ring-[#F97316] min-h-[44px] pr-10 ${
+                  errors.password ? 'border-[#EF4444] focus-visible:ring-[#EF4444]' : ''
+                }`}
                 {...register('password')}
               />
               <button
@@ -149,9 +183,21 @@ export function SignupForm() {
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
-            {errors.password && <p className="text-sm text-[#EF4444] mt-1">{errors.password.message}</p>}
+            {/* Live requirements — show once field is touched */}
+            {passwordTouched && (
+              <div id="password-requirements" className="mt-2 flex flex-wrap gap-x-4 gap-y-1">
+                <PasswordRequirement met={passwordChecks.length} label="8+ characters" />
+                <PasswordRequirement met={passwordChecks.uppercase} label="Uppercase letter" />
+                <PasswordRequirement met={passwordChecks.number} label="One number" />
+              </div>
+            )}
+            {/* Show top-level error only if no specific requirement is unmet (avoids duplicate messages) */}
+            {errors.password && !passwordTouched && (
+              <p role="alert" className="text-xs text-[#EF4444] mt-1">{errors.password.message}</p>
+            )}
           </div>
 
+          {/* Confirm password */}
           <div>
             <Label htmlFor="confirmPassword" className="text-sm text-[#94A3B8]">Confirm password</Label>
             <div className="relative mt-1">
@@ -159,7 +205,11 @@ export function SignupForm() {
                 id="confirmPassword"
                 type={showConfirmPassword ? 'text' : 'password'}
                 autoComplete="new-password"
-                className="bg-[#0F172A] border-[#334155] text-[#F8FAFC] focus-visible:ring-[#F97316] min-h-[44px] pr-10"
+                aria-invalid={!!errors.confirmPassword}
+                aria-describedby={errors.confirmPassword ? 'confirm-password-error' : undefined}
+                className={`bg-[#0F172A] border-[#334155] text-[#F8FAFC] focus-visible:ring-[#F97316] min-h-[44px] pr-10 ${
+                  errors.confirmPassword ? 'border-[#EF4444] focus-visible:ring-[#EF4444]' : ''
+                }`}
                 {...register('confirmPassword')}
               />
               <button
@@ -171,7 +221,11 @@ export function SignupForm() {
                 {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
-            {errors.confirmPassword && <p className="text-sm text-[#EF4444] mt-1">{errors.confirmPassword.message}</p>}
+            {errors.confirmPassword && (
+              <p id="confirm-password-error" role="alert" className="text-xs text-[#EF4444] mt-1">
+                {errors.confirmPassword.message}
+              </p>
+            )}
           </div>
 
           <Button
