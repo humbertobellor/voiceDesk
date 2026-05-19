@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Loader2, Eye, EyeOff, Check, X } from 'lucide-react'
+import { Loader2, Eye, EyeOff, Check, X, AlertCircle } from 'lucide-react'
 import { createSupabaseBrowser } from '@/lib/supabase/browser'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -12,7 +12,7 @@ import { signupSchema, type SignupFormData } from '@/lib/validations/onboarding'
 
 function PasswordRequirement({ met, label }: { met: boolean; label: string }) {
   return (
-    <span className={`flex items-center gap-1.5 text-xs ${met ? 'text-[#22C55E]' : 'text-[#64748B]'}`}>
+    <span className={`flex items-center gap-1.5 text-xs ${met ? 'text-[#22C55E]' : 'text-[#94A3B8]'}`}>
       {met ? <Check size={12} /> : <X size={12} />}
       {label}
     </span>
@@ -31,14 +31,16 @@ export function SignupForm() {
     register,
     handleSubmit,
     watch,
-    formState: { errors, isSubmitting, touchedFields },
+    formState: { errors, isSubmitting, touchedFields, isSubmitted },
   } = useForm<SignupFormData>({
     resolver: zodResolver(signupSchema),
     mode: 'onTouched',
+    shouldFocusError: true,
   })
 
   const passwordValue = watch('password') ?? ''
-  const passwordTouched = touchedFields.password
+  const showPasswordHints = touchedFields.password || isSubmitted
+  const hasFieldErrors = isSubmitted && !isSubmitting && Object.keys(errors).length > 0
 
   const passwordChecks = {
     length: passwordValue.length >= 8,
@@ -67,25 +69,29 @@ export function SignupForm() {
 
   const onSubmit = async (data: SignupFormData) => {
     setSubmitError(null)
-    const supabase = createSupabaseBrowser()
-    const { data: signUpData, error } = await supabase.auth.signUp({
-      email: data.email,
-      password: data.password,
-    })
-    if (error) {
-      if (error.message.toLowerCase().includes('already registered') || error.message.toLowerCase().includes('already exists')) {
-        setSubmitError('An account with this email already exists. Sign in instead.')
-      } else {
-        setSubmitError(error.message)
+    try {
+      const supabase = createSupabaseBrowser()
+      const { data: signUpData, error } = await supabase.auth.signUp({
+        email: data.email,
+        password: data.password,
+      })
+      if (error) {
+        if (error.message.toLowerCase().includes('already registered') || error.message.toLowerCase().includes('already exists')) {
+          setSubmitError('An account with this email already exists. Sign in instead.')
+        } else {
+          setSubmitError(error.message)
+        }
+        return
       }
-      return
+      if (!signUpData.session) {
+        setConfirmedEmail(data.email)
+        setConfirmationSent(true)
+        return
+      }
+      window.location.href = '/setup/phone'
+    } catch {
+      setSubmitError('Something went wrong. Please check your connection and try again.')
     }
-    if (!signUpData.session) {
-      setConfirmedEmail(data.email)
-      setConfirmationSent(true)
-      return
-    }
-    window.location.href = '/setup/phone'
   }
 
   if (confirmationSent) {
@@ -112,9 +118,19 @@ export function SignupForm() {
         <h1 className="text-[28px] font-semibold text-[#F8FAFC] mb-1">Create your account</h1>
         <p className="text-sm text-[#94A3B8] mb-6">Start answering calls in minutes</p>
 
+        {/* Supabase / network errors */}
         {submitError && (
-          <div role="alert" className="bg-[#EF4444]/10 border border-[#EF4444]/30 text-[#EF4444] rounded-lg p-3 text-sm mb-4">
+          <div role="alert" className="bg-[#EF4444]/10 border border-[#EF4444]/30 text-[#EF4444] rounded-lg p-3 text-sm mb-4 flex items-start gap-2">
+            <AlertCircle size={16} className="mt-0.5 shrink-0" />
             {submitError}
+          </div>
+        )}
+
+        {/* Form-level validation summary — shown after a failed submit */}
+        {hasFieldErrors && !submitError && (
+          <div role="alert" className="bg-[#EF4444]/10 border border-[#EF4444]/30 text-[#EF4444] rounded-lg p-3 text-sm mb-4 flex items-start gap-2">
+            <AlertCircle size={16} className="mt-0.5 shrink-0" />
+            Please fix the highlighted fields below.
           </div>
         )}
 
@@ -124,11 +140,7 @@ export function SignupForm() {
           disabled={isGoogleLoading}
           className="w-full bg-[#F97316] text-[#0F172A] hover:bg-[#F97316]/90 min-h-[44px] font-semibold"
         >
-          {isGoogleLoading ? (
-            <Loader2 className="w-4 h-4 animate-spin" />
-          ) : (
-            'Sign up with Google'
-          )}
+          {isGoogleLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Sign up with Google'}
         </Button>
 
         <div className="flex items-center my-6">
@@ -147,13 +159,16 @@ export function SignupForm() {
               autoComplete="email"
               aria-invalid={!!errors.email}
               aria-describedby={errors.email ? 'email-error' : undefined}
-              className={`mt-1 bg-[#0F172A] border-[#334155] text-[#F8FAFC] focus-visible:ring-[#F97316] min-h-[44px] ${
-                errors.email ? 'border-[#EF4444] focus-visible:ring-[#EF4444]' : ''
+              className={`mt-1 bg-[#0F172A] text-[#F8FAFC] focus-visible:ring-[#F97316] min-h-[44px] transition-colors ${
+                errors.email
+                  ? 'border-[#EF4444] focus-visible:ring-[#EF4444]'
+                  : 'border-[#334155]'
               }`}
               {...register('email')}
             />
             {errors.email && (
-              <p id="email-error" role="alert" className="text-xs text-[#EF4444] mt-1">
+              <p id="email-error" role="alert" className="text-sm text-[#EF4444] mt-1.5 flex items-center gap-1">
+                <AlertCircle size={13} className="shrink-0" />
                 {errors.email.message}
               </p>
             )}
@@ -169,8 +184,10 @@ export function SignupForm() {
                 autoComplete="new-password"
                 aria-invalid={!!errors.password}
                 aria-describedby="password-requirements"
-                className={`bg-[#0F172A] border-[#334155] text-[#F8FAFC] focus-visible:ring-[#F97316] min-h-[44px] pr-10 ${
-                  errors.password ? 'border-[#EF4444] focus-visible:ring-[#EF4444]' : ''
+                className={`bg-[#0F172A] text-[#F8FAFC] focus-visible:ring-[#F97316] min-h-[44px] pr-10 transition-colors ${
+                  errors.password
+                    ? 'border-[#EF4444] focus-visible:ring-[#EF4444]'
+                    : 'border-[#334155]'
                 }`}
                 {...register('password')}
               />
@@ -178,22 +195,18 @@ export function SignupForm() {
                 type="button"
                 onClick={() => setShowPassword((s) => !s)}
                 aria-label={showPassword ? 'Hide password' : 'Show password'}
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-[#94A3B8]"
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-[#94A3B8] hover:text-[#F8FAFC]"
               >
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
-            {/* Live requirements — show once field is touched */}
-            {passwordTouched && (
+            {/* Requirements: show once field is touched OR after a submit attempt */}
+            {showPasswordHints && (
               <div id="password-requirements" className="mt-2 flex flex-wrap gap-x-4 gap-y-1">
                 <PasswordRequirement met={passwordChecks.length} label="8+ characters" />
                 <PasswordRequirement met={passwordChecks.uppercase} label="Uppercase letter" />
                 <PasswordRequirement met={passwordChecks.number} label="One number" />
               </div>
-            )}
-            {/* Show top-level error only if no specific requirement is unmet (avoids duplicate messages) */}
-            {errors.password && !passwordTouched && (
-              <p role="alert" className="text-xs text-[#EF4444] mt-1">{errors.password.message}</p>
             )}
           </div>
 
@@ -207,8 +220,10 @@ export function SignupForm() {
                 autoComplete="new-password"
                 aria-invalid={!!errors.confirmPassword}
                 aria-describedby={errors.confirmPassword ? 'confirm-password-error' : undefined}
-                className={`bg-[#0F172A] border-[#334155] text-[#F8FAFC] focus-visible:ring-[#F97316] min-h-[44px] pr-10 ${
-                  errors.confirmPassword ? 'border-[#EF4444] focus-visible:ring-[#EF4444]' : ''
+                className={`bg-[#0F172A] text-[#F8FAFC] focus-visible:ring-[#F97316] min-h-[44px] pr-10 transition-colors ${
+                  errors.confirmPassword
+                    ? 'border-[#EF4444] focus-visible:ring-[#EF4444]'
+                    : 'border-[#334155]'
                 }`}
                 {...register('confirmPassword')}
               />
@@ -216,13 +231,14 @@ export function SignupForm() {
                 type="button"
                 onClick={() => setShowConfirmPassword((s) => !s)}
                 aria-label={showConfirmPassword ? 'Hide confirm password' : 'Show confirm password'}
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-[#94A3B8]"
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-[#94A3B8] hover:text-[#F8FAFC]"
               >
                 {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
             {errors.confirmPassword && (
-              <p id="confirm-password-error" role="alert" className="text-xs text-[#EF4444] mt-1">
+              <p id="confirm-password-error" role="alert" className="text-sm text-[#EF4444] mt-1.5 flex items-center gap-1">
+                <AlertCircle size={13} className="shrink-0" />
                 {errors.confirmPassword.message}
               </p>
             )}
