@@ -39,7 +39,7 @@ export default async function DashboardLayout({
         <BottomTabBar />
       </div>
       {/* Onboarding wizard for non-active subscriptions */}
-      <OnboardingWizardWrapper contractorId={contractor.id} />
+      <OnboardingWizardWrapper contractorId={contractor.id} voiceDeskNumber={contractor.twilio_number} />
     </DashboardProviders>
   )
 }

@@ -1,7 +1,7 @@
 // tests/api/contractor-status.test.ts
 // Unit tests for GET /api/contractor/status.
-// Verifies auth enforcement and that contractor_id is always derived from the session,
-// never from query parameters (IDOR prevention).
+// Verifies auth enforcement, is_live flag, and that contractor_id is always derived
+// from the session — never from query parameters (IDOR prevention).
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 
 vi.mock('@/lib/supabase/server', () => ({
@@ -15,6 +15,7 @@ const mockContractor = {
   subscription_status: 'trialing',
   twilio_number: '+13055551234',
   retell_agent_id: 'agent-abc',
+  is_live: false,
 }
 
 function makeSupabaseMock(user: object | null, contractorData: object | null) {
@@ -31,7 +32,6 @@ function makeSupabaseMock(user: object | null, contractorData: object | null) {
       getUser: vi.fn().mockResolvedValue({ data: { user } }),
     },
     from,
-    // expose internals for assertion
     _eq: eq,
   }
 }
@@ -61,7 +61,7 @@ describe('GET /api/contractor/status', () => {
     expect(res.status).toBe(404)
   })
 
-  it('returns subscription status and phone/agent flags for authenticated user', async () => {
+  it('returns subscription status, phone/agent flags, and is_live for authenticated user', async () => {
     ;(createSupabaseServer as ReturnType<typeof vi.fn>).mockResolvedValue(
       makeSupabaseMock({ id: 'user-123' }, mockContractor)
     )
@@ -72,6 +72,17 @@ describe('GET /api/contractor/status', () => {
     expect(body.subscription_status).toBe('trialing')
     expect(body.has_phone_number).toBe(true)
     expect(body.has_retell_agent).toBe(true)
+    expect(body.is_live).toBe(false)
+  })
+
+  it('returns is_live=true when contractor is marked live', async () => {
+    ;(createSupabaseServer as ReturnType<typeof vi.fn>).mockResolvedValue(
+      makeSupabaseMock({ id: 'user-123' }, { ...mockContractor, is_live: true })
+    )
+
+    const res = await GET()
+    const body = await res.json()
+    expect(body.is_live).toBe(true)
   })
 
   it('reports has_phone_number=false when twilio_number is null', async () => {
@@ -100,9 +111,7 @@ describe('GET /api/contractor/status', () => {
 
     await GET()
 
-    // from() must have been called with 'contractors'
     expect(mock.from).toHaveBeenCalledWith('contractors')
-    // eq() must filter by user_id from the session, not a URL param
     expect(mock._eq).toHaveBeenCalledWith('user_id', 'user-123')
   })
 })
