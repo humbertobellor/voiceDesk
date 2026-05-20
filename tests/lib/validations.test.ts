@@ -72,6 +72,38 @@ describe('signupSchema — password validation', () => {
   })
 })
 
+describe('signupSchema — bug-report scenario', () => {
+  // Reproduces the exact inputs visible in the reported screenshot:
+  // email "ticon" (no @), password "1234" (too short, no uppercase).
+  // Both must fail so onSubmit is never reached and the button re-enables.
+  it('blocks submit when email is "ticon" and password is too short', () => {
+    const result = signupSchema.safeParse({
+      email: 'ticon',
+      password: '1234',
+      confirmPassword: '1234',
+    })
+    expect(result.success).toBe(false)
+    if (!result.success) {
+      const paths = result.error.issues.map(i => i.path[0])
+      expect(paths).toContain('email')
+      expect(paths).toContain('password')
+    }
+  })
+
+  it('"ticon" error message matches the inline hint shown to the user', () => {
+    const result = signupSchema.safeParse({
+      email: 'ticon',
+      password: 'Password1',
+      confirmPassword: 'Password1',
+    })
+    expect(result.success).toBe(false)
+    if (!result.success) {
+      const issue = result.error.issues.find(i => i.path[0] === 'email')
+      expect(issue?.message).toBe('Enter a valid email address.')
+    }
+  })
+})
+
 // ── languageSchema ────────────────────────────────────────────────────────────
 
 describe('languageSchema — HC cleanup (D-01)', () => {
