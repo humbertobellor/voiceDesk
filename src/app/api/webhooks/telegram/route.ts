@@ -31,6 +31,12 @@ bot.command('start', async (ctx) => {
     return
   }
 
+  const UUID_V4_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+  if (!UUID_V4_REGEX.test(contractorId)) {
+    await ctx.reply('❌ Invalid link. Please use the setup link from your VoiceDesk dashboard.')
+    return
+  }
+
   const chatId = ctx.chat.id.toString()
 
   // D-20: Upsert telegram_chat_id — re-linking always overwrites; no error if already linked
@@ -60,7 +66,13 @@ bot.command('start', async (ctx) => {
 // D-22: Use 'std/http' adapter for Next.js App Router (Web API Request/Response)
 // T-05-04-01: 5th param validates X-Telegram-Bot-Api-Secret-Token header sent by Telegram.
 // Set TELEGRAM_WEBHOOK_SECRET to any strong random string, pass the same value to setWebhook.
-const webhookSecret = process.env.TELEGRAM_WEBHOOK_SECRET ?? ''
+const webhookSecret = process.env.TELEGRAM_WEBHOOK_SECRET
+if (!webhookSecret) {
+  throw new Error(
+    '[webhook/telegram] TELEGRAM_WEBHOOK_SECRET is required — set this env var before deploying. ' +
+    'Without it, grammY skips signature validation and any HTTP client can inject bot updates.'
+  )
+}
 const handleUpdate = webhookCallback(bot, 'std/http', undefined, undefined, webhookSecret)
 
 export async function POST(req: Request) {

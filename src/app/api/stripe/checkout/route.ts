@@ -55,9 +55,10 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Contractor not found' }, { status: 404 })
     }
 
-    if (contractor.subscription_status === 'active') {
+    const BLOCKED_STATUSES = ['active', 'trialing', 'past_due'] as const
+    if (BLOCKED_STATUSES.includes(contractor.subscription_status as typeof BLOCKED_STATUSES[number])) {
       return NextResponse.json(
-        { error: 'Contractor already has an active subscription' },
+        { error: 'A subscription already exists for this account. Visit billing settings to manage your plan.' },
         { status: 400 }
       )
     }
