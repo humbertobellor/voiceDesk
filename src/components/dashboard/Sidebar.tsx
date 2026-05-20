@@ -3,7 +3,7 @@
 // Source: PATTERNS.md Sidebar + UI-SPEC Surface 3.
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { PhoneCall, Users, Settings, Bot, Bell, CreditCard, LogOut, Mic, Phone } from 'lucide-react'
+import { PhoneCall, Users, Settings, Bot, Bell, CreditCard, LogOut, Mic, Phone, Calendar, Radio } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { createSupabaseBrowser } from '@/lib/supabase/browser'
 import type { Route } from 'next'
@@ -22,8 +22,11 @@ const mainNav = [
 
 const settingsSubNav = [
   { href: '/settings/agent' as Route, icon: Bot, label: 'Agent Config' },
-  { href: '/settings/notifications' as Route, icon: Bell, label: 'Notifications' },
+  { href: '/settings/calendar' as Route, icon: Calendar, label: 'Calendar' },
+  { href: '/settings/phone' as Route, icon: Phone, label: 'Phone' },
+  { href: '/settings/go-live' as Route, icon: Radio, label: 'Go Live' },
   { href: '/settings/account' as Route, icon: CreditCard, label: 'Account & Billing' },
+  { href: '/settings/notifications' as Route, icon: Bell, label: 'Notifications' },
 ]
 
 export function Sidebar({ businessName, userEmail, phoneNumber }: SidebarProps) {
