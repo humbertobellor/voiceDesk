@@ -47,8 +47,14 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'No recording available' }, { status: 404 })
   }
 
-  // Extract the path from the recording_url (storage path)
-  const recordingPath = call.recording_url.replace(/^.*\/recordings\//, 'recordings/')
+  // Extract the storage path from recording_url — 404 if URL lacks expected /recordings/ segment
+  const RECORDING_PATH_RE = /(?:^|\/)recordings\/(.*)/
+  const match = RECORDING_PATH_RE.exec(call.recording_url)
+  if (!match) {
+    console.error('[recordings] recording_url has no /recordings/ segment:', call.recording_url)
+    return NextResponse.json({ error: 'Recording not available' }, { status: 404 })
+  }
+  const recordingPath = `recordings/${match[1]}`
 
   // Generate signed URL with 60 second TTL using service role client
   // Ownership was already verified above via the authenticated server client
