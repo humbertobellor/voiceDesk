@@ -24,10 +24,11 @@ const STEPS: Step[] = [
 
 interface OnboardingWizardProps {
   contractorId: string
+  voiceDeskNumber?: string | null
   onComplete?: () => void
 }
 
-export function OnboardingWizard({ contractorId, onComplete }: OnboardingWizardProps) {
+export function OnboardingWizard({ contractorId, voiceDeskNumber, onComplete }: OnboardingWizardProps) {
   const [isOpen, setIsOpen] = useState(true)
   const [currentStep, setCurrentStep] = useState(0)
   const [completedSteps, setCompletedSteps] = useState<Set<number>>(new Set())
@@ -69,9 +70,9 @@ export function OnboardingWizard({ contractorId, onComplete }: OnboardingWizardP
       case 2:
         return <PhoneProvisioningStep contractorId={contractorId} onComplete={() => setCompletedSteps(prev => new Set(prev).add(2))} />
       case 3:
-        return <CallForwardingStep contractorId={contractorId} onComplete={() => setCompletedSteps(prev => new Set(prev).add(3))} />
+        return <CallForwardingStep contractorId={contractorId} voiceDeskNumber={voiceDeskNumber ?? undefined} onComplete={() => setCompletedSteps(prev => new Set(prev).add(3))} />
       case 4:
-        return <TestCallStep contractorId={contractorId} onComplete={handleComplete} onVerified={() => setTestCallVerified(true)} />
+        return <TestCallStep contractorId={contractorId} voiceDeskNumber={voiceDeskNumber ?? undefined} onComplete={handleComplete} onVerified={() => setTestCallVerified(true)} />
       default:
         return null
     }

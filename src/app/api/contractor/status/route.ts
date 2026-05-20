@@ -13,7 +13,7 @@ export async function GET() {
 
   const { data: contractor, error } = await supabase
     .from('contractors')
-    .select('subscription_status, twilio_number, retell_agent_id')
+    .select('subscription_status, twilio_number, retell_agent_id, is_live')
     .eq('user_id', user.id)
     .maybeSingle()
 
@@ -25,5 +25,6 @@ export async function GET() {
     subscription_status: contractor.subscription_status,
     has_phone_number: !!contractor.twilio_number,
     has_retell_agent: !!contractor.retell_agent_id,
+    is_live: !!contractor.is_live,
   })
 }

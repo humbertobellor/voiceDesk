@@ -24,8 +24,9 @@ interface TestCallVerificationState {
  * Hook for subscribing to the calls table to detect test calls.
  * Uses Supabase Realtime with a 5-second polling fallback for reliability.
  *
- * @param contractorId - The contractor ID to filter calls by
- * @param onTestCallDetected - Callback when a test call is detected
+ * subscriptionStatus is mirrored to a ref so the polling-fallback timeout can
+ * read it without being listed as a useEffect dependency (which previously caused
+ * an infinite subscribe/unsubscribe loop every time Realtime connected).
  */
 export function useTestCallVerification({
   contractorId,
@@ -41,8 +42,14 @@ export function useTestCallVerification({
   const pollingIntervalRef = useRef<NodeJS.Timeout | null>(null)
   const lastCallIdRef = useRef<string | null>(null)
   const channelRef = useRef<ReturnType<typeof supabase.channel> | null>(null)
+  // Mirror of subscriptionStatus for use inside callbacks without adding state to deps.
+  const subscriptionStatusRef = useRef<TestCallVerificationState['subscriptionStatus']>('connecting')
 
-  // Poll for new calls as fallback (every 5 seconds)
+  const setSubscriptionStatus = useCallback((status: TestCallVerificationState['subscriptionStatus']) => {
+    subscriptionStatusRef.current = status
+    setState(prev => ({ ...prev, subscriptionStatus: status }))
+  }, [])
+
   const startPolling = useCallback(() => {
     if (pollingIntervalRef.current) return
 
@@ -56,10 +63,7 @@ export function useTestCallVerification({
           .limit(1)
           .maybeSingle()
 
-        if (error) {
-          // Ignore errors during polling, continue
-          return
-        }
+        if (error) return
 
         if (calls && calls.id !== lastCallIdRef.current) {
           lastCallIdRef.current = calls.id
@@ -86,14 +90,12 @@ export function useTestCallVerification({
   useEffect(() => {
     if (!contractorId) return
 
-    // Clean up previous channel if exists
     if (channelRef.current) {
       channelRef.current.unsubscribe()
     }
 
-    setState(prev => ({ ...prev, subscriptionStatus: 'connecting' }))
+    setSubscriptionStatus('connecting')
 
-    // Set up Supabase Realtime subscription
     const channel = supabase
       .channel(`test-call-verification-${contractorId}`)
       .on(
@@ -105,7 +107,6 @@ export function useTestCallVerification({
           filter: `contractor_id=eq.${contractorId}`
         },
         (payload) => {
-          // Test call detected via Realtime
           const callId = payload.new.id as string
           lastCallIdRef.current = callId
 
@@ -116,49 +117,37 @@ export function useTestCallVerification({
           }))
 
           onTestCallDetected?.(callId)
-
-          // Stop polling since we got the event via Realtime
           stopPolling()
         }
       )
       .subscribe((status) => {
         if (status === 'SUBSCRIBED') {
-          setState(prev => ({
-            ...prev,
-            isConnected: true,
-            subscriptionStatus: 'subscribed'
-          }))
+          setState(prev => ({ ...prev, isConnected: true }))
+          setSubscriptionStatus('subscribed')
 
           if (process.env.NODE_ENV === 'development') {
             console.log('[TestCallVerification] Realtime subscription connected')
           }
         } else if (status === 'CHANNEL_ERROR') {
-          setState(prev => ({
-            ...prev,
-            isConnected: false,
-            subscriptionStatus: 'error'
-          }))
-
-          // Start polling fallback on error
+          setState(prev => ({ ...prev, isConnected: false }))
+          setSubscriptionStatus('error')
           startPolling()
 
           if (process.env.NODE_ENV === 'development') {
             console.log('[TestCallVerification] Realtime error, using polling fallback')
           }
         } else if (status === 'CLOSED') {
-          setState(prev => ({
-            ...prev,
-            isConnected: false,
-            subscriptionStatus: 'unsubscribed'
-          }))
+          setState(prev => ({ ...prev, isConnected: false }))
+          setSubscriptionStatus('unsubscribed')
         }
       })
 
     channelRef.current = channel
 
-    // Fallback: also start polling in case Realtime doesn't connect within 5 seconds
+    // Start polling fallback if Realtime hasn't connected within 5 seconds.
+    // Uses the ref to read current status without adding state to this effect's deps.
     const pollingFallbackTimeout = setTimeout(() => {
-      if (state.subscriptionStatus !== 'subscribed') {
+      if (subscriptionStatusRef.current !== 'subscribed') {
         startPolling()
       }
     }, 5000)
@@ -167,12 +156,9 @@ export function useTestCallVerification({
       channel.unsubscribe()
       stopPolling()
       clearTimeout(pollingFallbackTimeout)
-      setState(prev => ({
-        ...prev,
-        subscriptionStatus: 'unsubscribed'
-      }))
+      setSubscriptionStatus('unsubscribed')
     }
-  }, [contractorId, onTestCallDetected, startPolling, stopPolling, state.subscriptionStatus])
+  }, [contractorId, onTestCallDetected, startPolling, stopPolling, setSubscriptionStatus])
 
   return {
     isConnected: state.isConnected,

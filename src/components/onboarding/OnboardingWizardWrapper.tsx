@@ -5,9 +5,10 @@ import { OnboardingWizard } from './OnboardingWizard'
 
 interface OnboardingWizardWrapperProps {
   contractorId: string
+  voiceDeskNumber?: string | null
 }
 
-export function OnboardingWizardWrapper({ contractorId }: OnboardingWizardWrapperProps) {
+export function OnboardingWizardWrapper({ contractorId, voiceDeskNumber }: OnboardingWizardWrapperProps) {
   const [showWizard, setShowWizard] = useState(false)
   const [loading, setLoading] = useState(true)
 
@@ -20,8 +21,8 @@ export function OnboardingWizardWrapper({ contractorId }: OnboardingWizardWrappe
       const response = await fetch('/api/contractor/status')
       if (response.ok) {
         const data = await response.json()
-        // Show wizard if subscription is not active
-        if (data.subscription_status !== 'active') {
+        // Show wizard only if not yet live AND subscription is not active
+        if (!data.is_live && data.subscription_status !== 'active') {
           setShowWizard(true)
         }
       }
@@ -37,12 +38,18 @@ export function OnboardingWizardWrapper({ contractorId }: OnboardingWizardWrappe
   }
 
   if (loading) {
-    return null // Don't render anything while checking
+    return null
   }
 
   if (!showWizard) {
     return null
   }
 
-  return <OnboardingWizard contractorId={contractorId} onComplete={handleComplete} />
+  return (
+    <OnboardingWizard
+      contractorId={contractorId}
+      voiceDeskNumber={voiceDeskNumber}
+      onComplete={handleComplete}
+    />
+  )
 }
