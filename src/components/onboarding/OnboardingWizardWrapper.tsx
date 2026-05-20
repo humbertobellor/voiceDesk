@@ -13,11 +13,11 @@ export function OnboardingWizardWrapper({ contractorId }: OnboardingWizardWrappe
 
   useEffect(() => {
     checkSubscriptionStatus()
-  }, [contractorId])
+  }, [])
 
   const checkSubscriptionStatus = async () => {
     try {
-      const response = await fetch(`/api/contractor/status?contractor_id=${contractorId}`)
+      const response = await fetch('/api/contractor/status')
       if (response.ok) {
         const data = await response.json()
         // Show wizard if subscription is not active
