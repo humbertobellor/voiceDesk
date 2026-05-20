@@ -50,11 +50,11 @@
 
 ### Billing & Onboarding
 
-- [ ] **BILL-01**: New contractors sign up via Stripe Checkout with a credit card and start a free trial (14 days) before being charged $299–$799/month based on selected plan
-- [ ] **BILL-02**: Stripe Customer Portal is accessible from the contractor's account settings, allowing self-serve plan changes, payment method updates, and cancellation
-- [ ] **BILL-03**: A failing payment deactivates the contractor's Retell agent within 72 hours of the final failed retry and sends a WhatsApp/SMS alert before deactivation
-- [ ] **ONBOARD-01**: Guided onboarding wizard walks contractor through: agent configuration → Google Calendar connection → Twilio number provisioning → call forwarding instructions (with carrier-specific codes for AT&T, Verizon, T-Mobile)
-- [ ] **ONBOARD-02**: Onboarding wizard does not advance to "go live" status until an inbound test call is detected and logged for the contractor's VoiceDesk number; portal polls and auto-advances on detection
+- [x] **BILL-01**: New contractors sign up via Stripe Checkout with a credit card and start a free trial (14 days) before being charged $299–$799/month based on selected plan
+- [x] **BILL-02**: Stripe Customer Portal is accessible from the contractor's account settings, allowing self-serve plan changes, payment method updates, and cancellation
+- [x] **BILL-03**: A failing payment deactivates the contractor's Retell agent within 72 hours of the final failed retry and sends a WhatsApp/SMS alert before deactivation
+- [x] **ONBOARD-01**: Guided onboarding wizard walks contractor through: agent configuration → Google Calendar connection → Twilio number provisioning → call forwarding instructions (with carrier-specific codes for AT&T, Verizon, T-Mobile)
+- [x] **ONBOARD-02**: Onboarding wizard does not advance to "go live" status until an inbound test call is detected and logged for the contractor's VoiceDesk number; portal polls and auto-advances on detection
 
 ---
 
@@ -110,8 +110,8 @@ Explicit exclusions — not deferred, not planned:
 | PORTAL-03 | Phase 6 — Portal UI | Pending |
 | PORTAL-04 | Phase 6 — Portal UI | Pending |
 | PORTAL-05 | Phase 6 — Portal UI | Pending |
-| BILL-01 | Phase 7 — Billing & Onboarding | Pending |
-| BILL-02 | Phase 7 — Billing & Onboarding | Pending |
-| BILL-03 | Phase 7 — Billing & Onboarding | Pending |
-| ONBOARD-01 | Phase 7 — Billing & Onboarding | Pending |
-| ONBOARD-02 | Phase 7 — Billing & Onboarding | Pending |
+| BILL-01 | Phase 7 — Billing & Onboarding | Complete |
+| BILL-02 | Phase 7 — Billing & Onboarding | Complete |
+| BILL-03 | Phase 7 — Billing & Onboarding | Complete |
+| ONBOARD-01 | Phase 7 — Billing & Onboarding | Complete |
+| ONBOARD-02 | Phase 7 — Billing & Onboarding | Complete |
