@@ -20,7 +20,6 @@ export const retellNotifyDispatch = inngest.createFunction(
   {
     id: 'retell-notify-dispatch',
     retries: 5,
-    idempotency: 'event.data.callId',
     triggers: [{ event: 'retell/call.notify' }],
     onFailure: async ({ event }) => {
       const { callId } = event.data.event.data as { callId: string }

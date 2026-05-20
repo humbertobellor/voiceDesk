@@ -40,6 +40,7 @@ export const retellCallClassify = inngest.createFunction(
         .update({ google_sync_status: 'failed' })
         .eq('call_id', callId)
         .eq('google_sync_status', 'pending')
+      console.error('[retell-call-classify] onFailure: all retries exhausted — callId=', callId)
     },
   },
   async ({ event, step }) => {
@@ -302,9 +303,10 @@ export const retellCallClassify = inngest.createFunction(
     // Step 9: Fire retell/call.notify event (Phase 5 Notifications)
     // D-01: retell-notify-dispatch handles all notification logic independently.
     // D-03: Fires after every classification — filtering by intent inside retell-notify-dispatch.
-    // D-04: Idempotency handled by retell-notify-dispatch function's idempotency key.
+    // D-04: Idempotency via event `id` field — Inngest deduplicates events with the same id at send time.
     await step.sendEvent('trigger-notify', {
       name: 'retell/call.notify',
+      id: `retell-notify-${callId}`,
       data: { callId, contractorId },
     })
   }

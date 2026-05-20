@@ -8,11 +8,8 @@ import { createCheckoutSession } from '@/lib/stripe/checkout'
 import { createSupabaseServer } from '@/lib/supabase/server'
 import { createServiceRoleClient } from '@/lib/supabase/service'
 
-const TIER_PRICE_MAP: Record<string, string> = {
-  basic: 'STRIPE_BASIC_PLAN_ID',
-  professional: 'STRIPE_PROFESSIONAL_PLAN_ID',
-  enterprise: 'STRIPE_ENTERPRISE_PLAN_ID',
-}
+const VALID_TIERS = ['basic', 'professional', 'enterprise'] as const
+type Tier = typeof VALID_TIERS[number]
 
 export async function POST(request: Request) {
   try {
@@ -30,14 +27,15 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Missing tier' }, { status: 400 })
     }
 
-    if (!TIER_PRICE_MAP[tier]) {
+    if (!VALID_TIERS.includes(tier as Tier)) {
       return NextResponse.json(
         { error: `Invalid tier: ${tier}. Must be basic, professional, or enterprise` },
         { status: 400 }
       )
     }
 
-    const priceId = process.env[TIER_PRICE_MAP[tier]]
+    const envKey = `STRIPE_${(tier as string).toUpperCase()}_PLAN_ID`
+    const priceId = process.env[envKey]
     if (!priceId) {
       console.error(`[stripe/checkout] missing price ID for tier: ${tier}`)
       return NextResponse.json({ error: `Price ID not configured for tier: ${tier}` }, { status: 500 })
