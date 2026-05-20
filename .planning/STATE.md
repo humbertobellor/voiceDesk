@@ -5,12 +5,12 @@ milestone_name: — Revenue-Ready MVP
 current_plan: All 5 plans complete
 status: completed
 stopped_at: Post-phase bug review complete — 3 bugs fixed (Stripe tier, IDOR, static import) + 25 tests added
-last_updated: "2026-05-20T07:41:12.960Z"
+last_updated: "2026-05-20T16:51:22.485Z"
 progress:
   total_phases: 7
   completed_phases: 6
-  total_plans: 37
-  completed_plans: 36
+  total_plans: 38
+  completed_plans: 37
   percent: 86
 ---
 
@@ -66,6 +66,8 @@ Current Plan: All 5 plans complete
 | 07-billing-onboarding | 03 | 2026-05-12 | ~15 min | Onboarding wizard: 5-step modal (Agent Config → Calendar → Phone → Forwarding → Go Live) with tab navigation |
 | 07-billing-onboarding | 04 | 2026-05-12 | — | Test call verification: Supabase Realtime subscription to calls table, auto-advance on call detection |
 | 07-billing-onboarding | 05 | 2026-05-12 | ~5 min | Payment failure handling: Inngest function for deactivation + SMS/WhatsApp alert + Customer Portal button in settings |
+| 07-billing-onboarding | 07 | 2026-05-20 | ~12 min | Gap-closure: BLOCKER+HIGH findings — IDOR fix, Stripe tier mapping, static import, 25 new tests |
+| 07-billing-onboarding | 08 | 2026-05-20 | ~18 min | Gap-closure: 14 MEDIUM+LOW findings — defense-in-depth filters, DST slots, idempotency, middleware, type safety |
 
 ---
 
@@ -170,6 +172,6 @@ Current Plan: All 5 plans complete
 
 _Use this section to log the last known state before ending a session, so the next session can resume without re-reading everything._
 
-Last session: 2026-05-20T07:41:12.951Z
-Stopped at: Post-phase bug review complete — 3 bugs fixed (Stripe tier, IDOR, static import) + 25 tests added
+Last session: 2026-05-20T12:58:00Z
+Stopped at: Completed 07-08-PLAN.md — all 14 MEDIUM+LOW code review findings closed
 Resume: Ready for beta testing — blockers are external (WABA, Google OAuth prod mode)
