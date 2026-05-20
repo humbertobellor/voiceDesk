@@ -235,12 +235,12 @@
   3. The wizard does not advance to "go live" status until an inbound test call is detected and logged for the contractor's VoiceDesk number — the portal polls every 5 seconds and auto-advances on detection
   4. A contractor with a failed payment receives a WhatsApp/SMS alert, and their Retell agent is deactivated within 72 hours of the final failed Stripe retry — they cannot incur Retell/Twilio costs on an unpaid subscription
   5. A contractor can access the Stripe Customer Portal from account settings to change plan, update payment method, or cancel — without contacting support
-**Plans:** 5 plans
+**Plans:** 7/7 plans complete
 - [x] 07-01-PLAN.md — Stripe SDK install + lib modules (client, checkout, portal) ✓ 2026-05-12
-- [ ] 07-02-PLAN.md — Stripe webhook handler (checkout.completed, payment_failed, subscription.updated)
-- [ ] 07-03-PLAN.md — Onboarding wizard modal with 5 steps (Agent Config → Calendar → Phone → Forwarding → Test Call)
-- [ ] 07-04-PLAN.md — Test call verification via Supabase Realtime + 5s polling fallback
-- [ ] 07-05-PLAN.md — Payment failure Inngest function (deactivation + notification) + Customer Portal access
+- [x] 07-02-PLAN.md — Stripe webhook handler (checkout.completed, payment_failed, subscription.updated)
+- [x] 07-03-PLAN.md — Onboarding wizard modal with 5 steps (Agent Config → Calendar → Phone → Forwarding → Test Call)
+- [x] 07-04-PLAN.md — Test call verification via Supabase Realtime + 5s polling fallback
+- [x] 07-05-PLAN.md — Payment failure Inngest function (deactivation + notification) + Customer Portal access
 
 **UI hint:** yes
 **Notes:** Check `subscription_status` from Supabase on every Retell agent API request — not just at login. Handle `invoice.payment_failed` Stripe webhook immediately. Stripe trial requires card-on-file (reduces abuse, matches demographics). WhatsApp opt-in consent checkbox and timestamp must be captured during onboarding for Meta compliance.
@@ -257,4 +257,4 @@
 | 4. Scheduling & Lead Capture | 6/6 | Complete | 2026-05-08 |
 | 5. Notifications | 5/5 | Complete | 2026-05-12 |
 | 6. Portal UI | 5/5 | Complete | 2026-05-12 |
-| 7. Billing & Onboarding | 5/5 | Complete | 2026-05-12 |
+| 7. Billing & Onboarding | 7/7 | Complete   | 2026-05-20 |
