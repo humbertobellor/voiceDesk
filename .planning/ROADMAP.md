@@ -16,6 +16,7 @@
 - [x] **Phase 5: Notifications** - SMS, WhatsApp, and Telegram multi-channel dispatch for all call outcomes ✓ 2026-05-12
 - [x] **Phase 6: Portal UI** - Contractor dashboard: call log, recordings, lead list, agent configuration, real-time updates ✓ 2026-05-12
 - [x] **Phase 7: Billing & Onboarding** - Stripe Checkout, subscription gating, onboarding wizard with mandatory test call gate ✓ 2026-05-12
+- [ ] **Phase 8: Settings Refactor** - Remove onboarding wizard modal; move Calendar, Phone, Forwarding, and Go Live into dedicated settings tabs alongside the existing Agent Config tab
 
 ---
 
@@ -247,6 +248,29 @@
 
 ---
 
+---
+
+### Phase 8: Settings Refactor
+**Goal:** Remove the onboarding wizard modal entirely. All setup and configuration lives in the Settings section as named tabs: Agent Config (existing), Calendar, Phone, Forwarding, and Go Live. Contractors can reach any setting at any time without a linear wizard flow.
+**Depends on:** Phase 7
+**Requirements:** ONBOARD-01 (re-implementation without wizard modal)
+**Success Criteria** (what must be TRUE):
+  1. The onboarding wizard modal and `SetupBanner` are deleted — no modal appears on first login, dashboard is clean
+  2. `/setup/phone` is unchanged — provisioning continues to happen after Stripe checkout completes
+  3. Settings navigation has six tabs: Agent Config · Calendar · Phone · Go Live · Account · Notifications
+  4. `settings/calendar` — Google Calendar connect/disconnect works
+  5. `settings/phone` — shows the provisioned VoiceDesk number (read-only) and AT&T/Verizon/T-Mobile forwarding instructions
+  6. `settings/go-live` — Realtime test call detection + `markContractorLive` fires correctly; already-live contractors see confirmation state
+  7. No dead imports, no orphaned wizard step components, `npm run build` exits 0
+**UI hint:** yes
+**Plans:** 1/3 plans executed
+Plans:
+- [x] 08-01-PLAN.md — Delete onboarding wizard directory, SetupBanner, and remove from dashboard layout
+- [ ] 08-02-PLAN.md — Create settings/calendar, settings/phone, settings/go-live pages + update Sidebar nav
+- [ ] 08-03-PLAN.md — Dead-import audit + npm run build verification
+
+---
+
 ## Progress Table
 
 | Phase | Plans Complete | Status | Completed |
@@ -257,4 +281,5 @@
 | 4. Scheduling & Lead Capture | 6/6 | Complete | 2026-05-08 |
 | 5. Notifications | 5/5 | Complete | 2026-05-12 |
 | 6. Portal UI | 5/5 | Complete | 2026-05-12 |
-| 7. Billing & Onboarding | 7/7 | Complete   | 2026-05-20 |
+| 7. Billing & Onboarding | 7/7 | Complete | 2026-05-20 |
+| 8. Settings Refactor | 1/3 | In Progress|  |
