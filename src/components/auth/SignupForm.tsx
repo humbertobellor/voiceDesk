@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2, Eye, EyeOff, Check, X, AlertCircle } from 'lucide-react'
@@ -9,6 +9,8 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import Link from 'next/link'
 import { signupSchema, type SignupFormData } from '@/lib/validations/onboarding'
+
+const SUBMIT_TIMEOUT_MS = 15_000
 
 function PasswordRequirement({ met, label }: { met: boolean; label: string }) {
   return (
@@ -24,14 +26,18 @@ export function SignupForm() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
   const [isGoogleLoading, setIsGoogleLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const [confirmationSent, setConfirmationSent] = useState(false)
   const [confirmedEmail, setConfirmedEmail] = useState('')
+  // Tracks whether the timeout already handled the response so the Supabase
+  // promise settling after the timeout does not double-set state.
+  const timedOutRef = useRef(false)
 
   const {
     register,
     handleSubmit,
     watch,
-    formState: { errors, isSubmitting, touchedFields, isSubmitted },
+    formState: { errors, touchedFields, isSubmitted },
   } = useForm<SignupFormData>({
     resolver: zodResolver(signupSchema),
     mode: 'onTouched',
@@ -40,7 +46,7 @@ export function SignupForm() {
 
   const passwordValue = watch('password') ?? ''
   const showPasswordHints = touchedFields.password || isSubmitted
-  const hasFieldErrors = isSubmitted && !isSubmitting && Object.keys(errors).length > 0
+  const hasFieldErrors = isSubmitted && !isLoading && Object.keys(errors).length > 0
 
   const passwordChecks = {
     length: passwordValue.length >= 8,
@@ -69,14 +75,33 @@ export function SignupForm() {
 
   const onSubmit = async (data: SignupFormData) => {
     setSubmitError(null)
+    setIsLoading(true)
+    timedOutRef.current = false
+
+    // Hard timeout — prevents the spinner from freezing if the Supabase request hangs.
+    const timeoutId = setTimeout(() => {
+      timedOutRef.current = true
+      setIsLoading(false)
+      setSubmitError('Request timed out. Please check your connection and try again.')
+    }, SUBMIT_TIMEOUT_MS)
+
     try {
       const supabase = createSupabaseBrowser()
       const { data: signUpData, error } = await supabase.auth.signUp({
         email: data.email,
         password: data.password,
       })
+
+      clearTimeout(timeoutId)
+      if (timedOutRef.current) return  // timeout already handled UI
+
+      setIsLoading(false)
+
       if (error) {
-        if (error.message.toLowerCase().includes('already registered') || error.message.toLowerCase().includes('already exists')) {
+        if (
+          error.message.toLowerCase().includes('already registered') ||
+          error.message.toLowerCase().includes('already exists')
+        ) {
           setSubmitError('An account with this email already exists. Sign in instead.')
         } else {
           setSubmitError(error.message)
@@ -90,6 +115,9 @@ export function SignupForm() {
       }
       window.location.href = '/setup/phone'
     } catch {
+      clearTimeout(timeoutId)
+      if (timedOutRef.current) return
+      setIsLoading(false)
       setSubmitError('Something went wrong. Please check your connection and try again.')
     }
   }
@@ -126,7 +154,7 @@ export function SignupForm() {
           </div>
         )}
 
-        {/* Form-level validation summary — shown after a failed submit */}
+        {/* Form-level validation summary — shown after a failed submit, independent of loading state */}
         {hasFieldErrors && !submitError && (
           <div role="alert" className="bg-[#EF4444]/10 border border-[#EF4444]/30 text-[#EF4444] rounded-lg p-3 text-sm mb-4 flex items-start gap-2">
             <AlertCircle size={16} className="mt-0.5 shrink-0" />
@@ -200,7 +228,6 @@ export function SignupForm() {
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
-            {/* Requirements: show once field is touched OR after a submit attempt */}
             {showPasswordHints && (
               <div id="password-requirements" className="mt-2 flex flex-wrap gap-x-4 gap-y-1">
                 <PasswordRequirement met={passwordChecks.length} label="8+ characters" />
@@ -247,10 +274,10 @@ export function SignupForm() {
           <Button
             type="submit"
             variant="outline"
-            disabled={isSubmitting}
+            disabled={isLoading}
             className="w-full border-[#334155] text-[#F8FAFC] hover:bg-[#334155] min-h-[44px]"
           >
-            {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Create account'}
+            {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Create account'}
           </Button>
         </form>
 
