@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: — Revenue-Ready MVP
-current_plan: All 5 plans complete
-status: completed
-stopped_at: Completed 07-08-PLAN.md — all 14 MEDIUM+LOW code review findings closed
-last_updated: "2026-05-20T19:25:03.305Z"
+current_plan: 08-02 complete
+status: in_progress
+stopped_at: Completed 08-02-PLAN.md — calendar, phone, go-live settings pages + Sidebar 6-tab nav
+last_updated: "2026-05-20T22:00:00.000Z"
 progress:
   total_phases: 8
   completed_phases: 6
   total_plans: 41
-  completed_plans: 38
-  percent: 75
+  completed_plans: 40
+  percent: 78
 ---
 
 # VoiceDesk — Project State
@@ -26,13 +26,13 @@ See: .planning/PROJECT.md (updated 2026-05-03)
 
 ## Current Phase
 
-Phase: 7 — Billing & Onboarding
-Status: Complete ✓
-Started: 2026-05-12
-Completed: 2026-05-12
+Phase: 8 — Settings Refactor
+Status: In Progress
+Started: 2026-05-20
+Completed: —
 Target: —
 
-Current Plan: All 5 plans complete
+Current Plan: 08-02 complete (08-03 next)
 
 ---
 
@@ -68,6 +68,7 @@ Current Plan: All 5 plans complete
 | 07-billing-onboarding | 05 | 2026-05-12 | ~5 min | Payment failure handling: Inngest function for deactivation + SMS/WhatsApp alert + Customer Portal button in settings |
 | 07-billing-onboarding | 07 | 2026-05-20 | ~12 min | Gap-closure: BLOCKER+HIGH findings — IDOR fix, Stripe tier mapping, static import, 25 new tests |
 | 07-billing-onboarding | 08 | 2026-05-20 | ~18 min | Gap-closure: 14 MEDIUM+LOW findings — defense-in-depth filters, DST slots, idempotency, middleware, type safety |
+| 08-settings-refactor | 02 | 2026-05-20 | ~15 min | Calendar, Phone, Go Live settings pages + Sidebar expanded to 6-tab sub-nav |
 
 ---
 
@@ -172,6 +173,6 @@ Current Plan: All 5 plans complete
 
 _Use this section to log the last known state before ending a session, so the next session can resume without re-reading everything._
 
-Last session: 2026-05-20T19:25:03.292Z
-Stopped at: Completed 07-08-PLAN.md — all 14 MEDIUM+LOW code review findings closed
-Resume: Ready for beta testing — blockers are external (WABA, Google OAuth prod mode)
+Last session: 2026-05-20T22:00:00.000Z
+Stopped at: Completed 08-02-PLAN.md — calendar, phone, go-live settings pages + Sidebar 6-tab nav
+Resume: Phase 8 Plan 03 next (settings/notifications page + settings/account cleanup)
