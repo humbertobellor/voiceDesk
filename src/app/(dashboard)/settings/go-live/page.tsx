@@ -26,30 +26,37 @@ export default function GoLivePage() {
     )
 
     async function fetchContractor() {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('contractors')
         .select('twilio_number, is_live')
         .eq('id', contractorId!)
         .maybeSingle()
 
-      if (data) {
-        setTwilioNumber(data.twilio_number ?? null)
-        setStatus(data.is_live === true ? 'already-live' : 'waiting')
+      if (error || !data) {
+        setStatus('waiting') // degrade gracefully; user can try the test call
+        return
       }
+      setTwilioNumber(data.twilio_number ?? null)
+      setStatus(data.is_live === true ? 'already-live' : 'waiting')
     }
 
     fetchContractor()
   }, [contractorId])
 
-  const handleTestCallDetected = useCallback(async (callId: string) => {
+  const handleTestCallDetected = useCallback(async (_callId: string) => {
     if (!contractorId) return
-    setStatus('verified')
-    await markContractorLive(contractorId)
+    const result = await markContractorLive(contractorId)
+    if (result.ok) {
+      setStatus('verified')
+    } else {
+      console.error('[GoLive] markContractorLive failed:', result.error)
+      setStatus('waiting')
+    }
   }, [contractorId])
 
   const { isConnected, subscriptionStatus } = useTestCallVerification({
     contractorId: contractorId ?? '',
-    enabled: status === 'detecting',
+    enabled: status === 'detecting' && !!contractorId,
     onTestCallDetected: handleTestCallDetected,
   })
 
@@ -152,6 +159,14 @@ export default function GoLivePage() {
               <p className="text-xl font-bold text-[#F97316]">{twilioNumber}</p>
             </div>
           )}
+
+          <button
+            type="button"
+            onClick={() => setStatus('waiting')}
+            className="text-sm text-[#94A3B8] hover:text-[#F8FAFC] underline"
+          >
+            Cancel and try again
+          </button>
         </div>
       )}
 
