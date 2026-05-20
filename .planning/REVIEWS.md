@@ -2,6 +2,7 @@
 phase: all
 reviewers: [gemini, claude, opencode]
 reviewed_at: 2026-05-14T08:00:00.000Z
+milestone_review: 2026-05-20T23:45:00Z
 plans_reviewed: [01-01-PLAN.md, 01-02-PLAN.md, 01-03-PLAN.md, 01-04-PLAN.md, 01-05-PLAN.md, 02-01a-PLAN.md, 02-01b-PLAN.md, 02-02-PLAN.md, 02-03-PLAN.md, 02-04-PLAN.md, 03-01-PLAN.md, 03-02-PLAN.md, 03-03-PLAN.md, 03-04-PLAN.md, 04-01-PLAN.md, 04-02-PLAN.md, 04-03-PLAN.md, 04-04-PLAN.md, 04-05-PLAN.md, 04-06-PLAN.md, all Phase 5-7 plans]
 ---
 
@@ -157,3 +158,159 @@ The MVP is structurally sound with good engineering discipline. Production deplo
 
 *Review generated: 2026-05-14*
 *Reviewers: Gemini CLI, Claude CLI, OpenCode*
+
+---
+
+---
+
+# Milestone Review — VoiceDesk v1.0 (Pre-Archive)
+
+**Reviewed:** 2026-05-20 · **Scope:** Full milestone (all 8 phases, 41 plans deployed to production)
+**Reviewers:** Gemini · OpenCode (deepseek-v4-flash-free) — Codex exec failed, Claude skipped (self)
+
+---
+
+## Gemini Review
+
+### Summary
+VoiceDesk v1.0 is **technically robust but operationally pending**. The architectural foundations—multi-tenant RLS, idempotent webhook processing, encrypted credential management—are enterprise-grade and exceed typical MVP standards. The product is in "Pre-Flight" state rather than "Production Ready." External verifications (Google OAuth Production Mode, WhatsApp WABA) create a hard ceiling on reliability for the first 20-30 beta users. **Recommendation:** Proceed to Private Beta only after Google OAuth verification is submitted, using the first 5 users to verify Retell webhook schemas in a live environment.
+
+### Strengths
+- **Multi-Tenant Integrity:** RLS policies across all 9 tables provide a strong security boundary.
+- **Resilient Webhook Architecture:** "Return 200 + Process via `after()`" with `webhook_events` idempotency prevents duplicate notifications on Retell retries.
+- **Performance-First Scheduling:** Pre-computing availability windows instead of querying Calendar API mid-call reduces LLM latency and prevents call drops.
+- **Security Maturity:** AES-256-GCM encryption for OAuth tokens and strict "no service-role key in browser."
+- **Graceful Fallbacks:** WhatsApp → SMS fallback ensures high-priority notifications reach contractor.
+
+### Concerns
+
+**HIGH:**
+- **Google OAuth testing mode** — Tokens expire every 7 days, requiring re-authentication. Breaks the "24/7" promise within one week of signup.
+- **Unverified webhook schemas** — If Retell payload structure differs even slightly, the entire business logic fails silently.
+- **No observability** — If booking fails (e.g., expired Google token), contractor has no way to see why the appointment didn't appear.
+
+**MEDIUM:**
+- **Retell concurrency limits** — No handling for simultaneous call limits.
+- **Hard-coded emergency keywords** — Regional terminology varies ("boiler lockout", "sewage backup"). No way to append custom keywords.
+- **`after()` lacks retries** — Unlike Inngest, `after()` doesn't retry if DB is under load or OpenAI classification fails.
+
+### Missing Edge Cases
+- Timezone anchoring — contractor local vs. server time for availability windows?
+- Google Calendar primary vs. work calendar — conflict check must cover all "busy" events
+- Contractor deletes Google Calendar appointment — does VoiceDesk detect and free the slot?
+- Twilio number reclamation on deactivation — losing a number printed on 500 trucks is business-ending
+
+### Go-to-Market Readiness
+**Pre-Beta (do immediately):**
+1. Submit Google OAuth for Verification
+2. Live webhook smoke test against real Retell call
+3. Add beta users to Twilio WhatsApp Sandbox while WABA is pending
+
+### Risk Assessment: **MEDIUM**
+Architecture is sound. Risk is MEDIUM because of external dependencies. Once Google OAuth is verified and the first real call is successfully parsed and booked, this moves to LOW.
+
+---
+
+## OpenCode Review (deepseek-v4-flash-free)
+
+### Summary
+VoiceDesk has been thoroughly built — the architecture is sound, security decisions are correct, and the team demonstrated the ability to fix production bugs. However, the product is **not ready to onboard paying contractors**. Two hard external blockers (WABA approval, Google OAuth production mode) would cause immediate failures on day 1, and a third (unverified Retell webhook payloads) could silently break call processing. Operational maturity gaps (monitoring, error visibility, runbooks) and architectural gaps (static emergency keywords) create unacceptable risk for a 24/7 emergency dispatch product.
+
+### Strengths
+- **Security-first architecture** — IDOR prevention, AES-256-GCM, service role isolated to server-side, every table has full RLS
+- **Async webhook pattern done right** — `after()` with `webhook_events` idempotency. Correct pattern for a voice AI pipeline
+- **Smart Stripe guardrail** — The trialing-default fix (checking `stripe_subscription_id IS NOT NULL`) shows operational maturity
+- **WhatsApp fallback** — `Promise.allSettled` with SMS fallback is the right pattern
+- **Phase 8 code review discipline** — 7 findings, 0 left unfixed. Go-live state falsification bug would have been catastrophic
+- **Architecture acknowledges its limits** — Dropping Haitian Creole (D-01) rather than shipping half-baked multilingual support
+
+### Concerns
+
+**HIGH:**
+- **WABA not approved** — WhatsApp hard-fails at transport layer. Twilio returns 400-level error, not timeout. Industry average approval: 2-4 weeks.
+- **Google OAuth in testing mode** — Refresh token expires in 7 days. Calendar scheduling silently degrades for every contractor who onboarded. Ticking time bomb.
+- **Retell webhook event names unverified** — Handler returns 200 (by design), so errors disappear into `after()`. Every call fails silently if field names differ.
+- **Emergency keywords hardcoded, non-configurable** — A `contractor_emergency_keywords` table is a 2-hour migration. Product is un-sellable without it to contractors with different emergency types.
+
+**MEDIUM:**
+- **Stale availability pre-computation** — Contractor blocks time while call in progress; LLM sees stale availability, creates false lead. Recurring issue with 20-30 contractors making ad-hoc changes.
+- **No monitoring, alerting, or observability** — Zero mention of Sentry or error dashboards. Blind to failures in a 24/7 product.
+- **`booking_conflict` split across two layers** — UNIQUE constraint at DB, `booking_conflict` flag at application layer. Future dev adds second booking path → flag becomes stale.
+- **No rate limiting on webhook endpoints** — Retell or Stripe burst could exhaust `after()` timeouts.
+- **Subscription guard race window** — Between Stripe webhook arrival and redirect back to app, user could get blocked. Happens at most critical moment (first payment).
+
+**LOW:**
+- 60s TTL on recording signed URLs — extend to 5-15 minutes
+- No mention of transcription storage for lead analysis
+
+### Missing Edge Cases
+- Contractor's Twilio number ported away or suspended — no "number health" check
+- Retell outage — fail open (forward to cell) or fail closed (calls unanswered)? Unspecified.
+- Contractor signs up but never configures availability — all bookings fall through
+- Simultaneous CO alarm calls — two dispatches, contractor arrives at two locations, no deduplication
+- Stripe webhook replay — contractor could be double-subscribed
+- No escalation policy when contractor misses emergency notification
+- Intent classification failure — GPT-4o-mini + GPT-4o both fail — silently lost?
+
+### Go-to-Market Readiness: **Not ready**
+
+**Must happen before any contractor is onboarded:**
+1. Submit and approve WhatsApp templates — start today, 2-6 weeks
+2. Move Google OAuth to production — 24-hour process
+3. Verify Retell webhook payloads via live sandbox — 2 hours, highest-value validation
+4. Add basic error monitoring (Sentry minimum)
+5. Make emergency keywords configurable — 2-hour migration
+6. Document Retell outage failover policy
+
+**Should happen before scaling past 20:**
+- Rate limiting on webhook endpoints
+- In-flight emergency deduplication
+- Secondary contact escalation for emergencies
+
+### Risk Assessment: **HIGH**
+
+| Category | Severity |
+|----------|----------|
+| Go-to-market blockers (WABA, OAuth) | Contractor onboarding fails within 7 days |
+| Emergency dispatch reliability | Legal liability — no Retell outage runbook |
+| Multi-tenant security | **LOW** — strongest part of architecture |
+| Operational visibility | Blind to failures in 24/7 product |
+| Emergency keyword configurability | Product doesn't fit many contractor use cases |
+| Webhook correctness | Complete silent failure path if field names differ |
+| Scale to 30 contractors | **LOW** — architecture handles it |
+
+---
+
+## Milestone Consensus Summary
+
+### Agreed Strengths (both reviewers)
+- Multi-tenant security (RLS + AES-256-GCM + IDOR prevention) — genuinely production-grade
+- Async webhook pattern (`after()` + idempotency) — correct design for voice AI pipeline
+- WhatsApp → SMS fallback with `Promise.allSettled`
+- Code review discipline — Phase 8 had 7 findings, all fixed before deploy
+
+### Agreed Concerns — Pre-Launch Blockers
+
+| Concern | Gemini | OpenCode | Priority |
+|---------|--------|----------|----------|
+| Google OAuth testing mode | HIGH | HIGH | **BLOCKER** — Silent 7-day expiry |
+| WABA not approved | HIGH | HIGH | **BLOCKER** — Fails at transport, not fallback |
+| Retell webhook unverified | HIGH | HIGH | **BLOCKER** — Silent failure on every call |
+| No observability/monitoring | HIGH | MEDIUM | **BLOCKER** — Blind to 24/7 failures |
+| Emergency keywords hardcoded | MEDIUM | HIGH | **RISK** — Un-sellable to many contractors |
+| Stale availability windows | MEDIUM | MEDIUM | **RISK** — False bookings on ad-hoc changes |
+
+### Overall Risk Verdict
+- Gemini: **MEDIUM** (external dependencies, quickly resolves once OAuth is live and first call parsed)
+- OpenCode: **HIGH** (emergency dispatch liability, WABA timeline pessimism, keyword configurability blocks sales)
+- **Consensus: MEDIUM-HIGH** — Engineering quality is high; go-to-market readiness is low
+
+### Prioritized Pre-Launch Checklist
+- [ ] Submit WABA registration + all notification templates *(start today — 2-6 week window)*
+- [ ] Move Google OAuth app to production mode *(24-hour process)*
+- [ ] Verify Retell webhook payloads against live sandbox *(2 hours — highest ROI)*
+- [ ] Add error monitoring (Sentry or equivalent) for `after()` failures
+- [ ] Make emergency keywords configurable per contractor
+
+*Milestone review generated: 2026-05-20*
+*Reviewers: Gemini CLI, OpenCode (deepseek-v4-flash-free)*
