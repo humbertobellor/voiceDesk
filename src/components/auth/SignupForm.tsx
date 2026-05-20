@@ -1,7 +1,6 @@
 'use client'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2, Eye, EyeOff, Check, X, AlertCircle } from 'lucide-react'
 import { createSupabaseBrowser } from '@/lib/supabase/browser'
 import { Button } from '@/components/ui/button'
@@ -38,7 +37,21 @@ export function SignupForm() {
     watch,
     formState: { errors, touchedFields, isSubmitted },
   } = useForm<SignupFormData>({
-    resolver: zodResolver(signupSchema),
+    // Custom resolver: @hookform/resolvers/zod targets Zod v3 and checks
+    // ZodError.errors (removed in v4). This adapter reads ZodError.issues,
+    // which is the only property Zod v4 exposes.
+    resolver: async (values) => {
+      const result = signupSchema.safeParse(values)
+      if (result.success) return { values: result.data, errors: {} }
+      const fieldErrors: Record<string, { type: string; message: string }> = {}
+      for (const issue of result.error.issues) {
+        const path = issue.path.join('.')
+        if (!fieldErrors[path]) {
+          fieldErrors[path] = { type: issue.code, message: issue.message }
+        }
+      }
+      return { values: {}, errors: fieldErrors }
+    },
     // onTouched: show error on first blur, then re-validate on every keystroke
     mode: 'onTouched',
     reValidateMode: 'onChange',
@@ -119,8 +132,11 @@ export function SignupForm() {
   // zod validation + (if valid) the async Supabase call.
   const handleFormSubmit: React.FormEventHandler = async (e) => {
     setButtonPending(true)
-    await handleSubmit(onSubmit)(e)
-    setButtonPending(false)
+    try {
+      await handleSubmit(onSubmit)(e)
+    } finally {
+      setButtonPending(false)
+    }
   }
 
   if (confirmationSent) {
