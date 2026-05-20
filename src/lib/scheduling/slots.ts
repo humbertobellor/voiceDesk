@@ -7,7 +7,7 @@
 // All slot boundaries computed in contractor IANA timezone, returned as UTC Dates for DB insert.
 import 'server-only'
 import { toZonedTime, fromZonedTime, format } from 'date-fns-tz'
-import { addMinutes, startOfDay } from 'date-fns'
+import { addMinutes, addDays, startOfDay } from 'date-fns'
 import type { BusinessHours } from '@/lib/after-hours/detect'
 
 export type { BusinessHours }
@@ -45,7 +45,6 @@ export function computeAvailableSlots(params: {
   const bookedUtcSet = new Set(existingStarts.map(d => d.toISOString()))
 
   const slots: SlotWindow[] = []
-  const nowInTz = toZonedTime(now, timezone)
 
   let businessDaysFound = 0
   let dayOffset = 0
@@ -53,42 +52,41 @@ export function computeAvailableSlots(params: {
   // Search up to 14 calendar days ahead to find 5 business days
   // T-04-03-02: dayOffset < 14 guard prevents infinite loop
   while (businessDaysFound < DAYS_AHEAD && dayOffset < 14) {
-    // Build candidate day start in contractor's local timezone
-    const candidateDayStart = startOfDay(addMinutes(nowInTz, dayOffset * 1440))
-    const dayKey = DAY_KEYS[candidateDayStart.getDay()]
+    // Compute the candidate UTC day start — arithmetic on real UTC Date, not fake-local (M-18 DST fix)
+    const candidateDayUtc = startOfDay(addDays(now, dayOffset))
+    // Convert to zoned time only for day-of-week lookup and local open/close hour math
+    const candidateDayInTz = toZonedTime(candidateDayUtc, timezone)
+    const dayKey = DAY_KEYS[candidateDayInTz.getDay()]
     const dayConfig = businessHours[dayKey]
 
     if (dayConfig?.enabled) {
-      const [openH, openM] = dayConfig.open.split(':').map(Number)
-      const [closeH, closeM] = dayConfig.close.split(':').map(Number)
+      // Get the contractor-local date string for building true UTC boundaries via fromZonedTime
+      const localDateStr = format(candidateDayInTz, 'yyyy-MM-dd', { timeZone: timezone })
 
-      // Build slot start and day close in contractor's local time
-      let slotStartInTz = new Date(candidateDayStart)
-      slotStartInTz.setHours(openH, openM, 0, 0)
-      const dayCloseInTz = new Date(candidateDayStart)
-      dayCloseInTz.setHours(closeH, closeM, 0, 0)
+      // Build slot start and day close as real UTC Dates using fromZonedTime
+      // This correctly handles DST transitions (e.g., spring-forward 02:00 → 03:00)
+      let slotStartUtc = fromZonedTime(`${localDateStr}T${dayConfig.open}:00`, timezone)
+      const dayCloseUtc = fromZonedTime(`${localDateStr}T${dayConfig.close}:00`, timezone)
 
-      // Skip past slots (don't offer slots that have already passed today)
-      while (slotStartInTz < nowInTz) {
-        slotStartInTz = addMinutes(slotStartInTz, appointmentDurationMinutes)
+      // Skip past slots (don't offer slots that have already started relative to real UTC now)
+      while (slotStartUtc <= now) {
+        slotStartUtc = addMinutes(slotStartUtc, appointmentDurationMinutes)
       }
 
       // Generate all slots that fit before day close
-      while (addMinutes(slotStartInTz, appointmentDurationMinutes) <= dayCloseInTz) {
-        // Convert local slot start to UTC for DB comparison and storage
-        const slotStartUtc = fromZonedTime(slotStartInTz, timezone)
+      while (addMinutes(slotStartUtc, appointmentDurationMinutes) <= dayCloseUtc) {
         const slotEndUtc = addMinutes(slotStartUtc, appointmentDurationMinutes)
 
         if (!bookedUtcSet.has(slotStartUtc.toISOString())) {
           slots.push({
             startsAt: slotStartUtc,
             endsAt: slotEndUtc,
-            // format() with { timeZone } from date-fns-tz renders label in contractor's local tz
-            label: format(slotStartInTz, "EEEE MMMM d 'at' h:mm a", { timeZone: timezone }),
+            // Pass real UTC Date with timeZone option — date-fns-tz renders label in contractor's local tz
+            label: format(slotStartUtc, "EEEE MMMM d 'at' h:mm a", { timeZone: timezone }),
           })
         }
 
-        slotStartInTz = addMinutes(slotStartInTz, appointmentDurationMinutes)
+        slotStartUtc = addMinutes(slotStartUtc, appointmentDurationMinutes)
       }
 
       businessDaysFound++

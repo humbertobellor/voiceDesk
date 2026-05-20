@@ -16,8 +16,10 @@ export function TestCallStep({ contractorId, voiceDeskNumber = '+1 (555) 123-456
   const [status, setStatus] = useState<'waiting' | 'detecting' | 'verified'>('waiting')
 
   // Use Supabase Realtime subscription for test call detection
+  // enabled gates the subscription — only subscribe after user explicitly clicks "I've Called"
   const { isConnected, testCallDetected, subscriptionStatus } = useTestCallVerification({
     contractorId,
+    enabled: status === 'detecting',
     onTestCallDetected: async (callId) => {
       setStatus('verified')
       onVerified?.() // Notify parent component that verification is complete

@@ -11,6 +11,7 @@ const supabase = createBrowserClient(
 interface UseTestCallVerificationOptions {
   contractorId: string
   onTestCallDetected?: (callId: string) => void
+  enabled?: boolean
 }
 
 interface TestCallVerificationState {
@@ -30,7 +31,8 @@ interface TestCallVerificationState {
  */
 export function useTestCallVerification({
   contractorId,
-  onTestCallDetected
+  onTestCallDetected,
+  enabled = false
 }: UseTestCallVerificationOptions) {
   const [state, setState] = useState<TestCallVerificationState>({
     isConnected: false,
@@ -88,6 +90,7 @@ export function useTestCallVerification({
   }, [])
 
   useEffect(() => {
+    if (!enabled) return
     if (!contractorId) return
 
     if (channelRef.current) {
@@ -158,7 +161,7 @@ export function useTestCallVerification({
       clearTimeout(pollingFallbackTimeout)
       setSubscriptionStatus('unsubscribed')
     }
-  }, [contractorId, onTestCallDetected, startPolling, stopPolling, setSubscriptionStatus])
+  }, [enabled, contractorId, onTestCallDetected, startPolling, stopPolling, setSubscriptionStatus])
 
   return {
     isConnected: state.isConnected,
