@@ -10,7 +10,7 @@ import { useContractor } from '@/contexts/ContractorContext'
 const CARRIERS = [
   { id: 'att', name: 'AT&T', code: '*72', instructions: 'Dial *72 followed by the phone number' },
   { id: 'verizon', name: 'Verizon', code: '*72', instructions: 'Dial *72 followed by the phone number' },
-  { id: 'tmobile', name: 'T-Mobile', code: '##21#', instructions: 'Dial ##21# followed by the phone number and call button' },
+  { id: 'tmobile', name: 'T-Mobile', code: '**21*', instructions: 'Dial **21* then the full number then # and press Call (e.g. **21*+13055551234#)' },
   { id: 'other', name: 'Other', code: 'varies', instructions: 'Check with your carrier for unconditional call forwarding codes' },
 ]
 
@@ -28,11 +28,12 @@ export default function PhoneSettingsPage() {
     )
 
     async function fetchNumber() {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('contractors')
         .select('twilio_number')
         .eq('id', contractorId!)
         .maybeSingle()
+      if (error) return
       if (data) setTwilioNumber(data.twilio_number ?? null)
     }
 
