@@ -45,7 +45,7 @@ export async function POST(request: Request) {
     const db = createServiceRoleClient()
     const { data: contractor, error: contractorError } = await db
       .from('contractors')
-      .select('id, subscription_status')
+      .select('id, subscription_status, stripe_subscription_id')
       .eq('user_id', user.id)
       .maybeSingle()
 
@@ -53,8 +53,15 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Contractor not found' }, { status: 404 })
     }
 
+    // Block only if a real Stripe subscription already exists.
+    // New accounts default to subscription_status='trialing' at the DB level before any
+    // Stripe checkout completes — stripe_subscription_id=null distinguishes them from
+    // contractors who have genuinely started a trial.
     const BLOCKED_STATUSES = ['active', 'trialing', 'past_due'] as const
-    if (BLOCKED_STATUSES.includes(contractor.subscription_status as typeof BLOCKED_STATUSES[number])) {
+    const hasActiveSubscription =
+      BLOCKED_STATUSES.includes(contractor.subscription_status as typeof BLOCKED_STATUSES[number]) &&
+      !!contractor.stripe_subscription_id
+    if (hasActiveSubscription) {
       return NextResponse.json(
         { error: 'A subscription already exists for this account. Visit billing settings to manage your plan.' },
         { status: 400 }
