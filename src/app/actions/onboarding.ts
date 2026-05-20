@@ -31,10 +31,12 @@ export async function markContractorLive(contractorId: string): Promise<ActionRe
   }
 
   // 3. Update is_live status to true
+  // defense-in-depth: user_id already verified via SELECT above
   const { error: uErr } = await serviceClient
     .from('contractors')
     .update({ is_live: true })
     .eq('id', contractorId)
+    .eq('user_id', user.id)
 
   if (uErr) {
     console.error('[markContractorLive] update failed:', uErr.message)

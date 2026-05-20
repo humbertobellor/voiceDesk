@@ -9,7 +9,7 @@ import 'server-only'
 export interface RetellCallPayload {
   call_id: string
   agent_id: string
-  from_number: string          // E.164 caller phone → calls.caller_phone
+  from_number?: string | undefined  // E.164 caller phone — absent on anonymous/blocked calls → calls.caller_phone
   to_number: string            // VoiceDesk number → calls.twilio_number
   direction: 'inbound' | 'outbound'
   call_status: string
