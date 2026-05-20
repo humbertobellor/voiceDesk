@@ -70,10 +70,9 @@ export async function handleCheckoutCompleted(session: CheckoutSession) {
     return
   }
 
-  // Determine tier from line_items (first item's price_id)
-  // Stripe checkout session includes line_items with price info
-  const lineItems = (session as any).line_items?.data as Array<{ price?: { id?: string } }> | undefined
-  const priceId = lineItems?.[0]?.price?.id ?? ''
+  // Determine tier from metadata.price_id (set at checkout creation time).
+  // line_items are not included in webhook payloads unless explicitly expanded.
+  const priceId = session.metadata?.price_id ?? ''
   const tierMap: Record<string, string> = {
     'price_1TWnwOPUnGyJvc3kBUtjnla1': 'basic',    // Basic plan
     'price_1TWnzFPUnGyJvc3kCPGRXcLT': 'professional', // Professional plan

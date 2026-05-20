@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Phone, Check, Loader2, AlertCircle } from 'lucide-react'
+import { createSupabaseBrowser } from '@/lib/supabase/browser'
 
 interface PhoneProvisioningStepProps {
   contractorId: string
@@ -30,7 +31,7 @@ export function PhoneProvisioningStep({ contractorId, onComplete }: PhoneProvisi
 
   const fetchContractorData = async () => {
     try {
-      const supabase = await import('@/lib/supabase/browser').then(m => m.createSupabaseBrowser())
+      const supabase = createSupabaseBrowser()
       const { data: contractor } = await supabase
         .from('contractors')
         .select('area_code')

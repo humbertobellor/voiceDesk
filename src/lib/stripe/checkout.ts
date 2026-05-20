@@ -74,6 +74,7 @@ export async function createCheckoutSession({
     cancel_url: `${baseUrl}/dashboard?checkout=cancelled`,
     metadata: {
       contractor_id: contractorId,
+      price_id: priceId,
     },
   })
 

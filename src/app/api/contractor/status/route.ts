@@ -1,20 +1,20 @@
-// GET — Returns contractor subscription status for onboarding wizard
+// GET — Returns the authenticated contractor's subscription status for the onboarding wizard.
+// contractor_id is derived from the authenticated session, never from query params (IDOR prevention).
 import { NextResponse } from 'next/server'
 import { createSupabaseServer } from '@/lib/supabase/server'
 
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url)
-  const contractorId = searchParams.get('contractor_id')
+export async function GET() {
+  const supabase = await createSupabaseServer()
+  const { data: { user } } = await supabase.auth.getUser()
 
-  if (!contractorId) {
-    return NextResponse.json({ error: 'contractor_id required' }, { status: 400 })
+  if (!user) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  const supabase = await createSupabaseServer()
   const { data: contractor, error } = await supabase
     .from('contractors')
     .select('subscription_status, twilio_number, retell_agent_id')
-    .eq('id', contractorId)
+    .eq('user_id', user.id)
     .maybeSingle()
 
   if (error || !contractor) {
