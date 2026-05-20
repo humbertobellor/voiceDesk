@@ -9,13 +9,15 @@ vi.mock('twilio', () => ({
   })),
 }))
 
-import { sendWhatsApp, WHATSAPP_CONTENT_SIDS } from '@/lib/notifications/whatsapp'
+import { sendWhatsApp, getWhatsAppContentSids } from '@/lib/notifications/whatsapp'
 
 beforeEach(() => {
   vi.clearAllMocks()
   process.env.TWILIO_ACCOUNT_SID = 'ACtest'
   process.env.TWILIO_AUTH_TOKEN = 'auth_test'
   process.env.TWILIO_WHATSAPP_FROM = 'whatsapp:+15550000000'
+  process.env.TWILIO_WHATSAPP_SID_NEW_LEAD = 'HXtest_new_lead'
+  process.env.TWILIO_WHATSAPP_SID_EMERGENCY = 'HXtest_emergency'
 })
 
 describe('sendWhatsApp', () => {
@@ -34,7 +36,7 @@ describe('sendWhatsApp', () => {
     const call = mockMessagesCreate.mock.calls[0][0]
     expect(call.to).toBe('whatsapp:+15551234567')
     expect(call.from).toBe('whatsapp:+15550000000')
-    expect(call.contentSid).toBe(WHATSAPP_CONTENT_SIDS.new_lead)
+    expect(call.contentSid).toBe(getWhatsAppContentSids().new_lead)
     const vars = JSON.parse(call.contentVariables)
     expect(vars['1']).toBe('+15559999999')
     expect(vars['2']).toBe('AC repair')
@@ -52,7 +54,7 @@ describe('sendWhatsApp', () => {
       callId: 'call-2',
     })
     const call = mockMessagesCreate.mock.calls[0][0]
-    expect(call.contentSid).toBe(WHATSAPP_CONTENT_SIDS.emergency)
+    expect(call.contentSid).toBe(getWhatsAppContentSids().emergency)
     const vars = JSON.parse(call.contentVariables)
     expect(vars['1']).toBe('+15559999999')
     expect(vars['2']).toBe('gas smell')
@@ -67,9 +69,10 @@ describe('sendWhatsApp', () => {
   })
 })
 
-describe('WHATSAPP_CONTENT_SIDS', () => {
+describe('getWhatsAppContentSids', () => {
   it('has new_lead and emergency keys', () => {
-    expect(WHATSAPP_CONTENT_SIDS).toHaveProperty('new_lead')
-    expect(WHATSAPP_CONTENT_SIDS).toHaveProperty('emergency')
+    const sids = getWhatsAppContentSids()
+    expect(sids).toHaveProperty('new_lead')
+    expect(sids).toHaveProperty('emergency')
   })
 })

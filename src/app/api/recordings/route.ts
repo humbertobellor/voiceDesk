@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseServer } from '@/lib/supabase/server'
-import { createBrowserClient } from '@supabase/ssr'
+import { createServiceRoleClient } from '@/lib/supabase/service'
 
 export const dynamic = 'force-dynamic'
 
@@ -47,16 +47,13 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'No recording available' }, { status: 404 })
   }
 
-  // Generate signed URL with 60 second TTL
-  const supabaseBrowser = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
-
   // Extract the path from the recording_url (storage path)
   const recordingPath = call.recording_url.replace(/^.*\/recordings\//, 'recordings/')
 
-  const { data: signedData, error: signedError } = await supabaseBrowser
+  // Generate signed URL with 60 second TTL using service role client
+  // Ownership was already verified above via the authenticated server client
+  const db = createServiceRoleClient()
+  const { data: signedData, error: signedError } = await db
     .storage
     .from('recordings')
     .createSignedUrl(recordingPath, 60)

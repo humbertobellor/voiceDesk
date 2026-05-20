@@ -50,7 +50,7 @@ export const stripePaymentFailureHandler = inngest.createFunction(
       const db = createServiceRoleClient()
       const { data, error } = await db
         .from('contractors')
-        .select('id, retell_llm_id, phone, whatsapp_enabled')
+        .select('id, retell_llm_id, phone_number, notification_settings(whatsapp_number)')
         .eq('id', contractorId)
         .maybeSingle()
       if (error || !data) {
@@ -69,8 +69,8 @@ export const stripePaymentFailureHandler = inngest.createFunction(
       )
       await sendPaymentFailureAlert({
         contractorId,
-        phone: contractor.phone,
-        whatsappEnabled: contractor.whatsapp_enabled ?? false,
+        phone: contractor.phone_number,
+        whatsappEnabled: !!(contractor.notification_settings as Array<{ whatsapp_number: string | null }> | null)?.[0]?.whatsapp_number,
       })
     })
 

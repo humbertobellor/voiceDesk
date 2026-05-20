@@ -1,12 +1,16 @@
--- Add email column to contractors table for Stripe checkout
--- Fixes: can't query auth.users directly with service role
-ALTER TABLE contractors ADD COLUMN email TEXT;
+-- Add email column to contractors table for Stripe checkout.
+-- Safe migration pattern: DEFAULT '' prevents NOT NULL failure on orphaned rows.
+-- ADD COLUMN IF NOT EXISTS is idempotent — safe to re-apply on existing databases.
 
--- Backfill existing contractors from auth.users (if any exist)
+ALTER TABLE contractors ADD COLUMN IF NOT EXISTS email TEXT NOT NULL DEFAULT '';
+
+-- Backfill from auth.users for all rows that still have the empty-string default.
+-- Rows with a real email (from a previous partial run) are not overwritten.
 UPDATE contractors c
 SET email = u.email
 FROM auth.users u
-WHERE c.user_id = u.id AND c.email IS NULL;
+WHERE c.user_id = u.id
+  AND c.email = '';
 
--- Add NOT NULL constraint for new inserts (existing rows may have NULL)
-ALTER TABLE contractors ALTER COLUMN email SET NOT NULL;
+-- Remove the default so future inserts must supply a real email.
+ALTER TABLE contractors ALTER COLUMN email DROP DEFAULT;

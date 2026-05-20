@@ -43,7 +43,7 @@ function makeRequest(body: object) {
   })
 }
 
-const mockContractor = { id: 'contractor-uuid', subscription_status: 'trialing' }
+const mockContractor = { id: 'contractor-uuid', subscription_status: null }
 
 describe('POST /api/stripe/checkout', () => {
   beforeEach(() => {
@@ -98,7 +98,33 @@ describe('POST /api/stripe/checkout', () => {
     const res = await POST(makeRequest({ tier: 'basic' }))
     expect(res.status).toBe(400)
     const body = await res.json()
-    expect(body.error).toMatch(/active subscription/i)
+    expect(body.error).toMatch(/subscription already exists/i)
+  })
+
+  it('returns 400 when contractor has trialing subscription (BLOCKER-05)', async () => {
+    mockGetUser.mockResolvedValue({ data: { user: { id: 'user-1' } } })
+    mockMaybySingle.mockResolvedValue({
+      data: { ...mockContractor, subscription_status: 'trialing' },
+      error: null,
+    })
+
+    const res = await POST(makeRequest({ tier: 'basic' }))
+    expect(res.status).toBe(400)
+    const body = await res.json()
+    expect(body.error).toMatch(/subscription already exists/i)
+  })
+
+  it('returns 400 when contractor has past_due subscription (BLOCKER-05)', async () => {
+    mockGetUser.mockResolvedValue({ data: { user: { id: 'user-1' } } })
+    mockMaybySingle.mockResolvedValue({
+      data: { ...mockContractor, subscription_status: 'past_due' },
+      error: null,
+    })
+
+    const res = await POST(makeRequest({ tier: 'basic' }))
+    expect(res.status).toBe(400)
+    const body = await res.json()
+    expect(body.error).toMatch(/subscription already exists/i)
   })
 
   it('returns checkout URL for valid authenticated request', async () => {

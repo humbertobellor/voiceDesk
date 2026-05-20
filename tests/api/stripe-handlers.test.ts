@@ -80,6 +80,10 @@ function makeSubscription(
 describe('handleCheckoutCompleted', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    // Set env vars for tier map — tier map reads from process.env (HIGH-04 fix)
+    process.env.STRIPE_BASIC_PLAN_ID = 'price_1TWnwOPUnGyJvc3kBUtjnla1'
+    process.env.STRIPE_PROFESSIONAL_PLAN_ID = 'price_1TWnzFPUnGyJvc3kCPGRXcLT'
+    process.env.STRIPE_ENTERPRISE_PLAN_ID = 'price_1TWo0zPUnGyJvc3k9qnsukB5'
     // Default: idempotency insert succeeds (new event)
     mockInsert.mockResolvedValue({ error: null })
     // Default: contractor update succeeds
@@ -136,7 +140,7 @@ describe('handleCheckoutCompleted', () => {
     )
   })
 
-  it('defaults to "basic" when price_id is unrecognised', async () => {
+  it('returns early (no DB update) when price_id is unrecognised (HIGH-04 fail-fast)', async () => {
     const mockEq = vi.fn().mockResolvedValue({ error: null })
     mockUpdate.mockReturnValue({ eq: mockEq })
 
@@ -144,9 +148,8 @@ describe('handleCheckoutCompleted', () => {
       makeSession({ metadata: { contractor_id: 'c-1', price_id: 'price_unknown' } })
     )
 
-    expect(mockUpdate).toHaveBeenCalledWith(
-      expect.objectContaining({ subscription_tier: 'basic' })
-    )
+    // Unknown price IDs now fail-fast instead of silently defaulting to 'basic'
+    expect(mockUpdate).not.toHaveBeenCalled()
   })
 
   it('sets subscription_status to "trialing" (D-02)', async () => {

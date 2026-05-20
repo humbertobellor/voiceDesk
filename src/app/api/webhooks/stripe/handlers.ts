@@ -74,11 +74,18 @@ export async function handleCheckoutCompleted(session: CheckoutSession) {
   // line_items are not included in webhook payloads unless explicitly expanded.
   const priceId = session.metadata?.price_id ?? ''
   const tierMap: Record<string, string> = {
-    'price_1TWnwOPUnGyJvc3kBUtjnla1': 'basic',    // Basic plan
-    'price_1TWnzFPUnGyJvc3kCPGRXcLT': 'professional', // Professional plan
-    'price_1TWo0zPUnGyJvc3k9qnsukB5': 'enterprise',  // Enterprise plan
+    [process.env.STRIPE_BASIC_PLAN_ID ?? '']: 'basic',
+    [process.env.STRIPE_PROFESSIONAL_PLAN_ID ?? '']: 'professional',
+    [process.env.STRIPE_ENTERPRISE_PLAN_ID ?? '']: 'enterprise',
   }
-  const subscriptionTier = tierMap[priceId] ?? 'basic'
+  const subscriptionTier = priceId ? tierMap[priceId] : undefined
+  if (!subscriptionTier) {
+    console.error(
+      `[webhook/stripe] handleCheckoutCompleted: unknown price ID "${priceId}" — cannot map to subscription tier. ` +
+      'Check STRIPE_BASIC_PLAN_ID / STRIPE_PROFESSIONAL_PLAN_ID / STRIPE_ENTERPRISE_PLAN_ID env vars.'
+    )
+    return
+  }
 
   // Update contractor with Stripe customer and subscription
   await db
@@ -132,8 +139,18 @@ export async function handlePaymentFailed(invoice: Invoice) {
   }
 
   const contractorId = contractor.id
-  // invoice.subscription is the subscription ID string (not a nested object in recent Stripe API)
-  const subscriptionId = (invoice as any).subscription ?? invoice.id
+  // Type-safe extraction: invoice.subscription may be string, Stripe.Subscription object, or null
+  type InvoiceWithSubscription = Stripe.Invoice & {
+    subscription?: string | Stripe.Subscription | null
+  }
+  const typedInvoice = invoice as InvoiceWithSubscription
+  const rawSub = typedInvoice.subscription
+  const subscriptionId: string | null =
+    typeof rawSub === 'string'
+      ? rawSub
+      : rawSub != null && typeof rawSub === 'object'
+      ? rawSub.id
+      : null
 
   // Trigger Inngest event for deactivation + notification
   // This triggers Plan 5's Inngest function for D-10 (immediate deactivation) + D-11 (alert)

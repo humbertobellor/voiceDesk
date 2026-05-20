@@ -56,12 +56,16 @@ export async function POST(req: NextRequest) {
     }
 
     // Create portal session
-    const returnUrl = new URL(req.headers.get('origin') ?? '')
-    returnUrl.pathname = '/settings/account'
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? process.env.APP_URL
+    if (!appUrl) {
+      console.error('[stripe/portal] NEXT_PUBLIC_APP_URL / APP_URL env var is not set')
+      return NextResponse.json({ error: 'Server misconfiguration' }, { status: 500 })
+    }
+    const returnUrl = new URL('/settings/account', appUrl).toString()
 
     const portalUrl = await createPortalSession({
       customerId: contractor.stripe_customer_id,
-      returnUrl: returnUrl.toString(),
+      returnUrl,
     })
 
     return NextResponse.json({ url: portalUrl })

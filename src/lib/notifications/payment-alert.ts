@@ -40,9 +40,10 @@ export async function sendPaymentFailureAlert({
   const alertCallId = `payment-failure-${contractorId}-${Date.now()}`
 
   // Send SMS alert (always)
+  const smsBody = `VOICEDESK ALERT: Payment failed. Your agent will be deactivated within 72 hours. Update payment method at your account settings to keep service active.`
   const smsParams: SendSmsParams = {
     to: phone,
-    body: `VOICEDESK ALERT: Payment failed. Your agent will be deactivated within 72 hours. Update payment method at your account settings to keep service active.`,
+    body: smsBody,
     contractorId,
     callId: alertCallId,
   }
@@ -92,7 +93,7 @@ export async function sendPaymentFailureAlert({
     contractorId,
     phone,
     whatsappSent: whatsappEnabled,
-    callId: alertCallId,
+    smsBody,
   })
 
   console.log(
@@ -104,12 +105,12 @@ async function logPaymentAlertToDb({
   contractorId,
   phone,
   whatsappSent,
-  callId,
+  smsBody,
 }: {
   contractorId: string
   phone: string
   whatsappSent: boolean
-  callId: string
+  smsBody: string
 }): Promise<void> {
   const db = createServiceRoleClient()
 
@@ -117,16 +118,16 @@ async function logPaymentAlertToDb({
   try {
     await db.from('notification_log').insert({
       contractor_id: contractorId,
-      call_id: callId,
-      notification_type: 'payment_failure_alert',
+      call_id: null,
       channel: 'sms',
-      recipient_phone: phone,
+      recipient: phone,
+      message: smsBody,
       status: 'sent',
     })
   } catch (err) {
-    // Ignore duplicate errors - idempotency via callId
+    // Ignore duplicate errors
     console.warn(
-      `[payment-alert] SMS notification log may be duplicate for ${callId}`
+      `[payment-alert] SMS notification log insert failed for contractor ${contractorId}`
     )
   }
 
@@ -135,15 +136,15 @@ async function logPaymentAlertToDb({
     try {
       await db.from('notification_log').insert({
         contractor_id: contractorId,
-        call_id: callId,
-        notification_type: 'payment_failure_alert',
+        call_id: null,
         channel: 'whatsapp',
-        recipient_phone: phone,
+        recipient: phone,
+        message: 'Payment failure WhatsApp alert',
         status: 'sent',
       })
     } catch (err) {
       console.warn(
-        `[payment-alert] WhatsApp notification log may be duplicate for ${callId}`
+        `[payment-alert] WhatsApp notification log insert failed for contractor ${contractorId}`
       )
     }
   }
