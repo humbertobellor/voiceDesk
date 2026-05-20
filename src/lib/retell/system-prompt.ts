@@ -15,7 +15,11 @@ export function buildSystemPrompt(settings: ContractorSettings, availableSlots?:
     ? `You speak English and Spanish. At the start of every call, greet the caller in English and say: "Para español, oprima dos" (For Spanish, press two). If the caller presses 2 or asks to switch to Spanish, conduct the ENTIRE remainder of the call in Spanish.`
     : `You speak English only.`
 
-  const emergencyKeywords = settings.emergency_keywords.en.join(', ')
+  const rawKeywords = settings.emergency_keywords.en.join(', ')
+  if (!rawKeywords) {
+    console.warn('[system-prompt] emergency_keywords.en is empty for contractor — falling back to hard-coded keywords')
+  }
+  const emergencyKeywords = rawKeywords || 'gas smell, CO alarm'
 
   const existingContent = `You are ${settings.business_name}'s AI receptionist — professional, warm, and helpful.
 

@@ -8,8 +8,14 @@ import { phoneSchema } from '@/lib/validations/onboarding'
 
 // Normalize phone number to E.164 format for storage
 function normalizePhoneNumber(phone: string): string {
-  const digits = phone.replace(/[\s\-\(\)\.]/g, '').replace(/^\+?1?/, '')
-  return `+1${digits}`
+  // Strip formatting characters and leading '+'
+  const digits = phone.replace(/[\s\-\(\)\.]/g, '').replace(/^\+/, '')
+  // Only strip country code '1' when the full number has 11 digits (E.164 with country code)
+  // Avoids double-stripping area codes that start with '1' (e.g., 100-xxx-xxxx)
+  const normalized = digits.length === 11 && digits.startsWith('1')
+    ? digits.slice(1)
+    : digits
+  return `+1${normalized}`
 }
 
 export async function POST(req: Request) {

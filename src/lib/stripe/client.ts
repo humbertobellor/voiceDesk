@@ -4,6 +4,9 @@
 import 'server-only'
 import Stripe from 'stripe'
 
+// NOTE: This singleton persists across warm Lambda invocations on Vercel.
+// If STRIPE_SECRET_KEY is rotated, a forced redeployment (triggering cold starts)
+// is required for all Lambda instances to pick up the new key.
 let _client: Stripe | null = null
 
 /**
