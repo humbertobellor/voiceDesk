@@ -191,13 +191,21 @@ export function useLeadsCount(filters?: LeadFilters) {
 
 export function useUpdateLeadStatus() {
   const queryClient = useQueryClient()
+  const { contractorId } = useContractor()
 
   return useMutation({
     mutationFn: async ({ leadId, newStatus }: { leadId: string; newStatus: LeadStatus }) => {
-      const { data, error } = await supabase
+      // defense-in-depth: RLS enforces same constraint, but explicit filter provides double safety
+      const query = supabase
         .from('leads')
         .update({ status: newStatus, updated_at: new Date().toISOString() })
         .eq('id', leadId)
+
+      const finalQuery = contractorId
+        ? query.eq('contractor_id', contractorId)
+        : query
+
+      const { data, error } = await finalQuery
         .select()
         .single()
 
