@@ -1,8 +1,7 @@
 'use client'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { Loader2 } from 'lucide-react'
+import { Loader2, AlertCircle } from 'lucide-react'
 import { phoneSchema, type PhoneFormData } from '@/lib/validations/onboarding'
 import { createSupabaseBrowser } from '@/lib/supabase/browser'
 import { Button } from '@/components/ui/button'
@@ -11,17 +10,32 @@ import { Label } from '@/components/ui/label'
 
 export function PhoneCaptureForm() {
   const [submitError, setSubmitError] = useState<string | null>(null)
-  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<PhoneFormData>({
-    resolver: zodResolver(phoneSchema),
-    mode: 'onSubmit',
+  const [buttonPending, setButtonPending] = useState(false)
+
+  const { register, handleSubmit, formState: { errors } } = useForm<PhoneFormData>({
+    // Inline Zod v4-compatible resolver — @hookform/resolvers/zod@3.10.0 checks
+    // ZodError.errors which was removed in Zod v4; only ZodError.issues exists now.
+    resolver: async (values) => {
+      const result = phoneSchema.safeParse(values)
+      if (result.success) return { values: result.data, errors: {} }
+      const fieldErrors: Record<string, { type: string; message: string }> = {}
+      for (const issue of result.error.issues) {
+        const path = issue.path.join('.')
+        if (!fieldErrors[path]) {
+          fieldErrors[path] = { type: issue.code, message: issue.message }
+        }
+      }
+      return { values: {}, errors: fieldErrors }
+    },
+    mode: 'onTouched',
+    reValidateMode: 'onChange',
+    shouldFocusError: true,
   })
 
   const onSubmit = async (data: PhoneFormData) => {
     setSubmitError(null)
-
-    // Add timeout to prevent indefinite hanging
     const controller = new AbortController()
-    const timeoutId = setTimeout(() => controller.abort(), 15000) // 15 second timeout
+    const timeoutId = setTimeout(() => controller.abort(), 15000)
 
     try {
       const res = await fetch('/api/onboarding/create-account', {
@@ -49,6 +63,15 @@ export function PhoneCaptureForm() {
     }
   }
 
+  const handleFormSubmit: React.FormEventHandler = async (e) => {
+    setButtonPending(true)
+    try {
+      await handleSubmit(onSubmit)(e)
+    } finally {
+      setButtonPending(false)
+    }
+  }
+
   const handleSignOut = async () => {
     const supabase = createSupabaseBrowser()
     await supabase.auth.signOut()
@@ -61,27 +84,41 @@ export function PhoneCaptureForm() {
         <p className="text-sm text-[#94A3B8] mb-2">Step 1 of 1 — Account Setup</p>
         <h1 className="text-[28px] font-semibold text-[#F8FAFC] mb-1">One more thing</h1>
         <p className="text-sm text-[#94A3B8] mb-6">
-          We&apos;ll send call alerts to this number. You can change it later in Settings.
+          We'll send call alerts to this number. You can change it later in Settings.
         </p>
 
         {submitError && (
-          <div role="alert" className="bg-[#EF4444]/10 border border-[#EF4444]/30 text-[#EF4444] rounded-lg p-3 text-sm mb-4">
+          <div role="alert" className="bg-[#EF4444]/10 border border-[#EF4444]/30 text-[#EF4444] rounded-lg p-3 text-sm mb-4 flex items-start gap-2">
+            <AlertCircle size={16} className="mt-0.5 shrink-0" />
             {submitError}
           </div>
         )}
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={handleFormSubmit} noValidate className="space-y-4">
+          {/* Business name */}
           <div>
             <Label htmlFor="business_name" className="text-sm text-[#94A3B8]">Business name</Label>
             <Input
               id="business_name"
               placeholder="e.g. South Florida HVAC Co."
-              className="bg-[#0F172A] border-[#334155] text-[#F8FAFC] focus-visible:ring-[#F97316] min-h-[44px] mt-1"
+              aria-invalid={!!errors.business_name}
+              aria-describedby={errors.business_name ? 'business-name-error' : undefined}
+              className={`mt-1 bg-[#0F172A] text-[#F8FAFC] focus-visible:ring-[#F97316] min-h-[44px] transition-colors ${
+                errors.business_name
+                  ? 'border-[#EF4444] focus-visible:ring-[#EF4444]'
+                  : 'border-[#334155]'
+              }`}
               {...register('business_name')}
             />
-            {errors.business_name && <p className="text-sm text-[#EF4444] mt-1">{errors.business_name.message}</p>}
+            {errors.business_name && (
+              <p id="business-name-error" role="alert" className="text-sm text-[#EF4444] mt-1 flex items-center gap-1">
+                <AlertCircle size={13} className="shrink-0" />
+                {errors.business_name.message}
+              </p>
+            )}
           </div>
 
+          {/* Phone number */}
           <div>
             <Label htmlFor="phone_number" className="text-sm text-[#94A3B8]">Your mobile number</Label>
             <Input
@@ -89,16 +126,28 @@ export function PhoneCaptureForm() {
               type="tel"
               inputMode="tel"
               placeholder="+1 (305) 555-0100"
-              className="bg-[#0F172A] border-[#334155] text-[#F8FAFC] focus-visible:ring-[#F97316] min-h-[44px] mt-1"
+              aria-invalid={!!errors.phone_number}
+              aria-describedby={errors.phone_number ? 'phone-number-error' : 'phone-number-hint'}
+              className={`mt-1 bg-[#0F172A] text-[#F8FAFC] focus-visible:ring-[#F97316] min-h-[44px] transition-colors ${
+                errors.phone_number
+                  ? 'border-[#EF4444] focus-visible:ring-[#EF4444]'
+                  : 'border-[#334155]'
+              }`}
               {...register('phone_number')}
             />
             {errors.phone_number ? (
-              <p className="text-sm text-[#EF4444] mt-1">{errors.phone_number.message}</p>
+              <p id="phone-number-error" role="alert" className="text-sm text-[#EF4444] mt-1 flex items-center gap-1">
+                <AlertCircle size={13} className="shrink-0" />
+                {errors.phone_number.message}
+              </p>
             ) : (
-              <p className="text-sm text-[#94A3B8] mt-1">US numbers only. We&apos;ll send you call alerts here.</p>
+              <p id="phone-number-hint" className="text-sm text-[#94A3B8] mt-1">
+                US numbers only. We'll send you call alerts here.
+              </p>
             )}
           </div>
 
+          {/* Area code */}
           <div>
             <Label htmlFor="area_code" className="text-sm text-[#94A3B8]">Preferred area code</Label>
             <Input
@@ -106,22 +155,33 @@ export function PhoneCaptureForm() {
               inputMode="numeric"
               maxLength={3}
               placeholder="305"
-              className="bg-[#0F172A] border-[#334155] text-[#F8FAFC] focus-visible:ring-[#F97316] min-h-[44px] mt-1"
+              aria-invalid={!!errors.area_code}
+              aria-describedby={errors.area_code ? 'area-code-error' : 'area-code-hint'}
+              className={`mt-1 bg-[#0F172A] text-[#F8FAFC] focus-visible:ring-[#F97316] min-h-[44px] transition-colors ${
+                errors.area_code
+                  ? 'border-[#EF4444] focus-visible:ring-[#EF4444]'
+                  : 'border-[#334155]'
+              }`}
               {...register('area_code')}
             />
             {errors.area_code ? (
-              <p className="text-sm text-[#EF4444] mt-1">{errors.area_code.message}</p>
+              <p id="area-code-error" role="alert" className="text-sm text-[#EF4444] mt-1 flex items-center gap-1">
+                <AlertCircle size={13} className="shrink-0" />
+                {errors.area_code.message}
+              </p>
             ) : (
-              <p className="text-sm text-[#94A3B8] mt-1">We&apos;ll provision a local VoiceDesk number with this area code.</p>
+              <p id="area-code-hint" className="text-sm text-[#94A3B8] mt-1">
+                We'll provision a local VoiceDesk number with this area code.
+              </p>
             )}
           </div>
 
           <Button
             type="submit"
-            disabled={isSubmitting}
+            disabled={buttonPending}
             className="w-full bg-[#F97316] text-[#0F172A] hover:bg-[#F97316]/90 min-h-[44px] font-semibold"
           >
-            {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Complete Setup'}
+            {buttonPending ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Complete Setup'}
           </Button>
         </form>
 
