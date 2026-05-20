@@ -147,6 +147,21 @@ export function useTestCallVerification({
 
     channelRef.current = channel
 
+    // Seed lastCallIdRef with the most recent existing call ID so the polling
+    // fallback only fires for calls inserted AFTER detecting mode was enabled.
+    // Without this, the first poll fires a false positive whenever the contractor
+    // already has any prior call in the database (null !== someUUID).
+    supabase
+      .from('calls')
+      .select('id')
+      .eq('contractor_id', contractorId)
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle()
+      .then(({ data }) => {
+        lastCallIdRef.current = data?.id ?? '__none__'
+      })
+
     // Start polling fallback if Realtime hasn't connected within 5 seconds.
     // Uses the ref to read current status without adding state to this effect's deps.
     const pollingFallbackTimeout = setTimeout(() => {
