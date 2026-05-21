@@ -16,7 +16,7 @@
 - [x] **Phase 5: Notifications** - SMS, WhatsApp, and Telegram multi-channel dispatch for all call outcomes ✓ 2026-05-12
 - [x] **Phase 6: Portal UI** - Contractor dashboard: call log, recordings, lead list, agent configuration, real-time updates ✓ 2026-05-12
 - [x] **Phase 7: Billing & Onboarding** - Stripe Checkout, subscription gating, onboarding wizard with mandatory test call gate ✓ 2026-05-12
-- [ ] **Phase 8: Settings Refactor** - Remove onboarding wizard modal; move Calendar, Phone, Forwarding, and Go Live into dedicated settings tabs alongside the existing Agent Config tab
+- [x] **Phase 8: Settings Refactor** - Remove onboarding wizard modal; move Calendar, Phone, Forwarding, and Go Live into dedicated settings tabs alongside the existing Agent Config tab ✓ 2026-05-20
 
 ---
 
@@ -263,11 +263,31 @@
   6. `settings/go-live` — Realtime test call detection + `markContractorLive` fires correctly; already-live contractors see confirmation state
   7. No dead imports, no orphaned wizard step components, `npm run build` exits 0
 **UI hint:** yes
-**Plans:** 1/3 plans executed
+**Plans:** 3/3 plans complete
 Plans:
 - [x] 08-01-PLAN.md — Delete onboarding wizard directory, SetupBanner, and remove from dashboard layout
-- [ ] 08-02-PLAN.md — Create settings/calendar, settings/phone, settings/go-live pages + update Sidebar nav
-- [ ] 08-03-PLAN.md — Dead-import audit + npm run build verification
+- [x] 08-02-PLAN.md — Create settings/calendar, settings/phone, settings/go-live pages + update Sidebar nav ✓ 2026-05-20
+- [x] 08-03-PLAN.md — Dead-import audit + npm run build verification ✓ 2026-05-20
+
+---
+
+---
+
+### Phase 9: Hardening & UX Polish
+**Goal:** Address cross-AI review findings and close UX gaps before beta launch: add error observability, make emergency keywords configurable per contractor, fix the Telegram bot name, move phone provisioning into settings/phone so contractors can self-serve a number, and surface the provisioned number in the Sidebar.
+**Depends on:** Phase 8
+**Requirements:** ONBOARD-01 (settings/phone provisioning), EMRG-01 (configurable keywords), NOTIF-03 (correct Telegram bot)
+**Success Criteria** (what must be TRUE):
+  1. `voiceDeskTelBot` is the bot name everywhere — no reference to `voiceDeskBot` remains in source or UI
+  2. Contractors can provision their Twilio/Retell phone number directly from `settings/phone` without visiting the old `/setup/phone` flow — the button calls the existing provisioning API and shows the result inline
+  3. Once provisioned, the phone number is displayed in the Sidebar bottom-left between business name and email on all dashboard pages
+  4. `settings/agent` → Emergency Keywords tab lets contractors add/remove custom keywords on top of the hard-coded gas smell / CO alarm baseline; changes persist to `contractor_settings`
+  5. Uncaught errors in `after()` webhook processing and Inngest functions are logged with enough context (contractor_id, call_id, error message) that failures are diagnosable without a Supabase query
+**UI hint:** yes
+**Plans:** 2 plans
+Plans:
+- [ ] 09-01-PLAN.md — Telegram bot name fix (VoiceDeskBot → voiceDeskTelBot in 3 files) + structured JSON console.error at all Inngest onFailure handlers and after() catch block
+- [ ] 09-02-PLAN.md — settings/phone: two-state provisioning form (area code input + Provision My Number button) + router.refresh() on success so Sidebar updates automatically
 
 ---
 
@@ -282,4 +302,5 @@ Plans:
 | 5. Notifications | 5/5 | Complete | 2026-05-12 |
 | 6. Portal UI | 5/5 | Complete | 2026-05-12 |
 | 7. Billing & Onboarding | 7/7 | Complete | 2026-05-20 |
-| 8. Settings Refactor | 1/3 | In Progress|  |
+| 8. Settings Refactor | 3/3 | Complete | 2026-05-20 |
+| 9. Hardening & UX Polish | 0/2 | In Progress | — |
