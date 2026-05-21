@@ -32,11 +32,10 @@ export async function POST(req: Request) {
   if (!isValid) {
     console.error('[voicedesk]', JSON.stringify({
       event: 'webhook.retell.signature_failed',
-      sig_present: !!signature,
-      sig_prefix: signature.substring(0, 20),
+      full_signature: signature,
       body_length: rawBody.length,
-      body_preview: rawBody.substring(0, 80),
-      key_prefix: retellApiKey.substring(0, 10),
+      body_start: rawBody.substring(0, 200),
+      key_used: retellApiKey.substring(0, 15),
     }))
     return new Response('Unauthorized', { status: 401 })
   }
