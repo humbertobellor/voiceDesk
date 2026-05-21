@@ -22,8 +22,13 @@ export const retellNotifyDispatch = inngest.createFunction(
     retries: 5,
     triggers: [{ event: 'retell/call.notify' }],
     onFailure: async ({ event }) => {
-      const { callId } = event.data.event.data as { callId: string }
-      console.error(`[retell-notify-dispatch] all retries exhausted for callId=${callId}`)
+      const { callId, contractorId } = event.data.event.data as { callId: string; contractorId: string }
+      console.error('[voicedesk]', JSON.stringify({
+        event: 'retell-notify-dispatch.failed',
+        contractor_id: contractorId,
+        call_id: callId,
+        error: 'all retries exhausted',
+      }))
       // notification_log rows already written per-attempt — no additional DB update needed
     },
   },

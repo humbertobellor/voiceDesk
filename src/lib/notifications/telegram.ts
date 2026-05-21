@@ -12,7 +12,7 @@ export interface SendTelegramResult {
   messageId: number
 }
 
-// D-18: Single @VoiceDeskBot for the entire platform. One TELEGRAM_BOT_TOKEN env var.
+// D-18: Single @voiceDeskTelBot for the entire platform. One TELEGRAM_BOT_TOKEN env var.
 // D-22: grammY webhook mode (not polling) — Bot instance is created per-request, not persistent.
 // NOTIF-03: Sends plain text notification to contractor's linked Telegram account.
 export async function sendTelegram(params: SendTelegramParams): Promise<SendTelegramResult> {

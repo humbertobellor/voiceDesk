@@ -76,12 +76,12 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
         >
           <span className="font-medium">Link Telegram for instant call alerts.</span>{' '}
           <a
-            href={`https://t.me/VoiceDeskBot?start=${contractorId ?? ''}`}
+            href={`https://t.me/voiceDeskTelBot?start=${contractorId ?? ''}`}
             target="_blank"
             rel="noopener noreferrer"
             className="underline hover:text-[#60A5FA] transition-colors"
           >
-            Connect @VoiceDeskBot
+            Connect @voiceDeskTelBot
           </a>
           {' '}to receive SMS, WhatsApp, and Telegram notifications within 60 seconds of every call.
         </div>
