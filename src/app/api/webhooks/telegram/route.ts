@@ -1,5 +1,5 @@
 // src/app/api/webhooks/telegram/route.ts
-// Telegram bot webhook handler for @VoiceDeskBot.
+// Telegram bot webhook handler for @voiceDeskTelBot.
 // D-22: grammY webhook mode (not polling — serverless compatible).
 // D-19: Processes /start <contractor_uuid> messages from Telegram deep link.
 // D-20: Upserts telegram_chat_id — re-linking always overwrites.
@@ -18,7 +18,7 @@ if (!botToken) {
 const bot = new Bot(botToken ?? 'placeholder')
 
 // D-19: Handle /start <contractor_uuid> — sent by Telegram when contractor clicks the deep link
-// Deep link format: https://t.me/VoiceDeskBot?start=<contractor_uuid>
+// Deep link format: https://t.me/voiceDeskTelBot?start=<contractor_uuid>
 // Telegram delivers this as message.text = "/start <contractor_uuid>"
 bot.command('start', async (ctx) => {
   const text = ctx.message?.text ?? ''

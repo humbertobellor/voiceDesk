@@ -28,7 +28,7 @@ export const retellCallClassify = inngest.createFunction(
     onFailure: async ({ event }) => {
       // All retries exhausted — mark call as analysis_failed so portal can show "Analysis unavailable"
       // event.data.event is the FailureEventPayload; .data is the original retell/call.classify payload
-      const { callId } = event.data.event.data as { callId: string }
+      const { callId, contractorId } = event.data.event.data as { callId: string; contractorId: string }
       if (!callId) return
       const db = createServiceRoleClient()
       await db
@@ -40,7 +40,12 @@ export const retellCallClassify = inngest.createFunction(
         .update({ google_sync_status: 'failed' })
         .eq('call_id', callId)
         .eq('google_sync_status', 'pending')
-      console.error('[retell-call-classify] onFailure: all retries exhausted — callId=', callId)
+      console.error('[voicedesk]', JSON.stringify({
+        event: 'retell-call-classify.failed',
+        contractor_id: contractorId,
+        call_id: callId,
+        error: 'all retries exhausted',
+      }))
     },
   },
   async ({ event, step }) => {
