@@ -30,7 +30,14 @@ export async function POST(req: Request) {
   // T-03-01: Verify HMAC signature before trusting any payload content
   const isValid = await verify(rawBody, retellApiKey, signature)
   if (!isValid) {
-    console.error('[webhook/retell] invalid signature — rejecting request')
+    console.error('[voicedesk]', JSON.stringify({
+      event: 'webhook.retell.signature_failed',
+      sig_present: !!signature,
+      sig_prefix: signature.substring(0, 20),
+      body_length: rawBody.length,
+      body_preview: rawBody.substring(0, 80),
+      key_prefix: retellApiKey.substring(0, 10),
+    }))
     return new Response('Unauthorized', { status: 401 })
   }
 
