@@ -12,12 +12,12 @@ interface VoiceOption {
 }
 
 const VOICE_OPTIONS: VoiceOption[] = [
-  { id: 'sarah', name: 'Sarah', gender: 'Female', description: 'Warm and professional' },
-  { id: 'james', name: 'James', gender: 'Male', description: 'Clear and authoritative' },
-  { id: 'emily', name: 'Emily', gender: 'Female', description: 'Friendly and casual' },
-  { id: 'michael', name: 'Michael', gender: 'Male', description: 'Deep and trustworthy' },
-  { id: 'sophia', name: 'Sophia', gender: 'Female', description: 'Modern and confident' },
-  { id: 'daniel', name: 'Daniel', gender: 'Male', description: 'Natural and engaging' }
+  { id: '11labs-Myra', name: 'Myra', gender: 'Female', description: 'Warm and professional' },
+  { id: 'retell-Grace', name: 'Grace', gender: 'Female', description: 'Friendly and polished' },
+  { id: 'retell-Chloe', name: 'Chloe', gender: 'Female', description: 'Modern and confident' },
+  { id: 'retell-Leland', name: 'Leland', gender: 'Male', description: 'Clear and authoritative' },
+  { id: 'retell-Nico', name: 'Nico', gender: 'Male', description: 'Natural and engaging' },
+  { id: 'retell-Alejandro', name: 'Alejandro', gender: 'Male', description: 'Deep and trustworthy' },
 ]
 
 export function VoiceForm() {
@@ -25,7 +25,7 @@ export function VoiceForm() {
   const updateSettings = useUpdateContractorSettings()
   const syncRetell = useSyncRetellAgent()
 
-  const [selectedVoice, setSelectedVoice] = useState('sarah')
+  const [selectedVoice, setSelectedVoice] = useState('11labs-Myra')
   const [isSaving, setIsSaving] = useState(false)
   const [showSuccess, setShowSuccess] = useState(false)
 
