@@ -21,9 +21,11 @@ export const stripePaymentFailureHandler = inngest.createFunction(
       // All retries exhausted — log for audit (T-07-05-01).
       // No automatic status update — manual intervention may be required.
       const contractorId = (event.data.event.data as { contractorId?: string }).contractorId
-      console.error(
-        `[stripe-payment-failure] all retries exhausted for contractor ${contractorId ?? 'unknown'}`
-      )
+      console.error('[voicedesk]', JSON.stringify({
+        event: 'stripe-payment-failure.failed',
+        contractor_id: contractorId ?? 'unknown',
+        error: 'all retries exhausted',
+      }))
     },
   },
   async ({ event, step }) => {
