@@ -1,9 +1,13 @@
 'use client'
 // src/app/(dashboard)/settings/phone/page.tsx
-// Read-only VoiceDesk number display + carrier call-forwarding instructions.
-// D-11: No provisioning or edit controls — number is assigned during onboarding.
+// Two-state VoiceDesk number page:
+//   State A (twilio_number is null)  — area-code input + "Provision My Number" button
+//   State B (twilio_number is set)   — number display + carrier call-forwarding instructions
+// Security invariant: fetch body sends { area_code } only; contractor_id is never included.
+// The API (create/route.ts line 26-27) derives contractor_id from supabase.auth.getUser().
 import { useState, useEffect } from 'react'
-import { Phone, Copy, Check, PhoneForwarded } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { Phone, Copy, Check, PhoneForwarded, Loader2 } from 'lucide-react'
 import { createBrowserClient } from '@supabase/ssr'
 import { useContractor } from '@/contexts/ContractorContext'
 
@@ -16,8 +20,12 @@ const CARRIERS = [
 
 export default function PhoneSettingsPage() {
   const { contractorId } = useContractor()
+  const router = useRouter()
   const [twilioNumber, setTwilioNumber] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
+  const [areaCode, setAreaCode] = useState('')
+  const [isProvisioning, setIsProvisioning] = useState(false)
+  const [provisionError, setProvisionError] = useState<string | null>(null)
 
   useEffect(() => {
     if (!contractorId) return
@@ -45,6 +53,40 @@ export default function PhoneSettingsPage() {
     navigator.clipboard.writeText(twilioNumber)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
+  }
+
+  async function handleProvision() {
+    if (!areaCode.match(/^\d{3}$/)) {
+      setProvisionError('Enter a valid 3-digit area code.')
+      return
+    }
+    setIsProvisioning(true)
+    setProvisionError(null)
+    try {
+      const res = await fetch('/api/provisioning/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ area_code: areaCode }),
+      })
+      if (res.ok) {
+        const data = await res.json()
+        setTwilioNumber(data.twilio_number)
+        router.refresh()   // Triggers layout re-run so Sidebar picks up new number
+        return
+      }
+      const json = await res.json().catch(() => ({}))
+      if (res.status === 409) {
+        setProvisionError('Number already provisioned — refresh page.')
+      } else if (res.status === 422) {
+        setProvisionError('Area code unavailable. Try: 786, 954, or 561.')
+      } else {
+        setProvisionError(json.error ?? 'Provisioning failed. Please try again.')
+      }
+    } catch {
+      setProvisionError('Network error. Please try again.')
+    } finally {
+      setIsProvisioning(false)
+    }
   }
 
   const digitsOnly = twilioNumber?.replace(/\D/g, '') ?? ''
@@ -83,48 +125,84 @@ export default function PhoneSettingsPage() {
               </button>
             </>
           ) : (
-            <span className="text-2xl font-bold text-[#64748B]">Not yet provisioned</span>
+            <div className="w-full">
+              <p className="text-sm text-[#94A3B8] mb-3">
+                No number assigned yet. Enter your preferred area code to provision your VoiceDesk number.
+              </p>
+              <div className="flex items-center gap-3">
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  maxLength={3}
+                  placeholder="305"
+                  value={areaCode}
+                  onChange={(e) => setAreaCode(e.target.value.replace(/\D/g, '').slice(0, 3))}
+                  aria-label="Area code"
+                  className="w-20 px-3 py-2 bg-[#0F172A] border border-[#334155] rounded-md text-[#F8FAFC] text-sm font-mono focus:outline-none focus:ring-2 focus:ring-[#F97316] focus:border-transparent"
+                />
+                <button
+                  type="button"
+                  onClick={handleProvision}
+                  disabled={isProvisioning || areaCode.length !== 3}
+                  className="flex items-center gap-2 px-4 py-2 bg-[#F97316] hover:bg-[#EA6B0C] disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-semibold rounded-md transition-colors"
+                >
+                  {isProvisioning ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Provisioning...
+                    </>
+                  ) : (
+                    'Provision My Number'
+                  )}
+                </button>
+              </div>
+              {provisionError && (
+                <p role="alert" className="mt-2 text-sm text-[#EF4444]">{provisionError}</p>
+              )}
+            </div>
           )}
         </div>
       </div>
 
-      {/* Section B — Carrier Forwarding Instructions */}
-      <div className="mb-4">
-        <div className="flex items-center gap-2 mb-3">
-          <PhoneForwarded className="w-4 h-4 text-[#64748B]" />
-          <h2 className="text-sm font-semibold text-[#F8FAFC]">Call Forwarding Setup</h2>
-        </div>
-        <p className="text-sm text-[#94A3B8] mb-4">
-          Forward calls from your existing business number to your VoiceDesk number using these carrier codes.
-        </p>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {CARRIERS.map((carrier) => (
-            <div key={carrier.id} className="bg-[#1E293B] rounded-lg p-4">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-semibold text-[#F8FAFC]">{carrier.name}</span>
-                <code className="text-xs bg-[#0F172A] text-[#F97316] px-2 py-0.5 rounded font-mono">
-                  {carrier.code}
-                </code>
-              </div>
-              <p className="text-xs text-[#94A3B8] mb-2">{carrier.instructions}</p>
-              {twilioNumber && carrier.code !== 'varies' && (
-                <p className="text-xs text-[#64748B] font-mono">
-                  Example: {carrier.code}{digitsOnly}
-                </p>
-              )}
-            </div>
-          ))}
-        </div>
-
-        {/* Advisory box */}
-        <div className="mt-4 bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4">
-          <p className="text-xs text-yellow-300">
-            After entering the forwarding code, wait for a confirmation tone or message.
-            Test by calling your old business number — it should ring your VoiceDesk number.
+      {/* Section B — Carrier Forwarding Instructions (only shown when number is provisioned) */}
+      {twilioNumber && (
+        <div className="mb-4">
+          <div className="flex items-center gap-2 mb-3">
+            <PhoneForwarded className="w-4 h-4 text-[#64748B]" />
+            <h2 className="text-sm font-semibold text-[#F8FAFC]">Call Forwarding Setup</h2>
+          </div>
+          <p className="text-sm text-[#94A3B8] mb-4">
+            Forward calls from your existing business number to your VoiceDesk number using these carrier codes.
           </p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {CARRIERS.map((carrier) => (
+              <div key={carrier.id} className="bg-[#1E293B] rounded-lg p-4">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm font-semibold text-[#F8FAFC]">{carrier.name}</span>
+                  <code className="text-xs bg-[#0F172A] text-[#F97316] px-2 py-0.5 rounded font-mono">
+                    {carrier.code}
+                  </code>
+                </div>
+                <p className="text-xs text-[#94A3B8] mb-2">{carrier.instructions}</p>
+                {carrier.code !== 'varies' && (
+                  <p className="text-xs text-[#64748B] font-mono">
+                    Example: {carrier.code}{digitsOnly}
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
+
+          {/* Advisory box */}
+          <div className="mt-4 bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4">
+            <p className="text-xs text-yellow-300">
+              After entering the forwarding code, wait for a confirmation tone or message.
+              Test by calling your old business number — it should ring your VoiceDesk number.
+            </p>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   )
 }
