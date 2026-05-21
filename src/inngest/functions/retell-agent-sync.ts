@@ -23,6 +23,11 @@ export const retellAgentSync = inngest.createFunction(
         .from('contractors')
         .update({ agent_sync_status: 'failed' })
         .eq('id', contractorId)
+      console.error('[voicedesk]', JSON.stringify({
+        event: 'retell-agent-sync.failed',
+        contractor_id: contractorId,
+        error: 'all retries exhausted',
+      }))
     },
   },
   async ({ event, step }) => {

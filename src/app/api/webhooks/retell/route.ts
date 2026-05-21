@@ -54,7 +54,11 @@ export async function POST(req: Request) {
       }
       // call_started, transcript_updated, transfer_* — no-op (not subscribed to these events)
     } catch (err) {
-      console.error('[webhook/retell] after() processing error:', err instanceof Error ? err.message : err)
+      console.error('[voicedesk]', JSON.stringify({
+        event: 'webhook.retell.after.failed',
+        error: err instanceof Error ? err.message : String(err),
+        stack: err instanceof Error ? err.stack : undefined,
+      }))
     }
   })
 
