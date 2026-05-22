@@ -62,10 +62,11 @@ function verifyRetellHmac(rawBody: string, apiKey: string, signature: string): {
 }
 
 export async function POST(req: Request) {
-  // CR-04: Guard missing env var — undefined passed to crypto throws TypeError → HTTP 500
-  const retellApiKey = process.env.RETELL_API_KEY
-  if (!retellApiKey) {
-    console.error('[webhook/retell] RETELL_API_KEY is not set — cannot verify signature')
+  // RETELL_WEBHOOK_KEY is the "Secret Key (Webhook)" from Retell dashboard — separate from the
+  // REST API key. Retell signs all webhook events with this key, not the general API key.
+  const retellWebhookKey = process.env.RETELL_WEBHOOK_KEY
+  if (!retellWebhookKey) {
+    console.error('[webhook/retell] RETELL_WEBHOOK_KEY is not set — cannot verify signature')
     return new Response('Internal Server Error', { status: 500 })
   }
 
@@ -74,7 +75,7 @@ export async function POST(req: Request) {
   const signature = req.headers.get('x-retell-signature') ?? ''
 
   // T-03-01: Verify HMAC signature before trusting any payload content
-  const { valid: isValid, diagnostics } = verifyRetellHmac(rawBody, retellApiKey, signature)
+  const { valid: isValid, diagnostics } = verifyRetellHmac(rawBody, retellWebhookKey, signature)
   if (!isValid) {
     console.error('[voicedesk]', JSON.stringify({
       event: 'webhook.retell.signature_failed',
