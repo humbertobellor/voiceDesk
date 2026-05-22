@@ -11,8 +11,11 @@ import { retellAnalysisTimeout } from '@/inngest/functions/retell-analysis-timeo
 import { retellNotifyDispatch } from '@/inngest/functions/retell-notify-dispatch'
 import { stripePaymentFailureHandler } from '@/inngest/functions/stripe-payment-failure'
 
+// serveHost must be the stable production URL, not VERCEL_URL (which is deployment-specific
+// and becomes DEPLOYMENT_NOT_FOUND after each new deploy, breaking all function invocations).
 export const { GET, POST, PUT } = serve({
   client: inngest,
+  serveOrigin: process.env.APP_URL,
   functions: [
     retellAgentSync,
     retellCallClassify,
