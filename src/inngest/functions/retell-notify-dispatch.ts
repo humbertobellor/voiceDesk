@@ -39,7 +39,12 @@ export function computeChannels(
   > | null,
   intent: CallIntent | null
 ): { shouldSendSms: boolean; shouldSendWhatsApp: boolean; shouldSendTelegram: boolean } {
-  if (!intent || intent === 'no_action') {
+  if (!intent || intent === 'no_action' || intent === 'unknown') {
+    if (intent === 'unknown') {
+      console.warn('[voicedesk]', JSON.stringify({
+        event: 'retell-notify-dispatch.skipped_unknown_intent',
+      }))
+    }
     return { shouldSendSms: false, shouldSendWhatsApp: false, shouldSendTelegram: false }
   }
 
@@ -168,14 +173,17 @@ export const retellNotifyDispatch = inngest.createFunction(
     // SMS dispatch (D-05: lead/emergency/info, gated by intent prefs)
     if (shouldSendSms) {
       await step.run('send-sms', async () => {
-        const logId = await writeNotificationLog({
-          contractorId,
-          callId,
-          channel: 'sms',
-          recipient: settings!.sms_number!,
-          message: smsBody,
-        })
+        // WR-02: writeNotificationLog is inside the try/catch so a DB failure on insert
+        // does not leave an orphaned 'pending' row on retry (logId would be null, skipping update).
+        let logId: string | null = null
         try {
+          logId = await writeNotificationLog({
+            contractorId,
+            callId,
+            channel: 'sms',
+            recipient: settings!.sms_number!,
+            message: smsBody,
+          })
           await sendSms({
             to: settings!.sms_number!,
             body: smsBody,
@@ -184,10 +192,12 @@ export const retellNotifyDispatch = inngest.createFunction(
           })
           await updateNotificationLog(logId, { status: 'sent', sentAt: new Date().toISOString() })
         } catch (err: unknown) {
-          await updateNotificationLog(logId, {
-            status: 'failed',
-            error: err instanceof Error ? err.message : String(err),
-          })
+          if (logId) {
+            await updateNotificationLog(logId, {
+              status: 'failed',
+              error: err instanceof Error ? err.message : String(err),
+            })
+          }
           throw err  // Re-throw so Inngest retries this step
         }
       })
@@ -197,14 +207,17 @@ export const retellNotifyDispatch = inngest.createFunction(
     if (shouldSendWhatsApp) {
       await step.run('send-whatsapp', async () => {
         const templateType = isEmergency ? 'emergency' : 'new_lead'
-        const logId = await writeNotificationLog({
-          contractorId,
-          callId,
-          channel: 'whatsapp',
-          recipient: settings!.whatsapp_number!,
-          message: `[template:${templateType}] ${callerPhone} / ${serviceRequested}`,
-        })
+        // WR-02: writeNotificationLog is inside the try/catch so a DB failure on insert
+        // does not leave an orphaned 'pending' row on retry (logId would be null, skipping update).
+        let logId: string | null = null
         try {
+          logId = await writeNotificationLog({
+            contractorId,
+            callId,
+            channel: 'whatsapp',
+            recipient: settings!.whatsapp_number!,
+            message: `[template:${templateType}] ${callerPhone} / ${serviceRequested}`,
+          })
           await sendWhatsApp({
             to: settings!.whatsapp_number!,
             templateType,
@@ -216,21 +229,24 @@ export const retellNotifyDispatch = inngest.createFunction(
           })
           await updateNotificationLog(logId, { status: 'sent', sentAt: new Date().toISOString() })
         } catch (err: unknown) {
-          await updateNotificationLog(logId, {
-            status: 'failed',
-            error: err instanceof Error ? err.message : String(err),
-          })
+          if (logId) {
+            await updateNotificationLog(logId, {
+              status: 'failed',
+              error: err instanceof Error ? err.message : String(err),
+            })
+          }
           // D-09: WhatsApp failure → SMS fallback ONLY when no primary SMS was already dispatched (CR-02).
           // If shouldSendSms=true, the contractor already received (or will receive) a primary SMS.
           if (settings?.sms_number && !shouldSendSms) {
-            const fallbackLogId = await writeNotificationLog({
-              contractorId,
-              callId,
-              channel: 'sms',
-              recipient: settings.sms_number,
-              message: `[WA fallback] ${smsBody}`,
-            })
+            let fallbackLogId: string | null = null
             try {
+              fallbackLogId = await writeNotificationLog({
+                contractorId,
+                callId,
+                channel: 'sms',
+                recipient: settings.sms_number,
+                message: `[WA fallback] ${smsBody}`,
+              })
               await sendSms({
                 to: settings.sms_number,
                 body: smsBody,
@@ -239,10 +255,12 @@ export const retellNotifyDispatch = inngest.createFunction(
               })
               await updateNotificationLog(fallbackLogId, { status: 'sent', sentAt: new Date().toISOString() })
             } catch (fallbackErr: unknown) {
-              await updateNotificationLog(fallbackLogId, {
-                status: 'failed',
-                error: fallbackErr instanceof Error ? fallbackErr.message : String(fallbackErr),
-              })
+              if (fallbackLogId) {
+                await updateNotificationLog(fallbackLogId, {
+                  status: 'failed',
+                  error: fallbackErr instanceof Error ? fallbackErr.message : String(fallbackErr),
+                })
+              }
               // CR-03: Fallback also failed — re-throw so Inngest retries this step
               throw fallbackErr
             }
@@ -257,14 +275,17 @@ export const retellNotifyDispatch = inngest.createFunction(
     // Telegram dispatch (D-06: lead/emergency + info if opted-in)
     if (shouldSendTelegram) {
       await step.run('send-telegram', async () => {
-        const logId = await writeNotificationLog({
-          contractorId,
-          callId,
-          channel: 'telegram',
-          recipient: settings!.telegram_chat_id!,
-          message: telegramMessage,
-        })
+        // WR-02: writeNotificationLog is inside the try/catch so a DB failure on insert
+        // does not leave an orphaned 'pending' row on retry (logId would be null, skipping update).
+        let logId: string | null = null
         try {
+          logId = await writeNotificationLog({
+            contractorId,
+            callId,
+            channel: 'telegram',
+            recipient: settings!.telegram_chat_id!,
+            message: telegramMessage,
+          })
           await sendTelegram({
             chatId: settings!.telegram_chat_id!,
             message: telegramMessage,
@@ -273,10 +294,12 @@ export const retellNotifyDispatch = inngest.createFunction(
           })
           await updateNotificationLog(logId, { status: 'sent', sentAt: new Date().toISOString() })
         } catch (err: unknown) {
-          await updateNotificationLog(logId, {
-            status: 'failed',
-            error: err instanceof Error ? err.message : String(err),
-          })
+          if (logId) {
+            await updateNotificationLog(logId, {
+              status: 'failed',
+              error: err instanceof Error ? err.message : String(err),
+            })
+          }
           throw err  // Re-throw so Inngest retries this step
         }
       })
