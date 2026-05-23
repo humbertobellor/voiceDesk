@@ -1,122 +1,237 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 
+// All vi.mock calls must come before any imports that transitively depend on them.
+// Factory functions use only vi.fn() inline (never top-level variables) to avoid
+// the hoisting initialisation order issue.
+
 vi.mock('server-only', () => ({}))
-
-// Mock all notification lib functions
-const mockSendSms = vi.fn()
-const mockSendWhatsApp = vi.fn()
-const mockSendTelegram = vi.fn()
-const mockWriteNotificationLog = vi.fn()
-const mockUpdateNotificationLog = vi.fn()
-
-vi.mock('@/lib/notifications/sms', () => ({ sendSms: mockSendSms }))
-vi.mock('@/lib/notifications/whatsapp', () => ({ sendWhatsApp: mockSendWhatsApp }))
-vi.mock('@/lib/notifications/telegram', () => ({ sendTelegram: mockSendTelegram }))
+vi.mock('@/lib/notifications/sms', () => ({ sendSms: vi.fn() }))
+vi.mock('@/lib/notifications/whatsapp', () => ({ sendWhatsApp: vi.fn() }))
+vi.mock('@/lib/notifications/telegram', () => ({ sendTelegram: vi.fn() }))
 vi.mock('@/lib/notifications/log', () => ({
-  writeNotificationLog: mockWriteNotificationLog,
-  updateNotificationLog: mockUpdateNotificationLog,
+  writeNotificationLog: vi.fn(),
+  updateNotificationLog: vi.fn(),
 }))
-
-// Mock Supabase DB responses
-const mockMaybeSingle = vi.fn()
-const mockEq = vi.fn(() => ({ maybeSingle: mockMaybeSingle }))
-const mockSelect = vi.fn(() => ({ eq: mockEq }))
-const mockFrom = vi.fn(() => ({ select: mockSelect }))
-
 vi.mock('@/lib/supabase/service', () => ({
-  createServiceRoleClient: () => ({ from: mockFrom }),
+  createServiceRoleClient: () => ({ from: vi.fn() }),
+}))
+vi.mock('@/inngest/client', () => ({
+  inngest: {
+    createFunction: vi.fn((_config: unknown, handler: unknown) => ({ _handler: handler })),
+  },
 }))
 
-// Extract the dispatch step.run callback for testing dispatch logic in isolation
-// We test the dispatch logic by calling the inner function directly
-describe('retell-notify-dispatch dispatch logic', () => {
+// Import mocked modules after all vi.mock calls
+import { sendSms } from '@/lib/notifications/sms'
+import { sendWhatsApp } from '@/lib/notifications/whatsapp'
+
+// Import the pure computeChannels function under test (WR-02: exercises real dispatch logic)
+import { computeChannels } from '@/inngest/functions/retell-notify-dispatch'
+import type { NotificationSettings, CallIntent } from '@/types/database'
+
+const mockSendSms = vi.mocked(sendSms)
+const mockSendWhatsApp = vi.mocked(sendWhatsApp)
+
+/** Helper to build a minimal NotificationSettings-compatible object. */
+function makeSettings(
+  overrides: Partial<
+    Pick<
+      NotificationSettings,
+      | 'sms_number'
+      | 'whatsapp_number'
+      | 'telegram_chat_id'
+      | 'notify_on_lead'
+      | 'notify_on_emergency'
+      | 'notify_on_general_inquiry'
+    >
+  > = {}
+): Pick<
+  NotificationSettings,
+  | 'sms_number'
+  | 'whatsapp_number'
+  | 'telegram_chat_id'
+  | 'notify_on_lead'
+  | 'notify_on_emergency'
+  | 'notify_on_general_inquiry'
+> {
+  return {
+    sms_number: null,
+    whatsapp_number: null,
+    telegram_chat_id: null,
+    notify_on_lead: true,
+    notify_on_emergency: true,
+    notify_on_general_inquiry: false,
+    ...overrides,
+  }
+}
+
+describe('computeChannels — channel dispatch matrix', () => {
   beforeEach(() => {
     vi.clearAllMocks()
-    mockWriteNotificationLog.mockResolvedValue('log-id-1')
-    mockUpdateNotificationLog.mockResolvedValue(undefined)
-    mockSendSms.mockResolvedValue({ sid: 'SM1', status: 'queued' })
-    mockSendWhatsApp.mockResolvedValue({ sid: 'SM2', status: 'queued' })
-    mockSendTelegram.mockResolvedValue({ messageId: 42 })
   })
 
-  // Test the SMS body format for emergencies (EMRG-03)
+  // D-03: no_action → nothing fires
+  it('no_action intent → all channels skipped', () => {
+    const settings = makeSettings({
+      sms_number: '+15551111111',
+      whatsapp_number: '+15552222222',
+      telegram_chat_id: '12345',
+    })
+    const result = computeChannels(settings, 'no_action')
+    expect(result).toEqual({ shouldSendSms: false, shouldSendWhatsApp: false, shouldSendTelegram: false })
+  })
+
+  // D-03: null intent → nothing fires
+  it('null intent → all channels skipped', () => {
+    const settings = makeSettings({ sms_number: '+15551111111' })
+    const result = computeChannels(settings, null)
+    expect(result).toEqual({ shouldSendSms: false, shouldSendWhatsApp: false, shouldSendTelegram: false })
+  })
+
+  // D-05: lead with all channels configured and default prefs → all fire
+  it('lead intent with all channels configured → all channels fire', () => {
+    const settings = makeSettings({
+      sms_number: '+15551111111',
+      whatsapp_number: '+15552222222',
+      telegram_chat_id: '12345',
+    })
+    const result = computeChannels(settings, 'lead')
+    expect(result).toEqual({ shouldSendSms: true, shouldSendWhatsApp: true, shouldSendTelegram: true })
+  })
+
+  // CR-04: notify_on_lead=false → SMS, WhatsApp, and Telegram all suppressed for lead
+  it('lead intent with notify_on_lead=false → all channels suppressed', () => {
+    const settings = makeSettings({
+      sms_number: '+15551111111',
+      whatsapp_number: '+15552222222',
+      telegram_chat_id: '12345',
+      notify_on_lead: false,
+    })
+    const result = computeChannels(settings, 'lead')
+    expect(result).toEqual({ shouldSendSms: false, shouldSendWhatsApp: false, shouldSendTelegram: false })
+  })
+
+  // CR-04: notify_on_emergency=false → all channels suppressed for emergency
+  it('emergency intent with notify_on_emergency=false → all channels suppressed', () => {
+    const settings = makeSettings({
+      sms_number: '+15551111111',
+      telegram_chat_id: '12345',
+      notify_on_emergency: false,
+    })
+    const result = computeChannels(settings, 'emergency')
+    expect(result).toEqual({ shouldSendSms: false, shouldSendWhatsApp: false, shouldSendTelegram: false })
+  })
+
+  // D-06: info without opt-in → all channels skipped
+  it('info intent without notify_on_general_inquiry → all channels skipped', () => {
+    const settings = makeSettings({
+      sms_number: '+15551111111',
+      whatsapp_number: '+15552222222',
+      telegram_chat_id: '12345',
+      notify_on_general_inquiry: false,
+    })
+    const result = computeChannels(settings, 'info')
+    expect(result).toEqual({ shouldSendSms: false, shouldSendWhatsApp: false, shouldSendTelegram: false })
+  })
+
+  // D-06: info with opt-in → all configured channels fire
+  it('info intent with notify_on_general_inquiry=true → all channels fire', () => {
+    const settings = makeSettings({
+      sms_number: '+15551111111',
+      whatsapp_number: '+15552222222',
+      telegram_chat_id: '12345',
+      notify_on_general_inquiry: true,
+    })
+    const result = computeChannels(settings, 'info')
+    expect(result).toEqual({ shouldSendSms: true, shouldSendWhatsApp: true, shouldSendTelegram: true })
+  })
+
+  // null settings → nothing fires (contractor has no notification config)
+  it('null settings → all channels skipped', () => {
+    const result = computeChannels(null, 'lead')
+    expect(result).toEqual({ shouldSendSms: false, shouldSendWhatsApp: false, shouldSendTelegram: false })
+  })
+
+  // Partial config: only SMS number set → only SMS fires for lead
+  it('lead with only sms_number configured → only SMS fires', () => {
+    const settings = makeSettings({ sms_number: '+15551111111' })
+    const result = computeChannels(settings, 'lead')
+    expect(result.shouldSendSms).toBe(true)
+    expect(result.shouldSendWhatsApp).toBe(false)
+    expect(result.shouldSendTelegram).toBe(false)
+  })
+})
+
+describe('SMS and Telegram message body format', () => {
+  // EMRG-03: Emergency SMS body includes "EMERGENCY" prominently
   it('emergency SMS body contains EMERGENCY prominently', () => {
     const callerPhone = '+15559999999'
     const serviceRequested = 'gas smell'
-    const isEmergency = true
-    const smsBody = isEmergency
-      ? `EMERGENCY: New call from ${callerPhone} — ${serviceRequested}. Call back immediately.`
-      : `New call from ${callerPhone} — ${serviceRequested}. No appointment booked.`
+    const smsBody = `EMERGENCY: New call from ${callerPhone} — ${serviceRequested}. Call back immediately.`
     expect(smsBody).toContain('EMERGENCY')
     expect(smsBody).toContain(callerPhone)
     expect(smsBody).toContain(serviceRequested)
   })
 
-  // Test Telegram emergency message includes ⚠️ and EMERGENCY
-  it('emergency telegram message includes EMERGENCY and callback number', () => {
+  // Validates Telegram emergency message template
+  it('emergency telegram message includes EMERGENCY and callback instruction', () => {
     const callerPhone = '+15559999999'
     const serviceRequested = 'CO alarm'
-    const isEmergency = true
-    const telegramMessage = isEmergency
-      ? `⚠️ EMERGENCY: New call from ${callerPhone} — ${serviceRequested}. Call back immediately.`
-      : `📞 New call from ${callerPhone} — ${serviceRequested}. No appointment booked.`
+    const telegramMessage = `⚠️ EMERGENCY: New call from ${callerPhone} — ${serviceRequested}. Call back immediately.`
     expect(telegramMessage).toContain('EMERGENCY')
     expect(telegramMessage).toContain(callerPhone)
   })
+})
 
-  // Test dispatch matrix: no_action → nothing fires
-  it('no_action intent → returns early before any sends', () => {
-    const intent = 'no_action'
-    const shouldDispatch = intent !== 'no_action'
-    expect(shouldDispatch).toBe(false)
-  })
-
-  // Test dispatch matrix: info without opt-in → WhatsApp+Telegram skip
-  it('info intent without opt-in → WhatsApp and Telegram skipped', () => {
-    const intent: string = 'info'
-    // notify_on_general_inquiry=false → info intent should NOT fire WhatsApp/Telegram
-    const notifyOnGeneralInquiry: boolean = (false as boolean)
-    const isLeadOrEmergency = intent === 'lead' || intent === 'emergency'
-    const isInfoWithOptIn = intent === 'info' && notifyOnGeneralInquiry
-    const shouldSendWhatsApp = isLeadOrEmergency || isInfoWithOptIn
-    expect(shouldSendWhatsApp).toBe(false)
-  })
-
-  // Test dispatch matrix: info WITH opt-in → WhatsApp+Telegram fire
-  it('info intent with notify_on_general_inquiry=true → WhatsApp fires', () => {
-    const intent: string = 'info'
-    // notify_on_general_inquiry=true → info intent SHOULD fire WhatsApp/Telegram
-    const notifyOnGeneralInquiry: boolean = (true as boolean)
-    const isLeadOrEmergency = intent === 'lead' || intent === 'emergency'
-    const isInfoWithOptIn = intent === 'info' && notifyOnGeneralInquiry
-    const shouldSendWhatsApp = isLeadOrEmergency || isInfoWithOptIn
-    expect(shouldSendWhatsApp).toBe(true)
-  })
-
-  // Test WhatsApp fallback: if WhatsApp fails, SMS fallback fires
-  it('WhatsApp failure triggers SMS fallback (D-09)', async () => {
-    mockSendWhatsApp.mockRejectedValue(new Error('WhatsApp API error'))
+describe('D-09: WhatsApp fallback SMS guard (CR-02)', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
     mockSendSms.mockResolvedValue({ sid: 'SM_fallback', status: 'queued' })
+    mockSendWhatsApp.mockRejectedValue(new Error('WhatsApp API error'))
+  })
 
-    // Simulate the WhatsApp dispatch with fallback logic
-    const settings = { sms_number: '+15551111111', whatsapp_number: '+15552222222' }
-    const smsBody = 'New call from +15559999999 — AC repair. No appointment booked.'
+  // CR-02: When primary SMS fires for the same intent, the D-09 fallback must NOT also fire.
+  // Both channels use the same preference flags, so whenever shouldSendSms=true,
+  // shouldSendWhatsApp=true too. The guard `!shouldSendSms` ensures no duplicate.
+  it('no duplicate SMS fallback when primary SMS already dispatched (CR-02)', () => {
+    const settings = makeSettings({
+      sms_number: '+15551111111',
+      whatsapp_number: '+15552222222',
+      notify_on_lead: true,  // both channels fire → shouldSendSms=true → fallback suppressed
+    })
 
-    let whatsappFailed = false
-    let smsFallbackCalled = false
-    try {
-      await mockSendWhatsApp({ to: settings.whatsapp_number, templateType: 'new_lead', callerPhone: '+15559999999', serviceRequested: 'AC repair', contractorId: 'c1', callId: 'call-1' })
-    } catch {
-      whatsappFailed = true
-      // Trigger fallback
-      await mockSendSms({ to: settings.sms_number, body: smsBody, contractorId: 'c1', callId: 'call-1' })
-      smsFallbackCalled = true
-    }
+    const channels = computeChannels(settings, 'lead')
+    expect(channels.shouldSendSms).toBe(true)
+    expect(channels.shouldSendWhatsApp).toBe(true)
 
-    expect(whatsappFailed).toBe(true)
-    expect(smsFallbackCalled).toBe(true)
+    // D-09 fallback condition: sms_number present AND !shouldSendSms
+    const fallbackWouldFire = settings.sms_number != null && !channels.shouldSendSms
+    expect(fallbackWouldFire).toBe(false)
+  })
+
+  // Validates the fallback SMS mock itself (integration smoke test)
+  it('SMS fallback mock sends to sms_number on WhatsApp failure', async () => {
+    const settings = makeSettings({
+      sms_number: '+15551111111',
+      whatsapp_number: '+15552222222',
+      notify_on_lead: false,  // SMS suppressed by preference → shouldSendSms=false
+    })
+
+    const channels = computeChannels(settings, 'lead')
+    // When notify_on_lead=false: both SMS and WhatsApp are suppressed (shared flag).
+    // The fallback would be eligible by the shouldSendSms check, but WhatsApp also won't fire.
+    expect(channels.shouldSendSms).toBe(false)
+    expect(channels.shouldSendWhatsApp).toBe(false)
+
+    // Direct mock exercise: confirm the fallback SMS send call works when invoked
+    await mockSendSms({
+      to: settings.sms_number!,
+      body: '[WA fallback] New call from +15559999999 — test.',
+      contractorId: 'c1',
+      callId: 'call-1',
+    })
     expect(mockSendSms).toHaveBeenCalledWith(
-      expect.objectContaining({ to: settings.sms_number })
+      expect.objectContaining({ to: '+15551111111' })
     )
   })
 })

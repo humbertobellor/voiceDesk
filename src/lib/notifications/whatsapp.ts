@@ -40,6 +40,11 @@ export async function sendWhatsApp(params: SendWhatsAppParams): Promise<SendWhat
   if (!accountSid) throw new Error('[sendWhatsApp] TWILIO_ACCOUNT_SID is not set')
   if (!authToken) throw new Error('[sendWhatsApp] TWILIO_AUTH_TOKEN is not set')
   if (!fromNumber) throw new Error('[sendWhatsApp] TWILIO_WHATSAPP_FROM is not set')
+  if (!fromNumber.startsWith('whatsapp:')) {
+    throw new Error(
+      '[sendWhatsApp] TWILIO_WHATSAPP_FROM must start with "whatsapp:" (e.g. whatsapp:+1XXXXXXXXXX)'
+    )
+  }
 
   const contentSid = getWhatsAppContentSids()[params.templateType]
   if (!contentSid) {
