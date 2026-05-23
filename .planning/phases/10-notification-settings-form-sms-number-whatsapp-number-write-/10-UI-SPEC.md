@@ -1,7 +1,8 @@
 ---
 phase: 10
 slug: notification-settings-form-sms-number-whatsapp-number-write
-status: draft
+status: approved
+reviewed_at: 2026-05-23
 shadcn_initialized: false
 preset: none
 created: 2026-05-23
@@ -42,7 +43,7 @@ Declared values (multiples of 4 only):
 | 2xl | 48px | Not used in this phase |
 | 3xl | 64px | Not used in this phase |
 
-Exceptions: Touch targets for the Unlink button must be minimum 44px height. Form card `max-w-[480px]` matches LanguageSettingsForm. Page header uses `mb-6` + `mt-6` border — matches calendar/phone pages exactly.
+Exceptions: Touch targets for the Unlink Telegram button must be minimum 44px height. Form card `max-w-[480px]` matches LanguageSettingsForm. Page header uses `mb-6` + `mt-6` border — matches calendar/phone pages exactly.
 
 ---
 
@@ -54,9 +55,11 @@ Exceptions: Touch targets for the Unlink button must be minimum 44px height. For
 | Page subtitle | 14px (text-sm) | 400 | 1.5 | `text-sm text-[#94A3B8]` |
 | Subsection heading | 14px (text-sm) | 600 (semibold) | 1.2 | `text-sm font-semibold text-[#F8FAFC]` |
 | Body / helper text | 14px (text-sm) | 400 | 1.5 | `text-sm text-[#94A3B8]` |
-| Labels | 14px (text-sm) | 500 (medium) | 1.5 | `text-sm font-medium text-gray-300` |
+| Labels | 14px (text-sm) | 600 (semibold) | 1.5 | `text-sm font-semibold text-gray-300` |
 | Error messages | 14px (text-sm) | 400 | 1.5 | `text-sm text-[#EF4444]` |
 | Input text | 14px (text-sm) | 400 | 1.5 | `text-sm text-[#F8FAFC]` |
+
+Weights: 400 (regular), 600 (semibold). Maximum 2 weights.
 
 Source: existing patterns in calendar/page.tsx, phone/page.tsx, LanguageSettingsForm.tsx.
 
@@ -72,7 +75,7 @@ Source: existing patterns in calendar/page.tsx, phone/page.tsx, LanguageSettings
 | Icon/muted | `#64748B` | Icons next to subsection headings |
 | Primary text | `#F8FAFC` | Headings, input values, checkbox labels |
 | Secondary text | `#94A3B8` | Descriptions, helper text, placeholder-like labels |
-| Label text | `gray-300` (approx `#D1D5DB`) | Field labels (`font-medium`) |
+| Label text | `gray-300` (approx `#D1D5DB`) | Field labels (`font-semibold`) |
 | Accent (10%) | `#F97316` | Save button background, focus ring, connected status dot, accent-colored checkbox |
 | Success | `#16A34A` | "Connected" Telegram status banner (bg `/10`, border `/30`) |
 | Error | `#EF4444` | Inline field validation errors, save error banner (bg `/10`, border `/30`) |
@@ -86,7 +89,7 @@ Accent (`#F97316`) reserved for:
 Destructive (`#EF4444`) reserved for:
 - Inline phone number validation error text
 - Save-failure banner text/border
-- "Unlink" button border and text (outline style, not filled)
+- "Unlink Telegram" button border and text (outline style, not filled)
 
 ---
 
@@ -109,7 +112,7 @@ NotificationSettingsForm
   │   └── whatsapp_number input field (shown always, disabled when toggle is OFF)
   ├── Section 3: Telegram channel card
   │   ├── Section heading (icon + label + enable checkbox)
-  │   ├── State A — connected: green status banner + Unlink button
+  │   ├── State A — connected: green status banner + Unlink Telegram button
   │   └── State B — not connected: deep-link instructions
   ├── Section 4: Event type toggles card
   │   ├── notify_on_lead checkbox
@@ -187,9 +190,9 @@ Each row: `flex items-center justify-between py-3 border-b border-[#334155] last
 bg-[#16A34A]/10 border border-[#16A34A]/30 text-[#16A34A] rounded-lg p-3 text-sm
 ```
 
-Content: green dot (`w-2 h-2 rounded-full bg-[#16A34A]`) + "Telegram connected" text + "Unlink" button.
+Content: green dot (`w-2 h-2 rounded-full bg-[#16A34A]`) + "Telegram connected" text + "Unlink Telegram" button.
 
-Unlink button: `border border-[#EF4444] text-[#EF4444] hover:bg-[#EF4444]/10 px-4 py-2 rounded-lg text-sm min-h-[44px] transition-colors`. This is an outline destructive button — NOT filled red.
+Unlink Telegram button: `border border-[#EF4444] text-[#EF4444] hover:bg-[#EF4444]/10 px-4 py-2 rounded-lg text-sm min-h-[44px] transition-colors`. This is an outline destructive button — NOT filled red.
 
 ### Telegram — Not Connected State
 
@@ -252,7 +255,7 @@ Loading state: `<Loader2 className="w-4 h-4 animate-spin" />` replaces label tex
 
 ### Unlink Telegram
 
-- Unlink button triggers `POST /api/notification-settings/telegram/unlink`
+- "Unlink Telegram" button triggers `POST /api/notification-settings/telegram/unlink`
 - Button shows loading state (`disabled` + spinner) during the request
 - On success: Telegram section switches to "Not connected" state; `notify_telegram_enabled` toggle set to OFF in local state
 - On error: inline error message below the Telegram card (`role="alert"`)
@@ -288,7 +291,7 @@ Loading state: `<Loader2 className="w-4 h-4 animate-spin" />` replaces label tex
 | Telegram section heading | "Telegram" |
 | Telegram enable label | "Send Telegram notifications" |
 | Telegram connected label | "Telegram connected" |
-| Telegram unlink button | "Unlink" |
+| Telegram unlink button | "Unlink Telegram" |
 | Telegram not-connected heading | "Connect your Telegram account" |
 | Telegram not-connected body | "Tap the link below to start a chat with the VoiceDesk bot. Once you send /start, your account will be linked automatically." |
 | Event toggles section heading | "Notify me about" |
@@ -309,8 +312,8 @@ Loading state: `<Loader2 className="w-4 h-4 animate-spin" />` replaces label tex
 |-----------|--------|
 | SMS input | default, focused (orange ring), disabled (toggle off, opacity-50), error (red inline message) |
 | WhatsApp input | default, focused (orange ring), disabled (toggle off, opacity-50), error (red inline message) |
-| Telegram section | connected (green banner + Unlink), not-connected (blue info + deep-link) |
-| Unlink button | resting, loading (spinner + disabled), (no error state — inline message shown in card) |
+| Telegram section | connected (green banner + Unlink Telegram), not-connected (blue info + deep-link) |
+| Unlink Telegram button | resting, loading (spinner + disabled), (no error state — inline message shown in card) |
 | Save button | resting, loading (spinner + disabled) |
 | Feedback banner | hidden, success (green), error (red) |
 | Enable checkbox | checked, unchecked |
@@ -322,7 +325,7 @@ Loading state: `<Loader2 className="w-4 h-4 animate-spin" />` replaces label tex
 - All inputs have associated `<label>` elements with matching `htmlFor` / `id`
 - Error messages use `role="alert"` so screen readers announce them on insert
 - Success banner uses `role="status"` (polite announcement)
-- Unlink button has `aria-label="Unlink Telegram account"` (icon-adjacent button)
+- Unlink Telegram button has `aria-label="Unlink Telegram account"` (icon-adjacent button)
 - Loading states: buttons use `aria-disabled` in addition to the `disabled` attribute
 - Telegram deep-link anchor: `target="_blank"` includes `rel="noreferrer"` and visible "opens in new tab" context
 
