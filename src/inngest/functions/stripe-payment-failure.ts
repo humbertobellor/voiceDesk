@@ -47,7 +47,7 @@ export const stripePaymentFailureHandler = inngest.createFunction(
       `[stripe-payment-failure] Processing payment failure for contractor ${contractorId} (customer: ${stripeCustomerId}). Reason: ${failureReason ?? 'unknown'}`
     )
 
-    // Step 1: Load contractor with Retell agent ID
+    // Step 1: Load contractor data needed for alert and deactivation
     const contractor = await step.run('load-contractor', async () => {
       const db = createServiceRoleClient()
       const { data, error } = await db
