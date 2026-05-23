@@ -36,6 +36,9 @@ export function computeChannels(
     | 'notify_on_lead'
     | 'notify_on_emergency'
     | 'notify_on_general_inquiry'
+    | 'notify_sms_enabled'
+    | 'notify_whatsapp_enabled'
+    | 'notify_telegram_enabled'
   > | null,
   intent: CallIntent | null
 ): { shouldSendSms: boolean; shouldSendWhatsApp: boolean; shouldSendTelegram: boolean } {
@@ -52,6 +55,7 @@ export function computeChannels(
 
   const shouldSendSms =
     settings?.sms_number != null &&
+    settings?.notify_sms_enabled === true &&
     (
       (intent === 'emergency' && (settings.notify_on_emergency ?? true)) ||
       (intent === 'lead'      && (settings.notify_on_lead      ?? true)) ||
@@ -60,6 +64,7 @@ export function computeChannels(
 
   const shouldSendWhatsApp =
     settings?.whatsapp_number != null &&
+    settings?.notify_whatsapp_enabled === true &&
     (
       (intent === 'emergency' && (settings.notify_on_emergency ?? true)) ||
       (intent === 'lead'      && (settings.notify_on_lead      ?? true)) ||
@@ -68,6 +73,7 @@ export function computeChannels(
 
   const shouldSendTelegram =
     settings?.telegram_chat_id != null &&
+    settings?.notify_telegram_enabled === true &&
     (
       (intent === 'emergency' && (settings.notify_on_emergency ?? true)) ||
       (intent === 'lead'      && (settings.notify_on_lead      ?? true)) ||
@@ -114,7 +120,7 @@ export const retellNotifyDispatch = inngest.createFunction(
         db.from('calls').select('caller_phone, intent, summary').eq('id', callId).maybeSingle(),
         db.from('leads').select('id, service_requested, status, booking_conflict').eq('call_id', callId).maybeSingle(),
         db.from('notification_settings')
-          .select('sms_number, whatsapp_number, telegram_chat_id, notify_on_lead, notify_on_emergency, notify_on_general_inquiry')
+          .select('sms_number, whatsapp_number, telegram_chat_id, notify_on_lead, notify_on_emergency, notify_on_general_inquiry, notify_sms_enabled, notify_whatsapp_enabled, notify_telegram_enabled')
           .eq('contractor_id', contractorId)
           .maybeSingle(),
       ])
