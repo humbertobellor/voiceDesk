@@ -289,6 +289,26 @@ Plans:
 - [ ] 09-01-PLAN.md — Telegram bot name fix (VoiceDeskBot → voiceDeskTelBot in 3 files) + structured JSON console.error at all Inngest onFailure handlers and after() catch block
 - [ ] 09-02-PLAN.md — settings/phone: two-state provisioning form (area code input + Provision My Number button) + router.refresh() on success so Sidebar updates automatically
 
+### Phase 10: Notification settings form — sms_number + whatsapp_number write UI
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 9
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd-plan-phase 10 to break down)
+
+### Phase 11: Account page subscription load fix + BILL-03 deactivation
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 10
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd-plan-phase 11 to break down)
+
 ---
 
 ## Progress Table
@@ -304,3 +324,5 @@ Plans:
 | 7. Billing & Onboarding | 7/7 | Complete | 2026-05-20 |
 | 8. Settings Refactor | 3/3 | Complete | 2026-05-20 |
 | 9. Hardening & UX Polish | 0/2 | In Progress | — |
+| 10. Notification Settings Form | 0/? | Not Planned | — |
+| 11. Account Subscription Fix + BILL-03 | 0/? | Not Planned | — |

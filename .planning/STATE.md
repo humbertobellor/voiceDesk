@@ -2,10 +2,10 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: — Revenue-Ready MVP
-current_plan: 08-03 complete
-status: milestone_complete
-stopped_at: Phase 8 complete — dead-import audit passed, npm run build exits 0. All 8 phases of v1.0 milestone delivered.
-last_updated: "2026-05-20T23:00:00.000Z"
+current_plan: 08-03 complete (all plans done)
+status: in_progress
+stopped_at: "Code review (7 findings fixed: CR-01, CR-02, WR-01–05). Production deploy live at https://voicedesk-two.vercel.app"
+last_updated: "2026-05-23T09:04:58.196Z"
 progress:
   total_phases: 8
   completed_phases: 8
@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-05-03)
 ## Current Phase
 
 Phase: 8 — Settings Refactor
-Status: Complete
+Status: in_progress
 Started: 2026-05-20
 Completed: 2026-05-20
 Target: —
@@ -166,6 +166,13 @@ Current Plan: 08-03 complete (all plans done)
 - Google OAuth scope — `calendar.events` + `calendar.freebusy` vs narrower scope (Phase 4)
 - Recording retention window — 90 days vs 1 year (Phase 6 decision)
 - WhatsApp opt-in consent wording — may need legal review before Wefunder/Republic raise
+
+---
+
+### Roadmap Evolution
+
+- Phase 10 added: Notification settings form — sms_number + whatsapp_number write UI
+- Phase 11 added: Account page subscription load fix + BILL-03 deactivation
 
 ---
 

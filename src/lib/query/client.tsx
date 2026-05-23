@@ -291,15 +291,10 @@ export function useSyncRetellAgent() {
     mutationFn: async () => {
       if (!contractorId) throw new Error('No contractor ID')
 
-      const response = await fetch('/api/inngest', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          type: 'retell-agent-sync',
-          data: { contractor_id: contractorId }
-        })
+      const response = await fetch('/api/provisioning/update-agent', {
+        method: 'PATCH',
       })
-      if (!response.ok) throw new Error('Failed to trigger Retell sync')
+      if (!response.ok) throw new Error('Failed to sync Retell agent')
       return response.json()
     }
   })
