@@ -45,10 +45,6 @@ function verifyRetellHmac(rawBody: string, apiKey: string, signature: string): {
   // Variant B: timestamp + body (alternative order)
   const macB = createHmac('sha256', apiKey).update(String(poststamp) + rawBody).digest('hex')
 
-  diag['expected_prefix'] = postDigest.substring(0, 16)
-  diag['varA_body_ts_prefix'] = macA.substring(0, 16)
-  diag['varB_ts_body_prefix'] = macB.substring(0, 16)
-
   const matchA = macA.length === postDigest.length &&
     timingSafeEqual(Buffer.from(macA), Buffer.from(postDigest))
   const matchB = macB.length === postDigest.length &&
@@ -79,11 +75,11 @@ export async function POST(req: Request) {
   if (!isValid) {
     console.error('[voicedesk]', JSON.stringify({
       event: 'webhook.retell.signature_failed',
-      full_signature: signature,
+      // Safe fields only — no partial HMAC prefixes, no raw signature value
+      reason: diagnostics['reason'],
+      time_diff_ms: diagnostics['time_diff_ms'],
       body_length: rawBody.length,
       content_encoding: req.headers.get('content-encoding'),
-      content_length: req.headers.get('content-length'),
-      ...diagnostics,
     }))
     return new Response('Unauthorized', { status: 401 })
   }
