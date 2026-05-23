@@ -4,7 +4,7 @@
 // D-02: Event payload is minimal {callId, contractorId} — function loads all data from DB.
 // D-03: Fires after every classification including no_action; filtering inside this function.
 // D-04: Idempotency key: retell-notify-${callId}.
-// D-08: Promise.allSettled for multi-channel — one failure cannot block others.
+// D-08: Each channel runs in its own step.run() — Inngest memoizes independently, one failure retries only that channel.
 // D-09: WhatsApp failure → SMS fallback within same invocation.
 // D-12: notification_log row written before send (pending), updated after (sent/failed).
 import 'server-only'
@@ -15,6 +15,62 @@ import { sendSms } from '@/lib/notifications/sms'
 import { sendWhatsApp } from '@/lib/notifications/whatsapp'
 import { sendTelegram } from '@/lib/notifications/telegram'
 import { writeNotificationLog, updateNotificationLog } from '@/lib/notifications/log'
+import type { CallIntent, NotificationSettings } from '@/types/database'
+
+/**
+ * Pure function that computes which notification channels should fire for a given
+ * call intent and contractor notification settings.
+ *
+ * Extracted to allow unit testing without the Inngest runtime.
+ *
+ * @param settings - Contractor notification settings row (null if not configured).
+ * @param intent   - Classified call intent (null or 'no_action' → no channels fire).
+ * @returns        Object with boolean flags for each channel.
+ */
+export function computeChannels(
+  settings: Pick<
+    NotificationSettings,
+    | 'sms_number'
+    | 'whatsapp_number'
+    | 'telegram_chat_id'
+    | 'notify_on_lead'
+    | 'notify_on_emergency'
+    | 'notify_on_general_inquiry'
+  > | null,
+  intent: CallIntent | null
+): { shouldSendSms: boolean; shouldSendWhatsApp: boolean; shouldSendTelegram: boolean } {
+  if (!intent || intent === 'no_action') {
+    return { shouldSendSms: false, shouldSendWhatsApp: false, shouldSendTelegram: false }
+  }
+
+  const isInfoWithOptIn = intent === 'info' && settings?.notify_on_general_inquiry === true
+
+  const shouldSendSms =
+    settings?.sms_number != null &&
+    (
+      (intent === 'emergency' && (settings.notify_on_emergency ?? true)) ||
+      (intent === 'lead'      && (settings.notify_on_lead      ?? true)) ||
+      (intent === 'info'      && (settings.notify_on_general_inquiry === true))
+    )
+
+  const shouldSendWhatsApp =
+    settings?.whatsapp_number != null &&
+    (
+      (intent === 'emergency' && (settings.notify_on_emergency ?? true)) ||
+      (intent === 'lead'      && (settings.notify_on_lead      ?? true)) ||
+      isInfoWithOptIn
+    )
+
+  const shouldSendTelegram =
+    settings?.telegram_chat_id != null &&
+    (
+      (intent === 'emergency' && (settings.notify_on_emergency ?? true)) ||
+      (intent === 'lead'      && (settings.notify_on_lead      ?? true)) ||
+      isInfoWithOptIn
+    )
+
+  return { shouldSendSms, shouldSendWhatsApp, shouldSendTelegram }
+}
 
 export const retellNotifyDispatch = inngest.createFunction(
   {
@@ -70,21 +126,18 @@ export const retellNotifyDispatch = inngest.createFunction(
     })
 
     const { call, lead, settings } = notifyData
-    const intent = call.intent as string | null
+    // WR-04: Use narrow CallIntent union so tsc flags unhandled intents when new values are added
+    const intent = call.intent as CallIntent | null
 
     // D-03: Filter — skip all sends for no_action (hang-ups, wrong numbers, spam)
-    // D-05: SMS fires for lead/emergency/info. Skipped for no_action.
-    if (!intent || intent === 'no_action') {
+    // D-04: CR-04: computeChannels gates each channel on intent AND contractor's per-intent prefs.
+    // Preference fields default to true for lead/emergency (opt-out model) and false for info (opt-in).
+    const { shouldSendSms, shouldSendWhatsApp, shouldSendTelegram } = computeChannels(settings, intent)
+
+    if (!shouldSendSms && !shouldSendWhatsApp && !shouldSendTelegram) {
+      // intent is no_action, or all channels are disabled for this intent
       return
     }
-
-    // D-05: Determine which channels fire
-    const shouldSendSms = settings?.sms_number != null
-    const isLeadOrEmergency = intent === 'lead' || intent === 'emergency'
-    const isInfoWithOptIn = intent === 'info' && settings?.notify_on_general_inquiry === true
-    // D-06: WhatsApp + Telegram fire for lead/emergency; also info when notify_on_general_inquiry=true
-    const shouldSendWhatsApp = settings?.whatsapp_number != null && (isLeadOrEmergency || isInfoWithOptIn)
-    const shouldSendTelegram = settings?.telegram_chat_id != null && (isLeadOrEmergency || isInfoWithOptIn)
 
     const callerPhone = call.caller_phone ?? 'Unknown'
     const serviceRequested = lead?.service_requested ?? call.summary ?? 'General inquiry'
@@ -109,143 +162,124 @@ export const retellNotifyDispatch = inngest.createFunction(
       ? `⚠️ EMERGENCY: New call from ${callerPhone} — ${serviceRequested}. Call back immediately.`
       : `📞 New call from ${callerPhone} — ${serviceRequested}. ${bookingStatus}.`
 
-    // Step 2: Dispatch all configured channels via Promise.allSettled (D-08)
-    await step.run('dispatch-notifications', async () => {
-      const sends: Promise<void>[] = []
+    // CR-01: Each channel runs in its own step.run() so Inngest memoizes them independently.
+    // A failure in one channel only retries that channel — already-sent channels are skipped on retry.
 
-      // SMS dispatch (D-05: lead/emergency/info)
-      if (shouldSendSms) {
-        sends.push(
-          (async () => {
-            const logId = await writeNotificationLog({
+    // SMS dispatch (D-05: lead/emergency/info, gated by intent prefs)
+    if (shouldSendSms) {
+      await step.run('send-sms', async () => {
+        const logId = await writeNotificationLog({
+          contractorId,
+          callId,
+          channel: 'sms',
+          recipient: settings!.sms_number!,
+          message: smsBody,
+        })
+        try {
+          await sendSms({
+            to: settings!.sms_number!,
+            body: smsBody,
+            contractorId,
+            callId,
+          })
+          await updateNotificationLog(logId, { status: 'sent', sentAt: new Date().toISOString() })
+        } catch (err: unknown) {
+          await updateNotificationLog(logId, {
+            status: 'failed',
+            error: err instanceof Error ? err.message : String(err),
+          })
+          throw err  // Re-throw so Inngest retries this step
+        }
+      })
+    }
+
+    // WhatsApp dispatch (D-06: lead/emergency + info if opted-in; D-09: fallback on failure)
+    if (shouldSendWhatsApp) {
+      await step.run('send-whatsapp', async () => {
+        const templateType = isEmergency ? 'emergency' : 'new_lead'
+        const logId = await writeNotificationLog({
+          contractorId,
+          callId,
+          channel: 'whatsapp',
+          recipient: settings!.whatsapp_number!,
+          message: `[template:${templateType}] ${callerPhone} / ${serviceRequested}`,
+        })
+        try {
+          await sendWhatsApp({
+            to: settings!.whatsapp_number!,
+            templateType,
+            callerPhone,
+            serviceRequested,
+            bookingStatus: templateType === 'new_lead' ? bookingStatus : undefined,
+            contractorId,
+            callId,
+          })
+          await updateNotificationLog(logId, { status: 'sent', sentAt: new Date().toISOString() })
+        } catch (err: unknown) {
+          await updateNotificationLog(logId, {
+            status: 'failed',
+            error: err instanceof Error ? err.message : String(err),
+          })
+          // D-09: WhatsApp failure → SMS fallback ONLY when no primary SMS was already dispatched (CR-02).
+          // If shouldSendSms=true, the contractor already received (or will receive) a primary SMS.
+          if (settings?.sms_number && !shouldSendSms) {
+            const fallbackLogId = await writeNotificationLog({
               contractorId,
               callId,
               channel: 'sms',
-              recipient: settings!.sms_number!,
-              message: smsBody,
+              recipient: settings.sms_number,
+              message: `[WA fallback] ${smsBody}`,
             })
             try {
               await sendSms({
-                to: settings!.sms_number!,
+                to: settings.sms_number,
                 body: smsBody,
                 contractorId,
                 callId,
               })
-              await updateNotificationLog(logId, { status: 'sent', sentAt: new Date().toISOString() })
-            } catch (err: unknown) {
-              await updateNotificationLog(logId, {
+              await updateNotificationLog(fallbackLogId, { status: 'sent', sentAt: new Date().toISOString() })
+            } catch (fallbackErr: unknown) {
+              await updateNotificationLog(fallbackLogId, {
                 status: 'failed',
-                error: err instanceof Error ? err.message : String(err),
+                error: fallbackErr instanceof Error ? fallbackErr.message : String(fallbackErr),
               })
-              throw err  // Re-throw so Promise.allSettled captures the failure
+              // CR-03: Fallback also failed — re-throw so Inngest retries this step
+              throw fallbackErr
             }
-          })()
-        )
-      }
+          } else {
+            // No fallback possible (or primary SMS already covers the contractor): re-throw original error
+            throw err
+          }
+        }
+      })
+    }
 
-      // WhatsApp dispatch (D-06: lead/emergency + info if opted-in; D-09: fallback on failure)
-      if (shouldSendWhatsApp) {
-        sends.push(
-          (async () => {
-            const templateType = isEmergency ? 'emergency' : 'new_lead'
-            const logId = await writeNotificationLog({
-              contractorId,
-              callId,
-              channel: 'whatsapp',
-              recipient: settings!.whatsapp_number!,
-              message: `[template:${templateType}] ${callerPhone} / ${serviceRequested}`,
-            })
-            try {
-              await sendWhatsApp({
-                to: settings!.whatsapp_number!,
-                templateType,
-                callerPhone,
-                serviceRequested,
-                bookingStatus: templateType === 'new_lead' ? bookingStatus : undefined,
-                contractorId,
-                callId,
-              })
-              await updateNotificationLog(logId, { status: 'sent', sentAt: new Date().toISOString() })
-            } catch (err: unknown) {
-              await updateNotificationLog(logId, {
-                status: 'failed',
-                error: err instanceof Error ? err.message : String(err),
-              })
-              // D-09: WhatsApp failure → SMS fallback (if sms_number configured)
-              if (settings?.sms_number) {
-                const fallbackLogId = await writeNotificationLog({
-                  contractorId,
-                  callId,
-                  channel: 'sms',
-                  recipient: settings.sms_number,
-                  message: `[WA fallback] ${smsBody}`,
-                })
-                try {
-                  await sendSms({
-                    to: settings.sms_number,
-                    body: smsBody,
-                    contractorId,
-                    callId,
-                  })
-                  await updateNotificationLog(fallbackLogId, { status: 'sent', sentAt: new Date().toISOString() })
-                } catch (fallbackErr: unknown) {
-                  await updateNotificationLog(fallbackLogId, {
-                    status: 'failed',
-                    error: fallbackErr instanceof Error ? fallbackErr.message : String(fallbackErr),
-                  })
-                  // Fallback also failed — logged; do not throw (D-08: allSettled semantics)
-                }
-              }
-              // Original WhatsApp error is swallowed here — fallback attempted (D-09)
-            }
-          })()
-        )
-      }
-
-      // Telegram dispatch (D-06: lead/emergency + info if opted-in)
-      if (shouldSendTelegram) {
-        sends.push(
-          (async () => {
-            const logId = await writeNotificationLog({
-              contractorId,
-              callId,
-              channel: 'telegram',
-              recipient: settings!.telegram_chat_id!,
-              message: telegramMessage,
-            })
-            try {
-              await sendTelegram({
-                chatId: settings!.telegram_chat_id!,
-                message: telegramMessage,
-                contractorId,
-                callId,
-              })
-              await updateNotificationLog(logId, { status: 'sent', sentAt: new Date().toISOString() })
-            } catch (err: unknown) {
-              await updateNotificationLog(logId, {
-                status: 'failed',
-                error: err instanceof Error ? err.message : String(err),
-              })
-              throw err
-            }
-          })()
-        )
-      }
-
-      // D-08: Promise.allSettled — one channel failure does NOT block others
-      const results = await Promise.allSettled(sends)
-      const failures = results.filter(r => r.status === 'rejected')
-      if (failures.length > 0) {
-        const errorMessages = failures
-          .map(r => (r as PromiseRejectedResult).reason instanceof Error
-            ? (r as PromiseRejectedResult).reason.message
-            : String((r as PromiseRejectedResult).reason))
-          .join('; ')
-        console.error(`[retell-notify-dispatch] ${failures.length} channel(s) failed for call ${callId}: ${errorMessages}`)
-        // Re-throw to trigger Inngest retry (retries: 5)
-        // On retry, notification_log already has failed rows — new rows will be created for the retry attempt
-        throw new Error(`Notification dispatch partial failure: ${errorMessages}`)
-      }
-    })
+    // Telegram dispatch (D-06: lead/emergency + info if opted-in)
+    if (shouldSendTelegram) {
+      await step.run('send-telegram', async () => {
+        const logId = await writeNotificationLog({
+          contractorId,
+          callId,
+          channel: 'telegram',
+          recipient: settings!.telegram_chat_id!,
+          message: telegramMessage,
+        })
+        try {
+          await sendTelegram({
+            chatId: settings!.telegram_chat_id!,
+            message: telegramMessage,
+            contractorId,
+            callId,
+          })
+          await updateNotificationLog(logId, { status: 'sent', sentAt: new Date().toISOString() })
+        } catch (err: unknown) {
+          await updateNotificationLog(logId, {
+            status: 'failed',
+            error: err instanceof Error ? err.message : String(err),
+          })
+          throw err  // Re-throw so Inngest retries this step
+        }
+      })
+    }
   }
 )

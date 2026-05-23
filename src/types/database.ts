@@ -171,6 +171,7 @@ export interface NotificationSettings {
   telegram_chat_id: string | null
   notify_on_lead: boolean
   notify_on_emergency: boolean
+  notify_on_general_inquiry: boolean  // Phase 5: controls info-intent notifications
   whatsapp_opted_in_at: string | null
   created_at: string
   updated_at: string
