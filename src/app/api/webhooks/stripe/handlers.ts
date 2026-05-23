@@ -4,6 +4,7 @@
 import 'server-only'
 import { createServiceRoleClient } from '@/lib/supabase/service'
 import { inngest } from '@/inngest/client'
+import { getRetellClient } from '@/lib/retell/client'
 import type Stripe from 'stripe'
 
 type CheckoutSession = Stripe.Checkout.Session
@@ -236,6 +237,32 @@ export async function handleSubscriptionUpdated(subscription: Subscription) {
       stripe_subscription_id: subscription.id,
     })
     .eq('id', contractorId)
+
+  if (internalStatus === 'active') {
+    const { data: contractorFull } = await db
+      .from('contractors')
+      .select('retell_agent_id, twilio_number')
+      .eq('id', contractorId)
+      .single()
+
+    if (contractorFull?.retell_agent_id && contractorFull?.twilio_number) {
+      try {
+        const retell = getRetellClient()
+        await retell.phoneNumber.update(contractorFull.twilio_number, {
+          inbound_agents: [{ agent_id: contractorFull.retell_agent_id, weight: 1.0 }],
+        })
+        console.log(
+          `[webhook/stripe] Retell phone ${contractorFull.twilio_number} re-linked to agent for contractor ${contractorId}`
+        )
+      } catch (err) {
+        // Log but don't throw — subscription status already updated; agent re-link can be retried manually
+        console.error(
+          `[webhook/stripe] Retell re-link failed for contractor ${contractorId}:`,
+          err instanceof Error ? err.message : err
+        )
+      }
+    }
+  }
 
   console.log(
     `[webhook/stripe] contractor ${contractorId} subscription updated to ${internalStatus}`

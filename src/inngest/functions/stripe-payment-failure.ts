@@ -52,7 +52,7 @@ export const stripePaymentFailureHandler = inngest.createFunction(
       const db = createServiceRoleClient()
       const { data, error } = await db
         .from('contractors')
-        .select('id, retell_llm_id, phone_number, notification_settings(whatsapp_number)')
+        .select('id, retell_agent_id, twilio_number, phone_number, notification_settings(whatsapp_number)')
         .eq('id', contractorId)
         .maybeSingle()
       if (error || !data) {
@@ -74,6 +74,30 @@ export const stripePaymentFailureHandler = inngest.createFunction(
         phone: contractor.phone_number,
         whatsappEnabled: !!(contractor.notification_settings as Array<{ whatsapp_number: string | null }> | null)?.[0]?.whatsapp_number,
       })
+    })
+
+    // Step 2.5: Unlink Retell agent from phone number (BILL-03: true deactivation)
+    await step.run('deactivate-retell-agent', async () => {
+      if (!contractor.retell_agent_id || !contractor.twilio_number) {
+        console.log(
+          `[stripe-payment-failure] no retell_agent_id or twilio_number for ${contractorId}, skipping Retell deactivation`
+        )
+        return
+      }
+      try {
+        const retell = getRetellClient()
+        await retell.phoneNumber.update(contractor.twilio_number, { inbound_agents: [] })
+        console.log(
+          `[stripe-payment-failure] Retell phone ${contractor.twilio_number} unlinked from agent for contractor ${contractorId}`
+        )
+      } catch (err) {
+        // Log but do not rethrow — DB deactivation must still proceed even if Retell API is down
+        console.error('[voicedesk]', JSON.stringify({
+          event: 'retell-deactivation.failed',
+          contractor_id: contractorId,
+          error: err instanceof Error ? err.message : String(err),
+        }))
+      }
     })
 
     // Step 3: Set agent to inactive (D-10: immediate deactivation)
