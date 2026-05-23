@@ -341,7 +341,7 @@ Plans:
 **Goal:** Contractors can configure all notification channels (SMS, WhatsApp, Telegram) from a single settings page — entering phone numbers, enabling/disabling channels, and controlling which call events trigger alerts.
 **Requirements:** NOTIF-01, NOTIF-02, NOTIF-03, EMRG-03, PORTAL-04
 **Depends on:** Phase 9
-**Plans:** 2/5 plans executed
+**Plans:** 4/5 plans executed
 
 Plans:
 **Wave 1**
@@ -354,8 +354,8 @@ Plans:
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
-- [ ] 10-03-PLAN.md — TDD: computeChannels() updated with enable flag gates (notify_sms_enabled, notify_whatsapp_enabled, notify_telegram_enabled)
-- [ ] 10-04-PLAN.md — NotificationSettingsForm component (SMS, WhatsApp, Telegram, event toggles sections)
+- [x] 10-03-PLAN.md — TDD: computeChannels() updated with enable flag gates (notify_sms_enabled, notify_whatsapp_enabled, notify_telegram_enabled)
+- [x] 10-04-PLAN.md — NotificationSettingsForm component (SMS, WhatsApp, Telegram, event toggles sections)
 
 **Wave 4** *(blocked on Wave 3 completion)*
 
@@ -387,5 +387,5 @@ Plans:
 | 7. Billing & Onboarding | 7/7 | Complete | 2026-05-20 |
 | 8. Settings Refactor | 3/3 | Complete | 2026-05-20 |
 | 9. Hardening & UX Polish | 0/2 | In Progress | — |
-| 10. Notification Settings Form | 2/5 | In Progress|  |
+| 10. Notification Settings Form | 4/5 | In Progress|  |
 | 11. Account Subscription Fix + BILL-03 | 0/? | Not Planned | — |
