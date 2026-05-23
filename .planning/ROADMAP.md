@@ -341,7 +341,7 @@ Plans:
 **Goal:** Contractors can configure all notification channels (SMS, WhatsApp, Telegram) from a single settings page — entering phone numbers, enabling/disabling channels, and controlling which call events trigger alerts.
 **Requirements:** NOTIF-01, NOTIF-02, NOTIF-03, EMRG-03, PORTAL-04
 **Depends on:** Phase 9
-**Plans:** 1/5 plans executed
+**Plans:** 2/5 plans executed
 
 Plans:
 **Wave 1**
@@ -350,7 +350,7 @@ Plans:
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
-- [ ] 10-02-PLAN.md — PATCH /api/notification-settings + POST /api/notification-settings/telegram/unlink + React Query hooks (useNotificationSettings, useUpdateNotificationSettings, useTelegramUnlink)
+- [x] 10-02-PLAN.md — PATCH /api/notification-settings + POST /api/notification-settings/telegram/unlink + React Query hooks (useNotificationSettings, useUpdateNotificationSettings, useTelegramUnlink)
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
@@ -387,5 +387,5 @@ Plans:
 | 7. Billing & Onboarding | 7/7 | Complete | 2026-05-20 |
 | 8. Settings Refactor | 3/3 | Complete | 2026-05-20 |
 | 9. Hardening & UX Polish | 0/2 | In Progress | — |
-| 10. Notification Settings Form | 1/5 | In Progress|  |
+| 10. Notification Settings Form | 2/5 | In Progress|  |
 | 11. Account Subscription Fix + BILL-03 | 0/? | Not Planned | — |
