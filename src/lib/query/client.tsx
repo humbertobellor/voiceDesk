@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { createBrowserClient } from '@supabase/ssr'
 import { useContractor } from '@/contexts/ContractorContext'
-import type { Call, Lead, ContractorSettings, LeadStatus, TradeType } from '@/types/database'
+import type { Call, Lead, ContractorSettings, LeadStatus, TradeType, NotificationSettings } from '@/types/database'
 
 const supabase = createBrowserClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -313,5 +313,101 @@ export function useCallRecordingUrl(callId: string) {
     },
     enabled: !!callId,
     staleTime: 30 * 1000 // 30 seconds - URL is valid for 60s
+  })
+}
+
+// ============ NOTIFICATION SETTINGS HOOKS ============
+
+/**
+ * Fetches the authenticated contractor's notification settings from Supabase.
+ *
+ * Query is disabled until contractorId is available from ContractorContext.
+ * Uses the browser Supabase client (anon key); RLS enforces row isolation.
+ *
+ * @returns UseQueryResult with NotificationSettings or null.
+ */
+export function useNotificationSettings() {
+  const { contractorId } = useContractor()
+
+  return useQuery({
+    queryKey: ['notification-settings', contractorId],
+    queryFn: async (): Promise<NotificationSettings | null> => {
+      if (!contractorId) throw new Error('No contractor ID')
+
+      const { data, error } = await supabase
+        .from('notification_settings')
+        .select('*')
+        .eq('contractor_id', contractorId)
+        .single()
+
+      if (error) throw error
+      return data as NotificationSettings
+    },
+    enabled: !!contractorId,
+  })
+}
+
+/**
+ * Mutation that PATCHes /api/notification-settings with the provided partial settings.
+ *
+ * On success, invalidates the notification-settings query cache so the UI reflects
+ * the saved values immediately.
+ *
+ * @returns UseMutationResult with updated NotificationSettings on success.
+ */
+export function useUpdateNotificationSettings() {
+  const queryClient = useQueryClient()
+  const { contractorId } = useContractor()
+
+  return useMutation({
+    mutationFn: async (data: Partial<NotificationSettings>): Promise<NotificationSettings> => {
+      const response = await fetch('/api/notification-settings', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      })
+      if (!response.ok) {
+        const text = await response.text()
+        throw new Error(`Failed to update notification settings: ${text}`)
+      }
+      return response.json()
+    },
+    onSuccess: () => {
+      if (contractorId) {
+        queryClient.invalidateQueries({ queryKey: ['notification-settings', contractorId] })
+      }
+    },
+  })
+}
+
+/**
+ * Mutation that POSTs to /api/notification-settings/telegram/unlink,
+ * clearing the contractor's telegram_chat_id and disabling Telegram notifications.
+ *
+ * On success, invalidates the notification-settings query cache.
+ *
+ * @returns UseMutationResult with updated NotificationSettings on success.
+ */
+export function useTelegramUnlink() {
+  const queryClient = useQueryClient()
+  const { contractorId } = useContractor()
+
+  return useMutation({
+    mutationFn: async (): Promise<NotificationSettings> => {
+      const response = await fetch('/api/notification-settings/telegram/unlink', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      })
+      if (!response.ok) {
+        const text = await response.text()
+        throw new Error(`Failed to unlink Telegram: ${text}`)
+      }
+      return response.json()
+    },
+    onSuccess: () => {
+      if (contractorId) {
+        queryClient.invalidateQueries({ queryKey: ['notification-settings', contractorId] })
+      }
+    },
   })
 }
