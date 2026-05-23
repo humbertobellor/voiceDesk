@@ -43,6 +43,9 @@ function makeSettings(
       | 'notify_on_lead'
       | 'notify_on_emergency'
       | 'notify_on_general_inquiry'
+      | 'notify_sms_enabled'
+      | 'notify_whatsapp_enabled'
+      | 'notify_telegram_enabled'
     >
   > = {}
 ): Pick<
@@ -53,6 +56,9 @@ function makeSettings(
   | 'notify_on_lead'
   | 'notify_on_emergency'
   | 'notify_on_general_inquiry'
+  | 'notify_sms_enabled'
+  | 'notify_whatsapp_enabled'
+  | 'notify_telegram_enabled'
 > {
   return {
     sms_number: null,
@@ -61,6 +67,10 @@ function makeSettings(
     notify_on_lead: true,
     notify_on_emergency: true,
     notify_on_general_inquiry: false,
+    // D-02 migration defaults: SMS opt-out (true), WhatsApp/Telegram opt-in (false)
+    notify_sms_enabled: true,
+    notify_whatsapp_enabled: true,   // existing Phase 5 tests expect all configured channels to fire
+    notify_telegram_enabled: true,   // existing Phase 5 tests expect all configured channels to fire
     ...overrides,
   }
 }
