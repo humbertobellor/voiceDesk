@@ -69,7 +69,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
               : 'Calendar connection failed. Please try again.'}
         </div>
       )}
-      {!telegramLinked && (
+      {!telegramLinked && contractorId && (
         <div
           role="status"
           className="bg-[#1E3A5F]/40 border border-[#3B82F6]/30 text-[#93C5FD] rounded-lg p-3 text-sm mb-4"
