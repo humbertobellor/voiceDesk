@@ -68,17 +68,22 @@ export default function PhoneSettingsPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ area_code: areaCode }),
       })
+      const json = await res.json().catch(() => ({}))
       if (res.ok) {
-        const data = await res.json()
-        setTwilioNumber(data.twilio_number)
+        // CR-04: Guard against missing twilio_number in response (API change or proxy mangle)
+        if (!json?.twilio_number) {
+          setProvisionError('Provisioning succeeded but number was not returned. Refresh the page.')
+          return
+        }
+        setTwilioNumber(json.twilio_number)
         router.refresh()   // Triggers layout re-run so Sidebar picks up new number
         return
       }
-      const json = await res.json().catch(() => ({}))
       if (res.status === 409) {
         setProvisionError('Number already provisioned — refresh page.')
       } else if (res.status === 422) {
-        setProvisionError('Area code unavailable. Try: 786, 954, or 561.')
+        // WR-03: Use the API error message so the correct reason is shown (area code vs onboarding)
+        setProvisionError(json.error ?? 'Area code unavailable. Try: 786, 954, or 561.')
       } else {
         setProvisionError(json.error ?? 'Provisioning failed. Please try again.')
       }
