@@ -291,13 +291,17 @@ Plans:
 
 ### Phase 10: Notification settings form — sms_number + whatsapp_number write UI
 
-**Goal:** [To be planned]
-**Requirements**: TBD
+**Goal:** Contractors can configure all notification channels (SMS, WhatsApp, Telegram) from a single settings page — entering phone numbers, enabling/disabling channels, and controlling which call events trigger alerts.
+**Requirements:** NOTIF-01, NOTIF-02, NOTIF-03, EMRG-03, PORTAL-04
 **Depends on:** Phase 9
-**Plans:** 0 plans
+**Plans:** 5 plans
 
 Plans:
-- [ ] TBD (run /gsd-plan-phase 10 to break down)
+- [ ] 10-01-PLAN.md — Wave 0: migration (3 boolean enable columns) + TypeScript type extension + 4 test stubs in RED state
+- [ ] 10-02-PLAN.md — PATCH /api/notification-settings + POST /api/notification-settings/telegram/unlink + React Query hooks (useNotificationSettings, useUpdateNotificationSettings, useTelegramUnlink)
+- [ ] 10-03-PLAN.md — TDD: computeChannels() updated with enable flag gates (notify_sms_enabled, notify_whatsapp_enabled, notify_telegram_enabled)
+- [ ] 10-04-PLAN.md — NotificationSettingsForm component (SMS, WhatsApp, Telegram, event toggles sections)
+- [ ] 10-05-PLAN.md — settings/notifications Server Component wiring + [BLOCKING] supabase db push + human verify
 
 ### Phase 11: Account page subscription load fix + BILL-03 deactivation
 
@@ -324,5 +328,5 @@ Plans:
 | 7. Billing & Onboarding | 7/7 | Complete | 2026-05-20 |
 | 8. Settings Refactor | 3/3 | Complete | 2026-05-20 |
 | 9. Hardening & UX Polish | 0/2 | In Progress | — |
-| 10. Notification Settings Form | 0/? | Not Planned | — |
+| 10. Notification Settings Form | 0/5 | Planned | — |
 | 11. Account Subscription Fix + BILL-03 | 0/? | Not Planned | — |
