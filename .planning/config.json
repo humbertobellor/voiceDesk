@@ -20,7 +20,8 @@
     "ai_integration_phase": true,
     "skip_discuss": false,
     "use_worktrees": true,
-    "research_before_questions": true
+    "research_before_questions": true,
+    "_auto_chain_active": false
   },
   "intel": {
     "enabled": false
