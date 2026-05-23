@@ -63,8 +63,22 @@ export const retellAgentSync = inngest.createFunction(
     })
 
     // Step 2: Update agent_sync_status to 'synced' in Supabase
+    // CR-03 Option B: Skip status update if subscription is past_due or canceled to avoid
+    // overwriting the deactivation marker set by stripe-payment-failure.
     await step.run('set-synced-status', async () => {
       const db = createServiceRoleClient()
+      const { data: current } = await db
+        .from('contractors')
+        .select('subscription_status')
+        .eq('id', contractorId)
+        .maybeSingle()
+      if (
+        current?.subscription_status === 'past_due' ||
+        current?.subscription_status === 'canceled'
+      ) {
+        // Do not overwrite deactivation status — agent sync completed but billing is inactive
+        return
+      }
       const { error } = await db
         .from('contractors')
         .update({ agent_sync_status: 'synced' })
