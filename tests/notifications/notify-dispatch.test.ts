@@ -65,6 +65,51 @@ function makeSettings(
   }
 }
 
+/**
+ * Phase 10: Helper to build a settings object that includes the new enable-flag fields.
+ * Defaults match the migration: SMS=true (opt-out), WhatsApp=false, Telegram=false.
+ */
+function makeSettingsWithEnableFlags(
+  overrides: Partial<
+    Pick<
+      NotificationSettings,
+      | 'sms_number'
+      | 'whatsapp_number'
+      | 'telegram_chat_id'
+      | 'notify_on_lead'
+      | 'notify_on_emergency'
+      | 'notify_on_general_inquiry'
+      | 'notify_sms_enabled'
+      | 'notify_whatsapp_enabled'
+      | 'notify_telegram_enabled'
+    >
+  > = {}
+): Pick<
+  NotificationSettings,
+  | 'sms_number'
+  | 'whatsapp_number'
+  | 'telegram_chat_id'
+  | 'notify_on_lead'
+  | 'notify_on_emergency'
+  | 'notify_on_general_inquiry'
+  | 'notify_sms_enabled'
+  | 'notify_whatsapp_enabled'
+  | 'notify_telegram_enabled'
+> {
+  return {
+    sms_number: null,
+    whatsapp_number: null,
+    telegram_chat_id: null,
+    notify_on_lead: true,
+    notify_on_emergency: true,
+    notify_on_general_inquiry: false,
+    notify_sms_enabled: true,    // D-02: SMS opt-out default
+    notify_whatsapp_enabled: false, // D-02: WhatsApp opt-in default
+    notify_telegram_enabled: false, // D-02: Telegram opt-in default
+    ...overrides,
+  }
+}
+
 describe('computeChannels — channel dispatch matrix', () => {
   beforeEach(() => {
     vi.clearAllMocks()
@@ -233,5 +278,55 @@ describe('D-09: WhatsApp fallback SMS guard (CR-02)', () => {
     expect(mockSendSms).toHaveBeenCalledWith(
       expect.objectContaining({ to: '+15551111111' })
     )
+  })
+})
+
+// Phase 10: Channel enable flag tests (RED state — computeChannels() does not yet check enable flags)
+// These tests FAIL until Plan 10-02 adds the enable-flag checks to computeChannels().
+// D-07: notify_sms_enabled, notify_whatsapp_enabled, notify_telegram_enabled gate dispatch
+//   independently of notify_on_lead / notify_on_emergency / notify_on_general_inquiry.
+describe('Phase 10: channel enable flags', () => {
+  // D-07: SMS disabled via enable flag → shouldSendSms=false even if sms_number present and intent matches
+  it('computeChannels returns shouldSendSms=false when notify_sms_enabled=false even if sms_number present', () => {
+    const settings = makeSettingsWithEnableFlags({
+      sms_number: '+15551111111',
+      notify_sms_enabled: false,  // channel disabled
+      notify_on_lead: true,
+    })
+    const result = computeChannels(settings, 'lead')
+    expect(result.shouldSendSms).toBe(false)
+  })
+
+  // D-07: WhatsApp disabled via enable flag → shouldSendWhatsApp=false even if whatsapp_number present
+  it('computeChannels returns shouldSendWhatsApp=false when notify_whatsapp_enabled=false', () => {
+    const settings = makeSettingsWithEnableFlags({
+      whatsapp_number: '+15552222222',
+      notify_whatsapp_enabled: false,  // channel disabled
+      notify_on_lead: true,
+    })
+    const result = computeChannels(settings, 'lead')
+    expect(result.shouldSendWhatsApp).toBe(false)
+  })
+
+  // D-07: Telegram disabled via enable flag → shouldSendTelegram=false even if telegram_chat_id present
+  it('computeChannels returns shouldSendTelegram=false when notify_telegram_enabled=false', () => {
+    const settings = makeSettingsWithEnableFlags({
+      telegram_chat_id: '12345',
+      notify_telegram_enabled: false,  // channel disabled
+      notify_on_lead: true,
+    })
+    const result = computeChannels(settings, 'lead')
+    expect(result.shouldSendTelegram).toBe(false)
+  })
+
+  // D-07: SMS enabled when sms_number present AND notify_sms_enabled=true AND intent matches
+  it('computeChannels returns shouldSendSms=true when sms_number present AND notify_sms_enabled=true AND intent matches', () => {
+    const settings = makeSettingsWithEnableFlags({
+      sms_number: '+15551111111',
+      notify_sms_enabled: true,  // channel enabled
+      notify_on_lead: true,
+    })
+    const result = computeChannels(settings, 'lead')
+    expect(result.shouldSendSms).toBe(true)
   })
 })
