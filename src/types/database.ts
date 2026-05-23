@@ -172,6 +172,9 @@ export interface NotificationSettings {
   notify_on_lead: boolean
   notify_on_emergency: boolean
   notify_on_general_inquiry: boolean  // Phase 5: controls info-intent notifications
+  notify_sms_enabled: boolean         // Phase 10: gate SMS dispatch (D-02)
+  notify_whatsapp_enabled: boolean    // Phase 10: gate WhatsApp dispatch (D-02)
+  notify_telegram_enabled: boolean    // Phase 10: gate Telegram dispatch (D-02)
   whatsapp_opted_in_at: string | null
   created_at: string
   updated_at: string
