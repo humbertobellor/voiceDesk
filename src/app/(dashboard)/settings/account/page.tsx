@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { CreditCard, ExternalLink, Loader2 } from 'lucide-react'
 
 // D-04: Customer Portal accessible from account settings per CONTEXT.md decisions.
@@ -17,7 +17,7 @@ export default function AccountPage() {
   const [loaded, setLoaded] = useState(false)
 
   // Load subscription data on mount
-  useState(() => {
+  useEffect(() => {
     async function loadSubscription() {
       try {
         const res = await fetch('/api/stripe/subscription')
@@ -32,7 +32,7 @@ export default function AccountPage() {
       }
     }
     loadSubscription()
-  })
+  }, [])
 
   const handleManageSubscription = async () => {
     setIsLoading(true)
