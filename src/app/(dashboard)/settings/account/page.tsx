@@ -8,6 +8,8 @@ import { CreditCard, ExternalLink, Loader2 } from 'lucide-react'
 interface SubscriptionStatus {
   stripe_customer_id?: string | null
   subscription_status?: string | null
+  trial_ends_at?: string | null
+  is_active?: boolean
 }
 
 export default function AccountPage() {
@@ -15,18 +17,23 @@ export default function AccountPage() {
   const [error, setError] = useState<string | null>(null)
   const [subscription, setSubscription] = useState<SubscriptionStatus | null>(null)
   const [loaded, setLoaded] = useState(false)
+  const [loadError, setLoadError] = useState(false)
 
   // Load subscription data on mount
   useEffect(() => {
     async function loadSubscription() {
       try {
         const res = await fetch('/api/stripe/subscription')
-        if (res.ok) {
+        if (!res.ok) {
+          // D-01: Differentiate load failure from "no subscription"
+          setLoadError(true)
+        } else {
           const data = await res.json()
           setSubscription(data)
         }
-      } catch (err) {
-        console.error('Failed to load subscription:', err)
+      } catch {
+        // D-01: Network error also sets loadError
+        setLoadError(true)
       } finally {
         setLoaded(true)
       }
@@ -62,10 +69,33 @@ export default function AccountPage() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-xl font-semibold text-[#F8FAFC] mb-1">Account & Billing</h1>
+        <h1 className="text-xl font-semibold text-[#F8FAFC] mb-1">Account &amp; Billing</h1>
         <p className="text-sm text-[#94A3B8]">Manage your plan and billing details</p>
         <div className="border-b border-[#334155] mt-6" />
       </div>
+
+      {/* D-09: Deactivated service banner — shown when is_active=false */}
+      {loaded && subscription?.is_active === false && (
+        <div className="bg-red-900/30 border border-red-700 rounded-lg p-4 mb-6">
+          <p className="text-sm font-medium text-red-300 mb-2">
+            Service suspended. Update your payment method to restore your VoiceDesk agent.
+          </p>
+          <button
+            onClick={handleManageSubscription}
+            disabled={isLoading}
+            className="px-4 py-2 bg-red-700 hover:bg-red-600 disabled:bg-[#64748B] text-white text-sm font-medium rounded-md transition-colors"
+          >
+            {isLoading ? 'Opening...' : 'Update Payment'}
+          </button>
+        </div>
+      )}
+
+      {/* D-01: Load error banner — shown when fetch returned non-ok or threw */}
+      {loaded && loadError && (
+        <div className="bg-red-900/20 border border-red-800 rounded-lg p-3 mb-6">
+          <p className="text-sm text-red-400">Failed to load subscription details. Please refresh the page.</p>
+        </div>
+      )}
 
       {/* Subscription Status */}
       <div className="bg-[#1E293B] rounded-lg p-4 mb-6">
@@ -82,12 +112,25 @@ export default function AccountPage() {
                   ? 'text-green-400'
                   : subscription?.subscription_status === 'past_due'
                   ? 'text-yellow-400'
+                  : subscription?.subscription_status === 'trialing'
+                  ? 'text-indigo-400'
                   : 'text-[#94A3B8]'
               }`}
             >
               {loaded ? subscription?.subscription_status ?? 'No subscription' : 'Loading...'}
             </span>
           </p>
+          {/* D-02: Trial end date — shown only when trialing and trial_ends_at is set */}
+          {loaded && subscription?.subscription_status === 'trialing' && subscription?.trial_ends_at && (
+            <p className="text-xs text-[#64748B] mt-1">
+              Trial ends{' '}
+              {new Date(subscription.trial_ends_at).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })}
+            </p>
+          )}
         </div>
       </div>
 
@@ -128,12 +171,7 @@ export default function AccountPage() {
           <p className="text-sm text-red-400 mt-3 pl-14">{error}</p>
         )}
       </div>
-
-      {!loaded && (
-        <div className="text-center py-8 text-[#64748B]">
-          Loading subscription details...
-        </div>
-      )}
+      {/* D-03: Duplicate loading block removed — inline 'Loading...' in status span is the only indicator */}
     </div>
   )
 }
