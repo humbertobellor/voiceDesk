@@ -222,8 +222,9 @@ export async function handleSubscriptionUpdated(
 
   const customerId = subscription.customer as string
 
-  // Map Stripe subscription status to internal status
-  let internalStatus: string
+  // Map Stripe subscription status to internal SubscriptionStatus.
+  // The default branch returns early for unmapped statuses so this is always a valid value.
+  let internalStatus: 'trialing' | 'active' | 'past_due' | 'canceled'
   switch (subscription.status) {
     case 'trialing':
       internalStatus = 'trialing'
@@ -240,7 +241,13 @@ export async function handleSubscriptionUpdated(
       internalStatus = 'canceled'
       break
     default:
-      internalStatus = 'unknown'
+      // Stripe statuses not mapped to internal (e.g., 'incomplete', 'paused').
+      // Do not write an invalid value — log and skip the status update. (WR-02)
+      console.warn(
+        `[webhook/stripe] handleSubscriptionUpdated: unmapped Stripe status "${subscription.status}" ` +
+        `for customer ${subscription.customer as string} — skipping subscription_status update`
+      )
+      return
   }
 
   // Find contractor by stripe_customer_id — include is_active for D-10 reactivation guard
