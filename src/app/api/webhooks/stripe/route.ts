@@ -65,7 +65,10 @@ export async function POST(req: Request) {
           await handlePaymentFailed(event.data.object as Invoice)
           break
         case 'customer.subscription.updated':
-          await handleSubscriptionUpdated(event.data.object as Subscription)
+          await handleSubscriptionUpdated(
+            event.data.object as Subscription,
+            event.id  // CR-02: evt_... is unique per delivery; sub_... is not
+          )
           break
         default:
           console.log(`[webhook/stripe] unhandled event type: ${event.type}`)
