@@ -1,7 +1,7 @@
 // retell-call-classify.test.ts
-// GREEN phase: D-09 is_active early return guard tests.
+// REFACTOR phase: D-09 is_active early return guard tests — cleanup pass.
 // Plan 04 implements production code; these tests verify correct guard behavior.
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { NonRetriableError } from 'inngest'
 
 // Mock modules before imports that use them
@@ -56,6 +56,11 @@ function makeDbMock(contractorData: unknown, error: unknown = null) {
 describe('retell-call-classify — is_active early return guard (D-09)', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+  })
+
+  afterEach(() => {
+    // Restore all spies (e.g., console.log spy from test 1) even if a test throws partway through.
+    vi.restoreAllMocks()
   })
 
   it('returns early with structured log when contractor.is_active=false', async () => {
