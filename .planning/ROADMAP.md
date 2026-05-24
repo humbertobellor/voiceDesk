@@ -363,14 +363,29 @@ Plans:
 
 ### Phase 11: Account page subscription load fix + BILL-03 deactivation
 
-**Goal:** [To be planned]
-**Requirements**: TBD
+**Goal:** Repair the account page subscription load (silent failure, missing trialing UI, duplicate loading states) and store trial_ends_at via Stripe webhook; update BILL-03 deactivation to respect Phase 10 channel-enable flags, introduce is_active boolean, and implement auto-reactivation when payment recovers.
+**Requirements**: D-01 through D-11 (from 11-CONTEXT.md)
 **Depends on:** Phase 10
-**Plans:** 0 plans
+**Plans:** 7 plans
 
-Plans:
+**Wave 1** *(schema gate — blocks all other waves)*
 
-- [ ] TBD (run /gsd-plan-phase 11 to break down)
+- [ ] 11-01-PLAN.md — Migration: add is_active BOOLEAN NOT NULL DEFAULT TRUE + trial_ends_at TIMESTAMPTZ to contractors table; [BLOCKING] supabase db push; update Contractor TypeScript type
+
+**Wave 2** *(parallel — no file conflicts, blocked on 11-01)*
+
+- [ ] 11-02-PLAN.md — payment-alert.ts: channel-flag gating (D-05 — smsEnabled/whatsappEnabled); stripe-payment-failure.ts: D-06 notification_settings join + D-08 is_active=false write (replaces agent_sync_status hack)
+- [ ] 11-03-PLAN.md — handlers.ts: D-04 trial_ends_at write in checkout handler + D-10 reactivation (is_active=true + Retell re-link guarded by D-11); subscription route: add trial_ends_at + is_active to response
+
+**Wave 3** *(blocked on 11-01 + 11-03)*
+
+- [ ] 11-04-PLAN.md — middleware.ts: D-09 is_active redirect guard (deactivated → /settings/account); retell-call-classify.ts: is_active early return in load-contractor step (no leads/appointments for deactivated contractors)
+- [ ] 11-05-PLAN.md — account/page.tsx: D-01 error state, D-02 trialing badge + trial end date, D-03 remove duplicate loading, D-09 deactivated banner with Update Payment CTA
+
+**Wave 4** *(TDD — blocked on 11-02 and 11-04)*
+
+- [ ] 11-06-PLAN.md — TDD: payment-alert.ts channel-flag gating (6 tests: smsEnabled/whatsappEnabled/smsNumber gates)
+- [ ] 11-07-PLAN.md — TDD: retell-call-classify is_active early return (3 tests: deactivated skip, active proceeds, not-found error)
 
 ---
 
@@ -388,4 +403,4 @@ Plans:
 | 8. Settings Refactor | 3/3 | Complete | 2026-05-20 |
 | 9. Hardening & UX Polish | 0/2 | In Progress | — |
 | 10. Notification Settings Form | 5/5 | Complete   | 2026-05-24 |
-| 11. Account Subscription Fix + BILL-03 | 0/? | Not Planned | — |
+| 11. Account Subscription Fix + BILL-03 | 0/7 | Not Started | — |
