@@ -117,7 +117,7 @@ export default function AccountPage() {
                   : 'text-[#94A3B8]'
               }`}
             >
-              {loaded ? subscription?.subscription_status ?? 'No subscription' : 'Loading...'}
+              {loaded ? (loadError ? '—' : subscription?.subscription_status ?? 'No subscription') : 'Loading...'}
             </span>
           </p>
           {/* D-02: Trial end date — shown only when trialing and trial_ends_at is set */}
@@ -128,6 +128,7 @@ export default function AccountPage() {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric',
+                timeZone: 'UTC',
               })}
             </p>
           )}
