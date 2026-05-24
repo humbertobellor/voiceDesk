@@ -366,7 +366,7 @@ Plans:
 **Goal:** Repair the account page subscription load (silent failure, missing trialing UI, duplicate loading states) and store trial_ends_at via Stripe webhook; update BILL-03 deactivation to respect Phase 10 channel-enable flags, introduce is_active boolean, and implement auto-reactivation when payment recovers.
 **Requirements**: D-01 through D-11 (from 11-CONTEXT.md)
 **Depends on:** Phase 10
-**Plans:** 1/7 plans executed
+**Plans:** 3/7 plans executed
 
 **Wave 1** *(schema gate — blocks all other waves)*
 
@@ -374,8 +374,8 @@ Plans:
 
 **Wave 2** *(parallel — no file conflicts, blocked on 11-01)*
 
-- [ ] 11-02-PLAN.md — payment-alert.ts: channel-flag gating (D-05 — smsEnabled/whatsappEnabled); stripe-payment-failure.ts: D-06 notification_settings join + D-08 is_active=false write (replaces agent_sync_status hack)
-- [ ] 11-03-PLAN.md — handlers.ts: D-04 trial_ends_at write in checkout handler + D-10 reactivation (is_active=true + Retell re-link guarded by D-11); subscription route: add trial_ends_at + is_active to response
+- [x] 11-02-PLAN.md — payment-alert.ts: channel-flag gating (D-05 — smsEnabled/whatsappEnabled); stripe-payment-failure.ts: D-06 notification_settings join + D-08 is_active=false write (replaces agent_sync_status hack)
+- [x] 11-03-PLAN.md — handlers.ts: D-04 trial_ends_at write in checkout handler + D-10 reactivation (is_active=true + Retell re-link guarded by D-11); subscription route: add trial_ends_at + is_active to response
 
 **Wave 3** *(blocked on 11-01 + 11-03)*
 
@@ -403,4 +403,4 @@ Plans:
 | 8. Settings Refactor | 3/3 | Complete | 2026-05-20 |
 | 9. Hardening & UX Polish | 0/2 | In Progress | — |
 | 10. Notification Settings Form | 5/5 | Complete   | 2026-05-24 |
-| 11. Account Subscription Fix + BILL-03 | 1/7 | In Progress|  |
+| 11. Account Subscription Fix + BILL-03 | 3/7 | In Progress|  |
