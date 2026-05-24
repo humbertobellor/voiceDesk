@@ -1,6 +1,17 @@
 # VoiceDesk
 
-**Current State:** v1.0 SHIPPED 2026-05-24. Production deployment live on Vercel. 15/15 E2E regression tests green.
+**Current State:** v1.1 IN PROGRESS. v1.0 shipped 2026-05-24 — production live, 15/15 E2E green.
+
+## Current Milestone: v1.1 Notifications & UI Brand
+
+**Goal:** Complete the notification layer (email, in-app bell, Telegram self-serve activation) and apply the Wolknitive Design System across the entire application — turning a functional MVP into a polished, branded product.
+
+**Target features:**
+- Email notifications via Resend — call/lead/emergency alerts to contractor
+- In-app notification bell — unread count + notification feed in dashboard header
+- Notification preferences per event — contractor toggles which channels fire for each event type
+- Telegram auto-activation — saving bot token triggers setWebhook automatically
+- Wolknitive Design System applied — brand tokens, typography, component sweep across all pages
 
 ## What This Is
 
