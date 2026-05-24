@@ -54,6 +54,11 @@ export async function sendPaymentFailureAlert({
 
   const smsBody = `VOICEDESK ALERT: Payment failed. Your agent will be deactivated within 72 hours. Update payment method at your account settings to keep service active.`
 
+  // Track actual delivery outcome — set to true only after the send resolves
+  // successfully. This ensures the audit log reflects real delivery, not intent. (WR-04)
+  let smsSentActual = false
+  let whatsappSentActual = false
+
   // D-05 SMS gate: skip if disabled or no number — T-11-02-02: warn log for operator visibility
   if (!smsEnabled || !smsNumber) {
     console.warn(
@@ -73,6 +78,7 @@ export async function sendPaymentFailureAlert({
 
     try {
       await sendSms(smsParams)
+      smsSentActual = true  // WR-04: only set after successful await
     } catch (err) {
       console.error(
         `[payment-alert] SMS send failed for contractor ${contractorId}:`,
@@ -100,6 +106,7 @@ export async function sendPaymentFailureAlert({
 
     try {
       await sendWhatsApp(whatsappParams)
+      whatsappSentActual = true  // WR-04: only set after successful await
     } catch (err) {
       console.error(
         `[payment-alert] WhatsApp send failed for contractor ${contractorId}:`,
@@ -110,12 +117,13 @@ export async function sendPaymentFailureAlert({
   }
 
   // Log to notification_log for audit (T-07-05-01)
+  // Use actual delivery outcome variables — not the pre-send gate conditions. (WR-04)
   await logPaymentAlertToDb({
     contractorId,
-    smsNumber: smsEnabled ? smsNumber : null,
-    smsSent: smsEnabled && !!smsNumber,
-    whatsappNumber: whatsappEnabled ? whatsappNumber : null,
-    whatsappSent: whatsappEnabled && !!whatsappNumber,
+    smsNumber: smsSentActual ? smsNumber : null,
+    smsSent: smsSentActual,
+    whatsappNumber: whatsappSentActual ? whatsappNumber : null,
+    whatsappSent: whatsappSentActual,
     smsBody,
   })
 
