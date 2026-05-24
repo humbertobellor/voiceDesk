@@ -34,7 +34,7 @@ export async function GET() {
 
     const { data: contractor, error: contractorError } = await supabase
       .from('contractors')
-      .select('stripe_customer_id, subscription_status')
+      .select('stripe_customer_id, subscription_status, trial_ends_at, is_active')
       .eq('user_id', user.id)
       .maybeSingle()
 
@@ -48,6 +48,8 @@ export async function GET() {
     return NextResponse.json({
       stripe_customer_id: contractor.stripe_customer_id,
       subscription_status: contractor.subscription_status,
+      trial_ends_at: contractor.trial_ends_at,
+      is_active: contractor.is_active,
     })
   } catch (error) {
     console.error('[stripe/subscription] Error:', error)
