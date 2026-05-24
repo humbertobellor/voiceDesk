@@ -1,6 +1,6 @@
 ---
 phase: 11
-status: findings
+status: fixed
 depth: deep
 reviewed_at: 2026-05-24
 files_reviewed: 11
