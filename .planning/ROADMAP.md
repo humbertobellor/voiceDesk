@@ -366,11 +366,11 @@ Plans:
 **Goal:** Repair the account page subscription load (silent failure, missing trialing UI, duplicate loading states) and store trial_ends_at via Stripe webhook; update BILL-03 deactivation to respect Phase 10 channel-enable flags, introduce is_active boolean, and implement auto-reactivation when payment recovers.
 **Requirements**: D-01 through D-11 (from 11-CONTEXT.md)
 **Depends on:** Phase 10
-**Plans:** 7 plans
+**Plans:** 1/7 plans executed
 
 **Wave 1** *(schema gate — blocks all other waves)*
 
-- [ ] 11-01-PLAN.md — Migration: add is_active BOOLEAN NOT NULL DEFAULT TRUE + trial_ends_at TIMESTAMPTZ to contractors table; [BLOCKING] supabase db push; update Contractor TypeScript type
+- [x] 11-01-PLAN.md — Migration: add is_active BOOLEAN NOT NULL DEFAULT TRUE + trial_ends_at TIMESTAMPTZ to contractors table; [BLOCKING] supabase db push; update Contractor TypeScript type
 
 **Wave 2** *(parallel — no file conflicts, blocked on 11-01)*
 
@@ -403,4 +403,4 @@ Plans:
 | 8. Settings Refactor | 3/3 | Complete | 2026-05-20 |
 | 9. Hardening & UX Polish | 0/2 | In Progress | — |
 | 10. Notification Settings Form | 5/5 | Complete   | 2026-05-24 |
-| 11. Account Subscription Fix + BILL-03 | 0/7 | Not Started | — |
+| 11. Account Subscription Fix + BILL-03 | 1/7 | In Progress|  |
