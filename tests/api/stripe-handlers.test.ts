@@ -240,7 +240,7 @@ describe('handleSubscriptionUpdated', () => {
 
   it('skips processing for duplicate events (T-07-02-02)', async () => {
     mockInsert.mockResolvedValue({ error: { code: '23505' } })
-    await handleSubscriptionUpdated(makeSubscription('active'))
+    await handleSubscriptionUpdated(makeSubscription('active'), 'evt_test_123')
     expect(mockUpdate).not.toHaveBeenCalled()
   })
 
@@ -252,7 +252,7 @@ describe('handleSubscriptionUpdated', () => {
     ['unpaid', 'canceled'],
     ['incomplete_expired', 'canceled'],
   ])('maps Stripe status "%s" to internal status "%s"', async (stripeStatus, internalStatus) => {
-    await handleSubscriptionUpdated(makeSubscription(stripeStatus as Stripe.Subscription.Status))
+    await handleSubscriptionUpdated(makeSubscription(stripeStatus as Stripe.Subscription.Status), 'evt_test_123')
 
     expect(mockUpdate).toHaveBeenCalledWith(
       expect.objectContaining({ subscription_status: internalStatus })
@@ -266,7 +266,7 @@ describe('handleSubscriptionUpdated', () => {
       }),
     })
 
-    await handleSubscriptionUpdated(makeSubscription('active'))
+    await handleSubscriptionUpdated(makeSubscription('active'), 'evt_test_123')
     expect(mockUpdate).not.toHaveBeenCalled()
   })
 })
