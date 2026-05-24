@@ -212,10 +212,10 @@ export async function handleSubscriptionUpdated(subscription: Subscription) {
       internalStatus = 'unknown'
   }
 
-  // Find contractor by stripe_customer_id
+  // Find contractor by stripe_customer_id — include is_active for D-10 reactivation guard
   const { data: contractor, error } = await db
     .from('contractors')
-    .select('id')
+    .select('id, is_active')
     .eq('stripe_customer_id', customerId)
     .single()
 
@@ -228,6 +228,8 @@ export async function handleSubscriptionUpdated(subscription: Subscription) {
   }
 
   const contractorId = contractor.id
+  // D-10: Capture whether contractor was deactivated before this event
+  const wasDeactivated = contractor.is_active === false
 
   // Update contractor subscription status
   await db
@@ -238,28 +240,80 @@ export async function handleSubscriptionUpdated(subscription: Subscription) {
     })
     .eq('id', contractorId)
 
-  if (internalStatus === 'active') {
-    const { data: contractorFull } = await db
+  // D-04: Write trial_ends_at from Subscription object (primary reliable path).
+  // subscription.trial_end is always populated when status === 'trialing'.
+  if (internalStatus === 'trialing' && subscription.trial_end) {
+    await db
       .from('contractors')
-      .select('retell_agent_id, twilio_number')
+      .update({ trial_ends_at: new Date(subscription.trial_end * 1000).toISOString() })
       .eq('id', contractorId)
-      .single()
+    console.log(
+      `[webhook/stripe] contractor ${contractorId} trial_ends_at set to ${new Date(subscription.trial_end * 1000).toISOString()}`
+    )
+  }
 
-    if (contractorFull?.retell_agent_id && contractorFull?.twilio_number) {
-      try {
-        const retell = getRetellClient()
-        await retell.phoneNumber.update(contractorFull.twilio_number, {
-          inbound_agents: [{ agent_id: contractorFull.retell_agent_id, weight: 1.0 }],
-        })
+  if (internalStatus === 'active') {
+    if (wasDeactivated) {
+      // D-10: Auto-reactivation path — contractor was deactivated, payment recovered.
+      // Set is_active=true, then re-link Retell. Skip the outer re-link block (handled here).
+      await db
+        .from('contractors')
+        .update({ is_active: true })
+        .eq('id', contractorId)
+      console.log(`[webhook/stripe] contractor ${contractorId} reactivated: is_active set to true`)
+
+      // D-11: Re-link Retell only if both IDs are present
+      const { data: contractorFull } = await db
+        .from('contractors')
+        .select('retell_agent_id, twilio_number')
+        .eq('id', contractorId)
+        .single()
+
+      if (contractorFull?.retell_agent_id && contractorFull?.twilio_number) {
+        try {
+          const retell = getRetellClient()
+          await retell.phoneNumber.update(contractorFull.twilio_number, {
+            inbound_agents: [{ agent_id: contractorFull.retell_agent_id, weight: 1.0 }],
+          })
+          console.log(
+            `[webhook/stripe] Retell phone ${contractorFull.twilio_number} re-linked on reactivation for contractor ${contractorId}`
+          )
+        } catch (err) {
+          console.error(
+            `[webhook/stripe] Retell re-link on reactivation failed for contractor ${contractorId}:`,
+            err instanceof Error ? err.message : err
+          )
+        }
+      } else {
         console.log(
-          `[webhook/stripe] Retell phone ${contractorFull.twilio_number} re-linked to agent for contractor ${contractorId}`
+          `[webhook/stripe] skipping Retell re-link on reactivation for ${contractorId}: missing retell_agent_id or twilio_number`
         )
-      } catch (err) {
-        // Log but don't throw — subscription status already updated; agent re-link can be retried manually
-        console.error(
-          `[webhook/stripe] Retell re-link failed for contractor ${contractorId}:`,
-          err instanceof Error ? err.message : err
-        )
+      }
+    } else {
+      // Existing behavior: contractor was already active — just re-link Retell as before.
+      // (This path fires for routine subscription renewals or plan changes.)
+      const { data: contractorFull } = await db
+        .from('contractors')
+        .select('retell_agent_id, twilio_number')
+        .eq('id', contractorId)
+        .single()
+
+      if (contractorFull?.retell_agent_id && contractorFull?.twilio_number) {
+        try {
+          const retell = getRetellClient()
+          await retell.phoneNumber.update(contractorFull.twilio_number, {
+            inbound_agents: [{ agent_id: contractorFull.retell_agent_id, weight: 1.0 }],
+          })
+          console.log(
+            `[webhook/stripe] Retell phone ${contractorFull.twilio_number} re-linked to agent for contractor ${contractorId}`
+          )
+        } catch (err) {
+          // Log but don't throw — subscription status already updated; agent re-link can be retried manually
+          console.error(
+            `[webhook/stripe] Retell re-link failed for contractor ${contractorId}:`,
+            err instanceof Error ? err.message : err
+          )
+        }
       }
     }
   }
