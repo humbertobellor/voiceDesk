@@ -88,14 +88,13 @@ export async function handleCheckoutCompleted(session: CheckoutSession) {
     return
   }
 
-  // D-04: Best-effort trial_ends_at from checkout session.
-  // Primary write path is handleSubscriptionUpdated (Subscription.trial_end is always reliable).
-  // This secondary path covers the case where subscription.updated fires before or is missed.
-  type CheckoutSessionWithTrialData = Stripe.Checkout.Session & {
-    subscription_data?: { trial_end?: number | null }
-  }
-  const rawTrialEnd = (session as CheckoutSessionWithTrialData).subscription_data?.trial_end
-  const trialEndsAt = rawTrialEnd ? new Date(rawTrialEnd * 1000).toISOString() : null
+  // D-04: trial_ends_at is reliably set by handleSubscriptionUpdated (primary path).
+  // The checkout.session.completed payload does not include subscription.trial_end —
+  // that field lives on the Stripe Subscription object, not the CheckoutSession.
+  // subscription_data.trial_end is always undefined here. No secondary extraction. (WR-03)
+  // TODO: if needed, retrieve the subscription via stripe.subscriptions.retrieve(session.subscription)
+  // to obtain trial_end at checkout time; for now handleSubscriptionUpdated covers it.
+  const trialEndsAt = null
 
   // Update contractor with Stripe customer and subscription
   const { error: updateError } = await db
