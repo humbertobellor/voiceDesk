@@ -1,11 +1,11 @@
 # VoiceDesk Roadmap
 
-## Milestone 1: v1.0 — Revenue-Ready MVP
+<details>
+<summary><strong>✅ Milestone v1.0 — Revenue-Ready MVP (SHIPPED 2026-05-24)</strong></summary>
 
-**Goal:** A contractor can sign up, configure their AI receptionist (in English, Spanish, or Haitian Creole), receive a dedicated phone number, and immediately start capturing leads, booking appointments, and receiving real-time notifications — with Stripe billing collecting revenue.
-**Target:** 90-day soft launch to 20–30 contractors (South Florida market: Spanish and Haitian Creole support from day one)
-
----
+**Goal:** A contractor can sign up, configure their AI receptionist, receive a dedicated phone number, and immediately start capturing leads, booking appointments, and receiving real-time notifications — with Stripe billing collecting revenue.
+**Shipped:** 2026-05-24 | 11 phases | 55 plans | 311 commits | 21 days
+**Archive:** [.planning/milestones/v1.0-mvp.md](milestones/v1.0-mvp.md)
 
 ## Phases
 
@@ -195,7 +195,7 @@
 - [x] 05-02-PLAN.md — Implement notification libs: real Twilio SMS, WhatsApp template sends (Content SID constants), grammY Telegram, notification_log DB helpers (GREEN tests) ✓ 2026-05-09
 - [x] 05-03-PLAN.md — retell-notify-dispatch Inngest function (Promise.allSettled, D-09 WA fallback, D-12 pending-before-send) + extend retell-call-classify to fire retell/call.notify event ✓ 2026-05-09
 - [x] 05-04-PLAN.md — POST /api/webhooks/telegram (grammY, upserts telegram_chat_id) + dashboard Telegram setup banner + register retellNotifyDispatch in /api/inngest/route.ts ✓ 2026-05-09
-- [ ] 05-05-PLAN.md — Phase 5 verification: confirm all implementations exist, verify Telegram secret_token validation wired (T-05-04-01), verify 20 tests passing, document D-07 caller_name deferral
+- [x] 05-05-PLAN.md — Phase 5 verification: confirm all implementations exist, verify Telegram secret_token validation wired (T-05-04-01), verify 20 tests passing, document D-07 caller_name deferral ✓ 2026-05-12
 
 **Wave dependency notes:**
 
@@ -399,8 +399,16 @@ Plans:
 | 4. Scheduling & Lead Capture | 6/6 | Complete | 2026-05-08 |
 | 5. Notifications | 5/5 | Complete | 2026-05-12 |
 | 6. Portal UI | 5/5 | Complete | 2026-05-12 |
-| 7. Billing & Onboarding | 7/7 | Complete | 2026-05-20 |
+| 7. Billing & Onboarding | 8/8 | Complete | 2026-05-20 |
 | 8. Settings Refactor | 3/3 | Complete | 2026-05-20 |
-| 9. Hardening & UX Polish | 0/2 | In Progress | — |
-| 10. Notification Settings Form | 5/5 | Complete   | 2026-05-24 |
-| 11. Account Subscription Fix + BILL-03 | 7/7 | Complete   | 2026-05-24 |
+| 9. Hardening & UX Polish | 2/2 | Complete | 2026-05-24 |
+| 10. Notification Settings Form | 5/5 | Complete | 2026-05-24 |
+| 11. Account Subscription Fix + BILL-03 | 7/7 | Complete | 2026-05-24 |
+
+</details>
+
+---
+
+## Milestone v1.1 — Next
+
+*(planned)*
