@@ -68,7 +68,7 @@ export const retellCallClassify = inngest.createFunction(
       const db = createServiceRoleClient()
       const { data, error } = await db
         .from('contractors')
-        .select('id, retell_llm_id, timezone, contractor_settings(*)')
+        .select('id, retell_llm_id, timezone, is_active, contractor_settings(*)')
         .eq('id', contractorId)
         .maybeSingle()
       if (error || !data) {
@@ -76,8 +76,25 @@ export const retellCallClassify = inngest.createFunction(
           `[retell-call-classify] contractor ${contractorId} not found`
         )
       }
+      if (!data.is_active) {
+        // D-09: Contractor is deactivated — skip all classification, lead, appointment creation.
+        // This is not a retriable error; the call happened, we just don't process it.
+        console.log('[voicedesk]', JSON.stringify({
+          event: 'retell-call-classify.skipped',
+          reason: 'contractor_deactivated',
+          contractor_id: contractorId,
+          call_id: callId,
+        }))
+        return { ...data, _deactivated: true as const }
+      }
       return data
     })
+
+    if ((contractor as typeof contractor & { _deactivated?: true })._deactivated) {
+      // Contractor was deactivated — all classification steps skipped.
+      return
+    }
+
     const settings = contractor.contractor_settings as unknown as ContractorSettings | null
     const contractorTimezone = contractor.timezone ?? 'America/New_York'
 
