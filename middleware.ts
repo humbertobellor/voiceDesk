@@ -38,7 +38,7 @@ export async function middleware(request: NextRequest) {
   if (user && path.startsWith('/auth/') && !path.startsWith('/auth/callback')) {
     const { data: contractor } = await supabase
       .from('contractors')
-      .select('phone_number')
+      .select('phone_number, is_active')
       .eq('user_id', user.id)
       .maybeSingle()
     if (!contractor?.phone_number) {
@@ -53,11 +53,16 @@ export async function middleware(request: NextRequest) {
   if (user && path.startsWith('/dashboard')) {
     const { data: contractor } = await supabase
       .from('contractors')
-      .select('phone_number')
+      .select('phone_number, is_active')
       .eq('user_id', user.id)
       .maybeSingle()
     if (!contractor?.phone_number) {
       return NextResponse.redirect(new URL('/setup/phone', request.url))
+    }
+    // D-09: Deactivated contractor — redirect to account page (not /setup/phone)
+    // Exempt /settings/account itself to prevent redirect loop
+    if (contractor.is_active === false && !path.startsWith('/settings/account')) {
+      return NextResponse.redirect(new URL('/settings/account', request.url))
     }
   }
 
