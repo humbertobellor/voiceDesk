@@ -187,15 +187,27 @@ export async function handlePaymentFailed(invoice: Invoice) {
  * Handle customer.subscription.updated — syncs subscription status to contractor record.
  * Maps Stripe status to internal status: trialing→trialing, active→active, past_due→past_due, canceled→canceled.
  * T-07-02-02: Idempotency via webhook_events table.
+ *
+ * @param subscription - The Stripe Subscription object from the event
+ * @param stripeEventId - The Stripe event ID (evt_...) — unique per delivery. Used as
+ *   the idempotency key so repeated events for the same subscription (e.g. trialing→active,
+ *   past_due→active on recovery) are each processed exactly once rather than the first
+ *   event permanently locking the reactivation path.
  */
-export async function handleSubscriptionUpdated(subscription: Subscription) {
+export async function handleSubscriptionUpdated(
+  subscription: Subscription,
+  stripeEventId: string
+) {
   const db = createServiceRoleClient()
 
-  // T-07-02-02: Check for duplicate before processing
+  // T-07-02-02: Check for duplicate before processing.
+  // Use the Stripe event ID (evt_...) as external_id — not the subscription ID (sub_...).
+  // The subscription ID is the same across all events for a subscription's lifetime, so
+  // using it would permanently block reactivation after the first processed event (CR-02).
   const isNew = await checkAndInsertIdempotency(
     'stripe',
     'customer.subscription.updated',
-    subscription.id,
+    stripeEventId,
     subscription
   )
   if (!isNew) return
