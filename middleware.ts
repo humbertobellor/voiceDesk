@@ -29,8 +29,17 @@ export async function middleware(request: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser()
   const path = request.nextUrl.pathname
 
-  // Unauthenticated users hit /dashboard or /setup → /auth/login
-  if (!user && (path.startsWith('/dashboard') || path.startsWith('/setup'))) {
+  // All routes inside the (dashboard) route group — none share the /dashboard prefix.
+  // Actual portal hrefs: /calls, /leads, /settings/*, /connect-calendar, /dashboard (home).
+  const isDashboardRoute =
+    path.startsWith('/dashboard') ||
+    path.startsWith('/calls') ||
+    path.startsWith('/leads') ||
+    path.startsWith('/settings') ||
+    path.startsWith('/connect-calendar')
+
+  // Unauthenticated users hitting any portal or setup route → /auth/login
+  if (!user && (isDashboardRoute || path.startsWith('/setup'))) {
     return NextResponse.redirect(new URL('/auth/login', request.url))
   }
 
@@ -47,10 +56,10 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/dashboard', request.url))
   }
 
-  // Phone capture gate (D-02 + Pitfall 4): authenticated user accessing /dashboard
+  // Phone capture gate (D-02 + Pitfall 4): authenticated user accessing any portal route
   // must have a contractors row with phone_number set. Both "no row" and "row with null phone"
   // route to /setup/phone.
-  if (user && path.startsWith('/dashboard')) {
+  if (user && isDashboardRoute) {
     const { data: contractor } = await supabase
       .from('contractors')
       .select('phone_number, is_active')
@@ -60,7 +69,7 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL('/setup/phone', request.url))
     }
     // D-09: Deactivated contractor — redirect to account page (not /setup/phone)
-    // Exempt /settings/account itself to prevent redirect loop
+    // Exempt /settings/account itself to prevent redirect loop so contractors can update payment.
     if (contractor.is_active === false && !path.startsWith('/settings/account')) {
       return NextResponse.redirect(new URL('/settings/account', request.url))
     }
