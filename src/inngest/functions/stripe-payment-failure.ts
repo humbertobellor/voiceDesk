@@ -1,5 +1,8 @@
 // src/inngest/functions/stripe-payment-failure.ts
 // Inngest function triggered by stripe/payment.failed event.
+// D-05: Channel-flag gating — passes notify_sms_enabled / notify_whatsapp_enabled to alert helper.
+// D-06: load-contractor fetches all four notification_settings channel fields.
+// D-08: mark-agent-inactive writes is_active=false + subscription_status='past_due' atomically.
 // D-10: Deactivate Retell agent immediately after payment failure.
 // D-11: Send WhatsApp/SMS alert before deactivation (within 72 hours of final failed retry).
 // BILL-03: Payment failure handling per CONTEXT.md decisions.
@@ -52,7 +55,7 @@ export const stripePaymentFailureHandler = inngest.createFunction(
       const db = createServiceRoleClient()
       const { data, error } = await db
         .from('contractors')
-        .select('id, retell_agent_id, twilio_number, phone_number, notification_settings(whatsapp_number)')
+        .select('id, retell_agent_id, twilio_number, phone_number, notification_settings(sms_number, whatsapp_number, notify_sms_enabled, notify_whatsapp_enabled)')
         .eq('id', contractorId)
         .maybeSingle()
       if (error || !data) {
@@ -65,14 +68,27 @@ export const stripePaymentFailureHandler = inngest.createFunction(
 
     // Step 2: Send payment failure alert (D-11: alert before deactivation)
     await step.run('send-payment-alert', async () => {
+      // D-06: Resolve channel flags from notification_settings join (take [0] — array join).
+      const ns = (contractor.notification_settings as Array<{
+        sms_number: string | null
+        whatsapp_number: string | null
+        notify_sms_enabled: boolean
+        notify_whatsapp_enabled: boolean
+      }> | null)?.[0]
+
+      // Resolve SMS number: notification_settings.sms_number ?? contractor.phone_number
+      const smsNumber = ns?.sms_number ?? contractor.phone_number ?? null
+
       // T-07-05-01: Log alert sending attempt
       console.log(
         `[stripe-payment-failure] Sending payment failure alert to contractor ${contractorId}`
       )
       await sendPaymentFailureAlert({
         contractorId,
-        phone: contractor.phone_number,
-        whatsappEnabled: !!(contractor.notification_settings as Array<{ whatsapp_number: string | null }> | null)?.[0]?.whatsapp_number,
+        smsNumber,
+        smsEnabled: ns?.notify_sms_enabled ?? true,          // DEFAULT TRUE — existing contractors unaffected
+        whatsappNumber: ns?.whatsapp_number ?? null,
+        whatsappEnabled: ns?.notify_whatsapp_enabled ?? false, // DEFAULT FALSE — opt-in channel
       })
     })
 
@@ -100,15 +116,14 @@ export const stripePaymentFailureHandler = inngest.createFunction(
       }
     })
 
-    // Step 3: Set agent to inactive (D-10: immediate deactivation)
-    // Note: Retell SDK doesn't expose direct agent status via API - setting subscription_status='past_due'
-    // triggers the portal flow. For true agent deactivation, use Retell Dashboard or manage via retell_agent_id.
+    // Step 3: Set agent to inactive (D-08: write is_active=false + subscription_status='past_due' atomically).
+    // D-08: Replaces the old agent_sync_status='failed' hack with the proper boolean column.
+    // Both fields are written in a single update — simpler audit trail (T-11-02-03).
     await step.run('mark-agent-inactive', async () => {
-      // Mark as inactive in our DB - this will prevent new calls from using this agent
       const db = createServiceRoleClient()
       const { error } = await db
         .from('contractors')
-        .update({ agent_sync_status: 'failed' }) // Use 'failed' to indicate inactive
+        .update({ is_active: false, subscription_status: 'past_due' })
         .eq('id', contractorId)
       if (error) {
         console.error(
@@ -118,32 +133,13 @@ export const stripePaymentFailureHandler = inngest.createFunction(
         throw new Error(error.message)
       }
       console.log(
-        `[stripe-payment-failure] Marked agent as inactive in DB for contractor ${contractorId}`
-      )
-    })
-
-    // Step 4: Update contractor subscription_status to 'past_due'
-    await step.run('update-subscription-status', async () => {
-      const db = createServiceRoleClient()
-      const { error } = await db
-        .from('contractors')
-        .update({ subscription_status: 'past_due' })
-        .eq('id', contractorId)
-      if (error) {
-        console.error(
-          `[stripe-payment-failure] update-subscription-status failed:`,
-          error.message
-        )
-        throw new Error(error.message)
-      }
-      console.log(
-        `[stripe-payment-failure] Updated subscription_status to 'past_due' for contractor ${contractorId}`
+        `[stripe-payment-failure] Marked contractor ${contractorId} inactive (is_active=false, subscription_status=past_due)`
       )
     })
 
     // T-07-05-01: Final audit log
     console.log(
-      `[stripe-payment-failure] COMPLETE: Payment failure handled for contractor ${contractorId}. Agent deactivated, status set to past_due.`
+      `[stripe-payment-failure] COMPLETE: Payment failure handled for contractor ${contractorId}. Agent deactivated (is_active=false), subscription_status=past_due.`
     )
   }
 )
