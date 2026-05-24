@@ -88,6 +88,15 @@ export async function handleCheckoutCompleted(session: CheckoutSession) {
     return
   }
 
+  // D-04: Best-effort trial_ends_at from checkout session.
+  // Primary write path is handleSubscriptionUpdated (Subscription.trial_end is always reliable).
+  // This secondary path covers the case where subscription.updated fires before or is missed.
+  type CheckoutSessionWithTrialData = Stripe.Checkout.Session & {
+    subscription_data?: { trial_end?: number | null }
+  }
+  const rawTrialEnd = (session as CheckoutSessionWithTrialData).subscription_data?.trial_end
+  const trialEndsAt = rawTrialEnd ? new Date(rawTrialEnd * 1000).toISOString() : null
+
   // Update contractor with Stripe customer and subscription
   await db
     .from('contractors')
@@ -96,11 +105,13 @@ export async function handleCheckoutCompleted(session: CheckoutSession) {
       stripe_subscription_id: session.subscription as string,
       subscription_status: 'trialing', // D-02: starts in trialing
       subscription_tier: subscriptionTier,
+      trial_ends_at: trialEndsAt,
     })
     .eq('id', contractorId)
 
   console.log(
-    `[webhook/stripe] contractor ${contractorId} subscribed via checkout ${session.id}, status: trialing`
+    `[webhook/stripe] contractor ${contractorId} subscribed via checkout ${session.id}, ` +
+    `status: trialing, trial_ends_at: ${trialEndsAt ?? 'will be set by subscription.updated'}`
   )
 }
 
