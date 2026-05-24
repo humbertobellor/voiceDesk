@@ -98,7 +98,7 @@ export async function handleCheckoutCompleted(session: CheckoutSession) {
   const trialEndsAt = rawTrialEnd ? new Date(rawTrialEnd * 1000).toISOString() : null
 
   // Update contractor with Stripe customer and subscription
-  await db
+  const { error: updateError } = await db
     .from('contractors')
     .update({
       stripe_customer_id: session.customer as string,
@@ -108,6 +108,14 @@ export async function handleCheckoutCompleted(session: CheckoutSession) {
       trial_ends_at: trialEndsAt,
     })
     .eq('id', contractorId)
+
+  if (updateError) {
+    console.error(
+      `[webhook/stripe] handleCheckoutCompleted: DB update failed for contractor ${contractorId}:`,
+      updateError.message
+    )
+    throw new Error(updateError.message)
+  }
 
   console.log(
     `[webhook/stripe] contractor ${contractorId} subscribed via checkout ${session.id}, ` +
