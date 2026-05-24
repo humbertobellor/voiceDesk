@@ -268,22 +268,31 @@ export async function handleSubscriptionUpdated(
   // D-10: Capture whether contractor was deactivated before this event
   const wasDeactivated = contractor.is_active === false
 
-  // Update contractor subscription status
-  await db
+  // D-04: Merge trial_ends_at into the main status update when status is trialing.
+  // This avoids a second round-trip and ensures both fields land atomically. (WR-05)
+  const trialEndsAtUpdate =
+    internalStatus === 'trialing' && subscription.trial_end
+      ? { trial_ends_at: new Date(subscription.trial_end * 1000).toISOString() }
+      : {}
+
+  const { error: statusUpdateError } = await db
     .from('contractors')
     .update({
       subscription_status: internalStatus,
       stripe_subscription_id: subscription.id,
+      ...trialEndsAtUpdate,
     })
     .eq('id', contractorId)
 
-  // D-04: Write trial_ends_at from Subscription object (primary reliable path).
-  // subscription.trial_end is always populated when status === 'trialing'.
+  if (statusUpdateError) {
+    console.error(
+      `[webhook/stripe] handleSubscriptionUpdated: DB update failed for contractor ${contractorId}:`,
+      statusUpdateError.message
+    )
+    throw new Error(statusUpdateError.message)
+  }
+
   if (internalStatus === 'trialing' && subscription.trial_end) {
-    await db
-      .from('contractors')
-      .update({ trial_ends_at: new Date(subscription.trial_end * 1000).toISOString() })
-      .eq('id', contractorId)
     console.log(
       `[webhook/stripe] contractor ${contractorId} trial_ends_at set to ${new Date(subscription.trial_end * 1000).toISOString()}`
     )
