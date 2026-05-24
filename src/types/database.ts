@@ -29,6 +29,8 @@ export interface Contractor {
   stripe_subscription_id: string | null
   subscription_status: SubscriptionStatus
   subscription_tier: string
+  is_active: boolean
+  trial_ends_at: string | null
   timezone: string
   created_at: string
   updated_at: string
