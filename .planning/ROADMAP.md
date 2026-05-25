@@ -415,7 +415,7 @@ Plans:
 
 ## Phases
 
-- [ ] **Phase 12: Notification Foundation** - DB migrations (app_notifications + email columns) + TypeScript types + email lib
+- [x] **Phase 12: Notification Foundation** - DB migrations (app_notifications + email columns) + TypeScript types + email lib (completed 2026-05-25)
 - [ ] **Phase 13: Email Notifications** - Email channel in Inngest dispatch + payment alert email + API schema extension
 - [ ] **Phase 14: In-App Notification Bell** - Inngest write step + React Query hooks + Supabase Realtime + NotificationBell UI
 - [ ] **Phase 15: Telegram Activation** - Server action (activateTelegramWebhook) + settings UI card with status display
@@ -438,7 +438,7 @@ Plans:
   4. `src/lib/notifications/email.ts` exports `sendEmail()` with unit tests green — the function can be called with a subject/body/recipient and returns success/failure without hitting Resend in tests
   5. TypeScript database types are regenerated and `tsc` exits 0 across the entire project
 
-**Plans:** 2/3 plans executed
+**Plans:** 3/3 plans complete
 
 Plans:
 **Wave 1**
@@ -448,7 +448,7 @@ Plans:
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
-- [ ] 12-03-PLAN.md — [BLOCKING] supabase db push + human verify schema + tsc --noEmit + npm run test phase gate
+- [x] 12-03-PLAN.md — [BLOCKING] supabase db push + human verify schema + tsc --noEmit + npm run test phase gate
 
 **UI hint:** no
 
@@ -529,7 +529,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 12. Notification Foundation | 2/3 | In Progress|  |
+| 12. Notification Foundation | 3/3 | Complete    | 2026-05-25 |
 | 13. Email Notifications | 0/TBD | Not started | - |
 | 14. In-App Notification Bell | 0/TBD | Not started | - |
 | 15. Telegram Activation | 0/TBD | Not started | - |

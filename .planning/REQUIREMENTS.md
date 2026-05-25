@@ -8,18 +8,18 @@
 
 ## Email Notifications
 
-- [ ] **EMAIL-01**: Contractor can enter an email address in Notification Settings and enable email alerts (opt-in, disabled by default)
+- [x] **EMAIL-01**: Contractor can enter an email address in Notification Settings and enable email alerts (opt-in, disabled by default)
 - [ ] **EMAIL-02**: Contractor receives an email within 60 seconds of a new lead call, containing caller phone number, service type, and appointment status
 - [ ] **EMAIL-03**: Contractor receives an email within 60 seconds of an emergency call, with EMERGENCY prefix prominently displayed and caller callback number
 - [ ] **EMAIL-04**: Contractor receives an email when a Stripe payment fails, with a link to the billing portal to update payment method
-- [ ] **EMAIL-05**: Email send success and failure are recorded in `notification_log` with `channel: 'email'` — failures are visible and retried by Inngest
+- [x] **EMAIL-05**: Email send success and failure are recorded in `notification_log` with `channel: 'email'` — failures are visible and retried by Inngest
 
 ## In-App Notification Bell
 
 - [ ] **BELL-01**: A bell icon in the dashboard header displays an unread badge count that updates in real-time (via Supabase Realtime) without a page refresh
 - [ ] **BELL-02**: Clicking the bell opens a panel listing the 50 most recent notifications, each showing event type, title, body excerpt, and relative time
 - [ ] **BELL-03**: Contractor can mark all notifications as read with one action, clearing the unread badge
-- [ ] **BELL-04**: Notifications are persisted in the database and remain visible after browser close and reopen
+- [x] **BELL-04**: Notifications are persisted in the database and remain visible after browser close and reopen
 
 ## Telegram Activation
 
@@ -59,15 +59,15 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| EMAIL-01 | Phase 12 | Pending |
+| EMAIL-01 | Phase 12 | Complete |
 | EMAIL-02 | Phase 13 | Pending |
 | EMAIL-03 | Phase 13 | Pending |
 | EMAIL-04 | Phase 13 | Pending |
-| EMAIL-05 | Phase 13 | Pending |
+| EMAIL-05 | Phase 13 | Complete |
 | BELL-01 | Phase 14 | Pending |
 | BELL-02 | Phase 14 | Pending |
 | BELL-03 | Phase 14 | Pending |
-| BELL-04 | Phase 12 | Pending |
+| BELL-04 | Phase 12 | Complete |
 | TEL-01 | Phase 15 | Pending |
 | TEL-02 | Phase 15 | Pending |
 | BRAND-01 | Phase 16 | Pending |
