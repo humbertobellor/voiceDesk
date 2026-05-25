@@ -438,13 +438,13 @@ Plans:
   4. `src/lib/notifications/email.ts` exports `sendEmail()` with unit tests green — the function can be called with a subject/body/recipient and returns success/failure without hitting Resend in tests
   5. TypeScript database types are regenerated and `tsc` exits 0 across the entire project
 
-**Plans:** 3 plans
+**Plans:** 2/3 plans executed
 
 Plans:
 **Wave 1**
 
-- [ ] 12-01-PLAN.md — Migration SQL (app_notifications table + notification_settings email columns + notification_log channel extension) + TypeScript types (NotificationChannel | email, AppNotification interface, NotificationSettings 3 new fields)
-- [ ] 12-02-PLAN.md — TDD: sendEmail() transport at src/lib/notifications/email.ts (5 tests RED->GREEN, non-throwing, vi.mock resend)
+- [x] 12-01-PLAN.md — Migration SQL (app_notifications table + notification_settings email columns + notification_log channel extension) + TypeScript types (NotificationChannel | email, AppNotification interface, NotificationSettings 3 new fields)
+- [x] 12-02-PLAN.md — TDD: sendEmail() transport at src/lib/notifications/email.ts (5 tests RED->GREEN, non-throwing, vi.mock resend)
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
@@ -529,7 +529,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 12. Notification Foundation | 0/TBD | Not started | - |
+| 12. Notification Foundation | 2/3 | In Progress|  |
 | 13. Email Notifications | 0/TBD | Not started | - |
 | 14. In-App Notification Bell | 0/TBD | Not started | - |
 | 15. Telegram Activation | 0/TBD | Not started | - |
