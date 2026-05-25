@@ -508,6 +508,21 @@ Plans:
 - [ ] 14-03-PLAN.md — TDD: PATCH /api/notifications/mark-all-read + extend notification-settings Zod schema with email fields
 - [ ] 14-04-PLAN.md — React Query hooks (useNotifications, useUnreadCount, useMarkAllRead) + Supabase Realtime hook + NotificationBell component
 - [ ] 14-05-PLAN.md — Wire NotificationBell into Sidebar + BottomTabBar + NotificationSettingsForm Email card + human UAT
+
+**Wave dependency notes:**
+
+- **Wave 1** (`14-01`): no dependencies — installs @radix-ui/react-popover, writes RED test stubs
+- **Wave 2** (`14-02`, `14-03`) *(blocked on Wave 1, parallel)*: TDD computeBellNotification() + Inngest step; TDD mark-all-read API route
+- **Wave 3** (`14-04`) *(blocked on Wave 2)*: React Query hooks + Realtime subscription + NotificationBell component
+- **Wave 4** (`14-05`) *(blocked on Wave 3)*: UI wiring into Sidebar/BottomTabBar + Email form card + human UAT (autonomous: false)
+
+**Cross-cutting constraints:**
+
+- Bell write in Inngest is unconditional — placed BEFORE the channel-enable early-return guard (D-04)
+- Supabase Realtime subscription must include `contractor_id=eq.{contractorId}` filter (IDOR guard)
+- `@radix-ui/react-popover` install must precede all component work (Wave 0 gate)
+- One NotificationBell instance per viewport: Sidebar (desktop, md:flex visible) and BottomTabBar (mobile, when Sidebar is hidden)
+
 **UI hint:** yes
 
 ---
@@ -553,6 +568,6 @@ Plans:
 |-------|----------------|--------|-----------|
 | 12. Notification Foundation | 3/3 | Complete    | 2026-05-25 |
 | 13. Email Notifications | 4/4 | Complete    | 2026-05-25 |
-| 14. In-App Notification Bell | 0/5 | In progress | - |
+| 14. In-App Notification Bell | 0/5 | Planned | - |
 | 15. Telegram Activation | 0/TBD | Not started | - |
 | 16. Design System Sweep | 0/TBD | Not started | - |
