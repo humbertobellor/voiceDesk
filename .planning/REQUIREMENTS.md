@@ -57,11 +57,20 @@
 
 ## Traceability
 
-*(Filled by roadmapper)*
-
-| Requirement | Phase |
-|-------------|-------|
-| EMAIL-01–05 | TBD |
-| BELL-01–04 | TBD |
-| TEL-01–02 | TBD |
-| BRAND-01–04 | TBD |
+| Requirement | Phase | Status |
+|-------------|-------|--------|
+| EMAIL-01 | Phase 12 | Pending |
+| EMAIL-02 | Phase 13 | Pending |
+| EMAIL-03 | Phase 13 | Pending |
+| EMAIL-04 | Phase 13 | Pending |
+| EMAIL-05 | Phase 13 | Pending |
+| BELL-01 | Phase 14 | Pending |
+| BELL-02 | Phase 14 | Pending |
+| BELL-03 | Phase 14 | Pending |
+| BELL-04 | Phase 12 | Pending |
+| TEL-01 | Phase 15 | Pending |
+| TEL-02 | Phase 15 | Pending |
+| BRAND-01 | Phase 16 | Pending |
+| BRAND-02 | Phase 16 | Pending |
+| BRAND-03 | Phase 16 | Pending |
+| BRAND-04 | Phase 16 | Pending |

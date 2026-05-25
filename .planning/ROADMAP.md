@@ -172,7 +172,7 @@
 - GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIRECT_URI never prefixed with NEXT_PUBLIC_
 
 **UI hint:** yes (connect-calendar page + dashboard banner)
-**Notes:** OAuth tokens are encrypted with AES-256-GCM before writing to `calendar_credentials` — Phase 1 encryptToken() utility required. D-10 architectural fix: booking_conflict placed on leads (not appointments) due to UNIQUE(contractor_id, starts_at) constraint — second row for same slot is impossible. Google OAuth app must be in Production mode before beta; CASA Tier 2 security assessment required for calendar.events scope (3-8 weeks). Slot computation is pre-computed from contractor_settings.business_hours, NOT from live Calendar API mid-call.
+**Notes:** OAuth tokens are encrypted with AES-256-GCM before writing to `calendar_credentials` — Phase 1 encryptToken() utility required. D-10 architectural fix: booking_conflict placed on leads (not appointments) due to UNIQUE(contractor_id, starts_at) constraint — second row for same slot is impossible regardless of column values. Google OAuth app must be in Production mode before beta; CASA Tier 2 security assessment required for calendar.events scope (3-8 weeks). Slot computation is pre-computed from contractor_settings.business_hours, NOT from live Calendar API mid-call.
 
 ---
 
@@ -409,6 +409,117 @@ Plans:
 
 ---
 
-## Milestone v1.1 — Next
+## Milestone v1.1 — Notifications & UI Brand
 
-*(planned)*
+**Goal:** Complete the notification layer (email, in-app bell, Telegram self-serve activation) and apply the Wolknitive Design System across the entire application.
+
+## Phases
+
+- [ ] **Phase 12: Notification Foundation** - DB migrations (app_notifications + email columns) + TypeScript types + email lib
+- [ ] **Phase 13: Email Notifications** - Email channel in Inngest dispatch + payment alert email + API schema extension
+- [ ] **Phase 14: In-App Notification Bell** - Inngest write step + React Query hooks + Supabase Realtime + NotificationBell UI
+- [ ] **Phase 15: Telegram Activation** - Server action (activateTelegramWebhook) + settings UI card with status display
+- [ ] **Phase 16: Design System Sweep** - Wolknitive token extraction + globals.css @theme block + full component sweep
+
+---
+
+## Phase Details
+
+### Phase 12: Notification Foundation
+
+**Goal:** The database schema supports email notifications and in-app notification persistence, TypeScript types are updated, and a unit-tested email lib is ready for Inngest to consume — all downstream phases are unblocked.
+**Depends on:** Phase 11
+**Requirements:** EMAIL-01, EMAIL-05, BELL-04
+**Success Criteria** (what must be TRUE):
+
+  1. `app_notifications` table exists in Supabase with RLS using the contractor subquery pattern (`(SELECT id FROM contractors WHERE user_id = auth.uid())`) — no cross-tenant row access possible
+  2. `ALTER PUBLICATION supabase_realtime ADD TABLE app_notifications` is present in the migration — Realtime events fire for inserts on this table
+  3. `notification_settings` has three new columns: `notify_email_enabled BOOLEAN NOT NULL DEFAULT FALSE`, `email_address TEXT`, and `notify_on_payment_failure BOOLEAN NOT NULL DEFAULT FALSE`
+  4. `src/lib/notifications/email.ts` exports `sendEmail()` with unit tests green — the function can be called with a subject/body/recipient and returns success/failure without hitting Resend in tests
+  5. TypeScript database types are regenerated and `tsc` exits 0 across the entire project
+
+**Plans:** TBD
+**UI hint:** no
+
+---
+
+### Phase 13: Email Notifications
+
+**Goal:** Contractors who have opted in receive email alerts for new leads, emergencies, and payment failures — delivered within 60 seconds via Resend — and all sends are logged in `notification_log`.
+**Depends on:** Phase 12
+**Requirements:** EMAIL-02, EMAIL-03, EMAIL-04, EMAIL-05
+**Success Criteria** (what must be TRUE):
+
+  1. A contractor with `notify_email_enabled = true` and a valid `email_address` receives an email within 60 seconds of a new lead call, containing caller phone number, service type, and appointment status
+  2. An emergency call email arrives with "EMERGENCY" prominently in the subject line and body, containing the caller's callback number
+  3. A Stripe payment failure triggers an email to the contractor with a direct link to the Stripe billing portal — the email fires from the existing `stripe-payment-failure` Inngest function
+  4. Email sends where `email_address` is null or `notify_email_enabled = false` are silently skipped — no error, no log entry
+  5. Every email attempt (success or failure) writes a `notification_log` row with `channel: 'email'` — failed sends are retried by Inngest's built-in retry without generating duplicate log entries
+
+**Plans:** TBD
+**UI hint:** no
+
+---
+
+### Phase 14: In-App Notification Bell
+
+**Goal:** Contractors see a live unread count in the dashboard header that updates in real time, can open a feed of recent notifications, and can mark all as read — with notifications surviving browser close.
+**Depends on:** Phase 12
+**Requirements:** BELL-01, BELL-02, BELL-03, BELL-04, EMAIL-01
+**Success Criteria** (what must be TRUE):
+
+  1. A bell icon appears in the dashboard header showing an unread badge count; when a new call is processed, the badge increments without a page refresh (Supabase Realtime delivers the update)
+  2. Clicking the bell opens a popover listing the 50 most recent notifications, each showing event type, title, body excerpt, and relative time (e.g. "3 minutes ago")
+  3. Clicking "Mark all read" clears the unread badge immediately and the cleared state persists across browser sessions — reopening the browser shows 0 unread for those notifications
+  4. Notifications written during call processing remain visible in the feed after browser close and reopen — they are fetched from `app_notifications` on mount
+  5. The Notification Settings page includes an email address input field and an "Enable email alerts" toggle — saving the form persists `notify_email_enabled` and `email_address` to `notification_settings`
+
+**Plans:** TBD
+**UI hint:** yes
+
+---
+
+### Phase 15: Telegram Activation
+
+**Goal:** An admin can activate the platform Telegram webhook from the settings page with one click, and the current registration status is always visible on page load.
+**Depends on:** Phase 14
+**Requirements:** TEL-01, TEL-02
+**Success Criteria** (what must be TRUE):
+
+  1. The Notification Settings page shows the current Telegram webhook status on load — either the registered webhook URL or "Not registered" — fetched via `getWebhookInfo` from the grammy v1.x SDK
+  2. Clicking "Activate Telegram Webhook" triggers a server action that calls `bot.api.setWebhook(url, { secret_token })` using the existing `TELEGRAM_BOT_TOKEN` env var — no new DB columns, no new packages
+  3. On success, the status display updates to show the newly registered webhook URL without a page reload
+  4. On failure (e.g. network error, invalid token), an error message is displayed inline — the page does not crash and the previous status remains visible
+
+**Plans:** TBD
+**UI hint:** yes
+
+---
+
+### Phase 16: Design System Sweep
+
+**Goal:** The entire application uses Wolknitive brand tokens consistently — no hardcoded hex values remain in component files, the build is clean, and all existing regression tests still pass.
+**Depends on:** Phase 15
+**Requirements:** BRAND-01, BRAND-02, BRAND-03, BRAND-04
+**Success Criteria** (what must be TRUE):
+
+  1. All Wolknitive color, typography, and spacing tokens are defined as CSS custom properties under `@theme {}` and `:root {}` in `globals.css` and are available as Tailwind utility class names
+  2. A grep for `[#` across all component files (excluding `globals.css`) returns zero results — no hardcoded hex arbitrary Tailwind values remain
+  3. All dashboard pages (call log, leads, agent config, all settings tabs, account page) and auth pages (login, signup) render using brand token classes consistently — visual inspection passes
+  4. `npm run build` exits 0 with no TypeScript or Tailwind errors
+  5. All 15 v1.0 regression tests pass in `tests/regression-v1-smoke.spec.ts` — no regressions introduced by the token sweep
+
+**Plans:** TBD
+**UI hint:** yes
+
+---
+
+## Progress Table (v1.1)
+
+| Phase | Plans Complete | Status | Completed |
+|-------|----------------|--------|-----------|
+| 12. Notification Foundation | 0/TBD | Not started | - |
+| 13. Email Notifications | 0/TBD | Not started | - |
+| 14. In-App Notification Bell | 0/TBD | Not started | - |
+| 15. Telegram Activation | 0/TBD | Not started | - |
+| 16. Design System Sweep | 0/TBD | Not started | - |

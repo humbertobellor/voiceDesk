@@ -2,11 +2,13 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Notifications & UI Brand
+current_plan: —
 status: planning
-last_updated: "2026-05-24T23:39:44.694Z"
-last_activity: 2026-05-24
+stopped_at: —
+last_updated: "2026-05-24T00:00:00.000Z"
+last_activity: 2026-05-24 — Milestone v1.1 roadmap created (phases 12–16)
 progress:
-  total_phases: 0
+  total_phases: 5
   completed_phases: 0
   total_plans: 0
   completed_plans: 0
@@ -17,18 +19,18 @@ progress:
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-05-03)
+See: .planning/PROJECT.md (updated 2026-05-24)
 **Core value:** Every missed call is lost revenue — VoiceDesk ensures contractors never lose a booked job to voicemail again.
-**Current focus:** Phase 11 — account-page-subscription-load-fix-bill-03-deactivation
+**Current focus:** v1.1 planning — phases 12–16 roadmapped, ready for phase planning
 
 ---
 
 ## Current Phase
 
-Phase: 11 — Account page subscription load fix + BILL-03 deactivation
-Status: Complete
-Started: 2026-05-24
-Completed: 2026-05-24
+Phase: 12 — Notification Foundation (not started)
+Status: Not started
+Started: —
+Completed: —
 Target: —
 
 Current Plan: —
@@ -73,9 +75,9 @@ Current Plan: —
 
 ## Blockers
 
+- [ ] **Resend domain verification** — Verify sending domain in Resend dashboard before Phase 13 deploys. Document `RESEND_API_KEY` and `RESEND_FROM_ADDRESS` in `.env.example`. Blocks email delivery in production.
 - [ ] **WhatsApp WABA approval** — Submit WABA registration and all notification templates (emergency alert, new lead, payment failed) in week 1 of build. Approval takes 3–7 business days. Blocks Phase 5 launch if started late. Do not wait for Phase 5 to begin this.
 - [ ] **Google OAuth app production mode** — Move OAuth app from "testing" mode to production mode before the first beta contractor connects their calendar. Testing mode silently expires refresh tokens after 7 days with no visible error. Do this before Phase 4 ships.
-- [ ] **Retell webhook event names** — Verify signature header name, exact event names (`call_ended` vs `call_analyzed`), payload shapes, and retry policy against live Retell docs before writing a single line of webhook handler logic in Phase 3.
 
 ---
 
@@ -83,16 +85,28 @@ Current Plan: —
 
 | Metric | Target | Current |
 |--------|--------|---------|
-| Phases complete | 7 | 1 |
-| Plans complete | 5 | 5 |
-| Requirements delivered | 24 | 1 |
+| Phases complete | 5 | 0 |
+| Plans complete | TBD | 0 |
+| Requirements delivered | 14 | 0 |
 | Beta contractors | 20–30 | 0 |
 
 ---
 
 ## Accumulated Context
 
-### Key Decisions Locked
+### Key Decisions Locked (v1.1)
+
+- Email via Resend (`resend ^6.12.3` + `@react-email/components` + `@react-email/render`) — server-only, never NEXT_PUBLIC_
+- In-app bell uses `@radix-ui/react-popover` — no other new packages for the bell
+- Telegram is platform-level: one `TELEGRAM_BOT_TOKEN`, one `setWebhook` call — no per-contractor bot
+- Wolknitive Design System is CSS-only (not an npm package) — token extraction from ZIP handoff
+- `grammy setWebhook` is built into the installed grammy v1.x SDK — do NOT upgrade grammy (v2 is now latest on npm, breaking change)
+- `app_notifications` RLS must use contractor subquery pattern: `(SELECT id FROM contractors WHERE user_id = auth.uid())` — not `auth.uid()` directly
+- `ALTER PUBLICATION supabase_realtime ADD TABLE app_notifications` must be in the Phase 12 migration — silent failure if omitted
+- `shouldSendEmail` must gate on `email_address != null` AND `notify_email_enabled = true` — not just the flag
+- Tailwind v4 `@theme {}` block for utility class generation AND `:root {}` for CSS var access — both required
+
+### Key Decisions Locked (v1.0 — preserved for reference)
 
 - Retell managed Twilio integration — NOT raw TwiML/SIP
 - Webhook-first architecture — all business logic in `call_ended` / `call_analyzed` handlers
@@ -103,89 +117,33 @@ Current Plan: —
 - Stripe trial requires card-on-file
 - Intent classification: keyword match + LLM confirmation for emergencies; gas smell and CO alarm are non-configurable hard triggers
 - Background jobs via Inngest (not raw Vercel cron or queue)
-- Next.js 16.2.4 used (RESEARCH.md assumption A1 — current stable, not capped at 14)
-- Tailwind CSS v4 uses @import 'tailwindcss' (not v3 @tailwind directives)
-- SUPABASE_SERVICE_ROLE_KEY never gets NEXT_PUBLIC_ prefix — enforced by .env.example grep
-- Wave 0 stub pattern: test files import future modules; stubs throw "not yet implemented" for correct TDD RED phase flow
-- src/lib/crypto/tokens.ts stub (throw-on-call) added in Plan 01 so tsc exits 0; Plan 03 replaces with real AES-256-GCM
-- LANG-02 enforced at DB layer: supported_languages <@ ARRAY['en','es','ht'] AND array_length >= 1 (Pitfall 5 pattern)
-- RLS policies use (SELECT auth.uid()) wrapper — not bare auth.uid() — for query plan caching (40 occurrences in migration 2)
-- webhook_events deny-all RLS (Pattern C): USING(false)/WITH CHECK(false) for authenticated and anon; service role bypasses automatically
-- JSONB defaults appear in migration 1 (canonical) AND migration 3 (re-affirmation guard) — both must be updated together
-
-### Key Decisions Locked (Phase 4 Plan 05 additions)
-
-- D-12 intent filter: shouldCreate = lead || emergency || (info && durationMs >= 15000); no_action → no lead row
-- D-10 confirmed: booking_conflict on leads (not appointments); 23505 UNIQUE violation → leads.booking_conflict=true + status='new'
-- D-15: getCalendarClient null → google_sync_status='skipped'; function continues (not a failure path)
-- Risk 4 mitigation: rawTime.replace(/Z$/, '') strips trailing Z; LLM times treated as contractor-local, not UTC
-- compute-sync-payload wrapped in step.run for Inngest memoization — consistent slot list on retry
-- appointment_duration_minutes added to ContractorSettings TypeScript type (was missing; exists in DB migration)
-- BusinessHours index signature [day: string] added to database.ts to satisfy slots.ts BusinessHours import
-
-### Key Decisions Locked (Phase 7 Plan 01 additions)
-
-- D-02: 14-day no-card trial via payment_method_collection='if_required' and trial_period_days=14
-- D-04: Stripe Customer Portal accessible via stripe.billingPortal.sessions.create()
-- Stripe API version 2026-04-22.dahlia (latest for stripe ^22.1.0)
-
-### Key Decisions Locked (Phase 4 additions)
-
-- googleapis@^171.4.0 installed as production dependency for Google Calendar API + OAuth2Client
-- booking_conflict placed on leads table (NOT appointments) per D-10 — UNIQUE constraint on appointments(contractor_id, starts_at) makes a second same-slot row impossible regardless of column values
-- google_sync_status NOT NULL DEFAULT 'pending' CHECK enum on appointments — mirrors analysis_status pattern from Phase 3; no ambiguous NULL state
-- CASA Tier 2 restricted-scope notice required for calendar.events scope before beta contractors connect — documented in .env.example
-- Wave-0 TDD stubs use vi.hoisted + vi.mock for googleapis and supabase service — all 19 stubs throw 'not yet implemented'
-- appointmentFields shared object used to spread confirmed_appointment_time + service_address into all four extraction schemas (D-11) — avoids duplication, ensures parity across HvacSchema/PlumbingSchema/ElectricalSchema/GeneralSchema
-- confirmed_appointment_time and service_address use .nullish() NOT .optional() per OpenAI structured outputs requirement; prompt instructs ISO format YYYY-MM-DDTHH:MM:SS without timezone suffix
+- `after()` from `next/server` replaces `waitUntil()` — canonical for Next.js 15.1+
+- SUPABASE_SERVICE_ROLE_KEY never gets NEXT_PUBLIC_ prefix
 
 ### Architecture Reference
 
-- Stack: Retell, Twilio, Supabase, Next.js 16 (App Router), Vercel Pro, Stripe, Inngest, grammY (Telegram)
+- Stack: Retell, Twilio, Supabase, Next.js 16 (App Router), Vercel Pro, Stripe, Inngest, grammY (Telegram), Resend (v1.1)
 - Webhook: `/api/webhooks/retell` → idempotency check → return 200 → `waitUntil()` → DB + Calendar + Notifications
 - Storage: Supabase Storage (private bucket, 60-second TTL signed URLs for recordings)
 - Auth: Supabase Auth (`@supabase/ssr`), service role key server-only
-
-### Key Decisions Locked (Phase 3 additions)
-
-- `after()` from `next/server` replaces `waitUntil()` from `@vercel/functions` — canonical for Next.js 15.1+; `@vercel/functions` not installed
-- Retell webhook signature: `import { verify } from 'retell-sdk'` (named export, async); header `x-retell-signature`; `req.text()` must precede `req.json()`
-- Retell payload: summary is `call_analysis.call_summary`; duration is `duration_ms` (ms); transcript array is `transcript_object`
-- Retell delivery: 10s timeout per attempt, up to 3 retries (4 total); `call_analyzed` can arrive before `call_ended` — UPSERT handles race
-- Intent classification: GPT-4o-mini (classification) → GPT-4o (trade extraction); `zodResponseFormat` from `openai/helpers/zod` for structured output
-- Hard emergency keywords (gas smell, CO alarm) are TypeScript constants — checked before any LLM call; cannot be overridden
-- `export const maxDuration = 30` on webhook route file (Vercel segment config)
-- contractor lookup uses `agent_id` from payload — never `contractor_id` from payload (security: T-03-02)
-- `openai` and `date-fns-tz` not yet installed — Wave 0 must install before handler code
-
-### Open Questions (from research — RESOLVED for Phase 3)
-
-- ~~Retell webhook retry policy~~ → 10s timeout, 3 retries (4 total attempts); confirmed from live docs
-- ~~`call_analyzed` vs `call_ended` timing~~ → `call_analyzed` carries full transcript; fires 1–3 min after call end
-- Google OAuth scope — `calendar.events` + `calendar.freebusy` vs narrower scope (Phase 4)
-- Recording retention window — 90 days vs 1 year (Phase 6 decision)
-- WhatsApp opt-in consent wording — may need legal review before Wefunder/Republic raise
-
----
 
 ### Roadmap Evolution
 
 - Phase 10 added: Notification settings form — sms_number + whatsapp_number write UI
 - Phase 11 added: Account page subscription load fix + BILL-03 deactivation
+- Phases 12–16 added: v1.1 Notifications & UI Brand milestone
 
 ---
 
 ## Session Continuity
 
-_Use this section to log the last known state before ending a session, so the next session can resume without re-reading everything._
-
 Last session: 2026-05-24
-Stopped at: v1.0 milestone complete — archive written, ROADMAP + PROJECT updated, git tag pending
-Resume: /gsd-complete-milestone finished. Tag v1.0, push tag, then /gsd:new-milestone for v1.1 planning.
+Stopped at: v1.1 roadmap created — phases 12–16 defined, ready for `/gsd:plan-phase 12`
+Resume: Run `/gsd:plan-phase 12` to begin Notification Foundation planning.
 
 ## Current Position
 
-Phase: Not started (defining requirements)
+Phase: 12 — Notification Foundation (not started)
 Plan: —
-Status: Defining requirements
-Last activity: 2026-05-24 — Milestone v1.1 started
+Status: Planning
+Last activity: 2026-05-24 — v1.1 roadmap created, phases 12–16 mapped to all 14 requirements
