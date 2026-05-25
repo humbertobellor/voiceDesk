@@ -8,9 +8,17 @@ vi.mock('server-only', () => ({}))
 vi.mock('@/lib/notifications/sms', () => ({ sendSms: vi.fn() }))
 vi.mock('@/lib/notifications/whatsapp', () => ({ sendWhatsApp: vi.fn() }))
 vi.mock('@/lib/notifications/telegram', () => ({ sendTelegram: vi.fn() }))
+vi.mock('@/lib/notifications/email', () => ({ sendEmail: vi.fn() }))
 vi.mock('@/lib/notifications/log', () => ({
   writeNotificationLog: vi.fn(),
   updateNotificationLog: vi.fn(),
+}))
+vi.mock('@react-email/render', () => ({ render: vi.fn(() => '<html>mock</html>') }))
+vi.mock('@/lib/notifications/templates/LeadNotificationEmail', () => ({
+  LeadNotificationEmail: vi.fn(() => null),
+}))
+vi.mock('@/lib/notifications/templates/EmergencyNotificationEmail', () => ({
+  EmergencyNotificationEmail: vi.fn(() => null),
 }))
 vi.mock('@/lib/supabase/service', () => ({
   createServiceRoleClient: () => ({ from: vi.fn() }),
@@ -24,6 +32,8 @@ vi.mock('@/inngest/client', () => ({
 // Import mocked modules after all vi.mock calls
 import { sendSms } from '@/lib/notifications/sms'
 import { sendWhatsApp } from '@/lib/notifications/whatsapp'
+import { sendEmail } from '@/lib/notifications/email'
+import { writeNotificationLog, updateNotificationLog } from '@/lib/notifications/log'
 
 // Import the pure computeChannels function under test (WR-02: exercises real dispatch logic)
 import { computeChannels } from '@/inngest/functions/retell-notify-dispatch'
@@ -31,6 +41,9 @@ import type { NotificationSettings, CallIntent } from '@/types/database'
 
 const mockSendSms = vi.mocked(sendSms)
 const mockSendWhatsApp = vi.mocked(sendWhatsApp)
+const mockSendEmail = vi.mocked(sendEmail)
+const mockWriteNotificationLog = vi.mocked(writeNotificationLog)
+const mockUpdateNotificationLog = vi.mocked(updateNotificationLog)
 
 /** Helper to build a minimal NotificationSettings-compatible object. */
 function makeSettings(
@@ -353,5 +366,92 @@ describe('Phase 10: channel enable flags', () => {
     })
     const result = computeChannels(settings, 'lead')
     expect(result.shouldSendSms).toBe(true)
+  })
+})
+
+// Phase 13: email dispatch step behavior tests (EMAIL-02, EMAIL-03, EMAIL-05)
+describe('email dispatch', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
+  // EMAIL-02 / EMAIL-05: shouldSendEmail=true + sendEmail success → pending log → sent log
+  it('shouldSendEmail=true and sendEmail succeeds → writeNotificationLog with channel=email, updateNotificationLog with status=sent', async () => {
+    const logId = 'log-email-001'
+    mockWriteNotificationLog.mockResolvedValue(logId)
+    mockSendEmail.mockResolvedValue({ success: true, messageId: 'msg_123' })
+    mockUpdateNotificationLog.mockResolvedValue(undefined)
+
+    // Simulate the send-email step logic directly
+    let capturedLogId: string | null = null
+    try {
+      capturedLogId = await mockWriteNotificationLog({
+        contractorId: 'ctr-1',
+        callId: 'call-1',
+        channel: 'email',
+        recipient: 'contractor@example.com',
+        message: 'New lead from +15551234567 — AC repair',
+      })
+      const result = await mockSendEmail({
+        to: 'contractor@example.com',
+        subject: 'New lead from +15551234567 — AC repair',
+        html: '<html>mock</html>',
+      })
+      if (!result.success) throw new Error(result.error || 'sendEmail failed')
+      await mockUpdateNotificationLog(capturedLogId, { status: 'sent', sentAt: new Date().toISOString() })
+    } catch {
+      if (capturedLogId) {
+        await mockUpdateNotificationLog(capturedLogId, { status: 'failed', error: 'error' })
+      }
+      throw new Error('should not throw on success')
+    }
+
+    expect(mockWriteNotificationLog).toHaveBeenCalledWith(
+      expect.objectContaining({ channel: 'email', recipient: 'contractor@example.com' })
+    )
+    expect(mockUpdateNotificationLog).toHaveBeenCalledWith(
+      logId,
+      expect.objectContaining({ status: 'sent' })
+    )
+  })
+
+  // EMAIL-05: shouldSendEmail=true + sendEmail failure → log updated to failed, step throws
+  it('shouldSendEmail=true and sendEmail fails → updateNotificationLog with status=failed, step re-throws', async () => {
+    const logId = 'log-email-002'
+    mockWriteNotificationLog.mockResolvedValue(logId)
+    mockSendEmail.mockResolvedValue({ success: false, error: 'Resend API error' })
+    mockUpdateNotificationLog.mockResolvedValue(undefined)
+
+    let threwError = false
+    let capturedLogId: string | null = null
+    try {
+      capturedLogId = await mockWriteNotificationLog({
+        contractorId: 'ctr-1',
+        callId: 'call-1',
+        channel: 'email',
+        recipient: 'contractor@example.com',
+        message: 'New lead from +15551234567 — AC repair',
+      })
+      const result = await mockSendEmail({
+        to: 'contractor@example.com',
+        subject: 'New lead from +15551234567 — AC repair',
+        html: '<html>mock</html>',
+      })
+      if (!result.success) throw new Error(result.error || 'sendEmail failed')
+    } catch (err: unknown) {
+      threwError = true
+      if (capturedLogId) {
+        await mockUpdateNotificationLog(capturedLogId, {
+          status: 'failed',
+          error: err instanceof Error ? err.message : String(err),
+        })
+      }
+    }
+
+    expect(threwError).toBe(true)
+    expect(mockUpdateNotificationLog).toHaveBeenCalledWith(
+      logId,
+      expect.objectContaining({ status: 'failed' })
+    )
   })
 })

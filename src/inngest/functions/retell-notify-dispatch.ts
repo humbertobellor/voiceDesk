@@ -14,7 +14,11 @@ import { createServiceRoleClient } from '@/lib/supabase/service'
 import { sendSms } from '@/lib/notifications/sms'
 import { sendWhatsApp } from '@/lib/notifications/whatsapp'
 import { sendTelegram } from '@/lib/notifications/telegram'
+import { sendEmail } from '@/lib/notifications/email'
 import { writeNotificationLog, updateNotificationLog } from '@/lib/notifications/log'
+import { render } from '@react-email/render'
+import { LeadNotificationEmail } from '@/lib/notifications/templates/LeadNotificationEmail'
+import { EmergencyNotificationEmail } from '@/lib/notifications/templates/EmergencyNotificationEmail'
 import type { CallIntent, NotificationSettings } from '@/types/database'
 
 /**
@@ -314,6 +318,58 @@ export const retellNotifyDispatch = inngest.createFunction(
             contractorId,
             callId,
           })
+          await updateNotificationLog(logId, { status: 'sent', sentAt: new Date().toISOString() })
+        } catch (err: unknown) {
+          if (logId) {
+            await updateNotificationLog(logId, {
+              status: 'failed',
+              error: err instanceof Error ? err.message : String(err),
+            })
+          }
+          throw err  // Re-throw so Inngest retries this step
+        }
+      })
+    }
+
+    // Email dispatch (EMAIL-02 / EMAIL-03: lead/emergency/info, gated by intent prefs + address)
+    // D-06: Static imports at file top — not dynamic imports inside step.run.
+    if (shouldSendEmail) {
+      await step.run('send-email', async () => {
+        // WR-02: writeNotificationLog is inside the try/catch so a DB failure on insert
+        // does not leave an orphaned 'pending' row on retry (logId would be null, skipping update).
+        let logId: string | null = null
+        try {
+          const dashboardUrl = `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/calls`
+
+          const emailSubject = isEmergency
+            ? `EMERGENCY: New call from ${callerPhone}`
+            : `New lead from ${callerPhone} — ${serviceRequested}`
+
+          // render() from @react-email/render v2.x is synchronous
+          const emailHtml = render(
+            isEmergency
+              ? EmergencyNotificationEmail({ callerPhone, serviceRequested, dashboardUrl })
+              : LeadNotificationEmail({ callerPhone, serviceRequested, appointmentStatus: bookingStatus, dashboardUrl })
+          )
+
+          logId = await writeNotificationLog({
+            contractorId,
+            callId,
+            channel: 'email',
+            recipient: settings!.email_address!,
+            message: emailSubject,
+          })
+
+          const result = await sendEmail({
+            to: settings!.email_address!,
+            subject: emailSubject,
+            html: emailHtml,
+          })
+
+          if (!result.success) {
+            throw new Error(result.error || 'sendEmail failed')
+          }
+
           await updateNotificationLog(logId, { status: 'sent', sentAt: new Date().toISOString() })
         } catch (err: unknown) {
           if (logId) {
