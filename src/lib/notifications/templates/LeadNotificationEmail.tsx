@@ -1,0 +1,67 @@
+import 'server-only'
+import { Html, Body, Section, Text, Button } from '@react-email/components'
+
+/**
+ * Props for the LeadNotificationEmail template.
+ *
+ * @property callerPhone - The caller's phone number (e.g. "+15551234567")
+ * @property serviceRequested - The service type the caller requested (e.g. "AC repair")
+ * @property appointmentStatus - Booking outcome (e.g. "Appointment booked" or "No appointment scheduled")
+ * @property dashboardUrl - Full URL to the contractor's dashboard call log
+ */
+export interface LeadNotificationEmailProps {
+  callerPhone: string
+  serviceRequested: string
+  appointmentStatus: string
+  dashboardUrl: string
+}
+
+/**
+ * React Email template for new lead notifications.
+ *
+ * Rendered server-side via @react-email/render and passed as the html body
+ * to sendEmail(). Never imported by client components (import 'server-only').
+ *
+ * Styling: neutral white background, standard font — minimal functional HTML.
+ * Content: caller phone, service type, appointment status, CTA to dashboard.
+ *
+ * @param props - LeadNotificationEmailProps
+ * @returns JSX element compatible with @react-email/render
+ */
+export function LeadNotificationEmail(props: LeadNotificationEmailProps) {
+  const { callerPhone, serviceRequested, appointmentStatus, dashboardUrl } = props
+
+  return (
+    <Html>
+      <Body style={{ backgroundColor: '#ffffff', fontFamily: 'Arial, sans-serif', padding: '24px' }}>
+        <Section>
+          <Text style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '16px' }}>
+            New Lead Received
+          </Text>
+          <Text style={{ marginBottom: '8px' }}>
+            <strong>Caller Phone:</strong> {callerPhone}
+          </Text>
+          <Text style={{ marginBottom: '8px' }}>
+            <strong>Service Requested:</strong> {serviceRequested}
+          </Text>
+          <Text style={{ marginBottom: '16px' }}>
+            <strong>Appointment Status:</strong> {appointmentStatus}
+          </Text>
+          <Button
+            href={dashboardUrl}
+            style={{
+              backgroundColor: '#1a56db',
+              color: '#ffffff',
+              padding: '12px 24px',
+              borderRadius: '4px',
+              textDecoration: 'none',
+              fontWeight: 'bold',
+            }}
+          >
+            View in Dashboard
+          </Button>
+        </Section>
+      </Body>
+    </Html>
+  )
+}
