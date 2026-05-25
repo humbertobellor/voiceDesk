@@ -9,9 +9,9 @@
 ## Email Notifications
 
 - [x] **EMAIL-01**: Contractor can enter an email address in Notification Settings and enable email alerts (opt-in, disabled by default)
-- [ ] **EMAIL-02**: Contractor receives an email within 60 seconds of a new lead call, containing caller phone number, service type, and appointment status
-- [ ] **EMAIL-03**: Contractor receives an email within 60 seconds of an emergency call, with EMERGENCY prefix prominently displayed and caller callback number
-- [ ] **EMAIL-04**: Contractor receives an email when a Stripe payment fails, with a link to the billing portal to update payment method
+- [x] **EMAIL-02**: Contractor receives an email within 60 seconds of a new lead call, containing caller phone number, service type, and appointment status
+- [x] **EMAIL-03**: Contractor receives an email within 60 seconds of an emergency call, with EMERGENCY prefix prominently displayed and caller callback number
+- [x] **EMAIL-04**: Contractor receives an email when a Stripe payment fails, with a link to the billing portal to update payment method
 - [x] **EMAIL-05**: Email send success and failure are recorded in `notification_log` with `channel: 'email'` — failures are visible and retried by Inngest
 
 ## In-App Notification Bell
@@ -60,9 +60,9 @@
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | EMAIL-01 | Phase 12 | Complete |
-| EMAIL-02 | Phase 13 | Pending |
-| EMAIL-03 | Phase 13 | Pending |
-| EMAIL-04 | Phase 13 | Pending |
+| EMAIL-02 | Phase 13 | Complete |
+| EMAIL-03 | Phase 13 | Complete |
+| EMAIL-04 | Phase 13 | Complete |
 | EMAIL-05 | Phase 13 | Complete |
 | BELL-01 | Phase 14 | Pending |
 | BELL-02 | Phase 14 | Pending |
