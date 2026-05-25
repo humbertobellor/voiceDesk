@@ -438,7 +438,13 @@ Plans:
   4. `src/lib/notifications/email.ts` exports `sendEmail()` with unit tests green — the function can be called with a subject/body/recipient and returns success/failure without hitting Resend in tests
   5. TypeScript database types are regenerated and `tsc` exits 0 across the entire project
 
-**Plans:** TBD
+**Plans:** 3 plans
+
+Plans:
+- [ ] 12-01-PLAN.md — Migration SQL (app_notifications table + notification_settings email columns + notification_log channel extension) + TypeScript types (NotificationChannel | email, AppNotification interface, NotificationSettings 3 new fields)
+- [ ] 12-02-PLAN.md — TDD: sendEmail() transport at src/lib/notifications/email.ts (5 tests RED->GREEN, non-throwing, vi.mock resend)
+- [ ] 12-03-PLAN.md — [BLOCKING] supabase db push + human verify schema + tsc --noEmit + npm run test phase gate
+
 **UI hint:** no
 
 ---
