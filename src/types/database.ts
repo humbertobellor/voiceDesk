@@ -11,7 +11,7 @@ export type LeadStatus = 'new' | 'contacted' | 'booked' | 'won' | 'lost'
 export type Urgency = 'normal' | 'urgent' | 'emergency'
 export type AppointmentStatus = 'confirmed' | 'cancelled' | 'rescheduled'
 export type WebhookSource = 'retell' | 'stripe' | 'twilio'
-export type NotificationChannel = 'sms' | 'whatsapp' | 'telegram'
+export type NotificationChannel = 'sms' | 'whatsapp' | 'telegram' | 'email'
 export type NotificationStatus = 'pending' | 'sent' | 'failed'
 
 export interface Contractor {
@@ -165,6 +165,18 @@ export interface NotificationLog {
   created_at: string
 }
 
+// Phase 12: In-app notification persistence (BELL-04)
+export interface AppNotification {
+  id: string
+  contractor_id: string
+  event_type: 'lead' | 'emergency' | 'payment_failure' | 'system'
+  title: string
+  body: string
+  is_read: boolean
+  read_at: string | null
+  created_at: string
+}
+
 export interface NotificationSettings {
   id: string
   contractor_id: string
@@ -178,6 +190,9 @@ export interface NotificationSettings {
   notify_whatsapp_enabled: boolean    // Phase 10: gate WhatsApp dispatch (D-02)
   notify_telegram_enabled: boolean    // Phase 10: gate Telegram dispatch (D-02)
   whatsapp_opted_in_at: string | null
+  notify_email_enabled: boolean        // Phase 12 — email opt-in flag (D-06)
+  email_address: string | null         // Phase 12 — contractor-supplied send-to address (D-06)
+  notify_on_payment_failure: boolean   // Phase 12 — gating flag for payment failure emails (D-06)
   created_at: string
   updated_at: string
 }
