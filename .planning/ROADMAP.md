@@ -441,8 +441,13 @@ Plans:
 **Plans:** 3 plans
 
 Plans:
+**Wave 1**
+
 - [ ] 12-01-PLAN.md — Migration SQL (app_notifications table + notification_settings email columns + notification_log channel extension) + TypeScript types (NotificationChannel | email, AppNotification interface, NotificationSettings 3 new fields)
 - [ ] 12-02-PLAN.md — TDD: sendEmail() transport at src/lib/notifications/email.ts (5 tests RED->GREEN, non-throwing, vi.mock resend)
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
 - [ ] 12-03-PLAN.md — [BLOCKING] supabase db push + human verify schema + tsc --noEmit + npm run test phase gate
 
 **UI hint:** no
