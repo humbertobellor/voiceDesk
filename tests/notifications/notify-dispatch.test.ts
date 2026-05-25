@@ -46,6 +46,8 @@ function makeSettings(
       | 'notify_sms_enabled'
       | 'notify_whatsapp_enabled'
       | 'notify_telegram_enabled'
+      | 'notify_email_enabled'
+      | 'email_address'
     >
   > = {}
 ): Pick<
@@ -59,6 +61,8 @@ function makeSettings(
   | 'notify_sms_enabled'
   | 'notify_whatsapp_enabled'
   | 'notify_telegram_enabled'
+  | 'notify_email_enabled'
+  | 'email_address'
 > {
   return {
     sms_number: null,
@@ -71,6 +75,9 @@ function makeSettings(
     notify_sms_enabled: true,
     notify_whatsapp_enabled: true,   // existing Phase 5 tests expect all configured channels to fire
     notify_telegram_enabled: true,   // existing Phase 5 tests expect all configured channels to fire
+    // Email channel defaults (Phase 13): disabled by default so existing tests are unaffected
+    notify_email_enabled: false,
+    email_address: null,
     ...overrides,
   }
 }
@@ -78,6 +85,7 @@ function makeSettings(
 /**
  * Phase 10: Helper to build a settings object that includes the new enable-flag fields.
  * Defaults match the migration: SMS=true (opt-out), WhatsApp=false, Telegram=false.
+ * Phase 13: also includes email channel fields (disabled by default).
  */
 function makeSettingsWithEnableFlags(
   overrides: Partial<
@@ -92,6 +100,8 @@ function makeSettingsWithEnableFlags(
       | 'notify_sms_enabled'
       | 'notify_whatsapp_enabled'
       | 'notify_telegram_enabled'
+      | 'notify_email_enabled'
+      | 'email_address'
     >
   > = {}
 ): Pick<
@@ -105,6 +115,8 @@ function makeSettingsWithEnableFlags(
   | 'notify_sms_enabled'
   | 'notify_whatsapp_enabled'
   | 'notify_telegram_enabled'
+  | 'notify_email_enabled'
+  | 'email_address'
 > {
   return {
     sms_number: null,
@@ -116,6 +128,9 @@ function makeSettingsWithEnableFlags(
     notify_sms_enabled: true,    // D-02: SMS opt-out default
     notify_whatsapp_enabled: false, // D-02: WhatsApp opt-in default
     notify_telegram_enabled: false, // D-02: Telegram opt-in default
+    // Email channel defaults (Phase 13): disabled by default so existing tests are unaffected
+    notify_email_enabled: false,
+    email_address: null,
     ...overrides,
   }
 }
@@ -133,14 +148,14 @@ describe('computeChannels — channel dispatch matrix', () => {
       telegram_chat_id: '12345',
     })
     const result = computeChannels(settings, 'no_action')
-    expect(result).toEqual({ shouldSendSms: false, shouldSendWhatsApp: false, shouldSendTelegram: false })
+    expect(result).toEqual({ shouldSendSms: false, shouldSendWhatsApp: false, shouldSendTelegram: false, shouldSendEmail: false })
   })
 
   // D-03: null intent → nothing fires
   it('null intent → all channels skipped', () => {
     const settings = makeSettings({ sms_number: '+15551111111' })
     const result = computeChannels(settings, null)
-    expect(result).toEqual({ shouldSendSms: false, shouldSendWhatsApp: false, shouldSendTelegram: false })
+    expect(result).toEqual({ shouldSendSms: false, shouldSendWhatsApp: false, shouldSendTelegram: false, shouldSendEmail: false })
   })
 
   // D-05: lead with all channels configured and default prefs → all fire
@@ -151,7 +166,7 @@ describe('computeChannels — channel dispatch matrix', () => {
       telegram_chat_id: '12345',
     })
     const result = computeChannels(settings, 'lead')
-    expect(result).toEqual({ shouldSendSms: true, shouldSendWhatsApp: true, shouldSendTelegram: true })
+    expect(result).toEqual({ shouldSendSms: true, shouldSendWhatsApp: true, shouldSendTelegram: true, shouldSendEmail: false })
   })
 
   // CR-04: notify_on_lead=false → SMS, WhatsApp, and Telegram all suppressed for lead
@@ -163,7 +178,7 @@ describe('computeChannels — channel dispatch matrix', () => {
       notify_on_lead: false,
     })
     const result = computeChannels(settings, 'lead')
-    expect(result).toEqual({ shouldSendSms: false, shouldSendWhatsApp: false, shouldSendTelegram: false })
+    expect(result).toEqual({ shouldSendSms: false, shouldSendWhatsApp: false, shouldSendTelegram: false, shouldSendEmail: false })
   })
 
   // CR-04: notify_on_emergency=false → all channels suppressed for emergency
@@ -174,7 +189,7 @@ describe('computeChannels — channel dispatch matrix', () => {
       notify_on_emergency: false,
     })
     const result = computeChannels(settings, 'emergency')
-    expect(result).toEqual({ shouldSendSms: false, shouldSendWhatsApp: false, shouldSendTelegram: false })
+    expect(result).toEqual({ shouldSendSms: false, shouldSendWhatsApp: false, shouldSendTelegram: false, shouldSendEmail: false })
   })
 
   // D-06: info without opt-in → all channels skipped
@@ -186,7 +201,7 @@ describe('computeChannels — channel dispatch matrix', () => {
       notify_on_general_inquiry: false,
     })
     const result = computeChannels(settings, 'info')
-    expect(result).toEqual({ shouldSendSms: false, shouldSendWhatsApp: false, shouldSendTelegram: false })
+    expect(result).toEqual({ shouldSendSms: false, shouldSendWhatsApp: false, shouldSendTelegram: false, shouldSendEmail: false })
   })
 
   // D-06: info with opt-in → all configured channels fire
@@ -198,13 +213,13 @@ describe('computeChannels — channel dispatch matrix', () => {
       notify_on_general_inquiry: true,
     })
     const result = computeChannels(settings, 'info')
-    expect(result).toEqual({ shouldSendSms: true, shouldSendWhatsApp: true, shouldSendTelegram: true })
+    expect(result).toEqual({ shouldSendSms: true, shouldSendWhatsApp: true, shouldSendTelegram: true, shouldSendEmail: false })
   })
 
   // null settings → nothing fires (contractor has no notification config)
   it('null settings → all channels skipped', () => {
     const result = computeChannels(null, 'lead')
-    expect(result).toEqual({ shouldSendSms: false, shouldSendWhatsApp: false, shouldSendTelegram: false })
+    expect(result).toEqual({ shouldSendSms: false, shouldSendWhatsApp: false, shouldSendTelegram: false, shouldSendEmail: false })
   })
 
   // Partial config: only SMS number set → only SMS fires for lead

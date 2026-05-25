@@ -25,7 +25,7 @@ import type { CallIntent, NotificationSettings } from '@/types/database'
  *
  * @param settings - Contractor notification settings row (null if not configured).
  * @param intent   - Classified call intent (null or 'no_action' → no channels fire).
- * @returns        Object with boolean flags for each channel.
+ * @returns        Object with boolean flags for each channel, including email.
  */
 export function computeChannels(
   settings: Pick<
@@ -39,16 +39,18 @@ export function computeChannels(
     | 'notify_sms_enabled'
     | 'notify_whatsapp_enabled'
     | 'notify_telegram_enabled'
+    | 'notify_email_enabled'
+    | 'email_address'
   > | null,
   intent: CallIntent | null
-): { shouldSendSms: boolean; shouldSendWhatsApp: boolean; shouldSendTelegram: boolean } {
+): { shouldSendSms: boolean; shouldSendWhatsApp: boolean; shouldSendTelegram: boolean; shouldSendEmail: boolean } {
   if (!intent || intent === 'no_action' || intent === 'unknown') {
     if (intent === 'unknown') {
       console.warn('[voicedesk]', JSON.stringify({
         event: 'retell-notify-dispatch.skipped_unknown_intent',
       }))
     }
-    return { shouldSendSms: false, shouldSendWhatsApp: false, shouldSendTelegram: false }
+    return { shouldSendSms: false, shouldSendWhatsApp: false, shouldSendTelegram: false, shouldSendEmail: false }
   }
 
   const isInfoWithOptIn = intent === 'info' && settings?.notify_on_general_inquiry === true
@@ -80,7 +82,19 @@ export function computeChannels(
       isInfoWithOptIn
     )
 
-  return { shouldSendSms, shouldSendWhatsApp, shouldSendTelegram }
+  // D-05 / EMAIL-02 / EMAIL-03: Email channel gate.
+  // Triple condition: address present AND channel enabled AND intent matches preference.
+  // email_address=null → false (regardless of flag), notify_email_enabled=false → false.
+  const shouldSendEmail =
+    settings?.email_address != null &&
+    settings?.notify_email_enabled === true &&
+    (
+      (intent === 'emergency' && (settings.notify_on_emergency ?? true)) ||
+      (intent === 'lead'      && (settings.notify_on_lead      ?? true)) ||
+      isInfoWithOptIn
+    )
+
+  return { shouldSendSms, shouldSendWhatsApp, shouldSendTelegram, shouldSendEmail }
 }
 
 export const retellNotifyDispatch = inngest.createFunction(
@@ -120,7 +134,7 @@ export const retellNotifyDispatch = inngest.createFunction(
         db.from('calls').select('caller_phone, intent, summary').eq('id', callId).maybeSingle(),
         db.from('leads').select('id, service_requested, status, booking_conflict').eq('call_id', callId).maybeSingle(),
         db.from('notification_settings')
-          .select('sms_number, whatsapp_number, telegram_chat_id, notify_on_lead, notify_on_emergency, notify_on_general_inquiry, notify_sms_enabled, notify_whatsapp_enabled, notify_telegram_enabled')
+          .select('sms_number, whatsapp_number, telegram_chat_id, notify_email_enabled, email_address, notify_on_lead, notify_on_emergency, notify_on_general_inquiry, notify_sms_enabled, notify_whatsapp_enabled, notify_telegram_enabled')
           .eq('contractor_id', contractorId)
           .maybeSingle(),
       ])
@@ -143,9 +157,11 @@ export const retellNotifyDispatch = inngest.createFunction(
     // D-03: Filter — skip all sends for no_action (hang-ups, wrong numbers, spam)
     // D-04: CR-04: computeChannels gates each channel on intent AND contractor's per-intent prefs.
     // Preference fields default to true for lead/emergency (opt-out model) and false for info (opt-in).
-    const { shouldSendSms, shouldSendWhatsApp, shouldSendTelegram } = computeChannels(settings, intent)
+    const { shouldSendSms, shouldSendWhatsApp, shouldSendTelegram, shouldSendEmail } = computeChannels(settings, intent)
 
-    if (!shouldSendSms && !shouldSendWhatsApp && !shouldSendTelegram) {
+    // T-13-03-02: Guard must check ALL four channels. Omitting shouldSendEmail would cause
+    // email-only contractors (no SMS/WhatsApp/Telegram) to silently receive no notifications.
+    if (!shouldSendSms && !shouldSendWhatsApp && !shouldSendTelegram && !shouldSendEmail) {
       // intent is no_action, or all channels are disabled for this intent
       return
     }
