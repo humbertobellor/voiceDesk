@@ -500,7 +500,14 @@ Plans:
   4. Notifications written during call processing remain visible in the feed after browser close and reopen — they are fetched from `app_notifications` on mount
   5. The Notification Settings page includes an email address input field and an "Enable email alerts" toggle — saving the form persists `notify_email_enabled` and `email_address` to `notification_settings`
 
-**Plans:** TBD
+**Plans:** 5 plans
+
+Plans:
+- [ ] 14-01-PLAN.md — Install @radix-ui/react-popover + scaffold RED test stubs (bell-formatter, mark-all-read)
+- [ ] 14-02-PLAN.md — TDD: computeBellNotification() + write-bell-notification Inngest step (early-return guard restructured)
+- [ ] 14-03-PLAN.md — TDD: PATCH /api/notifications/mark-all-read + extend notification-settings Zod schema with email fields
+- [ ] 14-04-PLAN.md — React Query hooks (useNotifications, useUnreadCount, useMarkAllRead) + Supabase Realtime hook + NotificationBell component
+- [ ] 14-05-PLAN.md — Wire NotificationBell into Sidebar + BottomTabBar + NotificationSettingsForm Email card + human UAT
 **UI hint:** yes
 
 ---
@@ -546,6 +553,6 @@ Plans:
 |-------|----------------|--------|-----------|
 | 12. Notification Foundation | 3/3 | Complete    | 2026-05-25 |
 | 13. Email Notifications | 4/4 | Complete    | 2026-05-25 |
-| 14. In-App Notification Bell | 0/TBD | Not started | - |
+| 14. In-App Notification Bell | 0/5 | In progress | - |
 | 15. Telegram Activation | 0/TBD | Not started | - |
 | 16. Design System Sweep | 0/TBD | Not started | - |
