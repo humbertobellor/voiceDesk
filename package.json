@@ -33,6 +33,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "7.75.0",
+    "resend": "^6.12.3",
     "retell-sdk": "^5.27.0",
     "server-only": "^0.0.1",
     "stripe": "^22.1.1",
