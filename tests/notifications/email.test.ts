@@ -4,9 +4,9 @@ vi.mock('server-only', () => ({}))
 
 const mockEmailsSend = vi.fn()
 vi.mock('resend', () => ({
-  Resend: vi.fn(() => ({
-    emails: { send: mockEmailsSend },
-  })),
+  Resend: vi.fn(function () {
+    return { emails: { send: mockEmailsSend } }
+  }),
 }))
 
 import { sendEmail } from '@/lib/notifications/email'
