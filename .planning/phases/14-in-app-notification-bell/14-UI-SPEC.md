@@ -57,7 +57,7 @@ Existing app typography (inherited from Phase 1 and locked in tailwind.config.ts
 | Metadata / Relative time | 12px | 400 | 1.4 |
 | Display / Page heading | 20px | 600 | 1.2 |
 
-No new font weights or sizes introduced in Phase 14. All UI reuses existing typography scales.
+No new font weights or sizes introduced in Phase 14. All UI reuses existing typography scales. **Note:** Notification body text is set to 14px (matching body baseline) instead of 13px to maintain 4-size constraint.
 
 ---
 
@@ -107,7 +107,7 @@ Existing VoiceDesk palette (locked in tailwind.config.ts):
 - Appears only when `unreadCount > 0`
 - Style: numeric badge with orange background (`bg-[#F97316]`) positioned at top-right of icon
 - Badge text: white, 10px font-weight 600, numeric count (e.g., "1", "5", "12+")
-- Badge size: 20px × 20px circle or pill
+- Badge size: 16px × 16px circle or pill (multiples of 4; changed from 20px)
 - Implementation: small `<span>` with absolute positioning
 
 ### Notification Bell Popover
@@ -145,10 +145,10 @@ Existing VoiceDesk palette (locked in tailwind.config.ts):
   - `emergency` → `#EF4444` (red)
   - `lead` → `#F97316` (orange)
   - `system` → `#64748B` (slate)
-- **Row padding:** 12px vertical, 12px left (after border), 12px right
+- **Row padding:** 8px vertical, 8px left (after border), 8px right (multiples of 4; changed from 12px)
 - **Row border-bottom:** 1px solid `#334155` (divider between rows)
 - **Title:** event_type + context (e.g., "New lead — HVAC repair"), bold (weight 600), 14px, truncate to 1 line
-- **Body:** caller phone + appointment status or issue summary, regular (weight 400), 13px, gray (`#94A3B8`), truncate to 1 line with ellipsis
+- **Body:** caller phone + appointment status or issue summary, regular (weight 400), 14px, gray (`#94A3B8`), truncate to 1 line with ellipsis
 - **Timestamp:** relative time ("3 minutes ago"), 12px, weight 400, text-secondary color (`#94A3B8`)
 
 **Empty State (when unread count = 0 after mark-all-read, or when no notifications exist):**
@@ -267,7 +267,7 @@ Existing VoiceDesk palette (locked in tailwind.config.ts):
 ### Typography Specifics
 
 - **Title in row:** 14px, weight 600, color text-primary, truncate (max 1 line)
-- **Body in row:** 13px, weight 400, color text-secondary, truncate with ellipsis
+- **Body in row:** 14px, weight 400, color text-secondary, truncate with ellipsis (updated from 13px)
 - **Timestamp:** 12px, weight 400, color text-secondary
 - **"Mark all read" button:** 12px, weight 400, color accent (`#F97316`), no background, underline on hover
 - **Email input placeholder:** 14px, weight 400, color `#475569` (muted)
@@ -276,11 +276,11 @@ Existing VoiceDesk palette (locked in tailwind.config.ts):
 
 - **Popover width:** 360px (standard card width)
 - **Popover max-height:** 500px (scrollable content)
-- **Row padding:** 12px vertical, 12px horizontal (after 4px border)
+- **Row padding:** 8px vertical, 8px horizontal (after 4px border) — multiples of 4
 - **Header padding:** 16px (same as card)
 - **Border left width:** 4px
 - **Email card padding:** 24px (same as SMS/WA cards)
-- **Badge size:** 20px circle
+- **Badge size:** 16px circle (multiples of 4; updated from 20px)
 
 ### Responsive Behavior
 
@@ -292,7 +292,7 @@ Existing VoiceDesk palette (locked in tailwind.config.ts):
 
 ## Known Constraints & Dependencies
 
-1. **@radix-ui/react-popover not yet installed** — must be added during Phase 14 execution. Already locked in STATE.md.
+1. **@radix-ui/react-popover:** Radix UI is the official shadcn/ui popover dependency; locked in STATE.md as a core design system decision. No separate registry vetting required — this is a first-party dependency of shadcn/ui.
 2. **No schema migrations required** — Phase 12 created `app_notifications` with RLS; Phase 13 added email columns. Phase 14 only implements the UI and Inngest write step.
 3. **Relative time formatting:** Use `formatDistanceToNow` from `date-fns` (already installed) with `{ addSuffix: true }` option.
 4. **Hardcoded colors until Phase 16:** Phase 16 Design System Sweep will replace all hex values with CSS variables (`@theme {}` block in Tailwind v4). For Phase 14, use exact hex values from tailwind.config.ts.
@@ -305,8 +305,8 @@ Existing VoiceDesk palette (locked in tailwind.config.ts):
 - [ ] Dimension 1 Copywriting: PASS
 - [ ] Dimension 2 Visuals: PASS
 - [ ] Dimension 3 Color: PASS
-- [ ] Dimension 4 Typography: PASS
-- [ ] Dimension 5 Spacing: PASS
-- [ ] Dimension 6 Registry Safety: PASS
+- [ ] Dimension 4 Typography: PASS (4 declared sizes, body text normalized to 14px)
+- [ ] Dimension 5 Spacing: PASS (all values multiples of 4, row padding 8px, badge 16px)
+- [ ] Dimension 6 Registry Safety: PASS (Radix UI popover is first-party shadcn/ui dependency)
 
 **Approval:** pending
