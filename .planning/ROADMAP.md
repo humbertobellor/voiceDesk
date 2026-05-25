@@ -416,7 +416,7 @@ Plans:
 ## Phases
 
 - [x] **Phase 12: Notification Foundation** - DB migrations (app_notifications + email columns) + TypeScript types + email lib (completed 2026-05-25)
-- [ ] **Phase 13: Email Notifications** - Email channel in Inngest dispatch + payment alert email + API schema extension
+- [x] **Phase 13: Email Notifications** - Email channel in Inngest dispatch + payment alert email + API schema extension (completed 2026-05-25)
 - [ ] **Phase 14: In-App Notification Bell** - Inngest write step + React Query hooks + Supabase Realtime + NotificationBell UI
 - [ ] **Phase 15: Telegram Activation** - Server action (activateTelegramWebhook) + settings UI card with status display
 - [ ] **Phase 16: Design System Sweep** - Wolknitive token extraction + globals.css @theme block + full component sweep
@@ -467,7 +467,7 @@ Plans:
   4. Email sends where `email_address` is null or `notify_email_enabled = false` are silently skipped — no error, no log entry
   5. Every email attempt (success or failure) writes a `notification_log` row with `channel: 'email'` — failed sends are retried by Inngest's built-in retry without generating duplicate log entries
 
-**Plans:** 3/4 plans executed
+**Plans:** 4/4 plans complete
 
 Plans:
 **Wave 1**
@@ -481,7 +481,7 @@ Plans:
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
-- [ ] 13-04-PLAN.md — Wire send-email step in retellNotifyDispatch + send-email-alert step in stripePaymentFailureHandler; full suite GREEN
+- [x] 13-04-PLAN.md — Wire send-email step in retellNotifyDispatch + send-email-alert step in stripePaymentFailureHandler; full suite GREEN
 
 **UI hint:** no
 
@@ -545,7 +545,7 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 12. Notification Foundation | 3/3 | Complete    | 2026-05-25 |
-| 13. Email Notifications | 3/4 | In Progress|  |
+| 13. Email Notifications | 4/4 | Complete   | 2026-05-25 |
 | 14. In-App Notification Bell | 0/TBD | Not started | - |
 | 15. Telegram Activation | 0/TBD | Not started | - |
 | 16. Design System Sweep | 0/TBD | Not started | - |
