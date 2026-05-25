@@ -1,6 +1,6 @@
 # VoiceDesk
 
-**Current State:** v1.1 IN PROGRESS. v1.0 shipped 2026-05-24 — production live, 15/15 E2E green.
+**Current State:** v1.1 IN PROGRESS. Phase 13 (Email Notifications) complete 2026-05-25. v1.0 shipped 2026-05-24 — production live, 15/15 E2E green.
 
 ## Current Milestone: v1.1 Notifications & UI Brand
 
