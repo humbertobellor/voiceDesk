@@ -467,12 +467,12 @@ Plans:
   4. Email sends where `email_address` is null or `notify_email_enabled = false` are silently skipped — no error, no log entry
   5. Every email attempt (success or failure) writes a `notification_log` row with `channel: 'email'` — failed sends are retried by Inngest's built-in retry without generating duplicate log entries
 
-**Plans:** 4 plans
+**Plans:** 1/4 plans executed
 
 Plans:
 **Wave 1**
 
-- [ ] 13-01-PLAN.md — npm install (@react-email/components@1.0.12 + @react-email/render@2.0.8) + three RED test scaffolds (templates, computeChannels email gate, stripe-payment-failure triple gate)
+- [x] 13-01-PLAN.md — npm install (@react-email/components@1.0.12 + @react-email/render@2.0.8) + three RED test scaffolds (templates, computeChannels email gate, stripe-payment-failure triple gate)
 
 **Wave 2** *(blocked on Wave 1 completion, parallel)*
 
@@ -545,7 +545,7 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 12. Notification Foundation | 3/3 | Complete    | 2026-05-25 |
-| 13. Email Notifications | 0/4 | Not started | - |
+| 13. Email Notifications | 1/4 | In Progress|  |
 | 14. In-App Notification Bell | 0/TBD | Not started | - |
 | 15. Telegram Activation | 0/TBD | Not started | - |
 | 16. Design System Sweep | 0/TBD | Not started | - |
