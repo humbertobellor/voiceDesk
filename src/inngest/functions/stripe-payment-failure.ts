@@ -13,6 +13,10 @@ import { inngest } from '@/inngest/client'
 import { createServiceRoleClient } from '@/lib/supabase/service'
 import { getRetellClient } from '@/lib/retell/client'
 import { sendPaymentFailureAlert } from '@/lib/notifications/payment-alert'
+import { sendEmail } from '@/lib/notifications/email'
+import { writeNotificationLog, updateNotificationLog } from '@/lib/notifications/log'
+import { render } from '@react-email/render'
+import { PaymentFailureEmail } from '@/lib/notifications/templates/PaymentFailureEmail'
 
 // BILL-03: Inngest function handles payment failure + alert + deactivation.
 export const stripePaymentFailureHandler = inngest.createFunction(
@@ -55,7 +59,7 @@ export const stripePaymentFailureHandler = inngest.createFunction(
       const db = createServiceRoleClient()
       const { data, error } = await db
         .from('contractors')
-        .select('id, retell_agent_id, twilio_number, phone_number, notification_settings(sms_number, whatsapp_number, notify_sms_enabled, notify_whatsapp_enabled)')
+        .select('id, retell_agent_id, twilio_number, phone_number, notification_settings(sms_number, whatsapp_number, email_address, notify_sms_enabled, notify_whatsapp_enabled, notify_email_enabled, notify_on_payment_failure)')
         .eq('id', contractorId)
         .maybeSingle()
       if (error || !data) {
@@ -92,7 +96,60 @@ export const stripePaymentFailureHandler = inngest.createFunction(
       })
     })
 
-    // Step 2.5: Unlink Retell agent from phone number (BILL-03: true deactivation)
+    // Step 2.5a: Send payment failure email (EMAIL-04 / D-07 triple-gate / D-18: callId=null)
+    // Triple gate: email_address != null AND notify_email_enabled=true AND notify_on_payment_failure=true
+    // D-06: Static imports at file top — not dynamic imports inside step.run.
+    await step.run('send-email-alert', async () => {
+      const ns = (contractor.notification_settings as Array<{
+        email_address: string | null
+        notify_email_enabled: boolean
+        notify_on_payment_failure: boolean
+      }> | null)?.[0]
+
+      // D-08: All three conditions must be true; silently skip if any is false (no log entry)
+      if (!ns?.email_address || !ns?.notify_email_enabled || !ns?.notify_on_payment_failure) {
+        return
+      }
+
+      const billingUrl = `${process.env.NEXT_PUBLIC_APP_URL}/settings/account`
+
+      // render() from @react-email/render v2.x is async (returns Promise<string>)
+      const emailHtml = await render(PaymentFailureEmail({ billingUrl }))
+
+      let logId: string | null = null
+      try {
+        // D-18: Payment failure emails are not call-related — callId is null
+        logId = await writeNotificationLog({
+          contractorId,
+          callId: null,
+          channel: 'email',
+          recipient: ns.email_address,
+          message: 'Payment failure alert',
+        })
+
+        const result = await sendEmail({
+          to: ns.email_address,
+          subject: 'Action required: VoiceDesk payment failed',
+          html: emailHtml,
+        })
+
+        if (!result.success) {
+          throw new Error(result.error || 'sendEmail failed')
+        }
+
+        await updateNotificationLog(logId, { status: 'sent', sentAt: new Date().toISOString() })
+      } catch (err: unknown) {
+        if (logId) {
+          await updateNotificationLog(logId, {
+            status: 'failed',
+            error: err instanceof Error ? err.message : String(err),
+          })
+        }
+        throw err  // Re-throw so Inngest retries this step
+      }
+    })
+
+    // Step 2.5b: Unlink Retell agent from phone number (BILL-03: true deactivation)
     await step.run('deactivate-retell-agent', async () => {
       if (!contractor.retell_agent_id || !contractor.twilio_number) {
         console.log(

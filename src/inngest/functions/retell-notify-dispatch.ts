@@ -345,8 +345,8 @@ export const retellNotifyDispatch = inngest.createFunction(
             ? `EMERGENCY: New call from ${callerPhone}`
             : `New lead from ${callerPhone} — ${serviceRequested}`
 
-          // render() from @react-email/render v2.x is synchronous
-          const emailHtml = render(
+          // render() from @react-email/render v2.x is async (returns Promise<string>)
+          const emailHtml = await render(
             isEmergency
               ? EmergencyNotificationEmail({ callerPhone, serviceRequested, dashboardUrl })
               : LeadNotificationEmail({ callerPhone, serviceRequested, appointmentStatus: bookingStatus, dashboardUrl })
