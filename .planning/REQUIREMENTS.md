@@ -1,117 +1,67 @@
-# VoiceDesk — v1 Requirements
+# VoiceDesk v1.1 Requirements
 
-**Project:** VoiceDesk  
-**Milestone:** v1.0 — Revenue-generating MVP  
-**Target:** 90-day soft launch to 20–30 contractors  
-**Last updated:** 2026-05-03 after roadmap creation
-
----
-
-## v1 Requirements
-
-### Call Handling
-
-- [ ] **CALL-01**: AI answers every inbound call within 3 rings using Retell voice AI with no fallback to voicemail
-- [ ] **CALL-02**: Agent classifies each call as lead, emergency, or general inquiry using keyword matching followed by LLM confirmation
-- [ ] **CALL-03**: Agent asks trade-specific qualification questions (HVAC: system age, heating vs. cooling; Plumbing: active leak vs. repair; Electrical: safety vs. repair) before capturing contact details
-- [ ] **CALL-04**: Agent uses a different script for after-hours calls (acknowledges off-hours, still captures lead and offers scheduling for next available slot)
-
-### Multi-Language Support
-
-- [ ] **LANG-01**: Agent detects or prompts for caller language at the start of each call and conducts the entire conversation — qualification questions, scheduling confirmation, and emergency escalation — in the caller's language (English, Spanish, or Haitian Creole) _(schema precondition delivered Phase 1; runtime behavior Phase 2–3)_
-- [x] **LANG-02**: Contractor can select which languages their agent supports (English, Spanish, Haitian Creole, or all three) in the agent configuration portal; all supported languages are available from day one of deployment ✓ Phase 1
-
-### Scheduling
-
-- [ ] **SCHED-01**: Agent books estimate appointments into the contractor's Google Calendar during the call, using contractor-configured availability windows to determine open slots
-- [ ] **SCHED-02**: Contractor sets bookable time windows (days of week, start/end times) in the portal; agent uses these windows — not live Calendar API — to determine availability during calls
-- [ ] **SCHED-03**: Agent verbally confirms appointment date, time, and address with the caller before ending the call
-- [ ] **SCHED-04**: System prevents double-booking by checking existing Calendar events before creating a new appointment; if conflict detected, agent offers the next open slot
-
-### Notifications
-
-- [ ] **NOTIF-01**: System sends an SMS notification to the contractor within 60 seconds of every call end, including caller name, phone number, issue summary, and whether an appointment was booked
-- [ ] **NOTIF-02**: System sends a WhatsApp notification for every new lead and emergency using pre-approved message templates; falls back to SMS automatically if WhatsApp delivery fails
-- [ ] **NOTIF-03**: System sends a Telegram notification to the contractor's linked Telegram account for every new lead and emergency; contractor links Telegram account during onboarding via bot start link
-
-### Emergency Escalation
-
-- [ ] **EMRG-01**: System detects potential emergencies via keyword matching (gas smell, no heat, burst pipe, flooding, burning smell, CO alarm, no power, sparking) and asks the caller a clarifying question ("Is this happening right now?") before classifying as emergency
-- [ ] **EMRG-02**: Gas smell and CO alarm triggers are hard-coded and non-configurable; they always escalate to emergency regardless of contractor's keyword settings
-- [ ] **EMRG-03**: Emergency notifications reach the contractor via all configured channels (SMS, WhatsApp, Telegram) within 30 seconds of call end, with the word EMERGENCY prominently in the message and caller's callback number
-
-### Admin Portal
-
-- [ ] **PORTAL-01**: Contractor can view a paginated call log showing date, caller name, phone, call duration, intent classification, and AI-generated summary for every call
-- [ ] **PORTAL-02**: Contractor can play back call recordings and read full transcripts from the call log; recordings are served via time-limited signed URLs (60-second TTL)
-- [ ] **PORTAL-03**: Contractor can view a lead list with contact details, issue description, appointment status, and manually mark leads as Won, Lost, or Pending
-- [ ] **PORTAL-04**: Contractor can configure the agent: business name, services offered, service area, emergency keywords, after-hours message, and agent voice selection
-- [ ] **PORTAL-05**: Portal dashboard updates in real time when a new call comes in or completes, without requiring a page refresh
-
-### Billing & Onboarding
-
-- [x] **BILL-01**: New contractors sign up via Stripe Checkout with a credit card and start a free trial (14 days) before being charged $299–$799/month based on selected plan
-- [x] **BILL-02**: Stripe Customer Portal is accessible from the contractor's account settings, allowing self-serve plan changes, payment method updates, and cancellation
-- [x] **BILL-03**: A failing payment deactivates the contractor's Retell agent within 72 hours of the final failed retry and sends a WhatsApp/SMS alert before deactivation
-- [x] **ONBOARD-01**: Guided onboarding wizard walks contractor through: agent configuration → Google Calendar connection → Twilio number provisioning → call forwarding instructions (with carrier-specific codes for AT&T, Verizon, T-Mobile)
-- [x] **ONBOARD-02**: Onboarding wizard does not advance to "go live" status until an inbound test call is detected and logged for the contractor's VoiceDesk number; portal polls and auto-advances on detection
+**Milestone:** v1.1 — Notifications & UI Brand
+**Defined:** 2026-05-24
+**Total:** 14 requirements across 4 categories
 
 ---
 
-## v2 Requirements (Deferred)
+## Email Notifications
 
-Features explicitly deferred to post-PMF validation:
+- [ ] **EMAIL-01**: Contractor can enter an email address in Notification Settings and enable email alerts (opt-in, disabled by default)
+- [ ] **EMAIL-02**: Contractor receives an email within 60 seconds of a new lead call, containing caller phone number, service type, and appointment status
+- [ ] **EMAIL-03**: Contractor receives an email within 60 seconds of an emergency call, with EMERGENCY prefix prominently displayed and caller callback number
+- [ ] **EMAIL-04**: Contractor receives an email when a Stripe payment fails, with a link to the billing portal to update payment method
+- [ ] **EMAIL-05**: Email send success and failure are recorded in `notification_log` with `channel: 'email'` — failures are visible and retried by Inngest
 
-- **ServiceTitan integration** — Complex field-management API; relevant only after 30%+ of customers request it
-- **Housecall Pro integration** — Same rationale as ServiceTitan
-- **Additional language support beyond English/Spanish/Haitian Creole** — Portuguese, French, Mandarin etc. are post-PMF additions
-- **iOS/Android mobile app** — Web portal sufficient for v1; mobile is a retention feature not a launch requirement
-- **Outbound call campaigns** — TCPA compliance complexity; not core to product identity
-- **Advanced analytics dashboard** — Call volume trends, lead conversion rates, revenue attribution; nice-to-have after retention is proven
-- **Multi-location contractor support** — Single phone number per account in v1; multi-number management deferred
+## In-App Notification Bell
+
+- [ ] **BELL-01**: A bell icon in the dashboard header displays an unread badge count that updates in real-time (via Supabase Realtime) without a page refresh
+- [ ] **BELL-02**: Clicking the bell opens a panel listing the 50 most recent notifications, each showing event type, title, body excerpt, and relative time
+- [ ] **BELL-03**: Contractor can mark all notifications as read with one action, clearing the unread badge
+- [ ] **BELL-04**: Notifications are persisted in the database and remain visible after browser close and reopen
+
+## Telegram Activation
+
+- [ ] **TEL-01**: The Notification Settings page shows the current Telegram webhook status — either the registered webhook URL or "Not registered" — fetched on page load
+- [ ] **TEL-02**: A contractor or admin can activate the platform Telegram webhook from settings with a single button click; the status display updates to show the registered URL on success, or an error message on failure
+
+## Design System
+
+- [ ] **BRAND-01**: All Wolknitive brand color, typography, and spacing tokens are defined as CSS custom properties in `globals.css` and available as Tailwind utility class names
+- [ ] **BRAND-02**: No hardcoded hex color values (`[#XXXXXX]` arbitrary Tailwind values) remain in any component file outside `globals.css`
+- [ ] **BRAND-03**: All dashboard pages (call log, leads, agent config, settings tabs, account page) and auth pages (login, signup) render using brand tokens consistently
+- [ ] **BRAND-04**: `npm run build` exits 0 and the 15/15 v1.0 regression tests pass after the design system sweep
 
 ---
+
+## Future Requirements (deferred)
+
+- Per-notification mark-as-read (mark all is sufficient for v1.1)
+- Email digest / daily summary
+- Browser push notifications (Web Push API)
+- "Quiet hours" notification schedule
+- Per-contractor Telegram bots (platform bot architecture in v1.x)
+- Dark mode toggle (dark palette is fixed theme)
+- Landing / marketing page (app UI only for v1.1)
+- Email template editor / customization
 
 ## Out of Scope
 
-Explicit exclusions — not deferred, not planned:
-
-- **Custom voice cloning** — Retell stock voices sufficient; cloning adds cost and complexity without clear contractor demand
-- **CRM functionality** — VoiceDesk is not a CRM; lead status tracking is a thin convenience layer only
-- **AI price quoting** — Liability risk; contractors explicitly do not want AI quoting jobs
-- **Live call transfer on emergency** — Mid-call transfer requires active call patching (different Twilio product), complex to implement reliably; real-time notification within 30s covers the safety need
-- **Web chat widget** — Out of scope for v1; phone is the channel this product lives in
-- **Accent-based language auto-detection without prompt** — Retell's language detection requires explicit selection or a greeting prompt; passive accent detection is not reliable enough for emergency classification
+- WhatsApp WABA activation — external Meta approval process, not a code change
+- Google OAuth production mode — operational task, not a code change
+- Additional notification channels beyond SMS/WA/Telegram/Email
+- Outbound notifications (follow-up sequences, reminders) — inbound-only product
 
 ---
 
 ## Traceability
 
-| REQ-ID | Phase | Status |
-|--------|-------|--------|
-| LANG-01 | Phase 1 — Foundation (schema); Phase 2–3 (runtime) | Partial — schema done |
-| LANG-02 | Phase 1 — Foundation | Out of Scope (D-01 Phase 2 — HC removed from product) |
-| CALL-01 | Phase 3 — Webhook Core | Pending |
-| CALL-02 | Phase 3 — Webhook Core | Pending |
-| CALL-03 | Phase 3 — Webhook Core | Pending |
-| CALL-04 | Phase 3 — Webhook Core | Pending |
-| SCHED-01 | Phase 4 — Scheduling & Lead Capture | Pending |
-| SCHED-02 | Phase 4 — Scheduling & Lead Capture | Pending |
-| SCHED-03 | Phase 4 — Scheduling & Lead Capture | Pending |
-| SCHED-04 | Phase 4 — Scheduling & Lead Capture | Pending |
-| NOTIF-01 | Phase 5 — Notifications | Pending |
-| NOTIF-02 | Phase 5 — Notifications | Pending |
-| NOTIF-03 | Phase 5 — Notifications | Pending |
-| EMRG-01 | Phase 3 — Webhook Core | Pending |
-| EMRG-02 | Phase 3 — Webhook Core | Pending |
-| EMRG-03 | Phase 5 — Notifications | Pending |
-| PORTAL-01 | Phase 6 — Portal UI | Pending |
-| PORTAL-02 | Phase 6 — Portal UI | Pending |
-| PORTAL-03 | Phase 6 — Portal UI | Pending |
-| PORTAL-04 | Phase 6 — Portal UI | Pending |
-| PORTAL-05 | Phase 6 — Portal UI | Pending |
-| BILL-01 | Phase 7 — Billing & Onboarding | Complete |
-| BILL-02 | Phase 7 — Billing & Onboarding | Complete |
-| BILL-03 | Phase 7 — Billing & Onboarding | Complete |
-| ONBOARD-01 | Phase 7 — Billing & Onboarding | Complete |
-| ONBOARD-02 | Phase 7 — Billing & Onboarding | Complete |
+*(Filled by roadmapper)*
+
+| Requirement | Phase |
+|-------------|-------|
+| EMAIL-01–05 | TBD |
+| BELL-01–04 | TBD |
+| TEL-01–02 | TBD |
+| BRAND-01–04 | TBD |
