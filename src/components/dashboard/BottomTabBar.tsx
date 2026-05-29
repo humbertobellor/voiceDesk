@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation'
 import { PhoneCall, Users, Settings } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { Route } from 'next'
+import { NotificationBell } from '@/components/notification/NotificationBell'
 
 const tabs: { href: Route; icon: typeof PhoneCall; label: string }[] = [
   { href: '/calls', icon: PhoneCall, label: 'Calls' },
@@ -39,6 +40,11 @@ export function BottomTabBar() {
           </Link>
         )
       })}
+      {/* Bell tab — NotificationBell provides Realtime subscription for mobile (Sidebar is hidden below md) */}
+      <div className="flex-1 flex flex-col items-center justify-center gap-0.5 min-h-[56px]">
+        <NotificationBell />
+        <span className="text-xs text-[#94A3B8]">Alerts</span>
+      </div>
     </nav>
   )
 }

@@ -7,6 +7,7 @@ import { PhoneCall, Users, Settings, Bot, Bell, CreditCard, LogOut, Mic, Phone, 
 import { cn } from '@/lib/utils'
 import { createSupabaseBrowser } from '@/lib/supabase/browser'
 import type { Route } from 'next'
+import { NotificationBell } from '@/components/notification/NotificationBell'
 
 interface SidebarProps {
   businessName?: string | null
@@ -48,6 +49,7 @@ export function Sidebar({ businessName, userEmail, phoneNumber }: SidebarProps) 
       <div className="h-16 flex items-center gap-2 px-6 border-b border-[#334155]">
         <Mic size={20} className="text-[#F97316]" />
         <span className="text-xl font-semibold text-[#F8FAFC]">VoiceDesk</span>
+        <NotificationBell className="ml-auto" />
       </div>
 
       {/* Nav */}
