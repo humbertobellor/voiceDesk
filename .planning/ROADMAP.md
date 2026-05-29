@@ -503,6 +503,7 @@ Plans:
 **Plans:** 5/5 plans complete
 
 Plans:
+
 - [x] 14-01-PLAN.md — Install @radix-ui/react-popover + scaffold RED test stubs (bell-formatter, mark-all-read)
 - [x] 14-02-PLAN.md — TDD: computeBellNotification() + write-bell-notification Inngest step (early-return guard restructured)
 - [x] 14-03-PLAN.md — TDD: PATCH /api/notifications/mark-all-read + extend notification-settings Zod schema with email fields
@@ -542,8 +543,14 @@ Plans:
 **Plans:** 2 plans
 
 Plans:
+**Wave 1**
+
 - [ ] 15-01-PLAN.md — Wave 0: RED test stubs (server action + component card) + .env.example TELEGRAM_WEBHOOK_URL entry
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
 - [ ] 15-02-PLAN.md — activateTelegramWebhook() server action (GREEN) + page.tsx getWebhookInfo on load + NotificationSettingsForm webhook card + human UAT
+
 **UI hint:** yes
 
 ---
