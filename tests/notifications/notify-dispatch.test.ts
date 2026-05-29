@@ -12,8 +12,11 @@ vi.mock('@/lib/notifications/log', () => ({
   writeNotificationLog: vi.fn(),
   updateNotificationLog: vi.fn(),
 }))
+// Shared insert spy — can be reasserted in individual tests
+const mockInsertFn = vi.fn().mockResolvedValue({ error: null })
+const mockFromFn = vi.fn(() => ({ insert: mockInsertFn }))
 vi.mock('@/lib/supabase/service', () => ({
-  createServiceRoleClient: () => ({ from: vi.fn() }),
+  createServiceRoleClient: () => ({ from: mockFromFn }),
 }))
 vi.mock('@/inngest/client', () => ({
   inngest: {
@@ -26,7 +29,7 @@ import { sendSms } from '@/lib/notifications/sms'
 import { sendWhatsApp } from '@/lib/notifications/whatsapp'
 
 // Import the pure computeChannels function under test (WR-02: exercises real dispatch logic)
-import { computeChannels } from '@/inngest/functions/retell-notify-dispatch'
+import { computeChannels, retellNotifyDispatch } from '@/inngest/functions/retell-notify-dispatch'
 import type { NotificationSettings, CallIntent } from '@/types/database'
 
 const mockSendSms = vi.mocked(sendSms)
@@ -341,54 +344,117 @@ describe('Phase 10: channel enable flags', () => {
   })
 })
 
-// Phase 14: Guard-restructure stubs (RED state — Plan 14-01 Task 3).
-// Both stubs FAIL until Plan 14-02 restructures the early-return guard in
-// retellNotifyDispatch so the bell write step runs independently of channel flags.
-//
-// Context (RESEARCH.md Pitfall 1): The current guard at line 148–151 of
-// retell-notify-dispatch.ts returns early when all channel flags are off,
-// which would block the bell write step for contractors with all channels disabled.
-// Plan 14-02 must split the guard: no_action/unknown → return early; valid intent
-// + all channels off → still run the bell step.
+// Phase 14: Guard-restructure tests (implemented in Plan 14-02).
+// Verifies that the hasValidIntent guard restructure correctly:
+//   A) routes lead/emergency/info calls to write-bell-notification even with all channels off
+//   B) never writes a bell row for no_action/unknown calls
 describe('write-bell-notification guard', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
+  /**
+   * Build a mock step object that executes step.run callbacks immediately.
+   * Inngest memoizes steps by key; in tests we just run the callback directly.
+   */
+  function makeMockStep() {
+    return {
+      run: vi.fn((_name: string, fn: () => Promise<unknown>) => fn()),
+    }
+  }
+
+  /**
+   * Reset the module-level insert spy before each guard test.
+   * Returns the spy so tests can assert on it.
+   */
+  function resetMockDb() {
+    mockInsertFn.mockClear()
+    mockFromFn.mockClear()
+    return { mockInsert: mockInsertFn }
+  }
+
+  /**
+   * Build a mock step that stubs the load-notification-data step with the provided
+   * call/lead/settings data, and runs all other steps normally.
+   */
+  function makeStepWithData(callData: { caller_phone: string | null; intent: string | null; summary: string | null }, settingsData: unknown) {
+    const step = {
+      run: vi.fn((name: string, fn: () => Promise<unknown>) => {
+        if (name === 'load-notification-data') {
+          return Promise.resolve({
+            call: callData,
+            lead: null,
+            settings: settingsData,
+          })
+        }
+        return fn()
+      }),
+    }
+    return step
+  }
+
   // Stub A: intent='lead' + all channel flags disabled → app_notifications insert IS called.
-  // Fails until Plan 14-02 restructures the early-return guard so valid intents always
-  // reach the write-bell-notification step, even when all channel flags are off.
+  // Verifies that the hasValidIntent guard allows lead calls to reach write-bell-notification
+  // even when all channel flags are off (no SMS/WhatsApp/Telegram/email configured).
   it('intent=lead + all channels disabled → app_notifications insert IS called', async () => {
-    throw new Error('not implemented — implement in Plan 14-02')
-    // Expected after implementation:
-    // const mockInsert = vi.fn().mockResolvedValue({ error: null })
-    // const mockFrom = vi.fn(() => ({ insert: mockInsert }))
-    // vi.mocked(createServiceRoleClient).mockReturnValue({ from: mockFrom } as any)
-    //
-    // const settings = makeSettingsWithEnableFlags({
-    //   sms_number: null,
-    //   whatsapp_number: null,
-    //   telegram_chat_id: null,
-    //   notify_sms_enabled: false,
-    //   notify_whatsapp_enabled: false,
-    //   notify_telegram_enabled: false,
-    //   notify_on_lead: true,
-    // })
-    // // Invoke retellNotifyDispatch with intent='lead' + all channels off
-    // // Assert: the supabase insert mock was called with event_type='lead'
-    // expect(mockInsert).toHaveBeenCalledWith(
-    //   expect.objectContaining({ event_type: 'lead' })
-    // )
+    const { mockInsert } = resetMockDb()
+
+    const settings = makeSettingsWithEnableFlags({
+      sms_number: null,
+      whatsapp_number: null,
+      telegram_chat_id: null,
+      notify_sms_enabled: false,
+      notify_whatsapp_enabled: false,
+      notify_telegram_enabled: false,
+      notify_on_lead: true,
+    })
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const handler = (retellNotifyDispatch as any)._handler
+    const step = makeStepWithData(
+      { caller_phone: '+15551234567', intent: 'lead', summary: 'HVAC repair' },
+      settings
+    )
+
+    await handler({
+      event: { data: { callId: 'call-123', contractorId: 'contractor-456' } },
+      step,
+    })
+
+    // Bell row must be written even when all channel flags are off
+    expect(mockInsert).toHaveBeenCalledWith(
+      expect.objectContaining({ event_type: 'lead' })
+    )
   })
 
   // Stub B: intent='no_action' → app_notifications insert is NOT called.
-  // Fails until Plan 14-02 adds an intent guard to the write-bell-notification step
-  // so no_action calls never write a bell row.
+  // Verifies that the hasValidIntent guard prevents no_action calls from writing
+  // a bell row (invalid event_type for the DB CHECK constraint).
   it('intent=no_action → app_notifications insert is NOT called', async () => {
-    throw new Error('not implemented — implement in Plan 14-02')
-    // Expected after implementation:
-    // const mockInsert = vi.fn().mockResolvedValue({ error: null })
-    // const mockFrom = vi.fn(() => ({ insert: mockInsert }))
-    // vi.mocked(createServiceRoleClient).mockReturnValue({ from: mockFrom } as any)
-    //
-    // // Invoke retellNotifyDispatch with intent='no_action'
-    // // Assert: insert was NOT called (no bell row for no_action)
-    // expect(mockInsert).not.toHaveBeenCalled()
+    const { mockInsert } = resetMockDb()
+
+    const settings = makeSettingsWithEnableFlags({
+      sms_number: null,
+      whatsapp_number: null,
+      telegram_chat_id: null,
+      notify_sms_enabled: false,
+      notify_whatsapp_enabled: false,
+      notify_telegram_enabled: false,
+    })
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const handler = (retellNotifyDispatch as any)._handler
+    const step = makeStepWithData(
+      { caller_phone: '+15551234567', intent: 'no_action', summary: null },
+      settings
+    )
+
+    await handler({
+      event: { data: { callId: 'call-999', contractorId: 'contractor-456' } },
+      step,
+    })
+
+    // No bell row for no_action — hasValidIntent=false, function returns early
+    expect(mockInsert).not.toHaveBeenCalled()
   })
 })
