@@ -340,3 +340,55 @@ describe('Phase 10: channel enable flags', () => {
     expect(result.shouldSendSms).toBe(true)
   })
 })
+
+// Phase 14: Guard-restructure stubs (RED state — Plan 14-01 Task 3).
+// Both stubs FAIL until Plan 14-02 restructures the early-return guard in
+// retellNotifyDispatch so the bell write step runs independently of channel flags.
+//
+// Context (RESEARCH.md Pitfall 1): The current guard at line 148–151 of
+// retell-notify-dispatch.ts returns early when all channel flags are off,
+// which would block the bell write step for contractors with all channels disabled.
+// Plan 14-02 must split the guard: no_action/unknown → return early; valid intent
+// + all channels off → still run the bell step.
+describe('write-bell-notification guard', () => {
+  // Stub A: intent='lead' + all channel flags disabled → app_notifications insert IS called.
+  // Fails until Plan 14-02 restructures the early-return guard so valid intents always
+  // reach the write-bell-notification step, even when all channel flags are off.
+  it('intent=lead + all channels disabled → app_notifications insert IS called', async () => {
+    throw new Error('not implemented — implement in Plan 14-02')
+    // Expected after implementation:
+    // const mockInsert = vi.fn().mockResolvedValue({ error: null })
+    // const mockFrom = vi.fn(() => ({ insert: mockInsert }))
+    // vi.mocked(createServiceRoleClient).mockReturnValue({ from: mockFrom } as any)
+    //
+    // const settings = makeSettingsWithEnableFlags({
+    //   sms_number: null,
+    //   whatsapp_number: null,
+    //   telegram_chat_id: null,
+    //   notify_sms_enabled: false,
+    //   notify_whatsapp_enabled: false,
+    //   notify_telegram_enabled: false,
+    //   notify_on_lead: true,
+    // })
+    // // Invoke retellNotifyDispatch with intent='lead' + all channels off
+    // // Assert: the supabase insert mock was called with event_type='lead'
+    // expect(mockInsert).toHaveBeenCalledWith(
+    //   expect.objectContaining({ event_type: 'lead' })
+    // )
+  })
+
+  // Stub B: intent='no_action' → app_notifications insert is NOT called.
+  // Fails until Plan 14-02 adds an intent guard to the write-bell-notification step
+  // so no_action calls never write a bell row.
+  it('intent=no_action → app_notifications insert is NOT called', async () => {
+    throw new Error('not implemented — implement in Plan 14-02')
+    // Expected after implementation:
+    // const mockInsert = vi.fn().mockResolvedValue({ error: null })
+    // const mockFrom = vi.fn(() => ({ insert: mockInsert }))
+    // vi.mocked(createServiceRoleClient).mockReturnValue({ from: mockFrom } as any)
+    //
+    // // Invoke retellNotifyDispatch with intent='no_action'
+    // // Assert: insert was NOT called (no bell row for no_action)
+    // expect(mockInsert).not.toHaveBeenCalled()
+  })
+})
