@@ -8,17 +8,9 @@ vi.mock('server-only', () => ({}))
 vi.mock('@/lib/notifications/sms', () => ({ sendSms: vi.fn() }))
 vi.mock('@/lib/notifications/whatsapp', () => ({ sendWhatsApp: vi.fn() }))
 vi.mock('@/lib/notifications/telegram', () => ({ sendTelegram: vi.fn() }))
-vi.mock('@/lib/notifications/email', () => ({ sendEmail: vi.fn() }))
 vi.mock('@/lib/notifications/log', () => ({
   writeNotificationLog: vi.fn(),
   updateNotificationLog: vi.fn(),
-}))
-vi.mock('@react-email/render', () => ({ render: vi.fn(() => '<html>mock</html>') }))
-vi.mock('@/lib/notifications/templates/LeadNotificationEmail', () => ({
-  LeadNotificationEmail: vi.fn(() => null),
-}))
-vi.mock('@/lib/notifications/templates/EmergencyNotificationEmail', () => ({
-  EmergencyNotificationEmail: vi.fn(() => null),
 }))
 vi.mock('@/lib/supabase/service', () => ({
   createServiceRoleClient: () => ({ from: vi.fn() }),
@@ -32,8 +24,6 @@ vi.mock('@/inngest/client', () => ({
 // Import mocked modules after all vi.mock calls
 import { sendSms } from '@/lib/notifications/sms'
 import { sendWhatsApp } from '@/lib/notifications/whatsapp'
-import { sendEmail } from '@/lib/notifications/email'
-import { writeNotificationLog, updateNotificationLog } from '@/lib/notifications/log'
 
 // Import the pure computeChannels function under test (WR-02: exercises real dispatch logic)
 import { computeChannels } from '@/inngest/functions/retell-notify-dispatch'
@@ -41,9 +31,6 @@ import type { NotificationSettings, CallIntent } from '@/types/database'
 
 const mockSendSms = vi.mocked(sendSms)
 const mockSendWhatsApp = vi.mocked(sendWhatsApp)
-const mockSendEmail = vi.mocked(sendEmail)
-const mockWriteNotificationLog = vi.mocked(writeNotificationLog)
-const mockUpdateNotificationLog = vi.mocked(updateNotificationLog)
 
 /** Helper to build a minimal NotificationSettings-compatible object. */
 function makeSettings(
@@ -59,8 +46,6 @@ function makeSettings(
       | 'notify_sms_enabled'
       | 'notify_whatsapp_enabled'
       | 'notify_telegram_enabled'
-      | 'notify_email_enabled'
-      | 'email_address'
     >
   > = {}
 ): Pick<
@@ -74,8 +59,6 @@ function makeSettings(
   | 'notify_sms_enabled'
   | 'notify_whatsapp_enabled'
   | 'notify_telegram_enabled'
-  | 'notify_email_enabled'
-  | 'email_address'
 > {
   return {
     sms_number: null,
@@ -88,9 +71,6 @@ function makeSettings(
     notify_sms_enabled: true,
     notify_whatsapp_enabled: true,   // existing Phase 5 tests expect all configured channels to fire
     notify_telegram_enabled: true,   // existing Phase 5 tests expect all configured channels to fire
-    // Email channel defaults (Phase 13): disabled by default so existing tests are unaffected
-    notify_email_enabled: false,
-    email_address: null,
     ...overrides,
   }
 }
@@ -98,7 +78,6 @@ function makeSettings(
 /**
  * Phase 10: Helper to build a settings object that includes the new enable-flag fields.
  * Defaults match the migration: SMS=true (opt-out), WhatsApp=false, Telegram=false.
- * Phase 13: also includes email channel fields (disabled by default).
  */
 function makeSettingsWithEnableFlags(
   overrides: Partial<
@@ -113,8 +92,6 @@ function makeSettingsWithEnableFlags(
       | 'notify_sms_enabled'
       | 'notify_whatsapp_enabled'
       | 'notify_telegram_enabled'
-      | 'notify_email_enabled'
-      | 'email_address'
     >
   > = {}
 ): Pick<
@@ -128,8 +105,6 @@ function makeSettingsWithEnableFlags(
   | 'notify_sms_enabled'
   | 'notify_whatsapp_enabled'
   | 'notify_telegram_enabled'
-  | 'notify_email_enabled'
-  | 'email_address'
 > {
   return {
     sms_number: null,
@@ -141,9 +116,6 @@ function makeSettingsWithEnableFlags(
     notify_sms_enabled: true,    // D-02: SMS opt-out default
     notify_whatsapp_enabled: false, // D-02: WhatsApp opt-in default
     notify_telegram_enabled: false, // D-02: Telegram opt-in default
-    // Email channel defaults (Phase 13): disabled by default so existing tests are unaffected
-    notify_email_enabled: false,
-    email_address: null,
     ...overrides,
   }
 }
@@ -161,14 +133,14 @@ describe('computeChannels — channel dispatch matrix', () => {
       telegram_chat_id: '12345',
     })
     const result = computeChannels(settings, 'no_action')
-    expect(result).toEqual({ shouldSendSms: false, shouldSendWhatsApp: false, shouldSendTelegram: false, shouldSendEmail: false })
+    expect(result).toEqual({ shouldSendSms: false, shouldSendWhatsApp: false, shouldSendTelegram: false })
   })
 
   // D-03: null intent → nothing fires
   it('null intent → all channels skipped', () => {
     const settings = makeSettings({ sms_number: '+15551111111' })
     const result = computeChannels(settings, null)
-    expect(result).toEqual({ shouldSendSms: false, shouldSendWhatsApp: false, shouldSendTelegram: false, shouldSendEmail: false })
+    expect(result).toEqual({ shouldSendSms: false, shouldSendWhatsApp: false, shouldSendTelegram: false })
   })
 
   // D-05: lead with all channels configured and default prefs → all fire
@@ -179,7 +151,7 @@ describe('computeChannels — channel dispatch matrix', () => {
       telegram_chat_id: '12345',
     })
     const result = computeChannels(settings, 'lead')
-    expect(result).toEqual({ shouldSendSms: true, shouldSendWhatsApp: true, shouldSendTelegram: true, shouldSendEmail: false })
+    expect(result).toEqual({ shouldSendSms: true, shouldSendWhatsApp: true, shouldSendTelegram: true })
   })
 
   // CR-04: notify_on_lead=false → SMS, WhatsApp, and Telegram all suppressed for lead
@@ -191,7 +163,7 @@ describe('computeChannels — channel dispatch matrix', () => {
       notify_on_lead: false,
     })
     const result = computeChannels(settings, 'lead')
-    expect(result).toEqual({ shouldSendSms: false, shouldSendWhatsApp: false, shouldSendTelegram: false, shouldSendEmail: false })
+    expect(result).toEqual({ shouldSendSms: false, shouldSendWhatsApp: false, shouldSendTelegram: false })
   })
 
   // CR-04: notify_on_emergency=false → all channels suppressed for emergency
@@ -202,7 +174,7 @@ describe('computeChannels — channel dispatch matrix', () => {
       notify_on_emergency: false,
     })
     const result = computeChannels(settings, 'emergency')
-    expect(result).toEqual({ shouldSendSms: false, shouldSendWhatsApp: false, shouldSendTelegram: false, shouldSendEmail: false })
+    expect(result).toEqual({ shouldSendSms: false, shouldSendWhatsApp: false, shouldSendTelegram: false })
   })
 
   // D-06: info without opt-in → all channels skipped
@@ -214,7 +186,7 @@ describe('computeChannels — channel dispatch matrix', () => {
       notify_on_general_inquiry: false,
     })
     const result = computeChannels(settings, 'info')
-    expect(result).toEqual({ shouldSendSms: false, shouldSendWhatsApp: false, shouldSendTelegram: false, shouldSendEmail: false })
+    expect(result).toEqual({ shouldSendSms: false, shouldSendWhatsApp: false, shouldSendTelegram: false })
   })
 
   // D-06: info with opt-in → all configured channels fire
@@ -226,13 +198,13 @@ describe('computeChannels — channel dispatch matrix', () => {
       notify_on_general_inquiry: true,
     })
     const result = computeChannels(settings, 'info')
-    expect(result).toEqual({ shouldSendSms: true, shouldSendWhatsApp: true, shouldSendTelegram: true, shouldSendEmail: false })
+    expect(result).toEqual({ shouldSendSms: true, shouldSendWhatsApp: true, shouldSendTelegram: true })
   })
 
   // null settings → nothing fires (contractor has no notification config)
   it('null settings → all channels skipped', () => {
     const result = computeChannels(null, 'lead')
-    expect(result).toEqual({ shouldSendSms: false, shouldSendWhatsApp: false, shouldSendTelegram: false, shouldSendEmail: false })
+    expect(result).toEqual({ shouldSendSms: false, shouldSendWhatsApp: false, shouldSendTelegram: false })
   })
 
   // Partial config: only SMS number set → only SMS fires for lead
@@ -369,89 +341,54 @@ describe('Phase 10: channel enable flags', () => {
   })
 })
 
-// Phase 13: email dispatch step behavior tests (EMAIL-02, EMAIL-03, EMAIL-05)
-describe('email dispatch', () => {
-  beforeEach(() => {
-    vi.clearAllMocks()
+// Phase 14: Guard-restructure stubs (RED state — Plan 14-01 Task 3).
+// Both stubs FAIL until Plan 14-02 restructures the early-return guard in
+// retellNotifyDispatch so the bell write step runs independently of channel flags.
+//
+// Context (RESEARCH.md Pitfall 1): The current guard at line 148–151 of
+// retell-notify-dispatch.ts returns early when all channel flags are off,
+// which would block the bell write step for contractors with all channels disabled.
+// Plan 14-02 must split the guard: no_action/unknown → return early; valid intent
+// + all channels off → still run the bell step.
+describe('write-bell-notification guard', () => {
+  // Stub A: intent='lead' + all channel flags disabled → app_notifications insert IS called.
+  // Fails until Plan 14-02 restructures the early-return guard so valid intents always
+  // reach the write-bell-notification step, even when all channel flags are off.
+  it('intent=lead + all channels disabled → app_notifications insert IS called', async () => {
+    throw new Error('not implemented — implement in Plan 14-02')
+    // Expected after implementation:
+    // const mockInsert = vi.fn().mockResolvedValue({ error: null })
+    // const mockFrom = vi.fn(() => ({ insert: mockInsert }))
+    // vi.mocked(createServiceRoleClient).mockReturnValue({ from: mockFrom } as any)
+    //
+    // const settings = makeSettingsWithEnableFlags({
+    //   sms_number: null,
+    //   whatsapp_number: null,
+    //   telegram_chat_id: null,
+    //   notify_sms_enabled: false,
+    //   notify_whatsapp_enabled: false,
+    //   notify_telegram_enabled: false,
+    //   notify_on_lead: true,
+    // })
+    // // Invoke retellNotifyDispatch with intent='lead' + all channels off
+    // // Assert: the supabase insert mock was called with event_type='lead'
+    // expect(mockInsert).toHaveBeenCalledWith(
+    //   expect.objectContaining({ event_type: 'lead' })
+    // )
   })
 
-  // EMAIL-02 / EMAIL-05: shouldSendEmail=true + sendEmail success → pending log → sent log
-  it('shouldSendEmail=true and sendEmail succeeds → writeNotificationLog with channel=email, updateNotificationLog with status=sent', async () => {
-    const logId = 'log-email-001'
-    mockWriteNotificationLog.mockResolvedValue(logId)
-    mockSendEmail.mockResolvedValue({ success: true, messageId: 'msg_123' })
-    mockUpdateNotificationLog.mockResolvedValue(undefined)
-
-    // Simulate the send-email step logic directly
-    let capturedLogId: string | null = null
-    try {
-      capturedLogId = await mockWriteNotificationLog({
-        contractorId: 'ctr-1',
-        callId: 'call-1',
-        channel: 'email',
-        recipient: 'contractor@example.com',
-        message: 'New lead from +15551234567 — AC repair',
-      })
-      const result = await mockSendEmail({
-        to: 'contractor@example.com',
-        subject: 'New lead from +15551234567 — AC repair',
-        html: '<html>mock</html>',
-      })
-      if (!result.success) throw new Error(result.error || 'sendEmail failed')
-      await mockUpdateNotificationLog(capturedLogId, { status: 'sent', sentAt: new Date().toISOString() })
-    } catch {
-      if (capturedLogId) {
-        await mockUpdateNotificationLog(capturedLogId, { status: 'failed', error: 'error' })
-      }
-      throw new Error('should not throw on success')
-    }
-
-    expect(mockWriteNotificationLog).toHaveBeenCalledWith(
-      expect.objectContaining({ channel: 'email', recipient: 'contractor@example.com' })
-    )
-    expect(mockUpdateNotificationLog).toHaveBeenCalledWith(
-      logId,
-      expect.objectContaining({ status: 'sent' })
-    )
-  })
-
-  // EMAIL-05: shouldSendEmail=true + sendEmail failure → log updated to failed, step throws
-  it('shouldSendEmail=true and sendEmail fails → updateNotificationLog with status=failed, step re-throws', async () => {
-    const logId = 'log-email-002'
-    mockWriteNotificationLog.mockResolvedValue(logId)
-    mockSendEmail.mockResolvedValue({ success: false, error: 'Resend API error' })
-    mockUpdateNotificationLog.mockResolvedValue(undefined)
-
-    let threwError = false
-    let capturedLogId: string | null = null
-    try {
-      capturedLogId = await mockWriteNotificationLog({
-        contractorId: 'ctr-1',
-        callId: 'call-1',
-        channel: 'email',
-        recipient: 'contractor@example.com',
-        message: 'New lead from +15551234567 — AC repair',
-      })
-      const result = await mockSendEmail({
-        to: 'contractor@example.com',
-        subject: 'New lead from +15551234567 — AC repair',
-        html: '<html>mock</html>',
-      })
-      if (!result.success) throw new Error(result.error || 'sendEmail failed')
-    } catch (err: unknown) {
-      threwError = true
-      if (capturedLogId) {
-        await mockUpdateNotificationLog(capturedLogId, {
-          status: 'failed',
-          error: err instanceof Error ? err.message : String(err),
-        })
-      }
-    }
-
-    expect(threwError).toBe(true)
-    expect(mockUpdateNotificationLog).toHaveBeenCalledWith(
-      logId,
-      expect.objectContaining({ status: 'failed' })
-    )
+  // Stub B: intent='no_action' → app_notifications insert is NOT called.
+  // Fails until Plan 14-02 adds an intent guard to the write-bell-notification step
+  // so no_action calls never write a bell row.
+  it('intent=no_action → app_notifications insert is NOT called', async () => {
+    throw new Error('not implemented — implement in Plan 14-02')
+    // Expected after implementation:
+    // const mockInsert = vi.fn().mockResolvedValue({ error: null })
+    // const mockFrom = vi.fn(() => ({ insert: mockInsert }))
+    // vi.mocked(createServiceRoleClient).mockReturnValue({ from: mockFrom } as any)
+    //
+    // // Invoke retellNotifyDispatch with intent='no_action'
+    // // Assert: insert was NOT called (no bell row for no_action)
+    // expect(mockInsert).not.toHaveBeenCalled()
   })
 })
