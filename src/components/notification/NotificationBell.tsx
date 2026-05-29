@@ -7,8 +7,9 @@
  * Clicking opens a Radix Popover showing the 50 most recent notifications, a
  * "Mark all read" button, and an empty state when no notifications exist.
  *
- * Supabase Realtime subscription is mounted exclusively here — do NOT duplicate
- * useNotificationsSubscription in Sidebar.tsx or BottomTabBar.tsx (T-14-04-03).
+ * Supabase Realtime subscription is mounted once in DashboardProviders (not here)
+ * to avoid duplicate channel registrations when both Sidebar and BottomTabBar render
+ * this component simultaneously (T-14-04-03).
  *
  * Props:
  *   className — forwarded to the outermost wrapper div for layout positioning.
@@ -22,8 +23,6 @@ import {
 import { Bell } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
 import { useNotifications, useUnreadCount, useMarkAllRead } from '@/lib/query/client'
-import { useNotificationsSubscription } from '@/lib/realtime/notificationsSubscription'
-import { useContractor } from '@/contexts/ContractorContext'
 import { cn } from '@/lib/utils'
 import type { AppNotification } from '@/types/database'
 
@@ -65,12 +64,11 @@ function borderColorForEventType(
 /**
  * NotificationBell component.
  *
- * Mounts the Supabase Realtime subscription for live notification updates.
- * Must be rendered exactly once in the layout (T-14-04-03).
+ * Renders the bell icon, unread badge, and popover feed. Safe to render in
+ * multiple places (Sidebar + BottomTabBar) — the Realtime subscription is
+ * managed separately in DashboardProviders.
  */
 export function NotificationBell({ className }: NotificationBellProps) {
-  const { contractorId } = useContractor()
-
   // Queries
   const { data: notifications = [] } = useNotifications()
   const { data: unreadCount = 0 } = useUnreadCount()
@@ -78,8 +76,10 @@ export function NotificationBell({ className }: NotificationBellProps) {
   // Mutations
   const markAllRead = useMarkAllRead()
 
-  // Realtime subscription — mounted here and only here
-  useNotificationsSubscription(contractorId)
+  // Realtime subscription is mounted in DashboardProviders (exactly once per layout).
+  // Do NOT add useNotificationsSubscription here — Sidebar and BottomTabBar both
+  // render NotificationBell, so two instances would try to subscribe to the same
+  // channel name and crash with a "cannot add postgres_changes callbacks after subscribe()" error.
 
   // Badge display value: cap at 99+
   const badgeText = unreadCount > 99 ? '99+' : String(unreadCount)
