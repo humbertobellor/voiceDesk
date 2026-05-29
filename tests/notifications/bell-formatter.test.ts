@@ -54,49 +54,39 @@ function callFormatter(...args: any[]): any {
 describe('computeBellNotification — intent → event_type + title + body', () => {
   // Test 1: lead intent — event_type='lead', title='New lead — HVAC repair', body contains caller phone
   it("intent='lead' → event_type='lead', title contains service_type, body contains caller phone", () => {
-    throw new Error('not implemented — implement in Plan 14-02')
-    // Expected after implementation:
-    // const result = callFormatter('lead', '+15551234567', 'HVAC repair', 'Appointment booked')
-    // expect(result.event_type).toBe('lead')
-    // expect(result.title).toBe('New lead — HVAC repair')
-    // expect(result.body).toContain('+15551234567')
+    const result = callFormatter('lead', '+15551234567', 'HVAC repair', 'Appointment booked')
+    expect(result.event_type).toBe('lead')
+    expect(result.title).toBe('New lead — HVAC repair')
+    expect(result.body).toContain('+15551234567')
   })
 
   // Test 2: emergency intent — event_type='emergency', title starts with 'EMERGENCY:', body contains caller phone
   it("intent='emergency' → event_type='emergency', title starts with 'EMERGENCY:', body contains caller phone", () => {
-    throw new Error('not implemented — implement in Plan 14-02')
-    // Expected after implementation:
-    // const result = callFormatter('emergency', '+15559999999', 'gas smell', 'No appointment booked')
-    // expect(result.event_type).toBe('emergency')
-    // expect(result.title).toMatch(/^EMERGENCY:/)
-    // expect(result.body).toContain('+15559999999')
+    const result = callFormatter('emergency', '+15559999999', 'gas smell', 'No appointment booked')
+    expect(result.event_type).toBe('emergency')
+    expect(result.title).toMatch(/^EMERGENCY:/)
+    expect(result.body).toContain('+15559999999')
   })
 
   // Test 3: info intent — event_type='system', title='General inquiry from {phone}', body contains phone
   it("intent='info' → event_type='system', title='General inquiry from {phone}', body contains phone", () => {
-    throw new Error('not implemented — implement in Plan 14-02')
-    // Expected after implementation:
-    // const result = callFormatter('info', '+15550000000', 'General inquiry', 'No appointment booked')
-    // expect(result.event_type).toBe('system')
-    // expect(result.title).toBe('General inquiry from +15550000000')
-    // expect(result.body).toContain('+15550000000')
+    const result = callFormatter('info', '+15550000000', 'General inquiry', 'No appointment booked')
+    expect(result.event_type).toBe('system')
+    expect(result.title).toBe('General inquiry from +15550000000')
+    expect(result.body).toContain('+15550000000')
   })
 
   // Test 4: null intent — event_type='system', no throw (graceful null handling per Pitfall 6)
   it('intent=null → event_type=\'system\', does not throw', () => {
-    throw new Error('not implemented — implement in Plan 14-02')
-    // Expected after implementation:
-    // expect(() => callFormatter(null, '+15550000000', 'Unknown', 'No appointment booked')).not.toThrow()
-    // const result = callFormatter(null, '+15550000000', 'Unknown', 'No appointment booked')
-    // expect(result.event_type).toBe('system')
+    expect(() => callFormatter(null, '+15550000000', 'Unknown', 'No appointment booked')).not.toThrow()
+    const result = callFormatter(null, '+15550000000', 'Unknown', 'No appointment booked')
+    expect(result.event_type).toBe('system')
   })
 
   // Test 5: no_action intent — event_type='system', no throw (graceful per Pitfall 6)
   it("intent='no_action' → event_type='system', does not throw", () => {
-    throw new Error('not implemented — implement in Plan 14-02')
-    // Expected after implementation:
-    // expect(() => callFormatter('no_action', '+15550000000', 'Unknown', 'No appointment booked')).not.toThrow()
-    // const result = callFormatter('no_action', '+15550000000', 'Unknown', 'No appointment booked')
-    // expect(result.event_type).toBe('system')
+    expect(() => callFormatter('no_action', '+15550000000', 'Unknown', 'No appointment booked')).not.toThrow()
+    const result = callFormatter('no_action', '+15550000000', 'Unknown', 'No appointment booked')
+    expect(result.event_type).toBe('system')
   })
 })

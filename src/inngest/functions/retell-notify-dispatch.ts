@@ -101,6 +101,58 @@ export function computeChannels(
   return { shouldSendSms, shouldSendWhatsApp, shouldSendTelegram, shouldSendEmail }
 }
 
+/** Valid event_type values for app_notifications (mirrors DB CHECK constraint). */
+export type BellEventType = 'lead' | 'emergency' | 'system'
+
+/** Row shape for an app_notifications bell notification. */
+export interface BellNotification {
+  event_type: BellEventType
+  title: string
+  body: string
+}
+
+/**
+ * Pure function that formats a call event into a bell notification row for
+ * app_notifications. Maps the five CallIntent cases to the three allowed
+ * event_type values and constructs title/body strings.
+ *
+ * Extracted to allow unit testing without the Inngest runtime (matches the
+ * computeChannels pattern above).
+ *
+ * @param intent            - Classified call intent (null / no_action / unknown → system).
+ * @param callerPhone       - Caller's phone number string (may be 'Unknown').
+ * @param serviceType       - Service requested or call summary.
+ * @param appointmentStatus - Booking status string for the lead body line.
+ * @returns BellNotification with event_type, title, and body. Never throws.
+ */
+export function computeBellNotification(
+  intent: CallIntent | null,
+  callerPhone: string,
+  serviceType: string,
+  appointmentStatus: string
+): BellNotification {
+  if (intent === 'emergency') {
+    return {
+      event_type: 'emergency',
+      title: `EMERGENCY: New call from ${callerPhone}`,
+      body: `${callerPhone} • ${serviceType}`,
+    }
+  }
+  if (intent === 'lead') {
+    return {
+      event_type: 'lead',
+      title: `New lead — ${serviceType}`,
+      body: `${callerPhone} • ${appointmentStatus}`,
+    }
+  }
+  // intent='info', null, 'no_action', 'unknown', or any other value → system
+  return {
+    event_type: 'system',
+    title: `General inquiry from ${callerPhone}`,
+    body: `${callerPhone} • ${serviceType}`,
+  }
+}
+
 export const retellNotifyDispatch = inngest.createFunction(
   {
     id: 'retell-notify-dispatch',
