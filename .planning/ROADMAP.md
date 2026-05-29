@@ -540,12 +540,12 @@ Plans:
   3. On success, the status display updates to show the newly registered webhook URL without a page reload
   4. On failure (e.g. network error, invalid token), an error message is displayed inline — the page does not crash and the previous status remains visible
 
-**Plans:** 2 plans
+**Plans:** 1/2 plans executed
 
 Plans:
 **Wave 1**
 
-- [ ] 15-01-PLAN.md — Wave 0: RED test stubs (server action + component card) + .env.example TELEGRAM_WEBHOOK_URL entry
+- [x] 15-01-PLAN.md — Wave 0: RED test stubs (server action + component card) + .env.example TELEGRAM_WEBHOOK_URL entry
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
@@ -580,5 +580,5 @@ Plans:
 | 12. Notification Foundation | 3/3 | Complete    | 2026-05-25 |
 | 13. Email Notifications | 4/4 | Complete    | 2026-05-25 |
 | 14. In-App Notification Bell | 5/5 | Complete   | 2026-05-29 |
-| 15. Telegram Activation | 0/2 | Not started | - |
+| 15. Telegram Activation | 1/2 | In Progress|  |
 | 16. Design System Sweep | 0/TBD | Not started | - |
