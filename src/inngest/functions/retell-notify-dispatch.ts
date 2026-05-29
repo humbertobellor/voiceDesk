@@ -215,10 +215,16 @@ export const retellNotifyDispatch = inngest.createFunction(
     // Preference fields default to true for lead/emergency (opt-out model) and false for info (opt-in).
     const { shouldSendSms, shouldSendWhatsApp, shouldSendTelegram, shouldSendEmail } = computeChannels(settings, intent)
 
+    // D-04/BELL-01: hasValidIntent determines whether a bell row should be written.
+    // Bell writes occur for lead/emergency/info regardless of channel-enable flags.
+    const hasValidIntent = intent === 'lead' || intent === 'emergency' || intent === 'info'
+
     // T-13-03-02: Guard must check ALL four channels. Omitting shouldSendEmail would cause
     // email-only contractors (no SMS/WhatsApp/Telegram) to silently receive no notifications.
-    if (!shouldSendSms && !shouldSendWhatsApp && !shouldSendTelegram && !shouldSendEmail) {
-      // intent is no_action, or all channels are disabled for this intent
+    // Restructured: only exit early when there is no valid intent AND all channels are off.
+    // Valid-intent calls always reach write-bell-notification even with all channels disabled.
+    if (!hasValidIntent && !shouldSendSms && !shouldSendWhatsApp && !shouldSendTelegram && !shouldSendEmail) {
+      // intent is no_action/unknown AND all channels are disabled — nothing to do
       return
     }
 
@@ -233,6 +239,31 @@ export const retellNotifyDispatch = inngest.createFunction(
     } else if (lead?.booking_conflict) {
       bookingStatus = 'Booking conflict — please call back'
     }
+
+    // BELL-01/BELL-04: Write bell row to app_notifications for every valid call intent.
+    // This step is unconditional — runs before channel dispatch regardless of channel flags.
+    // no_action/unknown calls are skipped via the hasValidIntent guard inside the step.
+    // T-14-02-01: contractor_id sourced from function scope (event.data), never from webhook.
+    // T-14-02-02: computeBellNotification only returns CHECK-valid event_type values.
+    await step.run('write-bell-notification', async () => {
+      if (!hasValidIntent) {
+        // no_action/unknown — no bell row (invalid event_type for DB CHECK constraint)
+        return
+      }
+      const bell = computeBellNotification(intent, callerPhone, serviceRequested, bookingStatus)
+      const db = createServiceRoleClient()
+      const { error } = await db.from('app_notifications').insert({
+        contractor_id: contractorId,
+        event_type: bell.event_type,
+        title: bell.title,
+        body: bell.body,
+        is_read: false,
+      })
+      if (error) {
+        // Throw so Inngest retries this step (T-14-02-03: up to 5 retries)
+        throw new Error(`[write-bell-notification] DB insert failed: ${error.message}`)
+      }
+    })
 
     // EMRG-03: Emergency SMS body includes "EMERGENCY" prominently
     // NOTIF-01: SMS body for non-emergency: "New call from [phone] — [issue]. [booking status]."
