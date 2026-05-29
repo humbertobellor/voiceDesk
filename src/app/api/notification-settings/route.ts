@@ -17,7 +17,7 @@ import { parsePhoneNumber, isValidPhoneNumber } from 'libphonenumber-js'
 import { createSupabaseServer } from '@/lib/supabase/server'
 import { createServiceRoleClient } from '@/lib/supabase/service'
 
-/** Zod schema for the PATCH request body. All 8 notification settings fields. */
+/** Zod schema for the PATCH request body. All notification settings fields including email. */
 const updateNotificationSettingsSchema = z.object({
   sms_number: z.string().nullable().optional(),
   whatsapp_number: z.string().nullable().optional(),
@@ -27,6 +27,9 @@ const updateNotificationSettingsSchema = z.object({
   notify_on_lead: z.boolean().optional(),
   notify_on_emergency: z.boolean().optional(),
   notify_on_general_inquiry: z.boolean().optional(),
+  // EMAIL-01: email notification channel fields
+  email_address: z.string().email().nullable().optional(),
+  notify_email_enabled: z.boolean().optional(),
 })
 
 /**
@@ -128,6 +131,9 @@ export async function PATCH(req: Request) {
   if (updates.notify_on_lead !== undefined) updatePayload.notify_on_lead = updates.notify_on_lead
   if (updates.notify_on_emergency !== undefined) updatePayload.notify_on_emergency = updates.notify_on_emergency
   if (updates.notify_on_general_inquiry !== undefined) updatePayload.notify_on_general_inquiry = updates.notify_on_general_inquiry
+  // EMAIL-01: email notification channel fields
+  if (updates.email_address !== undefined) updatePayload.email_address = updates.email_address
+  if (updates.notify_email_enabled !== undefined) updatePayload.notify_email_enabled = updates.notify_email_enabled
 
   // 6. DB write — filter by contractor.id from session (defense-in-depth with RLS)
   const { data, error: updateErr } = await serviceClient
