@@ -14,7 +14,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { parsePhoneNumber } from 'libphonenumber-js'
-import { MessageSquare, MessageCircle, Send, Loader2 } from 'lucide-react'
+import { MessageSquare, MessageCircle, Send, Loader2, Mail } from 'lucide-react'
 import {
   useNotificationSettings,
   useUpdateNotificationSettings,
@@ -41,6 +41,8 @@ interface FormData {
   notify_on_lead: boolean
   notify_on_emergency: boolean
   notify_on_general_inquiry: boolean
+  email_address: string
+  notify_email_enabled: boolean
 }
 
 interface PhoneErrors {
@@ -71,6 +73,8 @@ function settingsToFormData(s: NotificationSettings): FormData {
     notify_on_lead: s.notify_on_lead,
     notify_on_emergency: s.notify_on_emergency,
     notify_on_general_inquiry: s.notify_on_general_inquiry,
+    email_address: s.email_address ?? '',
+    notify_email_enabled: s.notify_email_enabled,
   }
 }
 
@@ -184,6 +188,8 @@ export function NotificationSettingsForm({ initialSettings }: NotificationSettin
         notify_on_lead: formData.notify_on_lead,
         notify_on_emergency: formData.notify_on_emergency,
         notify_on_general_inquiry: formData.notify_on_general_inquiry,
+        email_address: formData.email_address.trim() || null,
+        notify_email_enabled: formData.notify_email_enabled,
       })
       setFeedback({ type: 'success', message: 'Settings saved.' })
       // Auto-dismiss success banner after 3 s
@@ -229,13 +235,33 @@ export function NotificationSettingsForm({ initialSettings }: NotificationSettin
 
   return (
     <form onSubmit={handleSubmit} noValidate>
-      {/* ── Page header ─────────────────────────────────────────────────── */}
-      <div className="mb-6">
-        <h1 className="text-xl font-semibold text-[#F8FAFC] mb-1">Notifications</h1>
-        <p className="text-sm text-[#94A3B8]">
-          Configure how and where you receive call alerts.
-        </p>
-        <div className="border-b border-[#334155] mt-6" />
+      {/* ── Section 0: Email ─────────────────────────────────────────────── */}
+      <div className={cardClass}>
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <Mail className="w-4 h-4 text-[#64748B]" />
+            <span className="text-sm font-semibold text-[#F8FAFC]">Email Notifications</span>
+          </div>
+          <label className="flex items-center gap-2 cursor-pointer" htmlFor="notify_email_enabled">
+            <span className="text-sm text-[#94A3B8]">Enable email alerts</span>
+            <input
+              id="notify_email_enabled"
+              type="checkbox"
+              className={checkboxClass}
+              checked={formData.notify_email_enabled}
+              onChange={(e) => handleFieldChange('notify_email_enabled', e.target.checked)}
+            />
+          </label>
+        </div>
+        <input
+          type="email"
+          value={formData.email_address}
+          onChange={(e) => handleFieldChange('email_address', e.target.value)}
+          placeholder="your@email.com"
+          aria-label="Email address"
+          className={inputClass}
+          disabled={!formData.notify_email_enabled}
+        />
       </div>
 
       {/* ── Section 1: SMS ───────────────────────────────────────────────── */}
