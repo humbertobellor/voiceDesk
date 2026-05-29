@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { createBrowserClient } from '@supabase/ssr'
 import { useContractor } from '@/contexts/ContractorContext'
-import type { Call, Lead, ContractorSettings, LeadStatus, TradeType, NotificationSettings } from '@/types/database'
+import type { Call, Lead, ContractorSettings, LeadStatus, TradeType, NotificationSettings, AppNotification } from '@/types/database'
 
 const supabase = createBrowserClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -408,6 +408,102 @@ export function useTelegramUnlink() {
       if (contractorId) {
         queryClient.invalidateQueries({ queryKey: ['notification-settings', contractorId] })
       }
+    },
+  })
+}
+
+// ============ NOTIFICATION BELL HOOKS ============
+
+/**
+ * Fetches the 50 most recent app_notifications for the authenticated contractor,
+ * ordered by created_at descending.
+ *
+ * Query is disabled until contractorId is available. Uses the browser Supabase
+ * client (anon key); RLS enforces row isolation via app_notifications_select_own.
+ *
+ * @returns UseQueryResult with AppNotification array.
+ */
+export function useNotifications() {
+  const { contractorId } = useContractor()
+
+  return useQuery({
+    queryKey: ['notifications', contractorId],
+    queryFn: async (): Promise<AppNotification[]> => {
+      if (!contractorId) throw new Error('No contractor ID')
+
+      const { data, error } = await supabase
+        .from('app_notifications')
+        .select('*')
+        .eq('contractor_id', contractorId)
+        .order('created_at', { ascending: false })
+        .limit(50)
+
+      if (error) throw error
+      return (data ?? []) as AppNotification[]
+    },
+    enabled: !!contractorId,
+  })
+}
+
+/**
+ * Returns the count of unread notifications for the authenticated contractor.
+ *
+ * Uses a HEAD-only query (count: 'exact', head: true) to avoid fetching rows.
+ * Optimistically updated to 0 on mark-all-read via useMarkAllRead's onMutate.
+ *
+ * @returns UseQueryResult with unread count as number.
+ */
+export function useUnreadCount() {
+  const { contractorId } = useContractor()
+
+  return useQuery({
+    queryKey: ['notifications-unread', contractorId],
+    queryFn: async (): Promise<number> => {
+      if (!contractorId) throw new Error('No contractor ID')
+
+      const { count, error } = await supabase
+        .from('app_notifications')
+        .select('*', { count: 'exact', head: true })
+        .eq('contractor_id', contractorId)
+        .eq('is_read', false)
+
+      if (error) throw error
+      return count ?? 0
+    },
+    enabled: !!contractorId,
+  })
+}
+
+/**
+ * Mutation that PATCHes /api/notifications/mark-all-read to mark all unread
+ * notifications as read for the authenticated contractor.
+ *
+ * Applies an optimistic update (sets unread count to 0 immediately), then
+ * invalidates both the notifications list and unread count on settle.
+ *
+ * @returns UseMutationResult.
+ */
+export function useMarkAllRead() {
+  const queryClient = useQueryClient()
+  const { contractorId } = useContractor()
+
+  return useMutation({
+    mutationFn: async (): Promise<void> => {
+      const response = await fetch('/api/notifications/mark-all-read', {
+        method: 'PATCH',
+      })
+      if (!response.ok) {
+        const text = await response.text()
+        throw new Error(`Failed to mark notifications as read: ${text}`)
+      }
+    },
+    onMutate: () => {
+      // Optimistic update: set unread count to 0 immediately
+      queryClient.setQueryData(['notifications-unread', contractorId], 0)
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['notifications', contractorId] })
+      queryClient.invalidateQueries({ queryKey: ['notifications-unread', contractorId] })
     },
   })
 }
