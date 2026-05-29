@@ -417,7 +417,7 @@ Plans:
 
 - [x] **Phase 12: Notification Foundation** - DB migrations (app_notifications + email columns) + TypeScript types + email lib (completed 2026-05-25)
 - [x] **Phase 13: Email Notifications** - Email channel in Inngest dispatch + payment alert email + API schema extension (completed 2026-05-25)
-- [ ] **Phase 14: In-App Notification Bell** - Inngest write step + React Query hooks + Supabase Realtime + NotificationBell UI
+- [x] **Phase 14: In-App Notification Bell** - Inngest write step + React Query hooks + Supabase Realtime + NotificationBell UI (completed 2026-05-29)
 - [ ] **Phase 15: Telegram Activation** - Server action (activateTelegramWebhook) + settings UI card with status display
 - [ ] **Phase 16: Design System Sweep** - Wolknitive token extraction + globals.css @theme block + full component sweep
 
@@ -500,14 +500,14 @@ Plans:
   4. Notifications written during call processing remain visible in the feed after browser close and reopen — they are fetched from `app_notifications` on mount
   5. The Notification Settings page includes an email address input field and an "Enable email alerts" toggle — saving the form persists `notify_email_enabled` and `email_address` to `notification_settings`
 
-**Plans:** 5 plans
+**Plans:** 5/5 plans complete
 
 Plans:
-- [ ] 14-01-PLAN.md — Install @radix-ui/react-popover + scaffold RED test stubs (bell-formatter, mark-all-read)
-- [ ] 14-02-PLAN.md — TDD: computeBellNotification() + write-bell-notification Inngest step (early-return guard restructured)
-- [ ] 14-03-PLAN.md — TDD: PATCH /api/notifications/mark-all-read + extend notification-settings Zod schema with email fields
-- [ ] 14-04-PLAN.md — React Query hooks (useNotifications, useUnreadCount, useMarkAllRead) + Supabase Realtime hook + NotificationBell component
-- [ ] 14-05-PLAN.md — Wire NotificationBell into Sidebar + BottomTabBar + NotificationSettingsForm Email card + human UAT
+- [x] 14-01-PLAN.md — Install @radix-ui/react-popover + scaffold RED test stubs (bell-formatter, mark-all-read)
+- [x] 14-02-PLAN.md — TDD: computeBellNotification() + write-bell-notification Inngest step (early-return guard restructured)
+- [x] 14-03-PLAN.md — TDD: PATCH /api/notifications/mark-all-read + extend notification-settings Zod schema with email fields
+- [x] 14-04-PLAN.md — React Query hooks (useNotifications, useUnreadCount, useMarkAllRead) + Supabase Realtime hook + NotificationBell component
+- [x] 14-05-PLAN.md — Wire NotificationBell into Sidebar + BottomTabBar + NotificationSettingsForm Email card + human UAT
 
 **Wave dependency notes:**
 
@@ -539,7 +539,11 @@ Plans:
   3. On success, the status display updates to show the newly registered webhook URL without a page reload
   4. On failure (e.g. network error, invalid token), an error message is displayed inline — the page does not crash and the previous status remains visible
 
-**Plans:** TBD
+**Plans:** 2 plans
+
+Plans:
+- [ ] 15-01-PLAN.md — Wave 0: RED test stubs (server action + component card) + .env.example TELEGRAM_WEBHOOK_URL entry
+- [ ] 15-02-PLAN.md — activateTelegramWebhook() server action (GREEN) + page.tsx getWebhookInfo on load + NotificationSettingsForm webhook card + human UAT
 **UI hint:** yes
 
 ---
@@ -568,6 +572,6 @@ Plans:
 |-------|----------------|--------|-----------|
 | 12. Notification Foundation | 3/3 | Complete    | 2026-05-25 |
 | 13. Email Notifications | 4/4 | Complete    | 2026-05-25 |
-| 14. In-App Notification Bell | 0/5 | Planned | - |
-| 15. Telegram Activation | 0/TBD | Not started | - |
+| 14. In-App Notification Bell | 5/5 | Complete   | 2026-05-29 |
+| 15. Telegram Activation | 0/2 | Not started | - |
 | 16. Design System Sweep | 0/TBD | Not started | - |
