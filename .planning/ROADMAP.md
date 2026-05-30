@@ -571,12 +571,27 @@ Plans:
 **Plans:** 6 plans
 
 Plans:
+**Wave 1**
+
 - [ ] 16-01-PLAN.md — Token infrastructure: globals.css @theme block + Bogart fonts + layout.tsx + delete tailwind.config.ts
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
 - [ ] 16-02-PLAN.md — Playwright BEFORE snapshots for 5 key pages (before sweep)
+
+**Wave 3** *(blocked on Wave 2 completion)*
+
 - [ ] 16-03-PLAN.md — Sweep auth components + notification components + dashboard nav (8 files)
 - [ ] 16-04-PLAN.md — Sweep auth pages + pricing + dashboard layout + connect-calendar (8 files)
 - [ ] 16-05-PLAN.md — Sweep dashboard settings pages + data pages (9 files)
+
+**Wave 4** *(blocked on Wave 3 completion)*
+
 - [ ] 16-06-PLAN.md — Global hex audit + D-16 manual review + build + regression tests + AFTER snapshots + human sign-off
+
+**Cross-cutting constraints:**
+
+- No emoji, no gradient classes introduced
 
 **UI hint:** yes
 
