@@ -568,12 +568,12 @@ Plans:
   4. `npm run build` exits 0 with no TypeScript or Tailwind errors
   5. All 15 v1.0 regression tests pass in `tests/regression-v1-smoke.spec.ts` — no regressions introduced by the token sweep
 
-**Plans:** 6 plans
+**Plans:** 1/6 plans executed
 
 Plans:
 **Wave 1**
 
-- [ ] 16-01-PLAN.md — Token infrastructure: globals.css @theme block + Bogart fonts + layout.tsx + delete tailwind.config.ts
+- [x] 16-01-PLAN.md — Token infrastructure: globals.css @theme block + Bogart fonts + layout.tsx + delete tailwind.config.ts
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
@@ -605,4 +605,4 @@ Plans:
 | 13. Email Notifications | 4/4 | Complete    | 2026-05-25 |
 | 14. In-App Notification Bell | 5/5 | Complete   | 2026-05-29 |
 | 15. Telegram Activation | 2/2 | Complete   | 2026-05-30 |
-| 16. Design System Sweep | 0/6 | Not started | - |
+| 16. Design System Sweep | 1/6 | In Progress|  |
