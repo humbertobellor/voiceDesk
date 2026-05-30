@@ -186,18 +186,21 @@ Source: CONTEXT.md D-15; tailwind.config.ts existing palette mapping.
 
 ## Spacing Scale
 
+Active scale for this phase — standard 8-point values only:
+
 | Token | CSS Variable | Value | Tailwind Class | Usage |
 |-------|-------------|-------|----------------|-------|
 | space-1 | `--space-1` | 4px | `gap-space-1` / `p-space-1` | Icon gaps, inline padding |
 | space-2 | `--space-2` | 8px | `gap-space-2` / `p-space-2` | Compact element spacing |
-| space-3 | `--space-3` | 12px | `gap-space-3` / `p-space-3` | Form field internal padding |
 | space-4 | `--space-4` | 16px | `gap-space-4` / `p-space-4` | Default element spacing |
 | space-5 | `--space-5` | 24px | `gap-space-5` / `p-space-5` | Section padding |
 | space-6 | `--space-6` | 32px | `gap-space-6` / `p-space-6` | Layout gaps |
 | space-7 | `--space-7` | 48px | `gap-space-7` / `p-space-7` | Major section breaks |
 | space-8 | `--space-8` | 64px | `gap-space-8` / `p-space-8` | Page-level spacing |
-| space-9 | `--space-9` | 96px | `gap-space-9` | Hero sections |
-| space-10 | `--space-10` | 144px | `gap-space-10` | Max-width centering margins |
+
+Note: Full Wolknitive spacing scale (including 12px `space-3`, 96px `space-9`, 144px `space-10`)
+is defined in `@theme {}` as infrastructure. Spacing tokens are NOT swept in components this
+phase (CONTEXT.md D-13). Active scale above is {4, 8, 16, 24, 32, 48, 64}px only.
 
 **Sweep scope:** Spacing tokens are DEFINED in `@theme {}` but existing `p-*`, `rounded-*`
 Tailwind classes in components are NOT replaced this phase (D-13). Tokens available for
@@ -215,26 +218,24 @@ Source: colors_and_type.css; CONTEXT.md D-13.
 
 | Role | Font | Token | Applied To |
 |------|------|-------|-----------|
-| Display | Bogart (wt 300–700) | `--font-display` / `font-display` | Auth page h1, pricing page headings |
-| Body | Bogart (wt 400) | `--font-body` / `font-body` | Marketing/auth prose paragraphs |
-| UI | Inter Tight (wt 400/500/600) | `--font-ui` / `font-ui` | Nav, buttons, form labels, table cells, all dashboard UI |
-| Mono | JetBrains Mono (wt 400/500) | `--font-mono` / `font-mono` | Phone numbers, call durations, numeric counts, code |
+| Display | Bogart — active weights: 400, 600 | `--font-display` / `font-display` | Auth page h1, pricing page headings |
+| Body | Bogart — active weight: 400 | `--font-body` / `font-body` | Marketing/auth prose paragraphs |
+| UI | Inter Tight — active weights: 400, 500 | `--font-ui` / `font-ui` | Nav, buttons, form labels, table cells, all dashboard UI |
+| Mono | JetBrains Mono — active weight: 400 | `--font-mono` / `font-mono` | Phone numbers, call durations, numeric counts, code |
 
-### Type Scale (defined, not swept in component classes this phase)
+### Type Scale — Active Sizes This Phase
 
-| Token | Size | Usage |
-|-------|------|-------|
-| `--fs-xs` | 12px | Meta labels, timestamps |
-| `--fs-sm` | 14px | Secondary UI text, table cells |
-| `--fs-base` | 16px | Body copy, form inputs |
-| `--fs-md` | 18px | Sub-headings, card titles |
-| `--fs-lg` | 22px | Section headings |
-| `--fs-xl` | 28px | Page headings |
-| `--fs-2xl` | 36px | Auth page h1 |
-| `--fs-3xl` | 48px | Marketing display |
+Only 4 sizes are actively applied in components this phase:
 
-Active sizes for UI (Inter Tight): 12px, 14px, 16px (existing `text-xs/sm/base` preserved).
-Active sizes for headings (Bogart): 28px (`text-fs-xl`) on auth pages, 36px on pricing page.
+| Size | Usage |
+|------|-------|
+| 14px | UI labels, table cells, form labels, help text (Inter Tight, dashboard) |
+| 16px | Base body copy, form inputs (Inter Tight) |
+| 28px | Page headings (Bogart, `text-fs-xl`) |
+| 48px | Marketing/pricing display headings (Bogart, `text-fs-3xl`) |
+
+Note: Full token scale (`--fs-xs` through `--fs-5xl`) is defined in `@theme {}` as
+infrastructure but NOT swept in component files this phase (CONTEXT.md D-12).
 
 ### Line Heights
 
@@ -245,15 +246,17 @@ Active sizes for headings (Bogart): 28px (`text-fs-xl`) on auth pages, 36px on p
 | `--lh-normal` | 1.5 | Body copy, UI text |
 | `--lh-loose` | 1.7 | Long prose (pricing page) |
 
-### Font Weights
+### Font Weights — Active Per Family
 
-| Font | Weights Loaded | Usage |
+| Font | Active Weights | Usage |
 |------|---------------|-------|
-| Bogart | 300, 400, 500, 600, 700 (10 faces — regular + italic per weight) | Display headlines use 600; body prose uses 400 |
-| Inter Tight | 400, 500, 600 | Buttons use 500; nav/labels use 400; emphasis uses 600 |
-| JetBrains Mono | 400, 500 | Phone numbers/data use 400 |
+| Bogart | 400 (body prose) + 600 (display headings) | 18 faces loaded via next/font/local; only 400 and 600 actively applied |
+| Inter Tight | 400 (base) + 500 (emphasis labels, buttons) | 600 loaded but not actively used this phase |
+| JetBrains Mono | 400 only | Single active weight for all numeric/phone display |
 
-Discretion applied: weights per CONTEXT.md discretion item + Wolknitive console kit convention.
+Note: Bogart has 18 font-face declarations (5 weights × regular + italic + additional styles)
+to support the full trial font. Only weights 400 and 600 are actively applied in component
+classes this phase.
 
 ### Digit Watermark Workaround
 
@@ -333,12 +336,12 @@ These rules must be enforced during the D-16 manual review pass:
 
 - Page background: `bg-bg`
 - Card/form panel: `bg-bg-elevated` with `shadow-1` (warm-tinted shadow)
-- Headings: `font-display` at `--fs-2xl` (36px), weight 600, `text-fg-1`
-- Body copy: `font-body` at `--fs-base` (16px), `text-fg-2`
-- Form labels: `font-ui` at `--fs-sm` (14px), weight 500, `text-fg-1`
-- Input fields: `font-ui` at `--fs-base`, `bg-bg`, `border-rule`, focus `border-accent`
+- Headings: `font-display` at 28px (`text-fs-xl`), weight 600, `text-fg-1`
+- Body copy: `font-body` at 16px, `text-fg-2`
+- Form labels: `font-ui` at 14px, weight 500, `text-fg-1`
+- Input fields: `font-ui` at 16px, `bg-bg`, `border-rule`, focus `border-accent`
 - Primary CTA button: `bg-accent text-fg-on-dark font-ui` weight 500
-- Error messages: `text-danger font-ui` at `--fs-sm`
+- Error messages: `text-danger font-ui` at 14px
 
 ### Dashboard Pages (calls, leads, settings, notifications)
 
@@ -348,16 +351,16 @@ These rules must be enforced during the D-16 manual review pass:
 - Phone number cells: `font-mono text-fg-1`
 - Duration/count cells: `font-mono text-fg-2`
 - Status badges: semantic color fills at `/10` opacity with matching text color
-- Section headings: `font-ui` weight 600, `text-fg-1` at `--fs-md` (18px)
-- Form labels: `font-ui` weight 500, `text-fg-1` at `--fs-sm` (14px)
-- Help/description text: `font-ui` weight 400, `text-fg-3` at `--fs-sm` (14px)
+- Section headings: `font-ui` weight 500, `text-fg-1` at 16px
+- Form labels: `font-ui` weight 500, `text-fg-1` at 14px
+- Help/description text: `font-ui` weight 400, `text-fg-3` at 14px
 
 ### Pricing Page
 
 - Background: `bg-bg`
-- Page heading: `font-display` at `--fs-3xl` (48px), weight 600
+- Page heading: `font-display` at 48px (`text-fs-3xl`), weight 600
 - Card panels: `bg-bg-elevated border border-rule`
-- Price numerals: `font-mono` at `--fs-2xl`
+- Price numerals: `font-mono` at 28px (`text-fs-xl`)
 - Feature list text: `font-ui` weight 400, `text-fg-2`
 
 ---
