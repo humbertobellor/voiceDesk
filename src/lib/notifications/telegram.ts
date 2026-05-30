@@ -15,7 +15,7 @@ export interface SendTelegramResult {
 // IN-03: Module-level singleton — bot token is constant; no need to instantiate on every call.
 // Consistent with the webhook handler's module-level `const bot = new Bot(...)` pattern.
 let _bot: Bot | null = null
-function getBot(): Bot {
+export function getBot(): Bot {
   const token = process.env.TELEGRAM_BOT_TOKEN
   if (!token) throw new Error('[sendTelegram] TELEGRAM_BOT_TOKEN is not set')
   if (!_bot) _bot = new Bot(token)

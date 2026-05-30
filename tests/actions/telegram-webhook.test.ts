@@ -270,15 +270,15 @@ describe('activateTelegramWebhook', () => {
 
     mockSetWebhook.mockRejectedValue(new Error('Telegram API unreachable'))
 
-    // Act — must not throw; must return structured error
-    let result: Awaited<ReturnType<typeof activateTelegramWebhook>> | undefined
-    await expect(async () => {
-      result = await activateTelegramWebhook()
-    }).not.toThrow()
+    // Act — must not throw; must return structured error.
+    // Note: expect(asyncFn).not.toThrow() only checks synchronous throws in Vitest.
+    // We use a direct await to verify the async function resolves (not rejects) AND
+    // returns a structured error, which is the actual intent of this test.
+    const result = await activateTelegramWebhook()
 
     expect(result).toBeDefined()
-    expect(result!.ok).toBe(false)
-    if (result && !result.ok) {
+    expect(result.ok).toBe(false)
+    if (!result.ok) {
       expect(typeof result.error).toBe('string')
       expect(result.error.length).toBeGreaterThan(0)
     }
