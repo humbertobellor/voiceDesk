@@ -1,5 +1,9 @@
 @import 'tailwindcss';
 
+/* Google Fonts — UI sans-serif and monospace families.
+   Must follow @import 'tailwindcss' and precede @font-face rules per CSS spec. */
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
 /* ============================================================
    Bogart trial @font-face declarations — 18 weight/style faces
    Indian Type Foundry — trial license, not for redistribution.
@@ -54,9 +58,6 @@
   src: url('https://cdn.jsdelivr.net/npm/@fontsource/newsreader/files/newsreader-latin-400-italic.woff2') format('woff2'),
        local('Georgia Italic'), local('Georgia');
   unicode-range: U+0030-0039; }
-
-/* Google Fonts — UI sans-serif and monospace families */
-@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
 
 /* ============================================================
    Wolknitive Design System — primitive and semantic tokens
