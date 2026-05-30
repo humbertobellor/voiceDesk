@@ -568,7 +568,16 @@ Plans:
   4. `npm run build` exits 0 with no TypeScript or Tailwind errors
   5. All 15 v1.0 regression tests pass in `tests/regression-v1-smoke.spec.ts` — no regressions introduced by the token sweep
 
-**Plans:** TBD
+**Plans:** 6 plans
+
+Plans:
+- [ ] 16-01-PLAN.md — Token infrastructure: globals.css @theme block + Bogart fonts + layout.tsx + delete tailwind.config.ts
+- [ ] 16-02-PLAN.md — Playwright BEFORE snapshots for 5 key pages (before sweep)
+- [ ] 16-03-PLAN.md — Sweep auth components + notification components + dashboard nav (8 files)
+- [ ] 16-04-PLAN.md — Sweep auth pages + pricing + dashboard layout + connect-calendar (8 files)
+- [ ] 16-05-PLAN.md — Sweep dashboard settings pages + data pages (9 files)
+- [ ] 16-06-PLAN.md — Global hex audit + D-16 manual review + build + regression tests + AFTER snapshots + human sign-off
+
 **UI hint:** yes
 
 ---
@@ -581,4 +590,4 @@ Plans:
 | 13. Email Notifications | 4/4 | Complete    | 2026-05-25 |
 | 14. In-App Notification Bell | 5/5 | Complete   | 2026-05-29 |
 | 15. Telegram Activation | 2/2 | Complete   | 2026-05-30 |
-| 16. Design System Sweep | 0/TBD | Not started | - |
+| 16. Design System Sweep | 0/6 | Not started | - |
