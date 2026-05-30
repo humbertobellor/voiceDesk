@@ -1,19 +1,352 @@
 @import 'tailwindcss';
 
+/* Google Fonts — UI sans-serif and monospace families.
+   Must follow @import 'tailwindcss' and precede @font-face rules per CSS spec. */
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* ============================================================
+   Bogart trial @font-face declarations — 18 weight/style faces
+   Indian Type Foundry — trial license, not for redistribution.
+   Trial font workaround: unicode-range excludes 0-9 (watermark
+   glyphs); digits are served by the Newsreader fallback below.
+   ============================================================ */
+@font-face { font-family: 'Bogart'; font-weight: 100; font-style: normal;
+  src: url('../fonts/bogart/Bogart-Thin-trial.ttf') format('truetype'); font-display: swap; unicode-range: U+0000-002F, U+003A-10FFFF; }
+@font-face { font-family: 'Bogart'; font-weight: 100; font-style: italic;
+  src: url('../fonts/bogart/Bogart-Thin-Italic-trial.ttf') format('truetype'); font-display: swap; unicode-range: U+0000-002F, U+003A-10FFFF; }
+@font-face { font-family: 'Bogart'; font-weight: 200; font-style: normal;
+  src: url('../fonts/bogart/Bogart-Extralight-trial.ttf') format('truetype'); font-display: swap; unicode-range: U+0000-002F, U+003A-10FFFF; }
+@font-face { font-family: 'Bogart'; font-weight: 200; font-style: italic;
+  src: url('../fonts/bogart/Bogart-Extralight-Italic-trial.ttf') format('truetype'); font-display: swap; unicode-range: U+0000-002F, U+003A-10FFFF; }
+@font-face { font-family: 'Bogart'; font-weight: 300; font-style: normal;
+  src: url('../fonts/bogart/Bogart-Light-trial.ttf') format('truetype'); font-display: swap; unicode-range: U+0000-002F, U+003A-10FFFF; }
+@font-face { font-family: 'Bogart'; font-weight: 300; font-style: italic;
+  src: url('../fonts/bogart/Bogart-Light-Italic-trial.ttf') format('truetype'); font-display: swap; unicode-range: U+0000-002F, U+003A-10FFFF; }
+@font-face { font-family: 'Bogart'; font-weight: 400; font-style: normal;
+  src: url('../fonts/bogart/Bogart-Regular-trial.ttf') format('truetype'); font-display: swap; unicode-range: U+0000-002F, U+003A-10FFFF; }
+@font-face { font-family: 'Bogart'; font-weight: 400; font-style: italic;
+  src: url('../fonts/bogart/Bogart-Italic-trial.ttf') format('truetype'); font-display: swap; unicode-range: U+0000-002F, U+003A-10FFFF; }
+@font-face { font-family: 'Bogart'; font-weight: 500; font-style: normal;
+  src: url('../fonts/bogart/Bogart-Medium-trial.ttf') format('truetype'); font-display: swap; unicode-range: U+0000-002F, U+003A-10FFFF; }
+@font-face { font-family: 'Bogart'; font-weight: 500; font-style: italic;
+  src: url('../fonts/bogart/Bogart-Medium-Italic-trial.ttf') format('truetype'); font-display: swap; unicode-range: U+0000-002F, U+003A-10FFFF; }
+@font-face { font-family: 'Bogart'; font-weight: 600; font-style: normal;
+  src: url('../fonts/bogart/Bogart-Semibold-trial.ttf') format('truetype'); font-display: swap; unicode-range: U+0000-002F, U+003A-10FFFF; }
+@font-face { font-family: 'Bogart'; font-weight: 600; font-style: italic;
+  src: url('../fonts/bogart/Bogart-Semibold-Italic-trial.ttf') format('truetype'); font-display: swap; unicode-range: U+0000-002F, U+003A-10FFFF; }
+@font-face { font-family: 'Bogart'; font-weight: 700; font-style: normal;
+  src: url('../fonts/bogart/Bogart-Bold-trial.ttf') format('truetype'); font-display: swap; unicode-range: U+0000-002F, U+003A-10FFFF; }
+@font-face { font-family: 'Bogart'; font-weight: 700; font-style: italic;
+  src: url('../fonts/bogart/Bogart-Bold-Italic-trial.ttf') format('truetype'); font-display: swap; unicode-range: U+0000-002F, U+003A-10FFFF; }
+@font-face { font-family: 'Bogart'; font-weight: 800; font-style: normal;
+  src: url('../fonts/bogart/Bogart-Extrabold-trial.ttf') format('truetype'); font-display: swap; unicode-range: U+0000-002F, U+003A-10FFFF; }
+@font-face { font-family: 'Bogart'; font-weight: 800; font-style: italic;
+  src: url('../fonts/bogart/Bogart-Extrabold-Italic-trial.ttf') format('truetype'); font-display: swap; unicode-range: U+0000-002F, U+003A-10FFFF; }
+@font-face { font-family: 'Bogart'; font-weight: 900; font-style: normal;
+  src: url('../fonts/bogart/Bogart-Black-trial.ttf') format('truetype'); font-display: swap; unicode-range: U+0000-002F, U+003A-10FFFF; }
+@font-face { font-family: 'Bogart'; font-weight: 900; font-style: italic;
+  src: url('../fonts/bogart/Bogart-Black-Italic-trial.ttf') format('truetype'); font-display: swap; unicode-range: U+0000-002F, U+003A-10FFFF; }
+
+/* Trial-font digit fallback — Newsreader via jsDelivr CDN maps 0-9 to
+   reliable glyphs since Bogart trial replaces digits with watermarks.
+   TODO: remove when licensed Bogart (Indian Type Foundry) is installed. */
+@font-face { font-family: 'Bogart'; font-style: normal; font-weight: 100 900;
+  src: url('https://cdn.jsdelivr.net/npm/@fontsource/newsreader/files/newsreader-latin-400-normal.woff2') format('woff2'),
+       local('Georgia'), local('Times New Roman');
+  unicode-range: U+0030-0039; }
+@font-face { font-family: 'Bogart'; font-style: italic; font-weight: 100 900;
+  src: url('https://cdn.jsdelivr.net/npm/@fontsource/newsreader/files/newsreader-latin-400-italic.woff2') format('woff2'),
+       local('Georgia Italic'), local('Georgia');
+  unicode-range: U+0030-0039; }
+
+/* ============================================================
+   Wolknitive Design System — primitive and semantic tokens
+   Source: Wolknitive Design System-handoff.zip
+           wolknitive-design-system/project/colors_and_type.css
+   ============================================================ */
 :root {
-  --color-background: #0F172A;
-  --color-surface: #1E293B;
-  --color-accent: #F97316;
-  --color-text-primary: #F8FAFC;
-  --color-text-secondary: #94A3B8;
-  --color-border: #334155;
-  --color-destructive: #EF4444;
-  --color-success: #22C55E;
+  /* ---------- Neutrals: warm vellum → ink ---------- */
+  --vellum-50:  #FAF6EC;   /* page bg — warm cream */
+  --vellum-100: #F3ECD9;   /* card bg */
+  --vellum-200: #E7DCC0;   /* hairline tint */
+  --vellum-300: #CFBE96;   /* muted parchment */
+  --vellum-400: #9C8A64;   /* tertiary text */
+  --vellum-500: #6B5C3E;   /* secondary text on cream */
+  --vellum-600: #4A3F2A;
+  --vellum-700: #2E261A;
+  --vellum-800: #1C1710;
+  --ink:        #14110B;   /* darkest ink */
+
+  /* ---------- Teal: primary cool, scholarly ---------- */
+  --teal-50:  #E6EDEC;
+  --teal-100: #C5D6D3;
+  --teal-200: #95B5B0;
+  --teal-300: #5F8C86;
+  --teal-400: #316662;
+  --teal-500: #1B4E4A;     /* primary */
+  --teal-600: #103A37;
+  --teal-700: #0A2725;
+  --teal-800: #061817;
+
+  /* ---------- Plum: secondary, regal counterpoint ---------- */
+  --plum-50:  #F0E9F1;
+  --plum-100: #DCCDDF;
+  --plum-200: #BB9DC2;
+  --plum-300: #936F9C;
+  --plum-400: #6E4D77;
+  --plum-500: #4E3457;     /* secondary primary */
+  --plum-600: #382540;
+  --plum-700: #25182B;
+  --plum-800: #170E1B;
+
+  /* ---------- Amber: warm accent ---------- */
+  --amber-100: #F6E6CF;
+  --amber-300: #E5AE6E;
+  --amber-500: #C7763B;
+  --amber-700: #8E4F22;
+
+  /* ---------- Moss + Brick: semantic ---------- */
+  --moss-500: #4E6B3A;     /* success */
+  --moss-100: #DDE5D0;
+  --brick-500: #A8442B;    /* danger */
+  --brick-100: #EFD3CB;
+
+  /* ---------- Semantic surface + foreground ---------- */
+  --bg:          var(--vellum-50);
+  --bg-elevated: #FBF8EE;
+  --bg-sunken:   var(--vellum-100);
+  --bg-inverse:  var(--ink);
+
+  --fg-1:       var(--ink);          /* primary text */
+  --fg-2:       var(--vellum-700);   /* secondary text */
+  --fg-3:       var(--vellum-500);   /* tertiary / meta */
+  --fg-4:       var(--vellum-400);   /* placeholder */
+  --fg-on-dark: var(--vellum-50);
+
+  --accent:        var(--teal-500);   /* primary accent */
+  --accent-hover:  var(--teal-600);
+  --accent-soft:   var(--teal-50);
+  --accent-2:      var(--plum-500);
+  --accent-2-soft: var(--plum-50);
+  --highlight:     var(--amber-500);
+  --highlight-soft: var(--amber-100);
+
+  --success: var(--moss-500);
+  --danger:  var(--brick-500);
+
+  /* ---------- Borders & rules ---------- */
+  --rule-strong: var(--vellum-700);
+  --rule:        var(--vellum-300);
+  --rule-soft:   var(--vellum-200);
+
+  /* ---------- Radii (restrained, classical) ---------- */
+  --radius-xs:   2px;
+  --radius-sm:   4px;
+  --radius-md:   6px;
+  --radius-lg:   10px;
+  --radius-pill: 999px;
+
+  /* ---------- Shadows — soft, low, warm-tinted ---------- */
+  --shadow-1: 0 1px 0 rgba(20, 17, 11, 0.04), 0 1px 2px rgba(20, 17, 11, 0.06);
+  --shadow-2: 0 1px 0 rgba(20, 17, 11, 0.05), 0 4px 10px -2px rgba(20, 17, 11, 0.08);
+  --shadow-3: 0 2px 0 rgba(20, 17, 11, 0.05), 0 12px 28px -6px rgba(20, 17, 11, 0.12);
+  --shadow-inset: inset 0 1px 0 rgba(255, 252, 240, 0.6), inset 0 -1px 0 rgba(20, 17, 11, 0.06);
+
+  /* ---------- Spacing (8-pt rhythm, with 4px sub-step) ---------- */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  24px;
+  --space-6:  32px;
+  --space-7:  48px;
+  --space-8:  64px;
+  --space-9:  96px;
+  --space-10: 144px;
+
+  /* ---------- Type families ---------- */
+  --font-display: 'Bogart', 'Iowan Old Style', Georgia, serif;
+  --font-body:    'Bogart', Georgia, 'Times New Roman', serif;
+  --font-ui:      'Inter Tight', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* ---------- Type scale (optical, modular ~1.22) ---------- */
+  --fs-xs:   12px;
+  --fs-sm:   14px;
+  --fs-base: 16px;
+  --fs-md:   18px;
+  --fs-lg:   22px;
+  --fs-xl:   28px;
+  --fs-2xl:  36px;
+  --fs-3xl:  48px;
+  --fs-4xl:  64px;
+  --fs-5xl:  88px;
+
+  --lh-tight:  1.1;
+  --lh-snug:   1.25;
+  --lh-normal: 1.5;
+  --lh-loose:  1.7;
+}
+
+/* ============================================================
+   Tailwind v4 @theme block — generates all Wolknitive utility
+   classes (bg-bg, text-fg-1, border-rule, font-ui, etc.)
+   ============================================================ */
+@theme {
+  /* --- Colors: semantic surfaces --- */
+  --color-bg:          var(--bg);
+  --color-bg-elevated: var(--bg-elevated);
+  --color-bg-sunken:   var(--bg-sunken);
+  --color-bg-inverse:  var(--bg-inverse);
+
+  /* --- Colors: foregrounds --- */
+  --color-fg-1:       var(--fg-1);
+  --color-fg-2:       var(--fg-2);
+  --color-fg-3:       var(--fg-3);
+  --color-fg-4:       var(--fg-4);
+  --color-fg-on-dark: var(--fg-on-dark);
+
+  /* --- Colors: accent --- */
+  --color-accent:        var(--accent);
+  --color-accent-hover:  var(--accent-hover);
+  --color-accent-soft:   var(--accent-soft);
+  --color-accent-2:      var(--accent-2);
+  --color-accent-2-soft: var(--accent-2-soft);
+
+  /* --- Colors: semantic states --- */
+  --color-highlight:      var(--highlight);
+  --color-highlight-soft: var(--highlight-soft);
+  --color-success:        var(--success);
+  --color-danger:         var(--danger);
+
+  /* --- Colors: rules/borders --- */
+  --color-rule:        var(--rule);
+  --color-rule-strong: var(--rule-strong);
+  --color-rule-soft:   var(--rule-soft);
+
+  /* --- Colors: neutral primitive scale — vellum --- */
+  --color-vellum-50:  var(--vellum-50);
+  --color-vellum-100: var(--vellum-100);
+  --color-vellum-200: var(--vellum-200);
+  --color-vellum-300: var(--vellum-300);
+  --color-vellum-400: var(--vellum-400);
+  --color-vellum-500: var(--vellum-500);
+  --color-vellum-600: var(--vellum-600);
+  --color-vellum-700: var(--vellum-700);
+  --color-vellum-800: var(--vellum-800);
+  --color-ink:        var(--ink);
+
+  /* --- Colors: teal primitive scale --- */
+  --color-teal-50:  var(--teal-50);
+  --color-teal-100: var(--teal-100);
+  --color-teal-200: var(--teal-200);
+  --color-teal-300: var(--teal-300);
+  --color-teal-400: var(--teal-400);
+  --color-teal-500: var(--teal-500);
+  --color-teal-600: var(--teal-600);
+  --color-teal-700: var(--teal-700);
+  --color-teal-800: var(--teal-800);
+
+  /* --- Colors: plum primitive scale --- */
+  --color-plum-50:  var(--plum-50);
+  --color-plum-100: var(--plum-100);
+  --color-plum-200: var(--plum-200);
+  --color-plum-300: var(--plum-300);
+  --color-plum-400: var(--plum-400);
+  --color-plum-500: var(--plum-500);
+  --color-plum-600: var(--plum-600);
+  --color-plum-700: var(--plum-700);
+  --color-plum-800: var(--plum-800);
+
+  /* --- Colors: amber primitive scale --- */
+  --color-amber-100: var(--amber-100);
+  --color-amber-300: var(--amber-300);
+  --color-amber-500: var(--amber-500);
+  --color-amber-700: var(--amber-700);
+
+  /* --- Colors: moss + brick primitive --- */
+  --color-moss-500:  var(--moss-500);
+  --color-moss-100:  var(--moss-100);
+  --color-brick-500: var(--brick-500);
+  --color-brick-100: var(--brick-100);
+
+  /* --- Fonts --- */
+  --font-display: var(--font-display);
+  --font-body:    var(--font-body);
+  --font-ui:      var(--font-ui);
+  --font-mono:    var(--font-mono);
+
+  /* --- Custom spacing tokens (Wolknitive 8-pt rhythm, named wk-* to avoid
+         collision with Tailwind's own numeric spacing scale) --- */
+  --spacing-wk-1:  var(--space-1);   /* 4px */
+  --spacing-wk-2:  var(--space-2);   /* 8px */
+  --spacing-wk-3:  var(--space-3);   /* 12px */
+  --spacing-wk-4:  var(--space-4);   /* 16px */
+  --spacing-wk-5:  var(--space-5);   /* 24px */
+  --spacing-wk-6:  var(--space-6);   /* 32px */
+  --spacing-wk-7:  var(--space-7);   /* 48px */
+  --spacing-wk-8:  var(--space-8);   /* 64px */
+  --spacing-wk-9:  var(--space-9);   /* 96px */
+  --spacing-wk-10: var(--space-10);  /* 144px */
+
+  /* --- Radii --- */
+  --radius-xs:   var(--radius-xs);
+  --radius-sm:   var(--radius-sm);
+  --radius-md:   var(--radius-md);
+  --radius-lg:   var(--radius-lg);
+  --radius-pill: var(--radius-pill);
+
+  /* --- Type scale (defined, not actively swept in components this phase) --- */
+  --text-fs-xs:   var(--fs-xs);
+  --text-fs-sm:   var(--fs-sm);
+  --text-fs-base: var(--fs-base);
+  --text-fs-md:   var(--fs-md);
+  --text-fs-lg:   var(--fs-lg);
+  --text-fs-xl:   var(--fs-xl);
+  --text-fs-2xl:  var(--fs-2xl);
+  --text-fs-3xl:  var(--fs-3xl);
+  --text-fs-4xl:  var(--fs-4xl);
+  --text-fs-5xl:  var(--fs-5xl);
+
+  /* --- Line heights --- */
+  --leading-tight:  var(--lh-tight);
+  --leading-snug:   var(--lh-snug);
+  --leading-normal: var(--lh-normal);
+  --leading-loose:  var(--lh-loose);
+}
+
+/* ============================================================
+   Dark mode — semantic token remapping only.
+   Primitive scales stay the same; only semantic aliases change.
+   Structure supports future .dark class toggle without rework.
+   ============================================================ */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:          #0F172A;
+    --bg-elevated: #1E293B;
+    --bg-sunken:   #0B1120;
+
+    --fg-1:       #F8FAFC;
+    --fg-2:       #CBD5E1;
+    --fg-3:       #94A3B8;
+    --fg-4:       #64748B;
+
+    --rule:        #334155;
+    --rule-strong: #475569;
+    --rule-soft:   #1E293B;
+
+    --accent:       var(--teal-400);
+    --accent-hover: var(--teal-300);
+    --accent-soft:  rgba(27, 78, 74, 0.20);
+
+    --success: var(--moss-500);
+    --danger:  var(--brick-500);
+  }
 }
 
 html, body {
-  background-color: var(--color-background);
-  color: var(--color-text-primary);
+  background-color: var(--bg);
+  color: var(--fg-1);
 }
 
 @media (prefers-reduced-motion: reduce) {
