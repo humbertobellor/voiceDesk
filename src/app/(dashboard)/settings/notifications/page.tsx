@@ -50,11 +50,18 @@ export default async function NotificationsPage() {
         <p className="text-sm text-[#94A3B8]">Configure how and where you receive call alerts.</p>
         <div className="border-b border-[#334155] mt-6" />
       </div>
-      {settings && (
+      {settings ? (
         <NotificationSettingsForm
           initialSettings={settings}
           initialWebhookInfo={initialWebhookInfo}
         />
+      ) : (
+        // WR-05: Show an explicit message rather than rendering nothing when the
+        // notification_settings row does not exist (e.g. new contractor whose row
+        // was not created during onboarding, or a row that was deleted).
+        <p className="text-sm text-[#94A3B8]">
+          Notification settings are not yet configured. Please contact support.
+        </p>
       )}
     </div>
   )
