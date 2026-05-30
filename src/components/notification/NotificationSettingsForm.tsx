@@ -14,13 +14,14 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { parsePhoneNumber } from 'libphonenumber-js'
-import { MessageSquare, MessageCircle, Send, Loader2, Mail } from 'lucide-react'
+import { MessageSquare, MessageCircle, Send, Loader2, Mail, Bot } from 'lucide-react'
 import {
   useNotificationSettings,
   useUpdateNotificationSettings,
   useTelegramUnlink,
 } from '@/lib/query/client'
 import { useContractor } from '@/contexts/ContractorContext'
+import { activateTelegramWebhook } from '@/app/(dashboard)/settings/notifications/actions'
 import type { NotificationSettings } from '@/types/database'
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -30,6 +31,12 @@ import type { NotificationSettings } from '@/types/database'
 interface NotificationSettingsFormProps {
   /** Server-fetched initial settings; prevents layout shift before query resolves. */
   initialSettings: NotificationSettings
+  /**
+   * Telegram webhook status fetched by the Server Component on page load (D-07).
+   * Null when TELEGRAM_BOT_TOKEN is missing or getWebhookInfo() fails (D-08).
+   * Uses Record<string, unknown> to avoid importing grammy types into a client component.
+   */
+  initialWebhookInfo: Record<string, unknown> | null
 }
 
 interface FormData {
@@ -104,7 +111,10 @@ function normalizePhone(value: string): string | null {
 // Component
 // ─────────────────────────────────────────────────────────────────────────────
 
-export function NotificationSettingsForm({ initialSettings }: NotificationSettingsFormProps) {
+export function NotificationSettingsForm({
+  initialSettings,
+  initialWebhookInfo,
+}: NotificationSettingsFormProps) {
   const { contractorId } = useContractor()
   const { data: liveSettings } = useNotificationSettings()
   const updateSettings = useUpdateNotificationSettings()
@@ -117,6 +127,11 @@ export function NotificationSettingsForm({ initialSettings }: NotificationSettin
   const [feedback, setFeedback] = useState<Feedback | null>(null)
   const [unlinkLoading, setUnlinkLoading] = useState(false)
   const [telegramError, setTelegramError] = useState<string | null>(null)
+
+  // ── Webhook activation state (D-09) ──────────────────────────────────────
+  const [webhookInfo, setWebhookInfo] = useState<Record<string, unknown> | null>(initialWebhookInfo)
+  const [webhookActivating, setWebhookActivating] = useState(false)
+  const [webhookError, setWebhookError] = useState<string | null>(null)
 
   // Refs for focusing invalid phone fields on submit
   const smsInputRef = useRef<HTMLInputElement>(null)
@@ -218,6 +233,29 @@ export function NotificationSettingsForm({ initialSettings }: NotificationSettin
       setUnlinkLoading(false)
     }
   }
+
+  /**
+   * Registers the Telegram webhook via the server action (TEL-02, D-10).
+   * Mirrors handleUnlinkTelegram: clear error → set loading → call action → update state.
+   * Never throws — server action returns discriminated union.
+   */
+  const handleActivateTelegramWebhook = async () => {
+    setWebhookError(null)
+    setWebhookActivating(true)
+    try {
+      const result = await activateTelegramWebhook()
+      if (result.ok) {
+        setWebhookInfo(result.webhookInfo)
+      } else {
+        setWebhookError(result.error)
+      }
+    } finally {
+      setWebhookActivating(false)
+    }
+  }
+
+  /** Truncates a URL to 45 chars with ellipsis for display in the status row. */
+  const truncatedUrl = (url: string) => (url.length > 45 ? url.slice(0, 45) + '…' : url)
 
   // ── Shared CSS fragments ───────────────────────────────────────────────────
 
@@ -436,6 +474,53 @@ export function NotificationSettingsForm({ initialSettings }: NotificationSettin
               Open @voiceDeskTelBot (opens in new tab)
             </a>
           </div>
+        )}
+      </div>
+
+      {/* ── Telegram Bot Webhook card (D-01, D-02) ─────────────────────── */}
+      <div className={cardClass}>
+        {/* Card header */}
+        <div className="flex items-center gap-2 mb-4">
+          <Bot className="w-4 h-4 text-[#64748B]" />
+          <span className="text-sm font-semibold text-[#F8FAFC]">Telegram Bot Webhook</span>
+        </div>
+
+        {/* Webhook status row */}
+        <div className="flex items-center justify-between py-3 mb-4">
+          <span className="text-sm text-[#94A3B8]">Webhook status</span>
+          {webhookInfo &&
+          typeof webhookInfo.url === 'string' &&
+          webhookInfo.url.length > 0 ? (
+            <span className="text-sm text-[#F8FAFC] font-mono">
+              {truncatedUrl(webhookInfo.url as string)}
+            </span>
+          ) : (
+            <span className="text-sm text-[#94A3B8]">Not registered</span>
+          )}
+        </div>
+
+        {/* Activate button (D-10) */}
+        <button
+          type="button"
+          onClick={handleActivateTelegramWebhook}
+          disabled={webhookActivating}
+          className="bg-[#F97316] hover:bg-[#F97316]/90 text-[#0F172A] text-sm font-semibold px-6 py-2 rounded-lg min-h-[44px] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+        >
+          {webhookActivating ? (
+            <>
+              <Loader2 className="w-4 h-4 animate-spin" />
+              Activating…
+            </>
+          ) : (
+            'Activate Telegram Webhook'
+          )}
+        </button>
+
+        {/* Inline error (D-06) */}
+        {webhookError && (
+          <p role="alert" className="mt-2 text-sm text-[#EF4444]">
+            {webhookError}
+          </p>
         )}
       </div>
 
