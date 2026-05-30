@@ -36,3 +36,6 @@ next-env.d.ts
 .vercel
 .env*.local
 nohup.out
+
+# Visual regression snapshots — captured locally, not committed
+tests/visual/*.png
