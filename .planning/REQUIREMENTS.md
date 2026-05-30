@@ -23,8 +23,8 @@
 
 ## Telegram Activation
 
-- [ ] **TEL-01**: The Notification Settings page shows the current Telegram webhook status — either the registered webhook URL or "Not registered" — fetched on page load
-- [ ] **TEL-02**: A contractor or admin can activate the platform Telegram webhook from settings with a single button click; the status display updates to show the registered URL on success, or an error message on failure
+- [x] **TEL-01**: The Notification Settings page shows the current Telegram webhook status — either the registered webhook URL or "Not registered" — fetched on page load
+- [x] **TEL-02**: A contractor or admin can activate the platform Telegram webhook from settings with a single button click; the status display updates to show the registered URL on success, or an error message on failure
 
 ## Design System
 
@@ -68,8 +68,8 @@
 | BELL-02 | Phase 14 | Pending |
 | BELL-03 | Phase 14 | Pending |
 | BELL-04 | Phase 12 | Complete |
-| TEL-01 | Phase 15 | Pending |
-| TEL-02 | Phase 15 | Pending |
+| TEL-01 | Phase 15 | Complete |
+| TEL-02 | Phase 15 | Complete |
 | BRAND-01 | Phase 16 | Pending |
 | BRAND-02 | Phase 16 | Pending |
 | BRAND-03 | Phase 16 | Pending |

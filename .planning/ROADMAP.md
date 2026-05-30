@@ -418,7 +418,7 @@ Plans:
 - [x] **Phase 12: Notification Foundation** - DB migrations (app_notifications + email columns) + TypeScript types + email lib (completed 2026-05-25)
 - [x] **Phase 13: Email Notifications** - Email channel in Inngest dispatch + payment alert email + API schema extension (completed 2026-05-25)
 - [x] **Phase 14: In-App Notification Bell** - Inngest write step + React Query hooks + Supabase Realtime + NotificationBell UI (completed 2026-05-29)
-- [ ] **Phase 15: Telegram Activation** - Server action (activateTelegramWebhook) + settings UI card with status display
+- [x] **Phase 15: Telegram Activation** - Server action (activateTelegramWebhook) + settings UI card with status display (completed 2026-05-30)
 - [ ] **Phase 16: Design System Sweep** - Wolknitive token extraction + globals.css @theme block + full component sweep
 
 ---
@@ -540,7 +540,7 @@ Plans:
   3. On success, the status display updates to show the newly registered webhook URL without a page reload
   4. On failure (e.g. network error, invalid token), an error message is displayed inline — the page does not crash and the previous status remains visible
 
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 
 Plans:
 **Wave 1**
@@ -549,7 +549,7 @@ Plans:
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
-- [ ] 15-02-PLAN.md — activateTelegramWebhook() server action (GREEN) + page.tsx getWebhookInfo on load + NotificationSettingsForm webhook card + human UAT
+- [x] 15-02-PLAN.md — activateTelegramWebhook() server action (GREEN) + page.tsx getWebhookInfo on load + NotificationSettingsForm webhook card + human UAT
 
 **UI hint:** yes
 
@@ -580,5 +580,5 @@ Plans:
 | 12. Notification Foundation | 3/3 | Complete    | 2026-05-25 |
 | 13. Email Notifications | 4/4 | Complete    | 2026-05-25 |
 | 14. In-App Notification Bell | 5/5 | Complete   | 2026-05-29 |
-| 15. Telegram Activation | 1/2 | In Progress|  |
+| 15. Telegram Activation | 2/2 | Complete   | 2026-05-30 |
 | 16. Design System Sweep | 0/TBD | Not started | - |
