@@ -1,7 +1,7 @@
 ---
 phase: 15-telegram-activation
-reviewed: 2026-05-30T00:00:00Z
-depth: standard
+reviewed: 2026-05-30T12:00:00Z
+depth: deep
 files_reviewed: 6
 files_reviewed_list:
   - src/app/(dashboard)/settings/notifications/actions.ts
@@ -11,36 +11,55 @@ files_reviewed_list:
   - tests/actions/telegram-webhook.test.ts
   - tests/components/notification/NotificationSettingsForm.webhook.test.tsx
 findings:
-  critical: 3
-  warning: 4
+  critical: 4
+  warning: 5
   info: 3
-  total: 10
+  total: 12
 status: issues_found
 ---
 
 # Phase 15: Code Review Report
 
-**Reviewed:** 2026-05-30T00:00:00Z
-**Depth:** standard
+**Reviewed:** 2026-05-30T12:00:00Z
+**Depth:** deep
 **Files Reviewed:** 6
 **Status:** issues_found
 
 ## Summary
 
-Six files reviewed covering the Telegram webhook activation feature: a server action,
-a server-component page, a client-form component, a grammY singleton module, and two
-test files (unit + component). The authentication and authorization guard in the server
-action is sound. The test coverage for the discriminated-union error paths is solid.
+Six files reviewed for the Telegram webhook activation feature (TEL-01 / TEL-02): a
+server action, a server-component page, a client-form component, the grammY singleton
+library module, and two test files. Cross-module call chains were traced for the full
+path: `page.tsx → getBot()`, `actions.ts → getBot()`, `route.ts → new Bot()`, and the
+component's `handleActivateTelegramWebhook → activateTelegramWebhook`.
 
-Three blockers were found: (1) a stale-token bug in the `getBot()` singleton that silently
-serves a Bot instance built with an outdated token after a token rotation; (2) an open
-redirect / SSRF vector via the unvalidated `TELEGRAM_WEBHOOK_URL` env var that accepts
-any `https://` URL without restricting it to the expected host; (3) a missing `await` on
-`setTimeout` cleanup that can call `setFeedback(null)` on an unmounted component.
-Four warnings cover: missing email validation, a timing gap between `setWebhook` and
-`getWebhookInfo` producing inconsistent state, a hardcoded bot username, and the `page.tsx`
-calling `getWebhookInfo()` without authorization (any authenticated contractor can see the
-platform-level webhook URL). Three info items are noted.
+Four blockers were found:
+
+1. **Two separate Bot instances exist at runtime** — `src/app/api/webhooks/telegram/route.ts`
+   creates its own `new Bot(botToken ?? 'placeholder')` at module load, while
+   `src/lib/notifications/telegram.ts` maintains a singleton via `getBot()`. These are
+   different objects. The webhook route never calls `getBot()`. This means the singleton
+   cached in `telegram.ts` is used only for outbound sends (`sendTelegram`) and the
+   activation action (`activateTelegramWebhook`), while the webhook handler uses a
+   completely independent Bot instance. This duplication is not a runtime crash but is a
+   correctness hazard: the two instances cannot share state, and a future attempt to
+   register middleware or commands on the "shared" singleton will silently have no effect on
+   the webhook bot.
+
+2. **`getBot()` singleton caches the token implicitly but never detects token rotation.**
+   After a `TELEGRAM_BOT_TOKEN` change the old Bot instance continues to be returned.
+
+3. **`TELEGRAM_WEBHOOK_URL` is only checked for an `https://` prefix** — no host/path
+   validation. Any HTTPS URL including internal metadata endpoints passes.
+
+4. **`setTimeout` return value is discarded** — `setFeedback(null)` can fire on an
+   unmounted component.
+
+Five warnings cover: the platform webhook URL being disclosed to all tenant contractors,
+a `setWebhook`/`getWebhookInfo` race returning an error even after successful registration,
+missing client-side email validation (`noValidate` suppresses browser validation), the
+hardcoded bot username `voiceDeskTelBot`, and a missing `notify_telegram_enabled` reset
+when the unlink mutation succeeds but the query cache hasn't refreshed yet.
 
 ---
 
@@ -48,31 +67,88 @@ platform-level webhook URL). Three info items are noted.
 
 ## Critical Issues
 
-### CR-01: `getBot()` singleton silently reuses a Bot built with the original token after token rotation
+### CR-01: Two independent `Bot` instances — `route.ts` never uses the `getBot()` singleton
+
+**File:** `src/app/api/webhooks/telegram/route.ts:18` and `src/lib/notifications/telegram.ts:17-22`
+
+**Issue:** The webhook handler (`route.ts`) creates its own Bot instance at module load:
+
+```typescript
+const bot = new Bot(botToken ?? 'placeholder')   // route.ts line 18
+```
+
+The `getBot()` singleton in `telegram.ts` creates a separate instance on first call. These
+are two different Bot objects that both use `TELEGRAM_BOT_TOKEN` but are never coordinated.
+
+Concrete consequences:
+- Commands registered via `bot.command('start', ...)` in `route.ts` are registered only on
+  the route-local instance. Any code that calls `getBot().command(...)` (now or in the
+  future) registers on the singleton — which is never given an update to process. The split
+  is currently benign only because no code calls `getBot()` for command registration, but the
+  design is fragile and contradicts the documented intent ("Consistent with the webhook
+  handler's module-level `const bot = new Bot(...)` pattern" — `telegram.ts` comment).
+- The `'placeholder'` fallback in `route.ts` creates a Bot instance with a known-invalid
+  token. grammY will not fail at construction time; it will fail at the first API call. The
+  guard at line 93-96 prevents processing, but the `bot` object with the placeholder token
+  is still passed to `webhookCallback` on line 98. If the guard logic is ever refactored
+  incorrectly, a Bot instance with `'placeholder'` as its token will attempt real API calls.
+
+**Fix:** Make `route.ts` import and use `getBot()` from `telegram.ts` instead of
+maintaining its own instance. Remove the `'placeholder'` fallback — if the token is missing,
+`getBot()` already throws with an informative message:
+
+```typescript
+// route.ts — replace the module-level bot creation with:
+import { getBot } from '@/lib/notifications/telegram'
+
+export async function POST(req: Request) {
+  const webhookSecret = process.env.TELEGRAM_WEBHOOK_SECRET
+  if (!webhookSecret) {
+    console.error('[webhook/telegram] TELEGRAM_WEBHOOK_SECRET is not set')
+    return new Response('Service Unavailable', { status: 503 })
+  }
+
+  let bot: Bot
+  try {
+    bot = getBot()
+  } catch {
+    console.error('[webhook/telegram] TELEGRAM_BOT_TOKEN is not set')
+    return new Response('Service Unavailable', { status: 503 })
+  }
+
+  const handleUpdate = webhookCallback(bot, 'std/http', undefined, undefined, webhookSecret)
+  // ...
+}
+```
+
+Note: grammY `webhookCallback` expects a Bot that already has command handlers registered.
+The `/start` handler must be registered on the singleton before `webhookCallback` is called.
+The canonical way is to register commands in the `telegram.ts` module during `getBot()` initialization.
+
+---
+
+### CR-02: `getBot()` singleton does not detect token rotation — silently returns stale Bot
 
 **File:** `src/lib/notifications/telegram.ts:17-22`
 
-**Issue:** The module-level `_bot` variable is set once on first call and is never cleared.
-If `TELEGRAM_BOT_TOKEN` changes at runtime (secret rotation, environment variable update
-without a cold start), subsequent calls still return the Bot instance that was built with
-the old token. The new token value is read on every call (`const token = process.env.TELEGRAM_BOT_TOKEN`)
-but is never compared to the token that `_bot` was created with. API calls on the stale
-Bot will receive 401 errors from Telegram, and those errors will surface as runtime failures
-in `sendTelegram()` and `activateTelegramWebhook()` without any indication that the root
-cause is a token mismatch.
+**Issue:** `_bot` is set once and never invalidated. If `TELEGRAM_BOT_TOKEN` changes
+(secret rotation in Vercel env vars followed by a redeploy, or env var injection during
+testing), the cached instance was built with the old token and all subsequent API calls
+will receive 401 errors from Telegram. The new token value is read on every `getBot()` call
+but is never compared against the token used to build `_bot`.
 
-**Fix:** Cache the token alongside the instance and rebuild when they diverge:
+**Fix:** Track the token used to build the cached instance:
 
 ```typescript
 let _bot: Bot | null = null
-let _botToken: string | null = null
+let _cachedToken: string | null = null
 
 export function getBot(): Bot {
   const token = process.env.TELEGRAM_BOT_TOKEN
   if (!token) throw new Error('[getBot] TELEGRAM_BOT_TOKEN is not set')
-  if (!_bot || _botToken !== token) {
+  if (!_bot || _cachedToken !== token) {
     _bot = new Bot(token)
-    _botToken = token
+    _cachedToken = token
   }
   return _bot
 }
@@ -80,72 +156,78 @@ export function getBot(): Bot {
 
 ---
 
-### CR-02: `TELEGRAM_WEBHOOK_URL` accepted after only an `https://` prefix check — no host validation
+### CR-03: `TELEGRAM_WEBHOOK_URL` validated only by `https://` prefix — SSRF via env var misconfiguration
 
 **File:** `src/app/(dashboard)/settings/notifications/actions.ts:59-60`
 
-**Issue:** The only validation applied to `TELEGRAM_WEBHOOK_URL` before it is registered
-with the Telegram Bot API is a `startsWith('https://')` check. A misconfigured or
-maliciously overridden environment variable pointing to an arbitrary HTTPS host (e.g.,
-an internal metadata service URL, a third-party domain, or an attacker-controlled server)
-will pass this check and be registered as the bot webhook. Telegram would then forward
-every bot update — including the `secret_token`-bearing `X-Telegram-Bot-Api-Secret-Token`
-header and full message payloads — to the attacker-controlled endpoint.
-
-Although an attacker must already be able to write the `TELEGRAM_WEBHOOK_URL` env var for
-this to be exploitable, environment variable injection through CI/CD misconfigurations or
-secrets-manager mistakes is a realistic threat vector in SaaS deployments.
-
-**Fix:** Assert that the webhook URL matches the expected application host. The strictest
-form uses a compile-time constant; a practical server-side form checks the host portion:
+**Issue:** The only check before registering the URL with the Telegram Bot API is:
 
 ```typescript
-const EXPECTED_WEBHOOK_HOST = 'voicedesk.vercel.app'   // move to a shared constant
+if (!webhookUrl.startsWith('https://'))
+  return { ok: false, error: 'Webhook URL must be HTTPS.' }
+```
 
+Any HTTPS URL passes: `https://169.254.169.254/` (AWS metadata), `https://attacker.example/`,
+`https://internal-service/`. If an attacker can write `TELEGRAM_WEBHOOK_URL` via a CI/CD
+misconfiguration, compromised secrets manager, or misconfigured Vercel project settings,
+they can redirect all Telegram bot updates — including message text, user IDs, and the
+verified `X-Telegram-Bot-Api-Secret-Token` header — to an attacker-controlled endpoint.
+
+**Fix:** Restrict to the expected application host. Move the expected host to an env var
+or compile-time constant:
+
+```typescript
 const webhookUrl = process.env.TELEGRAM_WEBHOOK_URL
 if (!webhookUrl) return { ok: false, error: 'Telegram webhook URL not configured.' }
 
-let parsedUrl: URL
+let parsed: URL
 try {
-  parsedUrl = new URL(webhookUrl)
+  parsed = new URL(webhookUrl)
 } catch {
   return { ok: false, error: 'Telegram webhook URL is not a valid URL.' }
 }
-
-if (parsedUrl.protocol !== 'https:') {
+if (parsed.protocol !== 'https:') {
   return { ok: false, error: 'Webhook URL must be HTTPS.' }
 }
 
-if (parsedUrl.hostname !== EXPECTED_WEBHOOK_HOST) {
+const ALLOWED_WEBHOOK_HOST = process.env.NEXT_PUBLIC_VERCEL_URL
+  ?? process.env.VERCEL_URL
+  ?? 'voicedesk.vercel.app'
+
+if (parsed.hostname !== ALLOWED_WEBHOOK_HOST) {
   return { ok: false, error: 'Webhook URL host does not match expected application host.' }
 }
 ```
 
 ---
 
-### CR-03: `setTimeout` leak — `setFeedback(null)` may fire after component unmount
+### CR-04: `setTimeout` return value discarded — `setFeedback(null)` fires on unmounted component
 
 **File:** `src/components/notification/NotificationSettingsForm.tsx:211`
 
-**Issue:** After a successful save, `setTimeout(() => setFeedback(null), 3000)` is scheduled
-but its return value (the timer ID) is never stored and therefore never cancelled. If the
-user navigates away from the page within 3 seconds of a successful save, the callback fires
-on the now-unmounted component. In React 18 strict mode this logs a warning; in production
-builds it is a silent state-update-after-unmount bug that can mask errors or, depending on
-framework version, interfere with concurrent rendering.
+**Issue:** After a successful form save, a 3-second auto-dismiss timer is created but never
+stored or cancelled:
 
-**Fix:** Store the timer ID in a ref and cancel it in an effect cleanup:
+```typescript
+setTimeout(() => setFeedback(null), 3000)
+```
+
+If the user navigates away before the timer fires, React calls the component's cleanup but
+cannot cancel this timer because the ID was never captured. The callback fires on an
+unmounted component. In React 18 this is a no-op in production but triggers a console
+warning in development and strict mode. If this component ever wraps a context or portal
+with actual teardown side-effects, the silent state update can mask those errors.
+
+**Fix:** Store the timer ID in a ref and cancel it on unmount:
 
 ```typescript
 const feedbackTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-// Inside handleSubmit, replace:
-//   setTimeout(() => setFeedback(null), 3000)
-// with:
+// In handleSubmit, replace the raw setTimeout call:
 if (feedbackTimerRef.current) clearTimeout(feedbackTimerRef.current)
 feedbackTimerRef.current = setTimeout(() => setFeedback(null), 3000)
 
-// Add a cleanup effect:
+// Add cleanup effect (alongside existing effects):
 useEffect(() => {
   return () => {
     if (feedbackTimerRef.current) clearTimeout(feedbackTimerRef.current)
@@ -157,64 +239,47 @@ useEffect(() => {
 
 ## Warnings
 
-### WR-01: `page.tsx` calls `getWebhookInfo()` for every authenticated contractor — exposes platform webhook URL to all users
+### WR-01: Platform webhook URL exposed to every authenticated contractor
 
-**File:** `src/app/(dashboard)/settings/notifications/page.tsx:30-37`
+**File:** `src/app/(dashboard)/settings/notifications/page.tsx:29-37`
 
-**Issue:** The `getBot().api.getWebhookInfo()` call is made for every contractor who visits
-the notifications settings page. The Telegram webhook is a **platform-level** resource, not
-a per-contractor resource. Any authenticated contractor can see the registered webhook URL
-(`initialWebhookInfo.url`) in the rendered HTML. For a multi-tenant SaaS, the platform's
-internal webhook endpoint URL should not be disclosed to tenants. The URL itself is not a
-secret (it must be publicly reachable by Telegram), but the unnecessary disclosure
-violates the principle of least privilege and increases the attack surface for enumeration.
+**Issue:** `getBot().api.getWebhookInfo()` is called on every page load for every contractor
+who visits the notifications settings page. The response — including the registered webhook
+URL — is serialized into `initialWebhookInfo` and passed as a prop to the client component,
+where it is rendered in the DOM. The URL is also returned to the client after every
+"Activate Telegram Webhook" button click via `actions.ts`.
 
-Additionally, this call makes page load latency dependent on Telegram API availability; a
-slow or failing Telegram API will delay the settings page for every user.
+The Telegram Bot API returns the webhook URL as registered by `setWebhook`. This is the
+platform's internal ingress URL. While it must be publicly reachable by Telegram, broadcasting
+it in every contractor's settings page HTML unnecessarily increases the attack surface and
+violates least-privilege disclosure.
 
-**Fix:** Restrict the webhook card and its data to a designated platform administrator role,
-or remove `initialWebhookInfo` from the page props entirely and only expose the webhook
-activation button without showing the current URL to end users. If the URL display is
-intended for debugging, gate it behind an admin-only flag:
+Additionally, this call makes page load time dependent on Telegram API latency. A 1-second
+Telegram API timeout will add 1 second to every contractor's settings page load.
 
-```typescript
-// Only fetch webhook info when the user has admin privileges
-const isAdmin = /* check user.role or contractor.is_admin */
-let initialWebhookInfo: Record<string, unknown> | null = null
-if (isAdmin) {
-  try {
-    initialWebhookInfo = (await getBot().api.getWebhookInfo()) as unknown as Record<string, unknown>
-  } catch (err) { /* ... */ }
-}
-```
+**Fix:** If the webhook card is intended for platform operators only, gate the
+`getWebhookInfo()` call and the entire webhook card behind an admin flag. If it must be
+visible to all contractors for operational transparency, at minimum strip the URL from the
+returned object before rendering it in the component.
 
 ---
 
-### WR-02: Race condition between `setWebhook` and `getWebhookInfo` — stale status on partial failure
+### WR-02: `setWebhook` success followed by `getWebhookInfo` failure returns `ok: false` — misleading error
 
-**File:** `src/app/(dashboard)/settings/notifications/actions.ts:67-69`
+**File:** `src/app/(dashboard)/settings/notifications/actions.ts:67-74`
 
-**Issue:** `setWebhook` and `getWebhookInfo` are called sequentially in two separate API
-round-trips inside the same `try` block:
+**Issue:** Both calls share the same `try/catch`. If `setWebhook` succeeds but
+`getWebhookInfo` throws (transient error), the catch block returns `{ ok: false, error:
+'Failed to activate webhook. Please try again.' }`. The webhook **was** registered
+successfully, but the user is told it failed. On retry, `setWebhook` is called again
+(idempotent for the same URL, so no harm) but the misleading error creates confusion and
+unnecessary retries.
 
-```typescript
-await getBot().api.setWebhook(webhookUrl, { secret_token: webhookSecret })
-const webhookInfo = await getBot().api.getWebhookInfo()
-```
+Also, Telegram's eventual consistency means `getWebhookInfo` immediately after `setWebhook`
+may return the previous webhook URL rather than the just-registered one.
 
-If `setWebhook` succeeds but `getWebhookInfo` fails (transient network error, Telegram API
-flap), the `catch` block returns `{ ok: false, error: 'Failed to activate webhook. Please
-try again.' }`. The user sees an error message even though the webhook **was** successfully
-registered. On retry, the user clicks the button again, `setWebhook` is called a second time
-(idempotent for the same URL, so harmless), but the user experience is misleading.
-
-Conversely, if `setWebhook` succeeds and is followed by the `getWebhookInfo` call that
-returns the *previous* (old) webhook state due to an eventual-consistency lag in Telegram's
-infrastructure, the returned `webhookInfo` might not yet reflect the just-registered URL,
-causing the UI to continue showing "Not registered" even after a successful activation.
-
-**Fix:** Treat the two calls as independently fallible. Return success after `setWebhook`
-completes, and use a best-effort `getWebhookInfo` for display:
+**Fix:** Treat `getWebhookInfo` as best-effort. Return success after `setWebhook` resolves,
+fall back to the known URL if `getWebhookInfo` fails:
 
 ```typescript
 await getBot().api.setWebhook(webhookUrl, { secret_token: webhookSecret })
@@ -223,40 +288,35 @@ let webhookInfo: Record<string, unknown> = { url: webhookUrl }
 try {
   webhookInfo = (await getBot().api.getWebhookInfo()) as unknown as Record<string, unknown>
 } catch {
-  // Non-fatal: setWebhook succeeded; show the URL we just registered as fallback
+  // Non-fatal: registration succeeded; echo back the URL we just registered
 }
 return { ok: true, webhookInfo }
 ```
 
 ---
 
-### WR-03: Email address is submitted without validation — invalid values silently saved
+### WR-03: Email address submitted without client-side validation — `noValidate` suppresses browser enforcement
 
 **File:** `src/components/notification/NotificationSettingsForm.tsx:206`
 
-**Issue:** Phone numbers are validated via `normalizePhone()` before submission, but
-`email_address` is submitted as-is after a `.trim()` call with no format validation:
+**Issue:** The form has `noValidate` set (line 275), which disables all browser-native
+validation including the `type="email"` attribute on the email input. Phone numbers are
+validated and normalized via `normalizePhone()` before submission; email is submitted as-is:
 
 ```typescript
 email_address: formData.email_address.trim() || null,
 ```
 
-The `<input type="email">` attribute provides browser-level UI hints but offers no
-programmatic enforcement (the form has `noValidate` set, which explicitly suppresses
-browser validation). A contractor can save a syntactically invalid email address (e.g.,
-`not-an-email`, `@`, `foo@`). If the API route at `/api/notification-settings` also lacks
-email validation (not in scope of this review), the invalid value would be persisted and
-could cause notification delivery failures silently.
+A contractor can save `@`, `foo@`, `not-an-email`, or a string with embedded spaces.
+The server-side API route at `/api/notification-settings` does validate with
+`z.string().email()`, so the invalid value will be rejected — but the form treats the
+rejection as a generic save error rather than an inline field error, degrading UX.
 
-**Fix:** Validate the email address before submission using a simple regex or the standard
-`input.validity.valid` API:
+**Fix:** Add client-side email validation in `handleSubmit` before calling `setIsSaving`:
 
 ```typescript
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-
-// In handleSubmit, before setIsSaving:
 const emailValue = formData.email_address.trim()
-if (emailValue && !EMAIL_RE.test(emailValue)) {
+if (emailValue && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)) {
   setFeedback({ type: 'error', message: 'Enter a valid email address.' })
   return
 }
@@ -264,46 +324,82 @@ if (emailValue && !EMAIL_RE.test(emailValue)) {
 
 ---
 
-### WR-04: Hardcoded bot username `voiceDeskTelBot` in the component deep link
+### WR-04: Hardcoded bot username `voiceDeskTelBot` cannot vary across environments
 
 **File:** `src/components/notification/NotificationSettingsForm.tsx:469`
 
-**Issue:** The Telegram deep-link URL is constructed with a hardcoded bot username:
+**Issue:** The Telegram deep link is hardcoded:
 
 ```tsx
 href={`https://t.me/voiceDeskTelBot?start=${contractorId ?? ''}`}
 ```
 
-If the bot is renamed, deprecated, or if a staging/development bot with a different
-username must be used, this string must be tracked down across the codebase and updated
-manually. More critically, the bot username in the link and the bot registered via
-`TELEGRAM_BOT_TOKEN` can silently diverge — users click a link to one bot while the
-platform registers a webhook for a different bot.
+The bot username in this link and the bot registered via `TELEGRAM_BOT_TOKEN` are
+independent values. If the token is rotated to a different bot (staging bot, bot rename,
+disaster recovery), the link still points to the old username. A contractor clicking the
+link connects to the wrong bot, sends `/start`, and gets no reply — the webhook handler
+is not attached to that bot.
 
-**Fix:** Add a `NEXT_PUBLIC_TELEGRAM_BOT_USERNAME` environment variable and use it here,
-with a fallback that makes the mismatch visible:
+**Fix:** Drive the username from an environment variable:
 
 ```typescript
-const botUsername = process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME ?? 'voiceDeskTelBot'
-// ...
-href={`https://t.me/${botUsername}?start=${contractorId ?? ''}`}
+// In .env.local:
+// NEXT_PUBLIC_TELEGRAM_BOT_USERNAME=voiceDeskTelBot
+
+href={`https://t.me/${process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME ?? 'voiceDeskTelBot'}?start=${contractorId ?? ''}`}
 ```
 
-This also enables different bot usernames across staging and production environments.
+---
+
+### WR-05: `page.tsx` renders nothing when `notification_settings` row does not exist — silent blank page
+
+**File:** `src/app/(dashboard)/settings/notifications/page.tsx:53-58`
+
+**Issue:** The settings data fetch uses `.maybeSingle()` which returns `null` when no row
+exists. The page conditionally renders the form:
+
+```tsx
+{settings && (
+  <NotificationSettingsForm ... />
+)}
+```
+
+When `settings` is `null` (first-time contractor who has not had a `notification_settings`
+row created yet, or a row that was deleted), the page renders only the heading section with
+no form, no error message, and no call to action. The contractor sees a blank area with no
+explanation. This is a silent failure mode — no redirect, no error, no "setup required"
+prompt.
+
+**Fix:** Add an explicit empty-state fallback:
+
+```tsx
+{settings ? (
+  <NotificationSettingsForm
+    initialSettings={settings}
+    initialWebhookInfo={initialWebhookInfo}
+  />
+) : (
+  <p className="text-sm text-[#94A3B8]">
+    Notification settings are not yet configured. Please contact support.
+  </p>
+)}
+```
+
+Alternatively, create the `notification_settings` row during contractor onboarding so it
+always exists by the time this page is reached.
 
 ---
 
 ## Info
 
-### IN-01: `contractorId ?? ''` produces a silently broken deep link when `contractorId` is null
+### IN-01: `contractorId ?? ''` produces a silently broken Telegram deep link
 
 **File:** `src/components/notification/NotificationSettingsForm.tsx:469`
 
-**Issue:** When `useContractor()` returns `contractorId: null` (loading or error state),
-the deep link becomes `https://t.me/voiceDeskTelBot?start=` with an empty `start` payload.
-The webhook handler in `route.ts` correctly rejects this (`if (!contractorId)` check), so
-no data is corrupted, but the user is shown a broken error message from the bot ("Invalid
-link") rather than a meaningful UI-level message explaining that their account is not ready.
+**Issue:** When `useContractor()` returns `contractorId: null` (context not yet resolved),
+the deep link becomes `https://t.me/voiceDeskTelBot?start=` with an empty payload. The
+webhook handler correctly rejects the empty payload with an error reply to the user. The
+contractor is shown a confusing bot error rather than a UI-level loading or disabled state.
 
 **Fix:** Disable the link when `contractorId` is null:
 
@@ -313,66 +409,63 @@ link") rather than a meaningful UI-level message explaining that their account i
     Open @voiceDeskTelBot (opens in new tab)
   </a>
 ) : (
-  <span className="text-[#64748B] text-sm">Loading your account…</span>
+  <span className="text-[#64748B] text-sm">Loading account…</span>
 )}
 ```
 
 ---
 
-### IN-02: `@ts-expect-error` on prop that now exists — tests will fail once `@ts-expect-error` becomes stale
+### IN-02: `@ts-expect-error` directives in test file are now stale and will cause compilation failure
 
 **File:** `tests/components/notification/NotificationSettingsForm.webhook.test.tsx:89,98,107,121,137,161,181`
 
-**Issue:** Every render call in the test file is annotated with:
+**Issue:** Every render call is annotated:
+
 ```typescript
 // @ts-expect-error — initialWebhookInfo prop does not exist yet (RED state)
 ```
-The component under review **already accepts** `initialWebhookInfo` as a typed prop. Once
-TypeScript checks this file, the `@ts-expect-error` directives will become "unused suppression"
-errors (tsc `--strict` flag causes `TS2578: Unused '@ts-expect-error' directive`), and the
-test file will fail to compile. This defeats the RED-test intent.
 
-**Fix:** Remove all `@ts-expect-error` comments from the component test file now that the
-prop exists in the component:
+The component under review already accepts `initialWebhookInfo` as a typed prop. TypeScript's
+`--strict` mode (which this project uses per CLAUDE.md) produces `TS2578: Unused
+'@ts-expect-error' directive` for each of these, causing the test file to fail compilation.
+This means `tsc` will fail, and the test suite will not run — breaking the CI gate silently
+if the type check is separate from the test run.
 
-```typescript
-// BEFORE (incorrect after prop was added):
-// @ts-expect-error — initialWebhookInfo prop does not exist yet (RED state)
-render(<NotificationSettingsForm initialSettings={initialSettings} initialWebhookInfo={null} />)
-
-// AFTER:
-render(<NotificationSettingsForm initialSettings={initialSettings} initialWebhookInfo={null} />)
-```
+**Fix:** Remove all seven `@ts-expect-error` comments from this test file. The prop is now
+correctly typed and no suppression is needed.
 
 ---
 
-### IN-03: `as unknown as Record<string, unknown>` double cast applied in two places with no shared type
+### IN-03: Double `as unknown as Record<string, unknown>` cast repeated in two files with no shared type
 
 **File:** `src/app/(dashboard)/settings/notifications/page.tsx:31`, `src/app/(dashboard)/settings/notifications/actions.ts:70`
 
-**Issue:** Both the page and the action cast the grammY `WebhookInfo` type via
-`as unknown as Record<string, unknown>`. This pattern erases the type information that grammY
-provides (e.g., `url: string`, `pending_update_count: number`) and forces downstream code
-to use untyped property access, requiring a secondary type-guard in the component (`typeof
-webhookInfo.url === 'string'`). The casting is repeated in two independent files, and the
-intermediate `as unknown` widens the type fully before narrowing, bypassing TypeScript's
-assignability check.
-
-**Fix:** Import `WebhookInfo` from grammY in a shared server-only module or create a typed
-DTO, and pass it across the component boundary using the actual type:
+**Issue:** Both the page and the action cast the grammY `WebhookInfo` return value:
 
 ```typescript
-// shared type (server-side only file, or in types/telegram.ts):
-import type { WebhookInfo } from 'grammy/types'
-export type TelegramWebhookInfo = Pick<WebhookInfo, 'url' | 'pending_update_count' | 'has_custom_certificate'>
+as unknown as Record<string, unknown>
 ```
 
-At minimum, remove the intermediate `as unknown` — the direct cast `as Record<string, unknown>`
-would at least preserve any compile-time relationship. The double-cast form `as unknown as X`
-is a code smell that signals a type-safety gap.
+This erases all structural type information grammY provides and forces downstream code to
+re-establish it with manual type guards (`typeof webhookInfo.url === 'string'`). The cast
+is duplicated across two independent files. The intermediate `as unknown` form — rather than
+a direct `as Record<string, unknown>` — signals that TypeScript itself would reject the
+direct cast, which is a red flag for correctness.
+
+**Fix:** Define a typed DTO in a server-side types file and use it at both sites:
+
+```typescript
+// src/types/telegram.ts (server-only)
+import type { WebhookInfo } from 'grammy/types'
+export type TelegramWebhookStatus = Pick<WebhookInfo, 'url' | 'pending_update_count' | 'has_custom_certificate'>
+```
+
+Pass `TelegramWebhookStatus | null` as the prop type instead of `Record<string, unknown> | null`.
+This eliminates the runtime type guard in the component and makes the `url` access
+statically safe.
 
 ---
 
-_Reviewed: 2026-05-30T00:00:00Z_
+_Reviewed: 2026-05-30T12:00:00Z_
 _Reviewer: Claude (gsd-code-reviewer)_
-_Depth: standard_
+_Depth: deep_
