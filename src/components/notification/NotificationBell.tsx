@@ -52,8 +52,8 @@ function borderColorForEventType(
     case 'lead':
       return 'var(--highlight)'
     default:
-      // 'system' | 'payment_failure' → slate
-      return '#64748B'
+      // 'system' | 'payment_failure' → muted foreground
+      return 'var(--fg-4)'
   }
 }
 

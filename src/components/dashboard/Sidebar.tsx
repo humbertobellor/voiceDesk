@@ -67,12 +67,12 @@ export function Sidebar({ businessName, userEmail, phoneNumber }: SidebarProps) 
               className={cn(
                 'flex items-center gap-3 py-3 rounded-lg mx-2 min-h-[48px]',
                 isActive
-                  ? 'text-fg-on-dark bg-bg-elevated border-l-4 border-highlight pl-[12px]'
+                  ? 'bg-accent/10 text-accent font-medium px-4'
                   : 'text-fg-3 px-4 hover:bg-bg-elevated hover:text-fg-on-dark'
               )}
             >
               <Icon size={20} />
-              <span className={isActive ? 'font-semibold' : 'font-normal'}>{label}</span>
+              <span className={isActive ? 'font-medium' : 'font-normal'}>{label}</span>
             </Link>
           )
         })}
@@ -111,7 +111,7 @@ export function Sidebar({ businessName, userEmail, phoneNumber }: SidebarProps) 
           <div className="flex-1 min-w-0">
             <p className="text-sm font-semibold text-fg-on-dark truncate">{businessName ?? 'VoiceDesk'}</p>
             {phoneNumber && (
-              <p className="text-xs text-highlight flex items-center gap-1 truncate">
+              <p className="text-xs font-mono text-fg-3 flex items-center gap-1 truncate">
                 <Phone size={10} />
                 {phoneNumber}
               </p>
