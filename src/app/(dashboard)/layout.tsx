@@ -26,7 +26,7 @@ export default async function DashboardLayout({
 
   return (
     <DashboardProviders contractorId={contractor.id}>
-      <div className="min-h-screen bg-[#1E293B]">
+      <div className="min-h-screen bg-bg-elevated">
         <Sidebar businessName={contractor.business_name} userEmail={user.email} phoneNumber={contractor.twilio_number} />
         <main className="md:ml-60 min-h-screen pb-14 md:pb-0">
           <div className="p-4 md:p-8">

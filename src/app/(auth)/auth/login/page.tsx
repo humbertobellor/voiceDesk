@@ -16,7 +16,7 @@ export default async function LoginPage({
   const initialError = params.error ? (errorMessages[params.error] ?? null) : null
 
   return (
-    <main className="min-h-screen bg-[#0F172A] flex items-center justify-center px-4">
+    <main className="min-h-screen bg-bg flex items-center justify-center px-4">
       <LoginForm initialError={initialError} />
     </main>
   )

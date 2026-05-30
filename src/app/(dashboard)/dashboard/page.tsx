@@ -45,14 +45,14 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-xl font-semibold text-[#F8FAFC] mb-1">Dashboard</h1>
-        <p className="text-sm text-[#94A3B8]">Overview of your AI receptionist</p>
-        <div className="border-b border-[#334155] mt-6" />
+        <h1 className="text-xl font-semibold text-fg-on-dark mb-1">Dashboard</h1>
+        <p className="text-sm text-fg-3">Overview of your AI receptionist</p>
+        <div className="border-b border-rule mt-6" />
       </div>
       {calendarConnected && (
         <div
           role="status"
-          className="bg-[#16A34A]/10 border border-[#16A34A]/30 text-[#16A34A] rounded-lg p-3 text-sm mb-4"
+          className="bg-success/10 border border-success/30 text-success rounded-lg p-3 text-sm mb-4"
         >
           Google Calendar connected successfully. Appointments will now sync automatically.
         </div>
@@ -60,7 +60,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
       {calendarError && (
         <div
           role="alert"
-          className="bg-[#EF4444]/10 border border-[#EF4444]/30 text-[#EF4444] rounded-lg p-3 text-sm mb-4"
+          className="bg-danger/10 border border-danger/30 text-danger rounded-lg p-3 text-sm mb-4"
         >
           {calendarError === 'state_mismatch'
             ? 'Calendar connection failed: security check failed. Please try again.'
@@ -72,14 +72,14 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
       {!telegramLinked && contractorId && (
         <div
           role="status"
-          className="bg-[#1E3A5F]/40 border border-[#3B82F6]/30 text-[#93C5FD] rounded-lg p-3 text-sm mb-4"
+          className="bg-accent/10 border border-accent/30 text-accent rounded-lg p-3 text-sm mb-4"
         >
           <span className="font-medium">Link Telegram for instant call alerts.</span>{' '}
           <a
             href={`https://t.me/voiceDeskTelBot?start=${contractorId ?? ''}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="underline hover:text-[#60A5FA] transition-colors"
+            className="underline hover:text-accent transition-colors"
           >
             Connect @voiceDeskTelBot
           </a>

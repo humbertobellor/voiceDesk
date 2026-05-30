@@ -119,26 +119,26 @@ export default function PricingPage() {
   // Show loading while checking auth and subscription status
   if (isLoading) {
     return (
-      <main className="min-h-screen bg-[#0F172A] flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-[#F97316]" />
+      <main className="min-h-screen bg-bg flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-highlight" />
       </main>
     )
   }
 
   return (
-    <main className="min-h-screen bg-[#0F172A] py-12 px-4">
+    <main className="min-h-screen bg-bg py-12 px-4">
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-[#F8FAFC] mb-4">
+          <h1 className="text-4xl font-bold text-fg-on-dark mb-4">
             Choose your plan
           </h1>
-          <p className="text-lg text-[#94A3B8]">
+          <p className="text-lg text-fg-3">
             Start with a 14-day free trial. No credit card required.
           </p>
         </div>
 
         {error && (
-          <div className="bg-[#EF4444]/10 border border-[#EF4444]/30 text-[#EF4444] rounded-lg p-4 text-center mb-8 max-w-md mx-auto">
+          <div className="bg-danger/10 border border-danger/30 text-danger rounded-lg p-4 text-center mb-8 max-w-md mx-auto">
             {error}
           </div>
         )}
@@ -147,33 +147,33 @@ export default function PricingPage() {
           {TIERS.map((tier) => (
             <div
               key={tier.id}
-              className={`relative bg-[#1E293B] border rounded-xl p-6 ${
+              className={`relative bg-bg-elevated border rounded-xl p-6 ${
                 tier.popular
-                  ? 'border-[#F97316] ring-2 ring-[#F97316]/20'
-                  : 'border-[#334155]'
+                  ? 'border-highlight ring-2 ring-highlight/20'
+                  : 'border-rule'
               }`}
             >
               {tier.popular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#F97316] text-[#0F172A] text-xs font-bold px-3 py-1 rounded-full">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-highlight text-bg text-xs font-bold px-3 py-1 rounded-full">
                   MOST POPULAR
                 </div>
               )}
 
-              <h2 className="text-xl font-semibold text-[#F8FAFC] mb-2">
+              <h2 className="text-xl font-semibold text-fg-on-dark mb-2">
                 {tier.name}
               </h2>
               <div className="mb-4">
-                <span className="text-3xl font-bold text-[#F8FAFC]">
+                <span className="text-3xl font-bold text-fg-on-dark">
                   {tier.price}
                 </span>
-                <span className="text-[#94A3B8]">{tier.period}</span>
+                <span className="text-fg-3">{tier.period}</span>
               </div>
-              <p className="text-sm text-[#94A3B8] mb-6">{tier.description}</p>
+              <p className="text-sm text-fg-3 mb-6">{tier.description}</p>
 
               <ul className="space-y-3 mb-6">
                 {tier.features.map((feature, i) => (
-                  <li key={i} className="flex items-center gap-2 text-sm text-[#F8FAFC]">
-                    <Check className="w-4 h-4 text-[#F97316]" />
+                  <li key={i} className="flex items-center gap-2 text-sm text-fg-on-dark">
+                    <Check className="w-4 h-4 text-highlight" />
                     {feature}
                   </li>
                 ))}
@@ -184,8 +184,8 @@ export default function PricingPage() {
                 disabled={loading === tier.id || !contractorId}
                 className={`w-full ${
                   tier.popular
-                    ? 'bg-[#F97316] text-[#0F172A] hover:bg-[#F97316]/90'
-                    : 'bg-[#334155] text-[#F8FAFC] hover:bg-[#475569]'
+                    ? 'bg-highlight text-bg hover:bg-highlight/90'
+                    : 'bg-rule text-fg-on-dark hover:bg-rule-strong'
                 }`}
               >
                 {loading === tier.id ? (
@@ -198,7 +198,7 @@ export default function PricingPage() {
           ))}
         </div>
 
-        <p className="text-center text-sm text-[#94A3B8] mt-8">
+        <p className="text-center text-sm text-fg-3 mt-8">
           Cancel anytime. No questions asked.
         </p>
       </div>

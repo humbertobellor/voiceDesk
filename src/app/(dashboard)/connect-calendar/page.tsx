@@ -30,11 +30,11 @@ export default async function ConnectCalendarPage() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-xl font-semibold text-[#F8FAFC] mb-1">Connect Google Calendar</h1>
-        <p className="text-sm text-[#94A3B8]">
+        <h1 className="text-xl font-semibold text-fg-on-dark mb-1">Connect Google Calendar</h1>
+        <p className="text-sm text-fg-3">
           Allow VoiceDesk to book appointments directly into your Google Calendar.
         </p>
-        <div className="border-b border-[#334155] mt-6" />
+        <div className="border-b border-rule mt-6" />
       </div>
       <ConnectCalendarForm isConnected={!!creds} />
     </div>

@@ -21,7 +21,7 @@ export default async function PhoneCapturePage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#0F172A] flex items-center justify-center px-4">
+    <main className="min-h-screen bg-bg flex items-center justify-center px-4">
       <PhoneCaptureForm />
     </main>
   )

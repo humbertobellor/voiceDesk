@@ -21,22 +21,22 @@ export function ConnectCalendarForm({ isConnected }: ConnectCalendarFormProps) {
   }
 
   return (
-    <div className="bg-[#1E293B] border border-[#334155] rounded-xl p-6 max-w-[480px]">
+    <div className="bg-bg-elevated border border-rule rounded-xl p-6 max-w-[480px]">
       {isConnected && (
         <div
           role="status"
-          className="bg-[#16A34A]/10 border border-[#16A34A]/30 text-[#16A34A] rounded-lg p-3 text-sm mb-4"
+          className="bg-success/10 border border-success/30 text-success rounded-lg p-3 text-sm mb-4"
         >
           Google Calendar is connected. Click below to reconnect if needed.
         </div>
       )}
-      <p className="text-sm text-[#94A3B8] mb-4">
+      <p className="text-sm text-fg-3 mb-4">
         Connect your Google Calendar to allow VoiceDesk to book estimate appointments automatically.
         Your calendar events will only be created — not read or deleted.
       </p>
       <Button
         disabled={isNavigating}
-        className="bg-[#F97316] text-[#0F172A] hover:bg-[#F97316]/90 min-h-[44px] font-semibold w-full"
+        className="bg-highlight text-bg hover:bg-highlight/90 min-h-[44px] font-semibold w-full"
         onClick={handleConnect}
       >
         {isNavigating
