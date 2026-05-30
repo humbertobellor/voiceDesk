@@ -99,28 +99,28 @@ export default function PhoneSettingsPage() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-xl font-semibold text-[#F8FAFC] mb-1">Phone Number</h1>
-        <p className="text-sm text-[#94A3B8]">
+        <h1 className="text-xl font-semibold text-fg-on-dark mb-1">Phone Number</h1>
+        <p className="text-sm text-fg-3">
           Your dedicated VoiceDesk number and call forwarding instructions.
         </p>
-        <div className="border-b border-[#334155] mt-6" />
+        <div className="border-b border-rule mt-6" />
       </div>
 
       {/* Section A — VoiceDesk Number Display */}
-      <div className="bg-[#1E293B] rounded-lg p-4 mb-6">
+      <div className="bg-bg-elevated rounded-lg p-4 mb-6">
         <div className="flex items-center gap-2 mb-2">
-          <Phone className="w-4 h-4 text-[#64748B]" />
-          <span className="text-sm text-[#94A3B8]">Your VoiceDesk Number</span>
+          <Phone className="w-4 h-4 text-fg-4" />
+          <span className="text-sm text-fg-3">Your VoiceDesk Number</span>
         </div>
         <div className="flex items-center gap-3">
           {twilioNumber ? (
             <>
-              <span className="text-2xl font-bold text-[#F97316]">{twilioNumber}</span>
+              <span className="text-2xl font-bold text-highlight">{twilioNumber}</span>
               <button
                 type="button"
                 onClick={handleCopy}
                 aria-label="Copy phone number"
-                className="p-1.5 rounded-md text-[#94A3B8] hover:text-[#F8FAFC] hover:bg-[#334155] transition-colors"
+                className="p-1.5 rounded-md text-fg-3 hover:text-fg-on-dark hover:bg-rule transition-colors"
               >
                 {copied ? (
                   <Check className="w-4 h-4 text-green-400" />
@@ -131,7 +131,7 @@ export default function PhoneSettingsPage() {
             </>
           ) : (
             <div className="w-full">
-              <p className="text-sm text-[#94A3B8] mb-3">
+              <p className="text-sm text-fg-3 mb-3">
                 No number assigned yet. Enter your preferred area code to provision your VoiceDesk number.
               </p>
               <div className="flex items-center gap-3">
@@ -143,13 +143,13 @@ export default function PhoneSettingsPage() {
                   value={areaCode}
                   onChange={(e) => setAreaCode(e.target.value.replace(/\D/g, '').slice(0, 3))}
                   aria-label="Area code"
-                  className="w-20 px-3 py-2 bg-[#0F172A] border border-[#334155] rounded-md text-[#F8FAFC] text-sm font-mono focus:outline-none focus:ring-2 focus:ring-[#F97316] focus:border-transparent"
+                  className="w-20 px-3 py-2 bg-bg border border-rule rounded-md text-fg-on-dark text-sm font-mono focus:outline-none focus:ring-2 focus:ring-highlight focus:border-transparent"
                 />
                 <button
                   type="button"
                   onClick={handleProvision}
                   disabled={isProvisioning || areaCode.length !== 3}
-                  className="flex items-center gap-2 px-4 py-2 bg-[#F97316] hover:bg-[#EA6B0C] disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-semibold rounded-md transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 bg-highlight hover:bg-accent-hover disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-semibold rounded-md transition-colors"
                 >
                   {isProvisioning ? (
                     <>
@@ -162,7 +162,7 @@ export default function PhoneSettingsPage() {
                 </button>
               </div>
               {provisionError && (
-                <p role="alert" className="mt-2 text-sm text-[#EF4444]">{provisionError}</p>
+                <p role="alert" className="mt-2 text-sm text-danger">{provisionError}</p>
               )}
             </div>
           )}
@@ -173,25 +173,25 @@ export default function PhoneSettingsPage() {
       {twilioNumber && (
         <div className="mb-4">
           <div className="flex items-center gap-2 mb-3">
-            <PhoneForwarded className="w-4 h-4 text-[#64748B]" />
-            <h2 className="text-sm font-semibold text-[#F8FAFC]">Call Forwarding Setup</h2>
+            <PhoneForwarded className="w-4 h-4 text-fg-4" />
+            <h2 className="text-sm font-semibold text-fg-on-dark">Call Forwarding Setup</h2>
           </div>
-          <p className="text-sm text-[#94A3B8] mb-4">
+          <p className="text-sm text-fg-3 mb-4">
             Forward calls from your existing business number to your VoiceDesk number using these carrier codes.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {CARRIERS.map((carrier) => (
-              <div key={carrier.id} className="bg-[#1E293B] rounded-lg p-4">
+              <div key={carrier.id} className="bg-bg-elevated rounded-lg p-4">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-semibold text-[#F8FAFC]">{carrier.name}</span>
-                  <code className="text-xs bg-[#0F172A] text-[#F97316] px-2 py-0.5 rounded font-mono">
+                  <span className="text-sm font-semibold text-fg-on-dark">{carrier.name}</span>
+                  <code className="text-xs bg-bg text-highlight px-2 py-0.5 rounded font-mono">
                     {carrier.code}
                   </code>
                 </div>
-                <p className="text-xs text-[#94A3B8] mb-2">{carrier.instructions}</p>
+                <p className="text-xs text-fg-3 mb-2">{carrier.instructions}</p>
                 {carrier.code !== 'varies' && (
-                  <p className="text-xs text-[#64748B] font-mono">
+                  <p className="text-xs text-fg-4 font-mono">
                     Example: {carrier.code}{digitsOnly}
                   </p>
                 )}

@@ -52,23 +52,23 @@ export function LanguageSettingsForm({ current }: LanguageSettingsFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="bg-[#1E293B] border border-[#334155] rounded-xl p-6 max-w-[480px]">
+    <form onSubmit={handleSubmit} className="bg-bg-elevated border border-rule rounded-xl p-6 max-w-[480px]">
       <fieldset disabled={isPending}>
-        <legend className="text-base font-semibold text-[#F8FAFC] mb-1">Supported languages</legend>
-        <p className="text-sm text-[#94A3B8] mb-4">
+        <legend className="text-base font-semibold text-fg-on-dark mb-1">Supported languages</legend>
+        <p className="text-sm text-fg-3 mb-4">
           Your AI receptionist greets callers in every selected language and lets them choose. At least one language is required.
         </p>
         <div className="space-y-3 mb-6">
           {ALL_LANGUAGES.map(({ code, label }) => {
             const checked = selected.has(code)
             return (
-              <Label key={code} htmlFor={`lang-${code}`} className="flex items-center gap-3 cursor-pointer text-[#F8FAFC]">
+              <Label key={code} htmlFor={`lang-${code}`} className="flex items-center gap-3 cursor-pointer text-fg-on-dark">
                 <input
                   id={`lang-${code}`}
                   type="checkbox"
                   checked={checked}
                   onChange={() => toggle(code)}
-                  className="w-4 h-4 accent-[#F97316]"
+                  className="w-4 h-4 accent-highlight"
                 />
                 <span>{label}</span>
               </Label>
@@ -80,8 +80,8 @@ export function LanguageSettingsForm({ current }: LanguageSettingsFormProps) {
             role="status"
             className={
               feedback.kind === 'success'
-                ? 'bg-[#16A34A]/10 border border-[#16A34A]/30 text-[#16A34A] rounded-lg p-3 text-sm mb-4'
-                : 'bg-[#EF4444]/10 border border-[#EF4444]/30 text-[#EF4444] rounded-lg p-3 text-sm mb-4'
+                ? 'bg-success/10 border border-success/30 text-success rounded-lg p-3 text-sm mb-4'
+                : 'bg-danger/10 border border-danger/30 text-danger rounded-lg p-3 text-sm mb-4'
             }
           >
             {feedback.message}
@@ -90,7 +90,7 @@ export function LanguageSettingsForm({ current }: LanguageSettingsFormProps) {
         <Button
           type="submit"
           disabled={isPending}
-          className="bg-[#F97316] text-[#0F172A] hover:bg-[#F97316]/90 min-h-[44px] font-semibold"
+          className="bg-highlight text-bg hover:bg-highlight/90 min-h-[44px] font-semibold"
         >
           {isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Save languages'}
         </Button>

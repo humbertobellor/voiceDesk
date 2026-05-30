@@ -63,36 +63,36 @@ export default function GoLivePage() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-xl font-semibold text-[#F8FAFC] mb-1">Go Live</h1>
-        <p className="text-sm text-[#94A3B8]">
+        <h1 className="text-xl font-semibold text-fg-on-dark mb-1">Go Live</h1>
+        <p className="text-sm text-fg-3">
           Make a test call to verify your setup, then activate your VoiceDesk.
         </p>
-        <div className="border-b border-[#334155] mt-6" />
+        <div className="border-b border-rule mt-6" />
       </div>
 
       {/* Loading state */}
       {status === 'loading' && (
         <div className="flex items-center justify-center py-12">
-          <Loader2 className="w-5 h-5 animate-spin text-[#64748B]" />
+          <Loader2 className="w-5 h-5 animate-spin text-fg-4" />
         </div>
       )}
 
       {/* Already-live state */}
       {status === 'already-live' && (
-        <div className="bg-[#1E293B] rounded-lg p-6">
+        <div className="bg-bg-elevated rounded-lg p-6">
           <div className="flex items-center gap-3 mb-4">
             <CheckCircle className="w-8 h-8 text-green-400" />
             <div>
-              <h2 className="text-lg font-semibold text-[#F8FAFC]">You're Live!</h2>
-              <p className="text-sm text-[#94A3B8]">
+              <h2 className="text-lg font-semibold text-fg-on-dark">You're Live!</h2>
+              <p className="text-sm text-fg-3">
                 Your VoiceDesk is active. Customers calling your business number are being answered by your AI receptionist.
               </p>
             </div>
           </div>
           {twilioNumber && (
-            <div className="mt-4 border-t border-[#334155] pt-4">
-              <p className="text-xs text-[#94A3B8] mb-1">Your VoiceDesk Number</p>
-              <p className="text-xl font-bold text-[#F97316]">{twilioNumber}</p>
+            <div className="mt-4 border-t border-rule pt-4">
+              <p className="text-xs text-fg-3 mb-1">Your VoiceDesk Number</p>
+              <p className="text-xl font-bold text-highlight">{twilioNumber}</p>
             </div>
           )}
         </div>
@@ -102,24 +102,24 @@ export default function GoLivePage() {
       {status === 'waiting' && (
         <div className="space-y-4">
           {twilioNumber && (
-            <div className="bg-[#1E293B] rounded-lg p-4">
-              <p className="text-xs text-[#94A3B8] mb-1">Your VoiceDesk Number</p>
-              <p className="text-2xl font-bold text-[#F97316]">{twilioNumber}</p>
-              <p className="text-sm text-[#94A3B8] mt-2">
+            <div className="bg-bg-elevated rounded-lg p-4">
+              <p className="text-xs text-fg-3 mb-1">Your VoiceDesk Number</p>
+              <p className="text-2xl font-bold text-highlight">{twilioNumber}</p>
+              <p className="text-sm text-fg-3 mt-2">
                 Make sure call forwarding is set up from your business number to the number above.
               </p>
             </div>
           )}
           <div className="flex items-center gap-3">
-            <Phone className="w-5 h-5 text-[#64748B]" />
-            <p className="text-sm text-[#94A3B8]">
+            <Phone className="w-5 h-5 text-fg-4" />
+            <p className="text-sm text-fg-3">
               Forward your business number to your VoiceDesk number, then call it to make a test call.
             </p>
           </div>
           <button
             type="button"
             onClick={() => setStatus('detecting')}
-            className="w-full sm:w-auto px-6 py-3 bg-[#3B82F6] hover:bg-[#2563EB] text-white font-semibold rounded-lg transition-colors min-h-[48px]"
+            className="w-full sm:w-auto px-6 py-3 bg-accent hover:bg-accent-hover text-white font-semibold rounded-lg transition-colors min-h-[48px]"
           >
             I've Called — Detect Test Call
           </button>
@@ -130,8 +130,8 @@ export default function GoLivePage() {
       {status === 'detecting' && (
         <div className="space-y-4">
           <div className="flex items-center gap-3">
-            <Loader2 className="w-5 h-5 animate-spin text-[#3B82F6]" />
-            <span className="text-sm text-[#F8FAFC] font-medium">Listening for calls...</span>
+            <Loader2 className="w-5 h-5 animate-spin text-accent" />
+            <span className="text-sm text-fg-on-dark font-medium">Listening for calls...</span>
           </div>
 
           <div className="flex items-center gap-2">
@@ -151,19 +151,19 @@ export default function GoLivePage() {
           </div>
 
           {twilioNumber && (
-            <div className="bg-[#1E293B] rounded-lg p-4">
+            <div className="bg-bg-elevated rounded-lg p-4">
               <div className="flex items-center gap-2 mb-1">
-                <PhoneIncoming className="w-4 h-4 text-[#64748B]" />
-                <p className="text-xs text-[#94A3B8]">Waiting for call to</p>
+                <PhoneIncoming className="w-4 h-4 text-fg-4" />
+                <p className="text-xs text-fg-3">Waiting for call to</p>
               </div>
-              <p className="text-xl font-bold text-[#F97316]">{twilioNumber}</p>
+              <p className="text-xl font-bold text-highlight">{twilioNumber}</p>
             </div>
           )}
 
           <button
             type="button"
             onClick={() => setStatus('waiting')}
-            className="text-sm text-[#94A3B8] hover:text-[#F8FAFC] underline"
+            className="text-sm text-fg-3 hover:text-fg-on-dark underline"
           >
             Cancel and try again
           </button>
@@ -172,12 +172,12 @@ export default function GoLivePage() {
 
       {/* Verified state */}
       {status === 'verified' && (
-        <div className="bg-[#1E293B] rounded-lg p-6">
+        <div className="bg-bg-elevated rounded-lg p-6">
           <div className="flex items-center gap-3 mb-2">
             <CheckCircle className="w-8 h-8 text-green-400" />
             <div>
-              <h2 className="text-lg font-semibold text-[#F8FAFC]">Test Call Verified!</h2>
-              <p className="text-sm text-[#94A3B8]">Your VoiceDesk is now live.</p>
+              <h2 className="text-lg font-semibold text-fg-on-dark">Test Call Verified!</h2>
+              <p className="text-sm text-fg-3">Your VoiceDesk is now live.</p>
             </div>
           </div>
         </div>

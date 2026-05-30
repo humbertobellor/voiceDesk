@@ -69,9 +69,9 @@ export default function AccountPage() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-xl font-semibold text-[#F8FAFC] mb-1">Account &amp; Billing</h1>
-        <p className="text-sm text-[#94A3B8]">Manage your plan and billing details</p>
-        <div className="border-b border-[#334155] mt-6" />
+        <h1 className="text-xl font-semibold text-fg-on-dark mb-1">Account &amp; Billing</h1>
+        <p className="text-sm text-fg-3">Manage your plan and billing details</p>
+        <div className="border-b border-rule mt-6" />
       </div>
 
       {/* D-09: Deactivated service banner — shown when is_active=false */}
@@ -83,7 +83,7 @@ export default function AccountPage() {
           <button
             onClick={handleManageSubscription}
             disabled={isLoading}
-            className="px-4 py-2 bg-red-700 hover:bg-red-600 disabled:bg-[#64748B] text-white text-sm font-medium rounded-md transition-colors"
+            className="px-4 py-2 bg-red-700 hover:bg-red-600 disabled:bg-fg-4 text-white text-sm font-medium rounded-md transition-colors"
           >
             {isLoading ? 'Opening...' : 'Update Payment'}
           </button>
@@ -98,13 +98,13 @@ export default function AccountPage() {
       )}
 
       {/* Subscription Status */}
-      <div className="bg-[#1E293B] rounded-lg p-4 mb-6">
+      <div className="bg-bg-elevated rounded-lg p-4 mb-6">
         <div className="flex items-center gap-3 mb-2">
-          <CreditCard className="w-5 h-5 text-[#64748B]" />
-          <span className="text-sm font-medium text-[#F8FAFC]">Subscription</span>
+          <CreditCard className="w-5 h-5 text-fg-4" />
+          <span className="text-sm font-medium text-fg-on-dark">Subscription</span>
         </div>
         <div className="pl-8">
-          <p className="text-sm text-[#94A3B8]">
+          <p className="text-sm text-fg-3">
             Status:{' '}
             <span
               className={`font-medium ${
@@ -114,7 +114,7 @@ export default function AccountPage() {
                   ? 'text-yellow-400'
                   : subscription?.subscription_status === 'trialing'
                   ? 'text-indigo-400'
-                  : 'text-[#94A3B8]'
+                  : 'text-fg-3'
               }`}
             >
               {loaded ? (loadError ? '—' : subscription?.subscription_status ?? 'No subscription') : 'Loading...'}
@@ -122,7 +122,7 @@ export default function AccountPage() {
           </p>
           {/* D-02: Trial end date — shown only when trialing and trial_ends_at is set */}
           {loaded && subscription?.subscription_status === 'trialing' && subscription?.trial_ends_at && (
-            <p className="text-xs text-[#64748B] mt-1">
+            <p className="text-xs text-fg-4 mt-1">
               Trial ends{' '}
               {new Date(subscription.trial_ends_at).toLocaleDateString('en-US', {
                 year: 'numeric',
@@ -136,11 +136,11 @@ export default function AccountPage() {
       </div>
 
       {/* Manage Subscription Button */}
-      <div className="bg-[#1E293B] rounded-lg p-4">
+      <div className="bg-bg-elevated rounded-lg p-4">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-sm font-medium text-[#F8FAFC]">Manage Subscription</h2>
-            <p className="text-xs text-[#94A3B8] mt-1">
+            <h2 className="text-sm font-medium text-fg-on-dark">Manage Subscription</h2>
+            <p className="text-xs text-fg-3 mt-1">
               {hasStripeCustomer
                 ? 'Update payment method, change plan, or cancel subscription'
                 : 'No Stripe customer linked'}
@@ -151,7 +151,7 @@ export default function AccountPage() {
             <button
               onClick={handleManageSubscription}
               disabled={isLoading}
-              className="flex items-center gap-2 px-4 py-2 bg-[#3B82F6] hover:bg-[#2563EB] disabled:bg-[#64748B] text-white text-sm font-medium rounded-md transition-colors"
+              className="flex items-center gap-2 px-4 py-2 bg-accent hover:bg-accent-hover disabled:bg-fg-4 text-white text-sm font-medium rounded-md transition-colors"
             >
               {isLoading ? (
                 <>

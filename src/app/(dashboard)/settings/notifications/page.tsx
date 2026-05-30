@@ -46,9 +46,9 @@ export default async function NotificationsPage() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-xl font-semibold text-[#F8FAFC] mb-1">Notifications</h1>
-        <p className="text-sm text-[#94A3B8]">Configure how and where you receive call alerts.</p>
-        <div className="border-b border-[#334155] mt-6" />
+        <h1 className="text-xl font-semibold text-fg-on-dark mb-1">Notifications</h1>
+        <p className="text-sm text-fg-3">Configure how and where you receive call alerts.</p>
+        <div className="border-b border-rule mt-6" />
       </div>
       {settings ? (
         <NotificationSettingsForm
@@ -59,7 +59,7 @@ export default async function NotificationsPage() {
         // WR-05: Show an explicit message rather than rendering nothing when the
         // notification_settings row does not exist (e.g. new contractor whose row
         // was not created during onboarding, or a row that was deleted).
-        <p className="text-sm text-[#94A3B8]">
+        <p className="text-sm text-fg-3">
           Notification settings are not yet configured. Please contact support.
         </p>
       )}
