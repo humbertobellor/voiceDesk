@@ -123,6 +123,25 @@ None — all functionality is wired. The webhook card reads real `webhookInfo` s
 
 None — no new network endpoints introduced beyond what the threat model covers. All trust boundaries are implemented as specified (T-15-02-01 through T-15-02-06).
 
+## Human UAT: APPROVED
+
+**Checkpoint approved:** 2026-05-30
+
+**Verified at:** https://voicedesk-two.vercel.app/settings/notifications
+
+| Check | Result |
+|-------|--------|
+| Card "Telegram Bot Webhook" visible in correct position | PASS |
+| Status row shows registered URL on load (TELEGRAM_WEBHOOK_URL set in Vercel prod) | PASS |
+| "Activate Telegram Webhook" button calls server action | PASS |
+| Telegram API confirms registration: `{"ok":true,"webhookInfo":{"url":"https://voicedesk-two.vercel.app/api/webhooks/telegram","has_custom_certificate":false,"pending_update_count":0,"max_connections":40}}` | PASS |
+| No page reload on success | PASS |
+| Zero console errors | PASS |
+| Build: exit 0, 34 static pages, 0 TypeScript errors | PASS |
+
+**TEL-01 delivered:** Webhook status (registered URL) visible on page load via `getWebhookInfo()` in Server Component.
+**TEL-02 delivered:** One-click activation via server action; inline status update without page reload on success.
+
 ## Self-Check: PASSED
 
 - [x] `src/app/(dashboard)/settings/notifications/actions.ts` exists (b77aa76)
@@ -133,3 +152,4 @@ None — no new network endpoints introduced beyond what the threat model covers
 - [x] All 7 component tests GREEN (bb37cec)
 - [x] All 14 Phase 15 tests GREEN
 - [x] No new TS errors in src/
+- [x] Human UAT APPROVED — webhook live and registered in production (2026-05-30)
