@@ -80,15 +80,15 @@ export function PhoneCaptureForm() {
 
   return (
     <div className="w-full max-w-[400px] mx-auto">
-      <div className="bg-[#1E293B] border border-[#334155] rounded-xl p-8">
-        <p className="text-sm text-[#94A3B8] mb-2">Step 1 of 1 — Account Setup</p>
-        <h1 className="text-[28px] font-semibold text-[#F8FAFC] mb-1">One more thing</h1>
-        <p className="text-sm text-[#94A3B8] mb-6">
+      <div className="bg-bg-elevated border border-rule rounded-xl p-8">
+        <p className="text-sm text-fg-3 mb-2">Step 1 of 1 — Account Setup</p>
+        <h1 className="text-[28px] font-semibold text-fg-on-dark mb-1">One more thing</h1>
+        <p className="text-sm text-fg-3 mb-6">
           We'll send call alerts to this number. You can change it later in Settings.
         </p>
 
         {submitError && (
-          <div role="alert" className="bg-[#EF4444]/10 border border-[#EF4444]/30 text-[#EF4444] rounded-lg p-3 text-sm mb-4 flex items-start gap-2">
+          <div role="alert" className="bg-danger/10 border border-danger/30 text-danger rounded-lg p-3 text-sm mb-4 flex items-start gap-2">
             <AlertCircle size={16} className="mt-0.5 shrink-0" />
             {submitError}
           </div>
@@ -97,21 +97,21 @@ export function PhoneCaptureForm() {
         <form onSubmit={handleFormSubmit} noValidate className="space-y-4">
           {/* Business name */}
           <div>
-            <Label htmlFor="business_name" className="text-sm text-[#94A3B8]">Business name</Label>
+            <Label htmlFor="business_name" className="text-sm text-fg-3">Business name</Label>
             <Input
               id="business_name"
               placeholder="e.g. South Florida HVAC Co."
               aria-invalid={!!errors.business_name}
               aria-describedby={errors.business_name ? 'business-name-error' : undefined}
-              className={`mt-1 bg-[#0F172A] text-[#F8FAFC] focus-visible:ring-[#F97316] min-h-[44px] transition-colors ${
+              className={`mt-1 bg-bg text-fg-on-dark focus-visible:ring-accent min-h-[44px] transition-colors ${
                 errors.business_name
-                  ? 'border-[#EF4444] focus-visible:ring-[#EF4444]'
-                  : 'border-[#334155]'
+                  ? 'border-danger focus-visible:ring-danger'
+                  : 'border-rule'
               }`}
               {...register('business_name')}
             />
             {errors.business_name && (
-              <p id="business-name-error" role="alert" className="text-sm text-[#EF4444] mt-1 flex items-center gap-1">
+              <p id="business-name-error" role="alert" className="text-sm text-danger mt-1 flex items-center gap-1">
                 <AlertCircle size={13} className="shrink-0" />
                 {errors.business_name.message}
               </p>
@@ -120,7 +120,7 @@ export function PhoneCaptureForm() {
 
           {/* Phone number */}
           <div>
-            <Label htmlFor="phone_number" className="text-sm text-[#94A3B8]">Your mobile number</Label>
+            <Label htmlFor="phone_number" className="text-sm text-fg-3">Your mobile number</Label>
             <Input
               id="phone_number"
               type="tel"
@@ -128,20 +128,20 @@ export function PhoneCaptureForm() {
               placeholder="+1 (305) 555-0100"
               aria-invalid={!!errors.phone_number}
               aria-describedby={errors.phone_number ? 'phone-number-error' : 'phone-number-hint'}
-              className={`mt-1 bg-[#0F172A] text-[#F8FAFC] focus-visible:ring-[#F97316] min-h-[44px] transition-colors ${
+              className={`mt-1 bg-bg text-fg-on-dark focus-visible:ring-accent min-h-[44px] transition-colors ${
                 errors.phone_number
-                  ? 'border-[#EF4444] focus-visible:ring-[#EF4444]'
-                  : 'border-[#334155]'
+                  ? 'border-danger focus-visible:ring-danger'
+                  : 'border-rule'
               }`}
               {...register('phone_number')}
             />
             {errors.phone_number ? (
-              <p id="phone-number-error" role="alert" className="text-sm text-[#EF4444] mt-1 flex items-center gap-1">
+              <p id="phone-number-error" role="alert" className="text-sm text-danger mt-1 flex items-center gap-1">
                 <AlertCircle size={13} className="shrink-0" />
                 {errors.phone_number.message}
               </p>
             ) : (
-              <p id="phone-number-hint" className="text-sm text-[#94A3B8] mt-1">
+              <p id="phone-number-hint" className="text-sm text-fg-3 mt-1">
                 US numbers only. We'll send you call alerts here.
               </p>
             )}
@@ -149,7 +149,7 @@ export function PhoneCaptureForm() {
 
           {/* Area code */}
           <div>
-            <Label htmlFor="area_code" className="text-sm text-[#94A3B8]">Preferred area code</Label>
+            <Label htmlFor="area_code" className="text-sm text-fg-3">Preferred area code</Label>
             <Input
               id="area_code"
               inputMode="numeric"
@@ -157,20 +157,20 @@ export function PhoneCaptureForm() {
               placeholder="305"
               aria-invalid={!!errors.area_code}
               aria-describedby={errors.area_code ? 'area-code-error' : 'area-code-hint'}
-              className={`mt-1 bg-[#0F172A] text-[#F8FAFC] focus-visible:ring-[#F97316] min-h-[44px] transition-colors ${
+              className={`mt-1 bg-bg text-fg-on-dark focus-visible:ring-accent min-h-[44px] transition-colors ${
                 errors.area_code
-                  ? 'border-[#EF4444] focus-visible:ring-[#EF4444]'
-                  : 'border-[#334155]'
+                  ? 'border-danger focus-visible:ring-danger'
+                  : 'border-rule'
               }`}
               {...register('area_code')}
             />
             {errors.area_code ? (
-              <p id="area-code-error" role="alert" className="text-sm text-[#EF4444] mt-1 flex items-center gap-1">
+              <p id="area-code-error" role="alert" className="text-sm text-danger mt-1 flex items-center gap-1">
                 <AlertCircle size={13} className="shrink-0" />
                 {errors.area_code.message}
               </p>
             ) : (
-              <p id="area-code-hint" className="text-sm text-[#94A3B8] mt-1">
+              <p id="area-code-hint" className="text-sm text-fg-3 mt-1">
                 We'll provision a local VoiceDesk number with this area code.
               </p>
             )}
@@ -179,7 +179,7 @@ export function PhoneCaptureForm() {
           <Button
             type="submit"
             disabled={buttonPending}
-            className="w-full bg-[#F97316] text-[#0F172A] hover:bg-[#F97316]/90 min-h-[44px] font-semibold"
+            className="w-full bg-highlight text-bg hover:bg-highlight/90 min-h-[44px] font-semibold"
           >
             {buttonPending ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Complete Setup'}
           </Button>
@@ -188,7 +188,7 @@ export function PhoneCaptureForm() {
         <button
           type="button"
           onClick={handleSignOut}
-          className="block w-full text-center text-sm text-[#94A3B8] hover:text-[#F8FAFC] mt-4"
+          className="block w-full text-center text-sm text-fg-3 hover:text-fg-on-dark mt-4"
         >
           Sign out instead
         </button>

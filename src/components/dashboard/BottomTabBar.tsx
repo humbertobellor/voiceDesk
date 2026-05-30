@@ -6,7 +6,6 @@ import { usePathname } from 'next/navigation'
 import { PhoneCall, Users, Settings } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { Route } from 'next'
-import { NotificationBell } from '@/components/notification/NotificationBell'
 
 const tabs: { href: Route; icon: typeof PhoneCall; label: string }[] = [
   { href: '/calls', icon: PhoneCall, label: 'Calls' },
@@ -19,7 +18,7 @@ export function BottomTabBar() {
   return (
     <nav
       aria-label="Primary mobile"
-      className="fixed bottom-0 left-0 right-0 h-14 bg-[#0F172A] border-t border-[#334155] flex md:hidden z-30"
+      className="fixed bottom-0 left-0 right-0 h-14 bg-bg border-t border-rule flex md:hidden z-30"
     >
       {tabs.map(({ href, icon: Icon, label }) => {
         const isActive =
@@ -32,7 +31,7 @@ export function BottomTabBar() {
             href={href}
             className={cn(
               'flex-1 flex flex-col items-center justify-center gap-0.5 min-h-[56px]',
-              isActive ? 'text-[#F97316]' : 'text-[#94A3B8]'
+              isActive ? 'text-highlight' : 'text-fg-3'
             )}
           >
             <Icon size={20} />
@@ -40,11 +39,6 @@ export function BottomTabBar() {
           </Link>
         )
       })}
-      {/* Bell tab — NotificationBell provides Realtime subscription for mobile (Sidebar is hidden below md) */}
-      <div className="flex-1 flex flex-col items-center justify-center gap-0.5 min-h-[56px]">
-        <NotificationBell />
-        <span className="text-xs text-[#94A3B8]">Alerts</span>
-      </div>
     </nav>
   )
 }

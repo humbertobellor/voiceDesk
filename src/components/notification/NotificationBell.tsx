@@ -48,9 +48,9 @@ function borderColorForEventType(
 ): string {
   switch (eventType) {
     case 'emergency':
-      return '#EF4444'
+      return 'var(--danger)'
     case 'lead':
-      return '#F97316'
+      return 'var(--highlight)'
     default:
       // 'system' | 'payment_failure' → slate
       return '#64748B'
@@ -93,12 +93,12 @@ export function NotificationBell({ className }: NotificationBellProps) {
           <button
             type="button"
             aria-label="Notifications"
-            className="relative flex items-center justify-center rounded-md p-1 hover:bg-white/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F97316]"
+            className="relative flex items-center justify-center rounded-md p-1 hover:bg-white/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
           >
             {/* Bell icon */}
             <Bell
               size={20}
-              color={hasUnread ? '#F97316' : '#94A3B8'}
+              className={hasUnread ? 'text-highlight' : 'text-fg-3'}
               aria-hidden="true"
             />
 
@@ -106,7 +106,7 @@ export function NotificationBell({ className }: NotificationBellProps) {
             {hasUnread && (
               <span
                 aria-label={`${unreadCount} unread notifications`}
-                className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#F97316] text-white"
+                className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-highlight text-white"
                 style={{ fontSize: '10px', fontWeight: 600 }}
               >
                 {badgeText}
@@ -119,18 +119,18 @@ export function NotificationBell({ className }: NotificationBellProps) {
         <PopoverContent
           align="end"
           sideOffset={8}
-          className="z-50 w-[360px] max-h-[500px] overflow-hidden rounded-lg border border-[#334155] bg-[#1E293B] shadow-xl"
+          className="z-50 w-[360px] max-h-[500px] overflow-hidden rounded-lg border border-rule bg-bg-elevated shadow-xl"
         >
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-[#334155] px-4 py-3">
-            <span className="text-sm font-semibold text-[#F8FAFC]">
+          <div className="flex items-center justify-between border-b border-rule px-4 py-3">
+            <span className="text-sm font-semibold text-fg-on-dark">
               Notifications
             </span>
             <button
               type="button"
               onClick={() => markAllRead.mutate()}
               disabled={markAllRead.isPending}
-              className="cursor-pointer text-xs text-[#F97316] hover:underline disabled:opacity-50"
+              className="cursor-pointer text-xs text-highlight hover:underline disabled:opacity-50"
             >
               Mark all read
             </button>
@@ -141,13 +141,13 @@ export function NotificationBell({ className }: NotificationBellProps) {
             {notifications.length === 0 ? (
               /* Empty state */
               <div className="px-6 py-12 text-center">
-                <p className="text-sm text-[#94A3B8]">No notifications yet</p>
+                <p className="text-sm text-fg-3">No notifications yet</p>
               </div>
             ) : (
               notifications.map((notification) => (
                 <div
                   key={notification.id}
-                  className="flex items-stretch border-b border-[#334155] hover:bg-[rgba(255,255,255,0.05)]"
+                  className="flex items-stretch border-b border-rule hover:bg-[rgba(255,255,255,0.05)]"
                 >
                   {/* Colored left border — 4px, event_type color */}
                   <div
@@ -160,13 +160,13 @@ export function NotificationBell({ className }: NotificationBellProps) {
 
                   {/* Notification content */}
                   <div className="flex-1 px-3 py-2">
-                    <p className="truncate text-xs font-semibold text-[#F8FAFC]">
+                    <p className="truncate text-xs font-semibold text-fg-on-dark">
                       {notification.title}
                     </p>
-                    <p className="truncate text-xs text-[#94A3B8]">
+                    <p className="truncate text-xs text-fg-3">
                       {notification.body}
                     </p>
-                    <p className="mt-0.5 text-[#94A3B8]" style={{ fontSize: '10px' }}>
+                    <p className="mt-0.5 text-fg-3" style={{ fontSize: '10px' }}>
                       {formatDistanceToNow(new Date(notification.created_at), {
                         addSuffix: true,
                       })}

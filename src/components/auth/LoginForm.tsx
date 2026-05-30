@@ -61,12 +61,12 @@ export function LoginForm({ initialError }: { initialError?: string | null }) {
 
   return (
     <div className="w-full max-w-[400px] mx-auto">
-      <div className="bg-[#1E293B] border border-[#334155] rounded-xl p-8">
-        <h1 className="text-[28px] font-semibold text-[#F8FAFC] mb-1">Welcome back</h1>
-        <p className="text-sm text-[#94A3B8] mb-6">Sign in to your VoiceDesk account</p>
+      <div className="bg-bg-elevated border border-rule rounded-xl p-8">
+        <h1 className="text-[28px] font-semibold text-fg-on-dark mb-1">Welcome back</h1>
+        <p className="text-sm text-fg-3 mb-6">Sign in to your VoiceDesk account</p>
 
         {submitError && (
-          <div role="alert" className="bg-[#EF4444]/10 border border-[#EF4444]/30 text-[#EF4444] rounded-lg p-3 text-sm mb-4">
+          <div role="alert" className="bg-danger/10 border border-danger/30 text-danger rounded-lg p-3 text-sm mb-4">
             {submitError}
           </div>
         )}
@@ -76,7 +76,7 @@ export function LoginForm({ initialError }: { initialError?: string | null }) {
           type="button"
           onClick={handleGoogleSignIn}
           disabled={isGoogleLoading}
-          className="w-full bg-[#F97316] text-[#0F172A] hover:bg-[#F97316]/90 min-h-[44px] font-semibold"
+          className="w-full bg-highlight text-bg hover:bg-highlight/90 min-h-[44px] font-semibold"
         >
           {isGoogleLoading ? (
             <Loader2 className="w-4 h-4 animate-spin" />
@@ -87,59 +87,59 @@ export function LoginForm({ initialError }: { initialError?: string | null }) {
 
         {/* "or continue with email" divider */}
         <div className="flex items-center my-6">
-          <div className="flex-1 border-t border-[#334155]" />
-          <span className="mx-3 text-sm text-[#94A3B8]">or continue with email</span>
-          <div className="flex-1 border-t border-[#334155]" />
+          <div className="flex-1 border-t border-rule" />
+          <span className="mx-3 text-sm text-fg-3">or continue with email</span>
+          <div className="flex-1 border-t border-rule" />
         </div>
 
         {/* D-01 SECONDARY: email/password */}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
-            <Label htmlFor="email" className="text-sm text-[#94A3B8]">Email</Label>
+            <Label htmlFor="email" className="text-sm text-fg-3">Email</Label>
             <Input
               id="email"
               type="email"
               autoComplete="email"
-              className="bg-[#0F172A] border-[#334155] text-[#F8FAFC] focus-visible:ring-[#F97316] min-h-[44px] mt-1"
+              className="bg-bg border-rule text-fg-on-dark focus-visible:ring-accent min-h-[44px] mt-1"
               {...register('email')}
             />
-            {errors.email && <p className="text-sm text-[#EF4444] mt-1">{errors.email.message}</p>}
+            {errors.email && <p className="text-sm text-danger mt-1">{errors.email.message}</p>}
           </div>
 
           <div>
-            <Label htmlFor="password" className="text-sm text-[#94A3B8]">Password</Label>
+            <Label htmlFor="password" className="text-sm text-fg-3">Password</Label>
             <div className="relative mt-1">
               <Input
                 id="password"
                 type={showPassword ? 'text' : 'password'}
                 autoComplete="current-password"
-                className="bg-[#0F172A] border-[#334155] text-[#F8FAFC] focus-visible:ring-[#F97316] min-h-[44px] pr-10"
+                className="bg-bg border-rule text-fg-on-dark focus-visible:ring-accent min-h-[44px] pr-10"
                 {...register('password')}
               />
               <button
                 type="button"
                 onClick={() => setShowPassword((s) => !s)}
                 aria-label={showPassword ? 'Hide password' : 'Show password'}
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-[#94A3B8]"
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-fg-3"
               >
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
-            {errors.password && <p className="text-sm text-[#EF4444] mt-1">{errors.password.message}</p>}
+            {errors.password && <p className="text-sm text-danger mt-1">{errors.password.message}</p>}
           </div>
 
           <Button
             type="submit"
             variant="outline"
             disabled={isSubmitting}
-            className="w-full border-[#334155] text-[#F8FAFC] hover:bg-[#334155] min-h-[44px]"
+            className="w-full border-rule text-fg-on-dark hover:bg-rule min-h-[44px]"
           >
             {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Sign in to VoiceDesk'}
           </Button>
         </form>
 
-        <p className="text-sm text-center mt-6 text-[#94A3B8]">
-          <Link href="/auth/signup" className="text-[#F97316] hover:underline">
+        <p className="text-sm text-center mt-6 text-fg-3">
+          <Link href="/auth/signup" className="text-highlight hover:underline">
             New to VoiceDesk? Create an account
           </Link>
         </p>

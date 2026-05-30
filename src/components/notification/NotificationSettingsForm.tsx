@@ -274,14 +274,14 @@ export function NotificationSettingsForm({
   // ── Shared CSS fragments ───────────────────────────────────────────────────
 
   const cardClass =
-    'bg-[#1E293B] border border-[#334155] rounded-xl p-6 max-w-[480px] mb-4'
+    'bg-bg-elevated border border-rule rounded-xl p-6 max-w-[480px] mb-4'
 
   const inputClass =
-    'w-full px-4 py-2 bg-[#0F172A] border border-[#334155] rounded-lg text-[#F8FAFC] text-sm ' +
-    'focus:outline-none focus:ring-2 focus:ring-[#F97316] focus:border-transparent ' +
-    'placeholder:text-[#64748B] disabled:opacity-50 disabled:cursor-not-allowed'
+    'w-full px-4 py-2 bg-bg border border-rule rounded-lg text-fg-on-dark text-sm ' +
+    'focus:outline-none focus:ring-2 focus:ring-highlight focus:border-transparent ' +
+    'placeholder:text-fg-4 disabled:opacity-50 disabled:cursor-not-allowed'
 
-  const checkboxClass = 'w-4 h-4 accent-[#F97316]'
+  const checkboxClass = 'w-4 h-4 accent-highlight'
 
   // ── Render ─────────────────────────────────────────────────────────────────
 
@@ -291,11 +291,11 @@ export function NotificationSettingsForm({
       <div className={cardClass}>
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <Mail className="w-4 h-4 text-[#64748B]" />
-            <span className="text-sm font-semibold text-[#F8FAFC]">Email Notifications</span>
+            <Mail className="w-4 h-4 text-fg-4" />
+            <span className="text-sm font-semibold text-fg-on-dark">Email Notifications</span>
           </div>
           <label className="flex items-center gap-2 cursor-pointer" htmlFor="notify_email_enabled">
-            <span className="text-sm text-[#94A3B8]">Enable email alerts</span>
+            <span className="text-sm text-fg-3">Enable email alerts</span>
             <input
               id="notify_email_enabled"
               type="checkbox"
@@ -321,11 +321,11 @@ export function NotificationSettingsForm({
         {/* Card header: icon + label + enable checkbox */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <MessageSquare className="w-4 h-4 text-[#64748B]" />
-            <span className="text-sm font-semibold text-[#F8FAFC]">SMS</span>
+            <MessageSquare className="w-4 h-4 text-fg-4" />
+            <span className="text-sm font-semibold text-fg-on-dark">SMS</span>
           </div>
           <label className="flex items-center gap-2 cursor-pointer" htmlFor="notify_sms_enabled">
-            <span className="text-sm text-[#94A3B8]">Send SMS notifications</span>
+            <span className="text-sm text-fg-3">Send SMS notifications</span>
             <input
               id="notify_sms_enabled"
               type="checkbox"
@@ -358,7 +358,7 @@ export function NotificationSettingsForm({
             <p
               id="sms_number_error"
               role="alert"
-              className="mt-2 text-sm text-[#EF4444]"
+              className="mt-2 text-sm text-danger"
             >
               {phoneErrors.sms_number}
             </p>
@@ -370,14 +370,14 @@ export function NotificationSettingsForm({
       <div className={cardClass}>
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <MessageCircle className="w-4 h-4 text-[#64748B]" />
-            <span className="text-sm font-semibold text-[#F8FAFC]">WhatsApp</span>
+            <MessageCircle className="w-4 h-4 text-fg-4" />
+            <span className="text-sm font-semibold text-fg-on-dark">WhatsApp</span>
           </div>
           <label
             className="flex items-center gap-2 cursor-pointer"
             htmlFor="notify_whatsapp_enabled"
           >
-            <span className="text-sm text-[#94A3B8]">Send WhatsApp notifications</span>
+            <span className="text-sm text-fg-3">Send WhatsApp notifications</span>
             <input
               id="notify_whatsapp_enabled"
               type="checkbox"
@@ -412,7 +412,7 @@ export function NotificationSettingsForm({
             <p
               id="whatsapp_number_error"
               role="alert"
-              className="mt-2 text-sm text-[#EF4444]"
+              className="mt-2 text-sm text-danger"
             >
               {phoneErrors.whatsapp_number}
             </p>
@@ -424,14 +424,14 @@ export function NotificationSettingsForm({
       <div className={cardClass}>
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <Send className="w-4 h-4 text-[#64748B]" />
-            <span className="text-sm font-semibold text-[#F8FAFC]">Telegram</span>
+            <Send className="w-4 h-4 text-fg-4" />
+            <span className="text-sm font-semibold text-fg-on-dark">Telegram</span>
           </div>
           <label
             className="flex items-center gap-2 cursor-pointer"
             htmlFor="notify_telegram_enabled"
           >
-            <span className="text-sm text-[#94A3B8]">Send Telegram notifications</span>
+            <span className="text-sm text-fg-3">Send Telegram notifications</span>
             <input
               id="notify_telegram_enabled"
               type="checkbox"
@@ -445,9 +445,9 @@ export function NotificationSettingsForm({
         {telegramConnected ? (
           /* Connected state */
           <div>
-            <div className="bg-[#16A34A]/10 border border-[#16A34A]/30 text-[#16A34A] rounded-lg p-3 text-sm flex items-center justify-between gap-3">
+            <div className="bg-success/10 border border-success/30 text-success rounded-lg p-3 text-sm flex items-center justify-between gap-3">
               <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-[#16A34A] flex-shrink-0" />
+                <span className="w-2 h-2 rounded-full bg-success flex-shrink-0" />
                 <span>Telegram connected</span>
               </div>
               <button
@@ -456,7 +456,7 @@ export function NotificationSettingsForm({
                 disabled={unlinkLoading}
                 aria-label="Unlink Telegram account"
                 aria-disabled={unlinkLoading}
-                className="border border-[#EF4444] text-[#EF4444] hover:bg-[#EF4444]/10 px-4 py-2 rounded-lg text-sm min-h-[44px] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                className="border border-danger text-danger hover:bg-danger/10 px-4 py-2 rounded-lg text-sm min-h-[44px] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
               >
                 {unlinkLoading ? (
                   <Loader2 className="w-4 h-4 animate-spin" />
@@ -466,14 +466,14 @@ export function NotificationSettingsForm({
               </button>
             </div>
             {telegramError && (
-              <p role="alert" className="mt-2 text-sm text-[#EF4444]">
+              <p role="alert" className="mt-2 text-sm text-danger">
                 {telegramError}
               </p>
             )}
           </div>
         ) : (
           /* Not-connected state */
-          <div className="bg-[#1E3A5F]/40 border border-[#3B82F6]/30 text-[#93C5FD] rounded-lg p-3 text-sm">
+          <div className="bg-accent/10 border border-accent/30 text-accent rounded-lg p-3 text-sm">
             <p className="font-medium mb-1">Connect your Telegram account</p>
             <p className="mb-2">
               Tap the link below to start a chat with the VoiceDesk bot. Once you send /start,
@@ -485,7 +485,7 @@ export function NotificationSettingsForm({
               href={`https://t.me/${process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME ?? 'voiceDeskTelBot'}?start=${contractorId ?? ''}`}
               target="_blank"
               rel="noreferrer"
-              className="text-[#F97316] underline hover:opacity-80 transition-opacity"
+              className="text-highlight underline hover:opacity-80 transition-opacity"
             >
               Open @{process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME ?? 'voiceDeskTelBot'} (opens in new tab)
             </a>
@@ -497,21 +497,21 @@ export function NotificationSettingsForm({
       <div className={cardClass}>
         {/* Card header */}
         <div className="flex items-center gap-2 mb-4">
-          <Bot className="w-4 h-4 text-[#64748B]" />
-          <span className="text-sm font-semibold text-[#F8FAFC]">Telegram Bot Webhook</span>
+          <Bot className="w-4 h-4 text-fg-4" />
+          <span className="text-sm font-semibold text-fg-on-dark">Telegram Bot Webhook</span>
         </div>
 
         {/* WR-01: Webhook status shows registered/not-registered only.
             The webhook URL is an internal platform URL; it must not be
             rendered in client HTML where any contractor can inspect it. */}
         <div className="flex items-center justify-between py-3 mb-4">
-          <span className="text-sm text-[#94A3B8]">Webhook status</span>
+          <span className="text-sm text-fg-3">Webhook status</span>
           {webhookInfo &&
           typeof webhookInfo.url === 'string' &&
           webhookInfo.url.length > 0 ? (
-            <span className="text-sm text-[#16A34A] font-medium">Registered</span>
+            <span className="text-sm text-success font-medium">Registered</span>
           ) : (
-            <span className="text-sm text-[#94A3B8]">Not registered</span>
+            <span className="text-sm text-fg-3">Not registered</span>
           )}
         </div>
 
@@ -520,7 +520,7 @@ export function NotificationSettingsForm({
           type="button"
           onClick={handleActivateTelegramWebhook}
           disabled={webhookActivating}
-          className="bg-[#F97316] hover:bg-[#F97316]/90 text-[#0F172A] text-sm font-semibold px-6 py-2 rounded-lg min-h-[44px] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+          className="bg-highlight hover:bg-highlight/90 text-bg text-sm font-semibold px-6 py-2 rounded-lg min-h-[44px] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
         >
           {webhookActivating ? (
             <>
@@ -534,7 +534,7 @@ export function NotificationSettingsForm({
 
         {/* Inline error (D-06) */}
         {webhookError && (
-          <p role="alert" className="mt-2 text-sm text-[#EF4444]">
+          <p role="alert" className="mt-2 text-sm text-danger">
             {webhookError}
           </p>
         )}
@@ -542,11 +542,11 @@ export function NotificationSettingsForm({
 
       {/* ── Section 4: Event type toggles ─────────────────────────────────── */}
       <div className={cardClass}>
-        <p className="text-sm font-semibold text-[#F8FAFC] mb-2">Notify me about</p>
+        <p className="text-sm font-semibold text-fg-on-dark mb-2">Notify me about</p>
 
         {/* New leads */}
-        <div className="flex items-center justify-between py-3 border-b border-[#334155]">
-          <label htmlFor="notify_on_lead" className="text-sm text-[#F8FAFC] cursor-pointer">
+        <div className="flex items-center justify-between py-3 border-b border-rule">
+          <label htmlFor="notify_on_lead" className="text-sm text-fg-on-dark cursor-pointer">
             New leads
           </label>
           <input
@@ -559,8 +559,8 @@ export function NotificationSettingsForm({
         </div>
 
         {/* Emergencies */}
-        <div className="flex items-center justify-between py-3 border-b border-[#334155]">
-          <label htmlFor="notify_on_emergency" className="text-sm text-[#F8FAFC] cursor-pointer">
+        <div className="flex items-center justify-between py-3 border-b border-rule">
+          <label htmlFor="notify_on_emergency" className="text-sm text-fg-on-dark cursor-pointer">
             Emergencies
           </label>
           <input
@@ -576,7 +576,7 @@ export function NotificationSettingsForm({
         <div className="flex items-center justify-between py-3">
           <label
             htmlFor="notify_on_general_inquiry"
-            className="text-sm text-[#F8FAFC] cursor-pointer"
+            className="text-sm text-fg-on-dark cursor-pointer"
           >
             General inquiries
           </label>
@@ -594,7 +594,7 @@ export function NotificationSettingsForm({
       {feedback?.type === 'success' && (
         <div
           role="status"
-          className="bg-[#16A34A]/10 border border-[#16A34A]/30 text-[#16A34A] rounded-lg p-3 text-sm mb-4 max-w-[480px]"
+          className="bg-success/10 border border-success/30 text-success rounded-lg p-3 text-sm mb-4 max-w-[480px]"
         >
           {feedback.message}
         </div>
@@ -602,7 +602,7 @@ export function NotificationSettingsForm({
       {feedback?.type === 'error' && (
         <div
           role="alert"
-          className="bg-[#EF4444]/10 border border-[#EF4444]/30 text-[#EF4444] rounded-lg p-3 text-sm mb-4 max-w-[480px]"
+          className="bg-danger/10 border border-danger/30 text-danger rounded-lg p-3 text-sm mb-4 max-w-[480px]"
         >
           {feedback.message}
         </div>
@@ -613,7 +613,7 @@ export function NotificationSettingsForm({
         type="submit"
         disabled={isSaving}
         aria-disabled={isSaving}
-        className="bg-[#F97316] text-[#0F172A] hover:bg-[#F97316]/90 min-h-[44px] font-semibold px-6 py-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+        className="bg-highlight text-bg hover:bg-highlight/90 min-h-[44px] font-semibold px-6 py-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
       >
         {isSaving ? (
           <Loader2 className="w-4 h-4 animate-spin" />

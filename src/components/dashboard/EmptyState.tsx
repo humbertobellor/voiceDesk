@@ -14,13 +14,13 @@ interface EmptyStateProps {
 export function EmptyState({ icon: Icon, heading, body, cta }: EmptyStateProps) {
   return (
     <div className="flex flex-col items-center justify-center min-h-[320px] md:min-h-[240px] py-12">
-      <Icon size={48} className="text-[#334155] mb-4" />
-      <h2 className="text-xl font-semibold text-[#F8FAFC] mb-2">{heading}</h2>
-      <p className="text-sm text-[#94A3B8] max-w-[320px] text-center mb-6">{body}</p>
+      <Icon size={48} className="text-rule mb-4" />
+      <h2 className="text-xl font-semibold text-fg-on-dark mb-2">{heading}</h2>
+      <p className="text-sm text-fg-3 max-w-[320px] text-center mb-6">{body}</p>
       {cta && (
         <Link
           href={cta.href}
-          className="border border-[#F97316] text-[#F97316] px-4 py-2 rounded text-base font-normal min-h-[44px] flex items-center"
+          className="border border-highlight text-highlight px-4 py-2 rounded text-base font-normal min-h-[44px] flex items-center"
         >
           {cta.label}
         </Link>

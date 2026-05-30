@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { Loader2, Eye, EyeOff, Check, X, AlertCircle } from 'lucide-react'
+import { Loader2, Eye, EyeOff, Check, X, AlertCircle, MailCheck } from 'lucide-react'
 import { createSupabaseBrowser } from '@/lib/supabase/browser'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -13,7 +13,7 @@ const SUBMIT_TIMEOUT_MS = 15_000
 
 function PasswordRequirement({ met, label }: { met: boolean; label: string }) {
   return (
-    <span className={`flex items-center gap-1.5 text-xs ${met ? 'text-[#22C55E]' : 'text-[#94A3B8]'}`}>
+    <span className={`flex items-center gap-1.5 text-xs ${met ? 'text-success' : 'text-fg-3'}`}>
       {met ? <Check size={12} /> : <X size={12} />}
       {label}
     </span>
@@ -142,14 +142,14 @@ export function SignupForm() {
   if (confirmationSent) {
     return (
       <div className="w-full max-w-[400px] mx-auto">
-        <div className="bg-[#1E293B] border border-[#334155] rounded-xl p-8 text-center">
-          <div className="text-4xl mb-4">📬</div>
-          <h1 className="text-[22px] font-semibold text-[#F8FAFC] mb-2">Check your email</h1>
-          <p className="text-sm text-[#94A3B8] mb-4">
-            We sent a confirmation link to <span className="text-[#F8FAFC]">{confirmedEmail}</span>.
+        <div className="bg-bg-elevated border border-rule rounded-xl p-8 text-center">
+          <MailCheck size={48} className="mx-auto mb-4 text-highlight" />
+          <h1 className="text-[22px] font-semibold text-fg-on-dark mb-2">Check your email</h1>
+          <p className="text-sm text-fg-3 mb-4">
+            We sent a confirmation link to <span className="text-fg-on-dark">{confirmedEmail}</span>.
             Click it to activate your account, then sign in.
           </p>
-          <Link href="/auth/login" className="text-sm text-[#F97316] hover:underline">
+          <Link href="/auth/login" className="text-sm text-highlight hover:underline">
             Back to sign in
           </Link>
         </div>
@@ -159,13 +159,13 @@ export function SignupForm() {
 
   return (
     <div className="w-full max-w-[400px] mx-auto">
-      <div className="bg-[#1E293B] border border-[#334155] rounded-xl p-8">
-        <h1 className="text-[28px] font-semibold text-[#F8FAFC] mb-1">Create your account</h1>
-        <p className="text-sm text-[#94A3B8] mb-6">Start answering calls in minutes</p>
+      <div className="bg-bg-elevated border border-rule rounded-xl p-8">
+        <h1 className="text-[28px] font-semibold text-fg-on-dark mb-1">Create your account</h1>
+        <p className="text-sm text-fg-3 mb-6">Start answering calls in minutes</p>
 
         {/* API / network error */}
         {submitError && (
-          <div role="alert" className="bg-[#EF4444]/10 border border-[#EF4444]/30 text-[#EF4444] rounded-lg p-3 text-sm mb-4 flex items-start gap-2">
+          <div role="alert" className="bg-danger/10 border border-danger/30 text-danger rounded-lg p-3 text-sm mb-4 flex items-start gap-2">
             <AlertCircle size={16} className="mt-0.5 shrink-0" />
             {submitError}
           </div>
@@ -173,7 +173,7 @@ export function SignupForm() {
 
         {/* Form-level validation summary shown after a failed submit */}
         {hasFieldErrors && !submitError && (
-          <div role="alert" className="bg-[#EF4444]/10 border border-[#EF4444]/30 text-[#EF4444] rounded-lg p-3 text-sm mb-4 flex items-start gap-2">
+          <div role="alert" className="bg-danger/10 border border-danger/30 text-danger rounded-lg p-3 text-sm mb-4 flex items-start gap-2">
             <AlertCircle size={16} className="mt-0.5 shrink-0" />
             Please fix the highlighted fields below.
           </div>
@@ -183,36 +183,36 @@ export function SignupForm() {
           type="button"
           onClick={handleGoogleSignUp}
           disabled={isGoogleLoading}
-          className="w-full bg-[#F97316] text-[#0F172A] hover:bg-[#F97316]/90 min-h-[44px] font-semibold"
+          className="w-full bg-highlight text-bg hover:bg-highlight/90 min-h-[44px] font-semibold"
         >
           {isGoogleLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Sign up with Google'}
         </Button>
 
         <div className="flex items-center my-6">
-          <div className="flex-1 border-t border-[#334155]" />
-          <span className="mx-3 text-sm text-[#94A3B8]">or continue with email</span>
-          <div className="flex-1 border-t border-[#334155]" />
+          <div className="flex-1 border-t border-rule" />
+          <span className="mx-3 text-sm text-fg-3">or continue with email</span>
+          <div className="flex-1 border-t border-rule" />
         </div>
 
         <form onSubmit={handleFormSubmit} noValidate className="space-y-4">
           {/* Email */}
           <div>
-            <Label htmlFor="email" className="text-sm text-[#94A3B8]">Email</Label>
+            <Label htmlFor="email" className="text-sm text-fg-3">Email</Label>
             <Input
               id="email"
               type="email"
               autoComplete="email"
               aria-invalid={!!errors.email}
               aria-describedby={errors.email ? 'email-error' : undefined}
-              className={`mt-1 bg-[#0F172A] text-[#F8FAFC] focus-visible:ring-[#F97316] min-h-[44px] transition-colors ${
+              className={`mt-1 bg-bg text-fg-on-dark focus-visible:ring-accent min-h-[44px] transition-colors ${
                 errors.email
-                  ? 'border-[#EF4444] focus-visible:ring-[#EF4444]'
-                  : 'border-[#334155]'
+                  ? 'border-danger focus-visible:ring-danger'
+                  : 'border-rule'
               }`}
               {...register('email')}
             />
             {errors.email && (
-              <p id="email-error" role="alert" className="text-sm text-[#EF4444] mt-1.5 flex items-center gap-1">
+              <p id="email-error" role="alert" className="text-sm text-danger mt-1.5 flex items-center gap-1">
                 <AlertCircle size={13} className="shrink-0" />
                 {errors.email.message}
               </p>
@@ -221,7 +221,7 @@ export function SignupForm() {
 
           {/* Password */}
           <div>
-            <Label htmlFor="password" className="text-sm text-[#94A3B8]">Password</Label>
+            <Label htmlFor="password" className="text-sm text-fg-3">Password</Label>
             <div className="relative mt-1">
               <Input
                 id="password"
@@ -229,10 +229,10 @@ export function SignupForm() {
                 autoComplete="new-password"
                 aria-invalid={!!errors.password}
                 aria-describedby="password-requirements"
-                className={`bg-[#0F172A] text-[#F8FAFC] focus-visible:ring-[#F97316] min-h-[44px] pr-10 transition-colors ${
+                className={`bg-bg text-fg-on-dark focus-visible:ring-accent min-h-[44px] pr-10 transition-colors ${
                   errors.password
-                    ? 'border-[#EF4444] focus-visible:ring-[#EF4444]'
-                    : 'border-[#334155]'
+                    ? 'border-danger focus-visible:ring-danger'
+                    : 'border-rule'
                 }`}
                 {...register('password')}
               />
@@ -240,7 +240,7 @@ export function SignupForm() {
                 type="button"
                 onClick={() => setShowPassword((s) => !s)}
                 aria-label={showPassword ? 'Hide password' : 'Show password'}
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-[#94A3B8] hover:text-[#F8FAFC]"
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-fg-3 hover:text-fg-on-dark"
               >
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
@@ -256,7 +256,7 @@ export function SignupForm() {
 
           {/* Confirm password */}
           <div>
-            <Label htmlFor="confirmPassword" className="text-sm text-[#94A3B8]">Confirm password</Label>
+            <Label htmlFor="confirmPassword" className="text-sm text-fg-3">Confirm password</Label>
             <div className="relative mt-1">
               <Input
                 id="confirmPassword"
@@ -264,10 +264,10 @@ export function SignupForm() {
                 autoComplete="new-password"
                 aria-invalid={!!errors.confirmPassword}
                 aria-describedby={errors.confirmPassword ? 'confirm-password-error' : undefined}
-                className={`bg-[#0F172A] text-[#F8FAFC] focus-visible:ring-[#F97316] min-h-[44px] pr-10 transition-colors ${
+                className={`bg-bg text-fg-on-dark focus-visible:ring-accent min-h-[44px] pr-10 transition-colors ${
                   errors.confirmPassword
-                    ? 'border-[#EF4444] focus-visible:ring-[#EF4444]'
-                    : 'border-[#334155]'
+                    ? 'border-danger focus-visible:ring-danger'
+                    : 'border-rule'
                 }`}
                 {...register('confirmPassword')}
               />
@@ -275,13 +275,13 @@ export function SignupForm() {
                 type="button"
                 onClick={() => setShowConfirmPassword((s) => !s)}
                 aria-label={showConfirmPassword ? 'Hide confirm password' : 'Show confirm password'}
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-[#94A3B8] hover:text-[#F8FAFC]"
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-fg-3 hover:text-fg-on-dark"
               >
                 {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
             {errors.confirmPassword && (
-              <p id="confirm-password-error" role="alert" className="text-sm text-[#EF4444] mt-1.5 flex items-center gap-1">
+              <p id="confirm-password-error" role="alert" className="text-sm text-danger mt-1.5 flex items-center gap-1">
                 <AlertCircle size={13} className="shrink-0" />
                 {errors.confirmPassword.message}
               </p>
@@ -292,14 +292,14 @@ export function SignupForm() {
             type="submit"
             variant="outline"
             disabled={buttonPending}
-            className="w-full border-[#334155] text-[#F8FAFC] hover:bg-[#334155] min-h-[44px]"
+            className="w-full border-rule text-fg-on-dark hover:bg-rule min-h-[44px]"
           >
             {buttonPending ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Create account'}
           </Button>
         </form>
 
-        <p className="text-sm text-center mt-6 text-[#94A3B8]">
-          <Link href="/auth/login" className="text-[#F97316] hover:underline">
+        <p className="text-sm text-center mt-6 text-fg-3">
+          <Link href="/auth/login" className="text-highlight hover:underline">
             Already have an account? Sign in
           </Link>
         </p>
