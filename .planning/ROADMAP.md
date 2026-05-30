@@ -568,7 +568,7 @@ Plans:
   4. `npm run build` exits 0 with no TypeScript or Tailwind errors
   5. All 15 v1.0 regression tests pass in `tests/regression-v1-smoke.spec.ts` — no regressions introduced by the token sweep
 
-**Plans:** 2/6 plans executed
+**Plans:** 5/6 plans executed
 
 Plans:
 **Wave 1**
@@ -581,9 +581,9 @@ Plans:
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
-- [ ] 16-03-PLAN.md — Sweep auth components + notification components + dashboard nav (8 files)
-- [ ] 16-04-PLAN.md — Sweep auth pages + pricing + dashboard layout + connect-calendar (8 files)
-- [ ] 16-05-PLAN.md — Sweep dashboard settings pages + data pages (9 files)
+- [x] 16-03-PLAN.md — Sweep auth components + notification components + dashboard nav (8 files)
+- [x] 16-04-PLAN.md — Sweep auth pages + pricing + dashboard layout + connect-calendar (8 files)
+- [x] 16-05-PLAN.md — Sweep dashboard settings pages + data pages (9 files)
 
 **Wave 4** *(blocked on Wave 3 completion)*
 
@@ -605,4 +605,4 @@ Plans:
 | 13. Email Notifications | 4/4 | Complete    | 2026-05-25 |
 | 14. In-App Notification Bell | 5/5 | Complete   | 2026-05-29 |
 | 15. Telegram Activation | 2/2 | Complete   | 2026-05-30 |
-| 16. Design System Sweep | 2/6 | In Progress|  |
+| 16. Design System Sweep | 5/6 | In Progress|  |
