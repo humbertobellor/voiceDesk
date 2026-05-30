@@ -136,6 +136,8 @@ export function NotificationSettingsForm({
   // Refs for focusing invalid phone fields on submit
   const smsInputRef = useRef<HTMLInputElement>(null)
   const whatsappInputRef = useRef<HTMLInputElement>(null)
+  // CR-04: Store the auto-dismiss timer ID so it can be cancelled on unmount.
+  const feedbackTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // ── Sync from live query (after successful unlink or background refresh) ───
   useEffect(() => {
@@ -143,6 +145,13 @@ export function NotificationSettingsForm({
       setFormData(settingsToFormData(liveSettings))
     }
   }, [liveSettings])
+
+  // CR-04: Cancel the auto-dismiss timer if the component unmounts before it fires.
+  useEffect(() => {
+    return () => {
+      if (feedbackTimerRef.current) clearTimeout(feedbackTimerRef.current)
+    }
+  }, [])
 
   // ── Derive Telegram connection state ─────────────────────────────────────
   // Prefer live query data; fall back to initialSettings on first render.
@@ -191,6 +200,13 @@ export function NotificationSettingsForm({
       return
     }
 
+    // ── Email validation (WR-03) ──────────────────────────────────────────
+    const emailValue = formData.email_address.trim()
+    if (emailValue && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)) {
+      setFeedback({ type: 'error', message: 'Enter a valid email address.' })
+      return
+    }
+
     // ── Submit ─────────────────────────────────────────────────────────────
     setIsSaving(true)
     try {
@@ -203,12 +219,13 @@ export function NotificationSettingsForm({
         notify_on_lead: formData.notify_on_lead,
         notify_on_emergency: formData.notify_on_emergency,
         notify_on_general_inquiry: formData.notify_on_general_inquiry,
-        email_address: formData.email_address.trim() || null,
+        email_address: emailValue || null,
         notify_email_enabled: formData.notify_email_enabled,
       })
       setFeedback({ type: 'success', message: 'Settings saved.' })
-      // Auto-dismiss success banner after 3 s
-      setTimeout(() => setFeedback(null), 3000)
+      // CR-04: Cancel any pending dismiss before scheduling a new one.
+      if (feedbackTimerRef.current) clearTimeout(feedbackTimerRef.current)
+      feedbackTimerRef.current = setTimeout(() => setFeedback(null), 3000)
     } catch (err) {
       const message =
         err instanceof Error && err.message
@@ -253,9 +270,6 @@ export function NotificationSettingsForm({
       setWebhookActivating(false)
     }
   }
-
-  /** Truncates a URL to 45 chars with ellipsis for display in the status row. */
-  const truncatedUrl = (url: string) => (url.length > 45 ? url.slice(0, 45) + '…' : url)
 
   // ── Shared CSS fragments ───────────────────────────────────────────────────
 
@@ -465,13 +479,15 @@ export function NotificationSettingsForm({
               Tap the link below to start a chat with the VoiceDesk bot. Once you send /start,
               your account will be linked automatically.
             </p>
+            {/* WR-04: Bot username is read from NEXT_PUBLIC_TELEGRAM_BOT_USERNAME so staging
+                and production bots are independent. Falls back to known production username. */}
             <a
-              href={`https://t.me/voiceDeskTelBot?start=${contractorId ?? ''}`}
+              href={`https://t.me/${process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME ?? 'voiceDeskTelBot'}?start=${contractorId ?? ''}`}
               target="_blank"
               rel="noreferrer"
               className="text-[#F97316] underline hover:opacity-80 transition-opacity"
             >
-              Open @voiceDeskTelBot (opens in new tab)
+              Open @{process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME ?? 'voiceDeskTelBot'} (opens in new tab)
             </a>
           </div>
         )}
@@ -485,15 +501,15 @@ export function NotificationSettingsForm({
           <span className="text-sm font-semibold text-[#F8FAFC]">Telegram Bot Webhook</span>
         </div>
 
-        {/* Webhook status row */}
+        {/* WR-01: Webhook status shows registered/not-registered only.
+            The webhook URL is an internal platform URL; it must not be
+            rendered in client HTML where any contractor can inspect it. */}
         <div className="flex items-center justify-between py-3 mb-4">
           <span className="text-sm text-[#94A3B8]">Webhook status</span>
           {webhookInfo &&
           typeof webhookInfo.url === 'string' &&
           webhookInfo.url.length > 0 ? (
-            <span className="text-sm text-[#F8FAFC] font-mono">
-              {truncatedUrl(webhookInfo.url as string)}
-            </span>
+            <span className="text-sm text-[#16A34A] font-medium">Registered</span>
           ) : (
             <span className="text-sm text-[#94A3B8]">Not registered</span>
           )}
