@@ -5,81 +5,16 @@
 // D-20: Upserts telegram_chat_id — re-linking always overwrites.
 // Security: grammY webhookCallback validates the secret_token header set via setWebhook registration.
 // Note: Unlike retell/route.ts, this is synchronous — grammY handles the response inline (no after() needed).
+// CR-01: Uses getBot() singleton from telegram.ts — no separate Bot instance. The /start command
+// handler is registered inside getBot() so all callers share a single, consistent Bot object.
 import 'server-only'
-import { Bot, webhookCallback } from 'grammy'
-import { createServiceRoleClient } from '@/lib/supabase/service'
-
-// Validate bot token at module load — logs error but does not throw (guard is in POST handler).
-const botToken = process.env.TELEGRAM_BOT_TOKEN
-if (!botToken) {
-  console.error('[webhook/telegram] TELEGRAM_BOT_TOKEN is not set — bot will not function')
-}
-
-const bot = new Bot(botToken ?? 'placeholder')
-
-// D-19: Handle /start <contractor_uuid> — sent by Telegram when contractor clicks the deep link
-// Deep link format: https://t.me/voiceDeskTelBot?start=<contractor_uuid>
-// Telegram delivers this as message.text = "/start <contractor_uuid>"
-bot.command('start', async (ctx) => {
-  const text = ctx.message?.text ?? ''
-  // Extract the payload after "/start " (the contractor UUID)
-  const parts = text.split(' ')
-  const contractorId = parts[1]?.trim()
-
-  if (!contractorId) {
-    await ctx.reply('❌ Invalid link. Please use the setup link from your VoiceDesk dashboard.')
-    return
-  }
-
-  const UUID_V4_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
-  if (!UUID_V4_REGEX.test(contractorId)) {
-    await ctx.reply('❌ Invalid link. Please use the setup link from your VoiceDesk dashboard.')
-    return
-  }
-
-  const chatId = ctx.chat.id.toString()
-
-  // WR-01: Verify contractor exists before upsert to distinguish invalid UUIDs from DB errors
-  const db = createServiceRoleClient()
-  const { data: contractor } = await db
-    .from('contractors')
-    .select('id')
-    .eq('id', contractorId)
-    .maybeSingle()
-
-  if (!contractor) {
-    await ctx.reply('❌ Invalid link. Please use the setup link from your VoiceDesk dashboard.')
-    return
-  }
-
-  // D-20: Upsert telegram_chat_id — re-linking always overwrites; no error if already linked
-  const { error } = await db
-    .from('notification_settings')
-    .upsert(
-      {
-        contractor_id: contractorId,
-        telegram_chat_id: chatId,
-        updated_at: new Date().toISOString(),
-      },
-      { onConflict: 'contractor_id' }
-    )
-
-  if (error) {
-    console.error('[webhook/telegram] upsert failed for contractorId:', contractorId, error.message)
-    await ctx.reply('❌ Connection failed. Please try the link again or contact support.')
-    return
-  }
-
-  // D-19: Confirmation message (per 05-CONTEXT.md specifics section)
-  await ctx.reply('✅ VoiceDesk connected. You will receive call alerts here.')
-})
+import { webhookCallback } from 'grammy'
+import { getBot } from '@/lib/notifications/telegram'
 
 // grammY webhookCallback wraps the bot handler in a standard Web API Request/Response handler
 // D-22: Use 'std/http' adapter for Next.js App Router (Web API Request/Response)
 // T-05-04-01: 5th param validates X-Telegram-Bot-Api-Secret-Token header sent by Telegram.
 // Set TELEGRAM_WEBHOOK_SECRET to any strong random string, pass the same value to setWebhook.
-// CR-02: webhookSecret guard is intentionally inside the POST handler (not module level) to avoid
-// crashing the Next.js worker during cold start when the env var is missing.
 
 export async function POST(req: Request) {
   // Guard missing webhook secret — return 503 so Telegram retries later
@@ -89,9 +24,12 @@ export async function POST(req: Request) {
     return new Response('Service Unavailable', { status: 503 })
   }
 
-  // Guard missing bot token — return 503 so Telegram retries later
-  if (!botToken) {
-    console.error('[webhook/telegram] cannot process update — TELEGRAM_BOT_TOKEN not set')
+  // CR-01: Use the shared singleton — fail fast if token is missing
+  let bot: ReturnType<typeof getBot>
+  try {
+    bot = getBot()
+  } catch {
+    console.error('[webhook/telegram] TELEGRAM_BOT_TOKEN is not set — rejecting update')
     return new Response('Service Unavailable', { status: 503 })
   }
 
