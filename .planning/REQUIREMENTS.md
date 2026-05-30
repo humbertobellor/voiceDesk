@@ -28,10 +28,10 @@
 
 ## Design System
 
-- [ ] **BRAND-01**: All Wolknitive brand color, typography, and spacing tokens are defined as CSS custom properties in `globals.css` and available as Tailwind utility class names
-- [ ] **BRAND-02**: No hardcoded hex color values (`[#XXXXXX]` arbitrary Tailwind values) remain in any component file outside `globals.css`
-- [ ] **BRAND-03**: All dashboard pages (call log, leads, agent config, settings tabs, account page) and auth pages (login, signup) render using brand tokens consistently
-- [ ] **BRAND-04**: `npm run build` exits 0 and the 15/15 v1.0 regression tests pass after the design system sweep
+- [x] **BRAND-01**: All Wolknitive brand color, typography, and spacing tokens are defined as CSS custom properties in `globals.css` and available as Tailwind utility class names
+- [x] **BRAND-02**: No hardcoded hex color values (`[#XXXXXX]` arbitrary Tailwind values) remain in any component file outside `globals.css`
+- [x] **BRAND-03**: All dashboard pages (call log, leads, agent config, settings tabs, account page) and auth pages (login, signup) render using brand tokens consistently
+- [x] **BRAND-04**: `npm run build` exits 0 and the 15/15 v1.0 regression tests pass after the design system sweep
 
 ---
 
@@ -70,7 +70,7 @@
 | BELL-04 | Phase 12 | Complete |
 | TEL-01 | Phase 15 | Complete |
 | TEL-02 | Phase 15 | Complete |
-| BRAND-01 | Phase 16 | Pending |
-| BRAND-02 | Phase 16 | Pending |
-| BRAND-03 | Phase 16 | Pending |
-| BRAND-04 | Phase 16 | Pending |
+| BRAND-01 | Phase 16 | Complete |
+| BRAND-02 | Phase 16 | Complete |
+| BRAND-03 | Phase 16 | Complete |
+| BRAND-04 | Phase 16 | Complete |

@@ -419,7 +419,7 @@ Plans:
 - [x] **Phase 13: Email Notifications** - Email channel in Inngest dispatch + payment alert email + API schema extension (completed 2026-05-25)
 - [x] **Phase 14: In-App Notification Bell** - Inngest write step + React Query hooks + Supabase Realtime + NotificationBell UI (completed 2026-05-29)
 - [x] **Phase 15: Telegram Activation** - Server action (activateTelegramWebhook) + settings UI card with status display (completed 2026-05-30)
-- [ ] **Phase 16: Design System Sweep** - Wolknitive token extraction + globals.css @theme block + full component sweep
+- [x] **Phase 16: Design System Sweep** - Wolknitive token extraction + globals.css @theme block + full component sweep (completed 2026-05-30)
 
 ---
 
@@ -568,7 +568,7 @@ Plans:
   4. `npm run build` exits 0 with no TypeScript or Tailwind errors
   5. All 15 v1.0 regression tests pass in `tests/regression-v1-smoke.spec.ts` — no regressions introduced by the token sweep
 
-**Plans:** 5/6 plans executed
+**Plans:** 6/6 plans complete
 
 Plans:
 **Wave 1**
@@ -587,7 +587,7 @@ Plans:
 
 **Wave 4** *(blocked on Wave 3 completion)*
 
-- [ ] 16-06-PLAN.md — Global hex audit + D-16 manual review + build + regression tests + AFTER snapshots + human sign-off
+- [x] 16-06-PLAN.md — Global hex audit + D-16 manual review + build + regression tests + AFTER snapshots + human sign-off
 
 **Cross-cutting constraints:**
 
@@ -605,4 +605,4 @@ Plans:
 | 13. Email Notifications | 4/4 | Complete    | 2026-05-25 |
 | 14. In-App Notification Bell | 5/5 | Complete   | 2026-05-29 |
 | 15. Telegram Activation | 2/2 | Complete   | 2026-05-30 |
-| 16. Design System Sweep | 5/6 | In Progress|  |
+| 16. Design System Sweep | 6/6 | Complete   | 2026-05-30 |
