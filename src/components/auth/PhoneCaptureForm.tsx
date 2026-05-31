@@ -179,7 +179,7 @@ export function PhoneCaptureForm() {
           <Button
             type="submit"
             disabled={buttonPending}
-            className="w-full bg-highlight text-bg hover:bg-highlight/90 min-h-[44px] font-semibold"
+            className="w-full bg-highlight text-fg-on-dark hover:bg-highlight/90 min-h-[44px] font-semibold"
           >
             {buttonPending ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Complete Setup'}
           </Button>

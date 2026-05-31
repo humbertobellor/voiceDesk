@@ -36,7 +36,7 @@ export function ConnectCalendarForm({ isConnected }: ConnectCalendarFormProps) {
       </p>
       <Button
         disabled={isNavigating}
-        className="bg-highlight text-bg hover:bg-highlight/90 min-h-[44px] font-semibold w-full"
+        className="bg-highlight text-fg-on-dark hover:bg-highlight/90 min-h-[44px] font-semibold w-full"
         onClick={handleConnect}
       >
         {isNavigating

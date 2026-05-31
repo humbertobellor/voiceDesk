@@ -76,7 +76,7 @@ export function LoginForm({ initialError }: { initialError?: string | null }) {
           type="button"
           onClick={handleGoogleSignIn}
           disabled={isGoogleLoading}
-          className="w-full bg-highlight text-bg hover:bg-highlight/90 min-h-[44px] font-semibold"
+          className="w-full bg-highlight text-fg-on-dark hover:bg-highlight/90 min-h-[44px] font-semibold"
         >
           {isGoogleLoading ? (
             <Loader2 className="w-4 h-4 animate-spin" />

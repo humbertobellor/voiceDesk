@@ -520,7 +520,7 @@ export function NotificationSettingsForm({
           type="button"
           onClick={handleActivateTelegramWebhook}
           disabled={webhookActivating}
-          className="bg-highlight hover:bg-highlight/90 text-bg text-sm font-semibold px-6 py-2 rounded-lg min-h-[44px] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+          className="bg-highlight hover:bg-highlight/90 text-fg-on-dark text-sm font-semibold px-6 py-2 rounded-lg min-h-[44px] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
         >
           {webhookActivating ? (
             <>
@@ -613,7 +613,7 @@ export function NotificationSettingsForm({
         type="submit"
         disabled={isSaving}
         aria-disabled={isSaving}
-        className="bg-highlight text-bg hover:bg-highlight/90 min-h-[44px] font-semibold px-6 py-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+        className="bg-highlight text-fg-on-dark hover:bg-highlight/90 min-h-[44px] font-semibold px-6 py-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
       >
         {isSaving ? (
           <Loader2 className="w-4 h-4 animate-spin" />

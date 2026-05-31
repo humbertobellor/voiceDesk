@@ -154,7 +154,7 @@ export default function PricingPage() {
               }`}
             >
               {tier.popular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-highlight text-bg text-xs font-bold px-3 py-1 rounded-full">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-highlight text-fg-on-dark text-xs font-bold px-3 py-1 rounded-full">
                   MOST POPULAR
                 </div>
               )}
@@ -184,7 +184,7 @@ export default function PricingPage() {
                 disabled={loading === tier.id || !contractorId}
                 className={`w-full ${
                   tier.popular
-                    ? 'bg-highlight text-bg hover:bg-highlight/90'
+                    ? 'bg-highlight text-fg-on-dark hover:bg-highlight/90'
                     : 'bg-rule text-fg-on-dark hover:bg-rule-strong'
                 }`}
               >
