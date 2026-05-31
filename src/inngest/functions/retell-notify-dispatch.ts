@@ -194,8 +194,9 @@ export const retellNotifyDispatch = inngest.createFunction(
     const notifyData = await step.run('load-notification-data', async () => {
       const db = createServiceRoleClient()
 
-      const [callResult, leadResult, settingsResult] = await Promise.all([
+      const [callResult, contractorResult, leadResult, settingsResult] = await Promise.all([
         db.from('calls').select('caller_phone, intent, summary').eq('id', callId).maybeSingle(),
+        db.from('contractors').select('is_active').eq('id', contractorId).maybeSingle(),
         db.from('leads').select('id, service_requested, status, booking_conflict').eq('call_id', callId).maybeSingle(),
         db.from('notification_settings')
           .select('sms_number, whatsapp_number, telegram_chat_id, notify_email_enabled, email_address, notify_on_lead, notify_on_emergency, notify_on_general_inquiry, notify_sms_enabled, notify_whatsapp_enabled, notify_telegram_enabled')
@@ -209,12 +210,22 @@ export const retellNotifyDispatch = inngest.createFunction(
 
       return {
         call: callResult.data,
+        isActive: contractorResult.data?.is_active ?? true,
         lead: leadResult.data ?? null,
         settings: settingsResult.data ?? null,
       }
     })
 
-    const { call, lead, settings } = notifyData
+    const { call, isActive, lead, settings } = notifyData
+
+    if (!isActive) {
+      console.info('[voicedesk]', JSON.stringify({
+        event: 'retell-notify-dispatch.skipped_inactive_contractor',
+        contractor_id: contractorId,
+        call_id: callId,
+      }))
+      return
+    }
 
     // CR-03: Validate the raw DB intent value before casting to CallIntent.
     // Any value not in VALID_INTENTS indicates DB corruption or a schema drift —
