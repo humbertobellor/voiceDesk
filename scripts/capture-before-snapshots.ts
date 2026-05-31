@@ -23,6 +23,7 @@
  */
 
 import { chromium } from '@playwright/test'
+import { mkdirSync } from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
@@ -77,6 +78,9 @@ async function main(): Promise<void> {
   console.log(`[capture-before-snapshots] Base URL: ${BASE_URL}`)
   console.log(`[capture-before-snapshots] Output:   ${OUTPUT_DIR}`)
   console.log('')
+
+  // Ensure output directory exists — Playwright screenshot() throws if the parent is absent.
+  mkdirSync(OUTPUT_DIR, { recursive: true })
 
   const browser = await chromium.launch({ headless: true })
 
