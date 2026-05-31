@@ -27,7 +27,13 @@ export async function POST(req: Request) {
   }
 
   // 2. Validate request body with zod
-  const body = phoneSchema.safeParse(await req.json())
+  let rawBody: unknown
+  try {
+    rawBody = await req.json()
+  } catch {
+    return NextResponse.json({ error: 'Invalid request body' }, { status: 400 })
+  }
+  const body = phoneSchema.safeParse(rawBody)
   if (!body.success) {
     return NextResponse.json({ error: body.error.issues[0]?.message ?? 'Invalid input' }, { status: 400 })
   }
