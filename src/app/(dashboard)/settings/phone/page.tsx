@@ -99,7 +99,7 @@ export default function PhoneSettingsPage() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-xl font-semibold text-fg-on-dark mb-1">Phone Number</h1>
+        <h1 className="text-xl font-semibold text-fg-1 mb-1">Phone Number</h1>
         <p className="text-sm text-fg-3">
           Your dedicated VoiceDesk number and call forwarding instructions.
         </p>
@@ -120,7 +120,7 @@ export default function PhoneSettingsPage() {
                 type="button"
                 onClick={handleCopy}
                 aria-label="Copy phone number"
-                className="p-1.5 rounded-md text-fg-3 hover:text-fg-on-dark hover:bg-rule transition-colors"
+                className="p-1.5 rounded-md text-fg-3 hover:text-fg-1 hover:bg-rule transition-colors"
               >
                 {copied ? (
                   <Check className="w-4 h-4 text-green-400" />
@@ -143,7 +143,7 @@ export default function PhoneSettingsPage() {
                   value={areaCode}
                   onChange={(e) => setAreaCode(e.target.value.replace(/\D/g, '').slice(0, 3))}
                   aria-label="Area code"
-                  className="w-20 px-3 py-2 bg-bg border border-rule rounded-md text-fg-on-dark text-sm font-mono focus:outline-none focus:ring-2 focus:ring-highlight focus:border-transparent"
+                  className="w-20 px-3 py-2 bg-bg border border-rule rounded-md text-fg-1 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-highlight focus:border-transparent"
                 />
                 <button
                   type="button"
@@ -174,7 +174,7 @@ export default function PhoneSettingsPage() {
         <div className="mb-4">
           <div className="flex items-center gap-2 mb-3">
             <PhoneForwarded className="w-4 h-4 text-fg-4" />
-            <h2 className="text-sm font-semibold text-fg-on-dark">Call Forwarding Setup</h2>
+            <h2 className="text-sm font-semibold text-fg-1">Call Forwarding Setup</h2>
           </div>
           <p className="text-sm text-fg-3 mb-4">
             Forward calls from your existing business number to your VoiceDesk number using these carrier codes.
@@ -184,7 +184,7 @@ export default function PhoneSettingsPage() {
             {CARRIERS.map((carrier) => (
               <div key={carrier.id} className="bg-bg-elevated rounded-lg p-4">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-semibold text-fg-on-dark">{carrier.name}</span>
+                  <span className="text-sm font-semibold text-fg-1">{carrier.name}</span>
                   <code className="text-xs bg-bg text-highlight px-2 py-0.5 rounded font-mono">
                     {carrier.code}
                   </code>

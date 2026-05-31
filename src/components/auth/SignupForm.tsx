@@ -144,9 +144,9 @@ export function SignupForm() {
       <div className="w-full max-w-[400px] mx-auto">
         <div className="bg-bg-elevated border border-rule rounded-xl p-8 text-center">
           <MailCheck size={48} className="mx-auto mb-4 text-highlight" />
-          <h1 className="text-[22px] font-semibold text-fg-on-dark mb-2">Check your email</h1>
+          <h1 className="text-[22px] font-semibold text-fg-1 mb-2">Check your email</h1>
           <p className="text-sm text-fg-3 mb-4">
-            We sent a confirmation link to <span className="text-fg-on-dark">{confirmedEmail}</span>.
+            We sent a confirmation link to <span className="text-fg-1">{confirmedEmail}</span>.
             Click it to activate your account, then sign in.
           </p>
           <Link href="/auth/login" className="text-sm text-highlight hover:underline">
@@ -160,7 +160,7 @@ export function SignupForm() {
   return (
     <div className="w-full max-w-[400px] mx-auto">
       <div className="bg-bg-elevated border border-rule rounded-xl p-8">
-        <h1 className="text-[28px] font-semibold text-fg-on-dark mb-1">Create your account</h1>
+        <h1 className="text-[28px] font-semibold text-fg-1 mb-1">Create your account</h1>
         <p className="text-sm text-fg-3 mb-6">Start answering calls in minutes</p>
 
         {/* API / network error */}
@@ -204,7 +204,7 @@ export function SignupForm() {
               autoComplete="email"
               aria-invalid={!!errors.email}
               aria-describedby={errors.email ? 'email-error' : undefined}
-              className={`mt-1 bg-bg text-fg-on-dark focus-visible:ring-accent min-h-[44px] transition-colors ${
+              className={`mt-1 bg-bg text-fg-1 focus-visible:ring-accent min-h-[44px] transition-colors ${
                 errors.email
                   ? 'border-danger focus-visible:ring-danger'
                   : 'border-rule'
@@ -229,7 +229,7 @@ export function SignupForm() {
                 autoComplete="new-password"
                 aria-invalid={!!errors.password}
                 aria-describedby="password-requirements"
-                className={`bg-bg text-fg-on-dark focus-visible:ring-accent min-h-[44px] pr-10 transition-colors ${
+                className={`bg-bg text-fg-1 focus-visible:ring-accent min-h-[44px] pr-10 transition-colors ${
                   errors.password
                     ? 'border-danger focus-visible:ring-danger'
                     : 'border-rule'
@@ -240,7 +240,7 @@ export function SignupForm() {
                 type="button"
                 onClick={() => setShowPassword((s) => !s)}
                 aria-label={showPassword ? 'Hide password' : 'Show password'}
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-fg-3 hover:text-fg-on-dark"
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-fg-3 hover:text-fg-1"
               >
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
@@ -264,7 +264,7 @@ export function SignupForm() {
                 autoComplete="new-password"
                 aria-invalid={!!errors.confirmPassword}
                 aria-describedby={errors.confirmPassword ? 'confirm-password-error' : undefined}
-                className={`bg-bg text-fg-on-dark focus-visible:ring-accent min-h-[44px] pr-10 transition-colors ${
+                className={`bg-bg text-fg-1 focus-visible:ring-accent min-h-[44px] pr-10 transition-colors ${
                   errors.confirmPassword
                     ? 'border-danger focus-visible:ring-danger'
                     : 'border-rule'
@@ -275,7 +275,7 @@ export function SignupForm() {
                 type="button"
                 onClick={() => setShowConfirmPassword((s) => !s)}
                 aria-label={showConfirmPassword ? 'Hide confirm password' : 'Show confirm password'}
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-fg-3 hover:text-fg-on-dark"
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-fg-3 hover:text-fg-1"
               >
                 {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
@@ -292,7 +292,7 @@ export function SignupForm() {
             type="submit"
             variant="outline"
             disabled={buttonPending}
-            className="w-full border-rule text-fg-on-dark hover:bg-rule min-h-[44px]"
+            className="w-full border-rule text-fg-1 hover:bg-rule min-h-[44px]"
           >
             {buttonPending ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Create account'}
           </Button>

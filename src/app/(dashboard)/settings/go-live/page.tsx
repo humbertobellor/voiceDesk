@@ -63,7 +63,7 @@ export default function GoLivePage() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-xl font-semibold text-fg-on-dark mb-1">Go Live</h1>
+        <h1 className="text-xl font-semibold text-fg-1 mb-1">Go Live</h1>
         <p className="text-sm text-fg-3">
           Make a test call to verify your setup, then activate your VoiceDesk.
         </p>
@@ -83,7 +83,7 @@ export default function GoLivePage() {
           <div className="flex items-center gap-3 mb-4">
             <CheckCircle className="w-8 h-8 text-green-400" />
             <div>
-              <h2 className="text-lg font-semibold text-fg-on-dark">You're Live!</h2>
+              <h2 className="text-lg font-semibold text-fg-1">You're Live!</h2>
               <p className="text-sm text-fg-3">
                 Your VoiceDesk is active. Customers calling your business number are being answered by your AI receptionist.
               </p>
@@ -131,7 +131,7 @@ export default function GoLivePage() {
         <div className="space-y-4">
           <div className="flex items-center gap-3">
             <Loader2 className="w-5 h-5 animate-spin text-accent" />
-            <span className="text-sm text-fg-on-dark font-medium">Listening for calls...</span>
+            <span className="text-sm text-fg-1 font-medium">Listening for calls...</span>
           </div>
 
           <div className="flex items-center gap-2">
@@ -163,7 +163,7 @@ export default function GoLivePage() {
           <button
             type="button"
             onClick={() => setStatus('waiting')}
-            className="text-sm text-fg-3 hover:text-fg-on-dark underline"
+            className="text-sm text-fg-3 hover:text-fg-1 underline"
           >
             Cancel and try again
           </button>
@@ -176,7 +176,7 @@ export default function GoLivePage() {
           <div className="flex items-center gap-3 mb-2">
             <CheckCircle className="w-8 h-8 text-green-400" />
             <div>
-              <h2 className="text-lg font-semibold text-fg-on-dark">Test Call Verified!</h2>
+              <h2 className="text-lg font-semibold text-fg-1">Test Call Verified!</h2>
               <p className="text-sm text-fg-3">Your VoiceDesk is now live.</p>
             </div>
           </div>

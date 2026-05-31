@@ -54,7 +54,7 @@ export function LanguageSettingsForm({ current }: LanguageSettingsFormProps) {
   return (
     <form onSubmit={handleSubmit} className="bg-bg-elevated border border-rule rounded-xl p-6 max-w-[480px]">
       <fieldset disabled={isPending}>
-        <legend className="text-base font-semibold text-fg-on-dark mb-1">Supported languages</legend>
+        <legend className="text-base font-semibold text-fg-1 mb-1">Supported languages</legend>
         <p className="text-sm text-fg-3 mb-4">
           Your AI receptionist greets callers in every selected language and lets them choose. At least one language is required.
         </p>
@@ -62,7 +62,7 @@ export function LanguageSettingsForm({ current }: LanguageSettingsFormProps) {
           {ALL_LANGUAGES.map(({ code, label }) => {
             const checked = selected.has(code)
             return (
-              <Label key={code} htmlFor={`lang-${code}`} className="flex items-center gap-3 cursor-pointer text-fg-on-dark">
+              <Label key={code} htmlFor={`lang-${code}`} className="flex items-center gap-3 cursor-pointer text-fg-1">
                 <input
                   id={`lang-${code}`}
                   type="checkbox"

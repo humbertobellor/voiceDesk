@@ -69,7 +69,7 @@ export default function AccountPage() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-xl font-semibold text-fg-on-dark mb-1">Account &amp; Billing</h1>
+        <h1 className="text-xl font-semibold text-fg-1 mb-1">Account &amp; Billing</h1>
         <p className="text-sm text-fg-3">Manage your plan and billing details</p>
         <div className="border-b border-rule mt-6" />
       </div>
@@ -101,7 +101,7 @@ export default function AccountPage() {
       <div className="bg-bg-elevated rounded-lg p-4 mb-6">
         <div className="flex items-center gap-3 mb-2">
           <CreditCard className="w-5 h-5 text-fg-4" />
-          <span className="text-sm font-medium text-fg-on-dark">Subscription</span>
+          <span className="text-sm font-medium text-fg-1">Subscription</span>
         </div>
         <div className="pl-8">
           <p className="text-sm text-fg-3">
@@ -139,7 +139,7 @@ export default function AccountPage() {
       <div className="bg-bg-elevated rounded-lg p-4">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-sm font-medium text-fg-on-dark">Manage Subscription</h2>
+            <h2 className="text-sm font-medium text-fg-1">Manage Subscription</h2>
             <p className="text-xs text-fg-3 mt-1">
               {hasStripeCustomer
                 ? 'Update payment method, change plan, or cancel subscription'

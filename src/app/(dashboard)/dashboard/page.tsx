@@ -45,7 +45,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-xl font-semibold text-fg-on-dark mb-1">Dashboard</h1>
+        <h1 className="text-xl font-semibold text-fg-1 mb-1">Dashboard</h1>
         <p className="text-sm text-fg-3">Overview of your AI receptionist</p>
         <div className="border-b border-rule mt-6" />
       </div>

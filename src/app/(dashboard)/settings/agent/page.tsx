@@ -13,7 +13,7 @@ export default function AgentConfigPage() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-xl font-semibold text-fg-on-dark mb-1">Agent Configuration</h1>
+        <h1 className="text-xl font-semibold text-fg-1 mb-1">Agent Configuration</h1>
         <p className="text-sm text-fg-3">
           Configure your AI receptionist's business details, availability, emergency triggers, and voice.
         </p>

@@ -21,7 +21,7 @@ export default function LeadsPage() {
       <div className="mb-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-xl font-semibold text-fg-on-dark mb-1">Leads</h1>
+            <h1 className="text-xl font-semibold text-fg-1 mb-1">Leads</h1>
             <p className="text-sm text-fg-3">Qualified leads from incoming calls</p>
           </div>
           <div className="flex items-center gap-2">

@@ -15,7 +15,7 @@ export function EmptyState({ icon: Icon, heading, body, cta }: EmptyStateProps) 
   return (
     <div className="flex flex-col items-center justify-center min-h-[320px] md:min-h-[240px] py-12">
       <Icon size={48} className="text-rule mb-4" />
-      <h2 className="text-xl font-semibold text-fg-on-dark mb-2">{heading}</h2>
+      <h2 className="text-xl font-semibold text-fg-1 mb-2">{heading}</h2>
       <p className="text-sm text-fg-3 max-w-[320px] text-center mb-6">{body}</p>
       {cta && (
         <Link

@@ -82,7 +82,7 @@ export function PhoneCaptureForm() {
     <div className="w-full max-w-[400px] mx-auto">
       <div className="bg-bg-elevated border border-rule rounded-xl p-8">
         <p className="text-sm text-fg-3 mb-2">Step 1 of 1 — Account Setup</p>
-        <h1 className="text-[28px] font-semibold text-fg-on-dark mb-1">One more thing</h1>
+        <h1 className="text-[28px] font-semibold text-fg-1 mb-1">One more thing</h1>
         <p className="text-sm text-fg-3 mb-6">
           We'll send call alerts to this number. You can change it later in Settings.
         </p>
@@ -103,7 +103,7 @@ export function PhoneCaptureForm() {
               placeholder="e.g. South Florida HVAC Co."
               aria-invalid={!!errors.business_name}
               aria-describedby={errors.business_name ? 'business-name-error' : undefined}
-              className={`mt-1 bg-bg text-fg-on-dark focus-visible:ring-accent min-h-[44px] transition-colors ${
+              className={`mt-1 bg-bg text-fg-1 focus-visible:ring-accent min-h-[44px] transition-colors ${
                 errors.business_name
                   ? 'border-danger focus-visible:ring-danger'
                   : 'border-rule'
@@ -128,7 +128,7 @@ export function PhoneCaptureForm() {
               placeholder="+1 (305) 555-0100"
               aria-invalid={!!errors.phone_number}
               aria-describedby={errors.phone_number ? 'phone-number-error' : 'phone-number-hint'}
-              className={`mt-1 bg-bg text-fg-on-dark focus-visible:ring-accent min-h-[44px] transition-colors ${
+              className={`mt-1 bg-bg text-fg-1 focus-visible:ring-accent min-h-[44px] transition-colors ${
                 errors.phone_number
                   ? 'border-danger focus-visible:ring-danger'
                   : 'border-rule'
@@ -157,7 +157,7 @@ export function PhoneCaptureForm() {
               placeholder="305"
               aria-invalid={!!errors.area_code}
               aria-describedby={errors.area_code ? 'area-code-error' : 'area-code-hint'}
-              className={`mt-1 bg-bg text-fg-on-dark focus-visible:ring-accent min-h-[44px] transition-colors ${
+              className={`mt-1 bg-bg text-fg-1 focus-visible:ring-accent min-h-[44px] transition-colors ${
                 errors.area_code
                   ? 'border-danger focus-visible:ring-danger'
                   : 'border-rule'
@@ -188,7 +188,7 @@ export function PhoneCaptureForm() {
         <button
           type="button"
           onClick={handleSignOut}
-          className="block w-full text-center text-sm text-fg-3 hover:text-fg-on-dark mt-4"
+          className="block w-full text-center text-sm text-fg-3 hover:text-fg-1 mt-4"
         >
           Sign out instead
         </button>

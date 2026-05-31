@@ -136,7 +136,7 @@ export default function PricingPage() {
     <main className="min-h-screen bg-bg py-12 px-4">
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-fg-on-dark mb-4">
+          <h1 className="text-4xl font-bold text-fg-1 mb-4">
             Choose your plan
           </h1>
           <p className="text-lg text-fg-3">
@@ -166,11 +166,11 @@ export default function PricingPage() {
                 </div>
               )}
 
-              <h2 className="text-xl font-semibold text-fg-on-dark mb-2">
+              <h2 className="text-xl font-semibold text-fg-1 mb-2">
                 {tier.name}
               </h2>
               <div className="mb-4">
-                <span className="text-3xl font-bold text-fg-on-dark">
+                <span className="text-3xl font-bold text-fg-1">
                   {tier.price}
                 </span>
                 <span className="text-fg-3">{tier.period}</span>
@@ -179,7 +179,7 @@ export default function PricingPage() {
 
               <ul className="space-y-3 mb-6">
                 {tier.features.map((feature, i) => (
-                  <li key={i} className="flex items-center gap-2 text-sm text-fg-on-dark">
+                  <li key={i} className="flex items-center gap-2 text-sm text-fg-1">
                     <Check className="w-4 h-4 text-highlight" />
                     {feature}
                   </li>
@@ -192,7 +192,7 @@ export default function PricingPage() {
                 className={`w-full ${
                   tier.popular
                     ? 'bg-highlight text-fg-on-dark hover:bg-highlight/90'
-                    : 'bg-rule text-fg-on-dark hover:bg-rule-strong'
+                    : 'bg-rule text-fg-1 hover:bg-rule-strong'
                 }`}
               >
                 {loading === tier.id ? (

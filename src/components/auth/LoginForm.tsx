@@ -62,7 +62,7 @@ export function LoginForm({ initialError }: { initialError?: string | null }) {
   return (
     <div className="w-full max-w-[400px] mx-auto">
       <div className="bg-bg-elevated border border-rule rounded-xl p-8">
-        <h1 className="text-[28px] font-semibold text-fg-on-dark mb-1">Welcome back</h1>
+        <h1 className="text-[28px] font-semibold text-fg-1 mb-1">Welcome back</h1>
         <p className="text-sm text-fg-3 mb-6">Sign in to your VoiceDesk account</p>
 
         {submitError && (
@@ -100,7 +100,7 @@ export function LoginForm({ initialError }: { initialError?: string | null }) {
               id="email"
               type="email"
               autoComplete="email"
-              className="bg-bg border-rule text-fg-on-dark focus-visible:ring-accent min-h-[44px] mt-1"
+              className="bg-bg border-rule text-fg-1 focus-visible:ring-accent min-h-[44px] mt-1"
               {...register('email')}
             />
             {errors.email && <p className="text-sm text-danger mt-1">{errors.email.message}</p>}
@@ -113,7 +113,7 @@ export function LoginForm({ initialError }: { initialError?: string | null }) {
                 id="password"
                 type={showPassword ? 'text' : 'password'}
                 autoComplete="current-password"
-                className="bg-bg border-rule text-fg-on-dark focus-visible:ring-accent min-h-[44px] pr-10"
+                className="bg-bg border-rule text-fg-1 focus-visible:ring-accent min-h-[44px] pr-10"
                 {...register('password')}
               />
               <button
@@ -132,7 +132,7 @@ export function LoginForm({ initialError }: { initialError?: string | null }) {
             type="submit"
             variant="outline"
             disabled={isSubmitting}
-            className="w-full border-rule text-fg-on-dark hover:bg-rule min-h-[44px]"
+            className="w-full border-rule text-fg-1 hover:bg-rule min-h-[44px]"
           >
             {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Sign in to VoiceDesk'}
           </Button>

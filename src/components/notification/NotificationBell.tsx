@@ -129,7 +129,7 @@ export function NotificationBell({ className }: NotificationBellProps) {
         >
           {/* Header */}
           <div className="flex items-center justify-between border-b border-rule px-4 py-3">
-            <span className="text-sm font-semibold text-fg-on-dark">
+            <span className="text-sm font-semibold text-fg-1">
               Notifications
             </span>
             <button
@@ -166,7 +166,7 @@ export function NotificationBell({ className }: NotificationBellProps) {
 
                   {/* Notification content */}
                   <div className="flex-1 px-3 py-2">
-                    <p className="truncate text-xs font-semibold text-fg-on-dark">
+                    <p className="truncate text-xs font-semibold text-fg-1">
                       {notification.title}
                     </p>
                     <p className="truncate text-xs text-fg-3">

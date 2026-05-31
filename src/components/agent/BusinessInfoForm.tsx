@@ -64,7 +64,7 @@ export function BusinessInfoForm() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-highlight"></div>
       </div>
     )
   }
@@ -72,26 +72,26 @@ export function BusinessInfoForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-6 max-w-xl">
       <div>
-        <label className="block text-sm font-medium text-gray-300 mb-1">
+        <label className="block text-sm font-medium text-fg-3 mb-1">
           Business Name
         </label>
         <input
           type="text"
           value={formData.business_name}
           onChange={(e) => setFormData({ ...formData, business_name: e.target.value })}
-          className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white"
+          className="w-full bg-bg border border-rule rounded-lg px-4 py-2 text-fg-1"
           placeholder="ABC Plumbing"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-300 mb-1">
+        <label className="block text-sm font-medium text-fg-3 mb-1">
           Trade Type
         </label>
         <select
           value={formData.trade_type}
           onChange={(e) => setFormData({ ...formData, trade_type: e.target.value as TradeType })}
-          className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white"
+          className="w-full bg-bg border border-rule rounded-lg px-4 py-2 text-fg-1"
         >
           {TRADE_OPTIONS.map((opt) => (
             <option key={opt.value} value={opt.value}>{opt.label}</option>
@@ -100,25 +100,25 @@ export function BusinessInfoForm() {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-300 mb-1">
+        <label className="block text-sm font-medium text-fg-3 mb-1">
           Service Area
         </label>
         <textarea
           value={formData.service_area}
           onChange={(e) => setFormData({ ...formData, service_area: e.target.value })}
-          className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white"
+          className="w-full bg-bg border border-rule rounded-lg px-4 py-2 text-fg-1"
           rows={3}
           placeholder="Miami-Dade County, Broward County"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-300 mb-2">
+        <label className="block text-sm font-medium text-fg-3 mb-2">
           Supported Languages
         </label>
         <div className="flex gap-4">
           {LANGUAGE_OPTIONS.map((lang) => (
-            <label key={lang.value} className="flex items-center gap-2 cursor-pointer">
+            <label key={lang.value} className="flex items-center gap-2 cursor-pointer text-fg-1">
               <input
                 type="checkbox"
                 checked={formData.supported_languages.includes(lang.value)}
@@ -128,22 +128,22 @@ export function BusinessInfoForm() {
                     : formData.supported_languages.filter((l) => l !== lang.value)
                   setFormData({ ...formData, supported_languages: newLangs })
                 }}
-                className="w-4 h-4 rounded bg-gray-800 border-gray-600"
+                className="w-4 h-4 accent-highlight"
               />
-              <span className="text-white">{lang.label}</span>
+              <span>{lang.label}</span>
             </label>
           ))}
         </div>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-300 mb-1">
+        <label className="block text-sm font-medium text-fg-3 mb-1">
           After Hours Message
         </label>
         <textarea
           value={formData.after_hours_message}
           onChange={(e) => setFormData({ ...formData, after_hours_message: e.target.value })}
-          className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white"
+          className="w-full bg-bg border border-rule rounded-lg px-4 py-2 text-fg-1"
           rows={3}
           placeholder="Thank you for calling. We're currently closed. Leave a message and we'll return your call during business hours."
         />
@@ -153,13 +153,13 @@ export function BusinessInfoForm() {
         <button
           type="submit"
           disabled={isSaving}
-          className="px-6 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 text-white rounded-lg font-medium transition-colors"
+          className="px-6 py-2 bg-highlight hover:bg-highlight/90 disabled:opacity-50 text-fg-on-dark rounded-lg font-medium transition-colors"
         >
           {isSaving ? 'Saving...' : 'Save Changes'}
         </button>
 
         {showSuccess && (
-          <span className="text-green-400 text-sm">Saved! Retell sync triggered.</span>
+          <span className="text-success text-sm">Saved! Retell sync triggered.</span>
         )}
       </div>
     </form>

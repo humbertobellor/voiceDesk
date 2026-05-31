@@ -48,7 +48,7 @@ export function Sidebar({ businessName, userEmail, phoneNumber }: SidebarProps) 
       {/* Logo area */}
       <div className="h-16 flex items-center gap-2 px-6 border-b border-rule">
         <Mic size={20} className="text-highlight" />
-        <span className="text-xl font-semibold text-fg-on-dark">VoiceDesk</span>
+        <span className="text-xl font-semibold text-fg-1">VoiceDesk</span>
         <NotificationBell className="ml-auto" />
       </div>
 
@@ -68,7 +68,7 @@ export function Sidebar({ businessName, userEmail, phoneNumber }: SidebarProps) 
                 'flex items-center gap-3 py-3 rounded-lg mx-2 min-h-[48px]',
                 isActive
                   ? 'bg-accent/10 text-accent font-medium px-4'
-                  : 'text-fg-3 px-4 hover:bg-bg-elevated hover:text-fg-on-dark'
+                  : 'text-fg-3 px-4 hover:bg-bg-elevated hover:text-fg-1'
               )}
             >
               <Icon size={20} />
@@ -90,7 +90,7 @@ export function Sidebar({ businessName, userEmail, phoneNumber }: SidebarProps) 
                     'flex items-center gap-3 py-2 rounded-lg mx-1 min-h-[40px] text-sm',
                     isActive
                       ? 'text-highlight font-semibold'
-                      : 'text-fg-3 hover:text-fg-on-dark'
+                      : 'text-fg-3 hover:text-fg-1'
                   )}
                 >
                   <Icon size={16} />
@@ -105,11 +105,11 @@ export function Sidebar({ businessName, userEmail, phoneNumber }: SidebarProps) 
       {/* User area */}
       <div className="border-t border-rule p-4">
         <div className="flex items-center gap-3 mb-3">
-          <div className="w-8 h-8 rounded-full bg-rule flex items-center justify-center text-sm font-semibold text-fg-on-dark">
+          <div className="w-8 h-8 rounded-full bg-rule flex items-center justify-center text-sm font-semibold text-fg-1">
             {(businessName?.[0] ?? userEmail?.[0] ?? 'V').toUpperCase()}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-semibold text-fg-on-dark truncate">{businessName ?? 'VoiceDesk'}</p>
+            <p className="text-sm font-semibold text-fg-1 truncate">{businessName ?? 'VoiceDesk'}</p>
             {phoneNumber && (
               <p className="text-xs font-mono text-fg-3 flex items-center gap-1 truncate">
                 <Phone size={10} />
@@ -122,7 +122,7 @@ export function Sidebar({ businessName, userEmail, phoneNumber }: SidebarProps) 
         <button
           type="button"
           onClick={handleSignOut}
-          className="flex items-center gap-2 text-sm text-fg-3 hover:text-fg-on-dark"
+          className="flex items-center gap-2 text-sm text-fg-3 hover:text-fg-1"
         >
           <LogOut size={16} />
           <span>Sign out</span>

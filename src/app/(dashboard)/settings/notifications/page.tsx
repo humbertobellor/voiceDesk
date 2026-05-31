@@ -51,7 +51,7 @@ export default async function NotificationsPage() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-xl font-semibold text-fg-on-dark mb-1">Notifications</h1>
+        <h1 className="text-xl font-semibold text-fg-1 mb-1">Notifications</h1>
         <p className="text-sm text-fg-3">Configure how and where you receive call alerts.</p>
         <div className="border-b border-rule mt-6" />
       </div>

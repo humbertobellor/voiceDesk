@@ -29,7 +29,7 @@ export default async function CalendarSettingsPage() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-xl font-semibold text-fg-on-dark mb-1">Calendar</h1>
+        <h1 className="text-xl font-semibold text-fg-1 mb-1">Calendar</h1>
         <p className="text-sm text-fg-3">
           Connect your Google Calendar to allow VoiceDesk to book appointments automatically.
         </p>

@@ -283,7 +283,7 @@ export function NotificationSettingsForm({
     'bg-bg-elevated border border-rule rounded-xl p-6 max-w-[480px] mb-4'
 
   const inputClass =
-    'w-full px-4 py-2 bg-bg border border-rule rounded-lg text-fg-on-dark text-sm ' +
+    'w-full px-4 py-2 bg-bg border border-rule rounded-lg text-fg-1 text-sm ' +
     'focus:outline-none focus:ring-2 focus:ring-highlight focus:border-transparent ' +
     'placeholder:text-fg-4 disabled:opacity-50 disabled:cursor-not-allowed'
 
@@ -303,7 +303,7 @@ export function NotificationSettingsForm({
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <Mail className="w-4 h-4 text-fg-4" />
-            <span className="text-sm font-semibold text-fg-on-dark">Email Notifications</span>
+            <span className="text-sm font-semibold text-fg-1">Email Notifications</span>
           </div>
           <label className="flex items-center gap-2 cursor-pointer" htmlFor="notify_email_enabled">
             <span className="text-sm text-fg-3">Enable email alerts</span>
@@ -333,7 +333,7 @@ export function NotificationSettingsForm({
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <MessageSquare className="w-4 h-4 text-fg-4" />
-            <span className="text-sm font-semibold text-fg-on-dark">SMS</span>
+            <span className="text-sm font-semibold text-fg-1">SMS</span>
           </div>
           <label className="flex items-center gap-2 cursor-pointer" htmlFor="notify_sms_enabled">
             <span className="text-sm text-fg-3">Send SMS notifications</span>
@@ -382,7 +382,7 @@ export function NotificationSettingsForm({
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <MessageCircle className="w-4 h-4 text-fg-4" />
-            <span className="text-sm font-semibold text-fg-on-dark">WhatsApp</span>
+            <span className="text-sm font-semibold text-fg-1">WhatsApp</span>
           </div>
           <label
             className="flex items-center gap-2 cursor-pointer"
@@ -436,7 +436,7 @@ export function NotificationSettingsForm({
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <Send className="w-4 h-4 text-fg-4" />
-            <span className="text-sm font-semibold text-fg-on-dark">Telegram</span>
+            <span className="text-sm font-semibold text-fg-1">Telegram</span>
           </div>
           <label
             className="flex items-center gap-2 cursor-pointer"
@@ -516,7 +516,7 @@ export function NotificationSettingsForm({
         {/* Card header */}
         <div className="flex items-center gap-2 mb-4">
           <Bot className="w-4 h-4 text-fg-4" />
-          <span className="text-sm font-semibold text-fg-on-dark">Telegram Bot Webhook</span>
+          <span className="text-sm font-semibold text-fg-1">Telegram Bot Webhook</span>
         </div>
 
         {/* WR-01: Webhook status shows registered/not-registered only.
@@ -560,11 +560,11 @@ export function NotificationSettingsForm({
 
       {/* ── Section 4: Event type toggles ─────────────────────────────────── */}
       <div className={cardClass}>
-        <p className="text-sm font-semibold text-fg-on-dark mb-2">Notify me about</p>
+        <p className="text-sm font-semibold text-fg-1 mb-2">Notify me about</p>
 
         {/* New leads */}
         <div className="flex items-center justify-between py-3 border-b border-rule">
-          <label htmlFor="notify_on_lead" className="text-sm text-fg-on-dark cursor-pointer">
+          <label htmlFor="notify_on_lead" className="text-sm text-fg-1 cursor-pointer">
             New leads
           </label>
           <input
@@ -578,7 +578,7 @@ export function NotificationSettingsForm({
 
         {/* Emergencies */}
         <div className="flex items-center justify-between py-3 border-b border-rule">
-          <label htmlFor="notify_on_emergency" className="text-sm text-fg-on-dark cursor-pointer">
+          <label htmlFor="notify_on_emergency" className="text-sm text-fg-1 cursor-pointer">
             Emergencies
           </label>
           <input
@@ -594,7 +594,7 @@ export function NotificationSettingsForm({
         <div className="flex items-center justify-between py-3">
           <label
             htmlFor="notify_on_general_inquiry"
-            className="text-sm text-fg-on-dark cursor-pointer"
+            className="text-sm text-fg-1 cursor-pointer"
           >
             General inquiries
           </label>
