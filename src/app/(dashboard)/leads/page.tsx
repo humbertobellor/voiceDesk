@@ -11,10 +11,9 @@ export default function LeadsPage() {
   const { contractorId } = useContractor()
   const [filters, setFilters] = useState<LeadFilters>({})
 
-  // Set up real-time subscription
-  useLeadsSubscription(contractorId ?? '', (leadId) => {
-    // New lead arrived - could show a notification
-    console.log('New lead:', leadId)
+  // Set up real-time subscription for live indicator
+  useLeadsSubscription(contractorId ?? '', (_leadId) => {
+    // New lead arrived — trigger query invalidation via the subscription hook
   })
 
   return (
