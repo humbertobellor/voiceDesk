@@ -1,3 +1,4 @@
+'use server'
 // src/app/(dashboard)/settings/notifications/actions.ts
 // Server actions for the Notification Settings page.
 //
@@ -6,7 +7,6 @@
 // ownership, and env vars before calling the Telegram API. Never throws —
 // always returns a discriminated union result so the client can display inline
 // errors without crashing.
-'use server'
 import 'server-only'
 import { createSupabaseServer } from '@/lib/supabase/server'
 import { createServiceRoleClient } from '@/lib/supabase/service'
