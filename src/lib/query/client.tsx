@@ -498,8 +498,13 @@ export function useMarkAllRead() {
       }
     },
     onMutate: () => {
-      // Optimistic update: set unread count to 0 immediately
-      queryClient.setQueryData(['notifications-unread', contractorId], 0)
+      // Optimistic update: set unread count to 0 immediately.
+      // Guard against null contractorId (e.g. during initial render before
+      // ContractorContext resolves) — writing to ['notifications-unread', null]
+      // would create a phantom cache entry that never matches the real query key.
+      if (contractorId) {
+        queryClient.setQueryData(['notifications-unread', contractorId], 0)
+      }
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['notifications', contractorId] })
