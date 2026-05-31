@@ -208,9 +208,13 @@ export const retellNotifyDispatch = inngest.createFunction(
         throw new NonRetriableError(`[retell-notify-dispatch] call ${callId} not found`)
       }
 
+      if (contractorResult.error || !contractorResult.data) {
+        throw new NonRetriableError(`[retell-notify-dispatch] contractor ${contractorId} not found`)
+      }
+
       return {
         call: callResult.data,
-        isActive: contractorResult.data?.is_active ?? true,
+        isActive: contractorResult.data.is_active === true,
         lead: leadResult.data ?? null,
         settings: settingsResult.data ?? null,
       }
