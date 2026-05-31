@@ -292,12 +292,18 @@ export const retellCallClassify = inngest.createFunction(
     const syncPayload = await step.run('compute-sync-payload', async () => {
       if (!settings || !contractor.retell_llm_id) return null
 
-      // Load existing appointments to compute fresh available slots
+      // Load existing appointments to compute fresh available slots.
+      // Restrict to the next 14 days — the same window used by slot injection —
+      // to avoid loading years of historical data on every call-end event.
       const db = createServiceRoleClient()
+      const nowIso = new Date().toISOString()
+      const twoWeeksFromNow = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString()
       const { data: existingAppts } = await db
         .from('appointments')
         .select('starts_at')
         .eq('contractor_id', contractorId)
+        .gte('starts_at', nowIso)
+        .lte('starts_at', twoWeeksFromNow)
       const existingStarts = (existingAppts ?? []).map(a => new Date(a.starts_at))
       const updatedSlots = computeAvailableSlots({
         businessHours: (settings as ContractorSettings).business_hours,
