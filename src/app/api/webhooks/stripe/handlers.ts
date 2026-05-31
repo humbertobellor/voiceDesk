@@ -88,6 +88,14 @@ export async function handleCheckoutCompleted(session: CheckoutSession) {
     return
   }
 
+  if (!session.customer || !session.subscription) {
+    console.warn(
+      { sessionId: session.id },
+      'checkout.session.completed missing customer or subscription — skipping activation'
+    )
+    return
+  }
+
   // D-04: trial_ends_at is reliably set by handleSubscriptionUpdated (primary path).
   // The checkout.session.completed payload does not include subscription.trial_end —
   // that field lives on the Stripe Subscription object, not the CheckoutSession.
