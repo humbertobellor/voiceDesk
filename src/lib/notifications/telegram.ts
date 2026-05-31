@@ -17,6 +17,13 @@ export interface SendTelegramResult {
 // is detected immediately. The /start command is registered here so both the webhook
 // route (which calls getBot()) and any future command-registration code share the same
 // Bot instance and the same handler set.
+//
+// WR-02 (race safety): Bot construction is synchronous — there is no `await` inside the
+// initialization block. Node.js is single-threaded; a second concurrent invocation cannot
+// interleave with the synchronous `if (!_bot || ...)` block. On a cold start, the first
+// call to getBot() completes the synchronous init and assigns `_bot` before any awaited
+// continuation can re-enter. Subsequent concurrent calls read the already-populated `_bot`
+// and return immediately. No async lock is required.
 let _bot: Bot | null = null
 let _cachedToken: string | null = null
 
@@ -32,7 +39,8 @@ export function getBot(): Bot {
   const token = process.env.TELEGRAM_BOT_TOKEN
   if (!token) throw new Error('[getBot] TELEGRAM_BOT_TOKEN is not set')
 
-  // CR-02: Recreate instance when token has rotated
+  // Recreate instance when token has rotated. Initialization is synchronous so
+  // no concurrent call can observe a partially-constructed singleton (see WR-02 note above).
   if (!_bot || _cachedToken !== token) {
     const bot = new Bot(token)
 
