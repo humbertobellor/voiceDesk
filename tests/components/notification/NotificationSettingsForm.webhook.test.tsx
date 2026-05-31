@@ -1,7 +1,6 @@
 // tests/components/notification/NotificationSettingsForm.webhook.test.tsx
-// RED test stubs for the Telegram Bot Webhook card inside NotificationSettingsForm.
-// Plan 15-01, Wave 0 — tests fail because the component does not yet accept
-// the `initialWebhookInfo` prop and the server action file does not exist.
+// Tests for the Telegram Bot Webhook card inside NotificationSettingsForm.
+// Plan 15-01, Wave 0 — implementation is complete; @ts-expect-error suppressions removed.
 //
 // Test ID: 15-W0-03
 
@@ -32,9 +31,6 @@ vi.mock('@/contexts/ContractorContext', () => ({
 }))
 
 // ── Import component under test ──────────────────────────────────────────────
-// The component exists but does NOT yet accept the `initialWebhookInfo` prop.
-// Tests that exercise that prop (tests 3-7) are explicitly marked to fail via
-// expect.fail() or assertions that will not hold on the current implementation.
 import { NotificationSettingsForm } from '@/components/notification/NotificationSettingsForm'
 import { activateTelegramWebhook } from '@/app/(dashboard)/settings/notifications/actions'
 
@@ -83,27 +79,20 @@ describe('NotificationSettingsForm webhook card', () => {
 
   // ── Test 1 (15-W0-03-a): Heading renders when initialWebhookInfo is null ──
   it('renders "Telegram Bot Webhook" heading when initialWebhookInfo is null', () => {
-    // This test fails because the component does not accept `initialWebhookInfo`
-    // and therefore does not render the webhook card heading.
-    // @ts-expect-error — initialWebhookInfo prop does not exist yet (RED state)
     render(<NotificationSettingsForm initialSettings={initialSettings} initialWebhookInfo={null} />)
 
-    // Expect the webhook card heading — will fail because the card does not exist
     expect(screen.getByText('Telegram Bot Webhook')).toBeInTheDocument()
   })
 
   // ── Test 2 (15-W0-03-b): "Not registered" status when initialWebhookInfo is null ──
   it('renders "Not registered" status text when initialWebhookInfo is null', () => {
-    // @ts-expect-error — initialWebhookInfo prop does not exist yet (RED state)
     render(<NotificationSettingsForm initialSettings={initialSettings} initialWebhookInfo={null} />)
 
-    // Expect "Not registered" text — will fail because the card does not exist
     expect(screen.getByText(/not registered/i)).toBeInTheDocument()
   })
 
   // ── Test 3 (15-W0-03-c): Registered URL shown when initialWebhookInfo has url ──
   it('renders truncated webhook URL when initialWebhookInfo has url field populated', () => {
-    // @ts-expect-error — initialWebhookInfo prop does not exist yet (RED state)
     render(
       <NotificationSettingsForm
         initialSettings={initialSettings}
@@ -111,16 +100,14 @@ describe('NotificationSettingsForm webhook card', () => {
       />,
     )
 
-    // Expect webhook URL (or truncation) to appear — will fail because card does not exist
+    // Expect webhook URL (or truncation) to appear
     expect(screen.getByText(/voicedesk\.vercel\.app/i)).toBeInTheDocument()
   })
 
   // ── Test 4 (15-W0-03-d): Activate button present and enabled by default ───
   it('"Activate Telegram Webhook" button is present and enabled by default', () => {
-    // @ts-expect-error — initialWebhookInfo prop does not exist yet (RED state)
     render(<NotificationSettingsForm initialSettings={initialSettings} initialWebhookInfo={null} />)
 
-    // Expect the activation button — will fail because the card does not exist
     const button = screen.getByRole('button', { name: /activate telegram webhook/i })
     expect(button).toBeInTheDocument()
     expect(button).not.toBeDisabled()
@@ -133,7 +120,6 @@ describe('NotificationSettingsForm webhook card', () => {
       () => new Promise(() => {}) as Promise<never>,
     )
 
-    // @ts-expect-error — initialWebhookInfo prop does not exist yet (RED state)
     render(<NotificationSettingsForm initialSettings={initialSettings} initialWebhookInfo={null} />)
 
     const button = screen.getByRole('button', { name: /activate telegram webhook/i })
@@ -157,7 +143,6 @@ describe('NotificationSettingsForm webhook card', () => {
       },
     })
 
-    // @ts-expect-error — initialWebhookInfo prop does not exist yet (RED state)
     render(<NotificationSettingsForm initialSettings={initialSettings} initialWebhookInfo={null} />)
 
     const button = screen.getByRole('button', { name: /activate telegram webhook/i })
@@ -177,7 +162,6 @@ describe('NotificationSettingsForm webhook card', () => {
       error: 'Test error',
     })
 
-    // @ts-expect-error — initialWebhookInfo prop does not exist yet (RED state)
     render(<NotificationSettingsForm initialSettings={initialSettings} initialWebhookInfo={null} />)
 
     const button = screen.getByRole('button', { name: /activate telegram webhook/i })
