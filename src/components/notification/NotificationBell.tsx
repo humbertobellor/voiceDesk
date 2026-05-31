@@ -40,20 +40,26 @@ interface NotificationBellProps {
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * Returns the left-border color class for a notification row based on event_type.
- * Colors are locked per UI-SPEC.md (Phase 16 will replace with CSS tokens).
+ * Returns the left-border background color for a notification row based on event_type.
+ * Uses CSS variables with explicit fallback values so the border remains visible
+ * even if a design token is missing from the active theme (WR-04).
+ *
+ * Fallbacks:
+ *   --danger    → #dc2626 (Tailwind red-600)
+ *   --highlight → #f97316 (Tailwind orange-500)
+ *   --fg-4      → #6b7280 (Tailwind gray-500)
  */
 function borderColorForEventType(
   eventType: AppNotification['event_type']
 ): string {
   switch (eventType) {
     case 'emergency':
-      return 'var(--danger)'
+      return 'var(--danger, #dc2626)'
     case 'lead':
-      return 'var(--highlight)'
+      return 'var(--highlight, #f97316)'
     default:
       // 'system' | 'payment_failure' → muted foreground
-      return 'var(--fg-4)'
+      return 'var(--fg-4, #6b7280)'
   }
 }
 
