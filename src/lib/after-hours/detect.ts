@@ -32,6 +32,9 @@ export function detectAfterHours(
   // Day not configured or disabled → always after-hours
   if (!dayConfig?.enabled) return true
 
+  // Guard against null/non-string values that would throw on .split()
+  if (typeof dayConfig.open !== 'string' || typeof dayConfig.close !== 'string') return true
+
   const [openH, openM] = dayConfig.open.split(':').map(Number)
   const [closeH, closeM] = dayConfig.close.split(':').map(Number)
 
