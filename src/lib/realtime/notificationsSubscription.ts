@@ -18,7 +18,7 @@
  */
 
 import { createBrowserClient } from '@supabase/ssr'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 
 const supabase = createBrowserClient(
@@ -37,6 +37,10 @@ type InsertCallback = () => void
  * - Invalidates ['notifications-unread', contractorId] query (badge refresh)
  * - Calls onInsert callback if provided
  *
+ * The onInsert callback is stored in a ref so callers need not memoize it —
+ * passing an inline arrow function will not cause the subscription to tear down
+ * and re-create on every render (CR-02).
+ *
  * @param contractorId - The contractor's ID. Subscription is skipped if null/empty.
  * @param onInsert - Optional callback fired on each new notification insert.
  */
@@ -45,6 +49,13 @@ export function useNotificationsSubscription(
   onInsert?: InsertCallback
 ) {
   const queryClient = useQueryClient()
+
+  // Stable ref: callers need not memoize the callback. The ref is always current
+  // because the layout-effect update runs before any effect that reads it.
+  const onInsertRef = useRef(onInsert)
+  useEffect(() => {
+    onInsertRef.current = onInsert
+  })
 
   useEffect(() => {
     // Guard: do not attempt subscription without a valid contractor ID
@@ -65,7 +76,9 @@ export function useNotificationsSubscription(
           // Invalidate both notification queries on new insert
           queryClient.invalidateQueries({ queryKey: ['notifications', contractorId] })
           queryClient.invalidateQueries({ queryKey: ['notifications-unread', contractorId] })
-          onInsert?.()
+          // Read callback from ref — avoids adding onInsert to the effect dep array
+          // which would cause infinite subscribe/unsubscribe loops for inline callbacks.
+          onInsertRef.current?.()
         }
       )
       .subscribe()
@@ -73,5 +86,5 @@ export function useNotificationsSubscription(
     return () => {
       channel.unsubscribe()
     }
-  }, [contractorId, queryClient, onInsert])
+  }, [contractorId, queryClient]) // onInsert intentionally omitted — accessed via ref
 }
