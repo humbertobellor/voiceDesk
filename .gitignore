@@ -17,6 +17,8 @@ build/
 .env.test
 .env.test.local
 .env.production.local
+.env.prod
+.env.prod-check
 # Keep .env.example and .env.test.example checked in
 
 # Build artifacts
