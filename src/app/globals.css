@@ -271,10 +271,13 @@
   --color-brick-100: var(--brick-100);
 
   /* --- Fonts --- */
-  --font-display: var(--font-display);
-  --font-body:    var(--font-body);
-  --font-ui:      var(--font-ui);
-  --font-mono:    var(--font-mono);
+  /* Values are inlined (not var-referenced) to avoid circular custom property
+     self-references that resolve to the guaranteed-invalid value in CSS.
+     See: https://www.w3.org/TR/css-variables-1/#cycles */
+  --font-display: 'Bogart', 'Iowan Old Style', Georgia, serif;
+  --font-body:    'Bogart', Georgia, 'Times New Roman', serif;
+  --font-ui:      'Inter Tight', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
 
   /* --- Custom spacing tokens (Wolknitive 8-pt rhythm, named wk-* to avoid
          collision with Tailwind's own numeric spacing scale) --- */
