@@ -56,6 +56,10 @@ export async function GET(request: NextRequest) {
   }
   const recordingPath = `recordings/${match[1]}`
 
+  if (recordingPath.includes('..') || recordingPath.includes('\x00')) {
+    return NextResponse.json({ error: 'Invalid recording path' }, { status: 400 })
+  }
+
   // Generate signed URL with 60 second TTL using service role client
   // Ownership was already verified above via the authenticated server client
   const db = createServiceRoleClient()

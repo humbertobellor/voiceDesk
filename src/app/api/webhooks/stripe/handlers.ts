@@ -183,6 +183,7 @@ export async function handlePaymentFailed(invoice: Invoice) {
   // This triggers Plan 5's Inngest function for D-10 (immediate deactivation) + D-11 (alert)
   // FIXED: Align with stripe-payment-failure.ts expected fields
   await inngest.send({
+    id: `stripe-payment-failed-${invoice.id}`,
     name: 'stripe/payment.failed',
     data: {
       contractorId,
