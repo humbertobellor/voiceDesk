@@ -244,8 +244,9 @@ export function NotificationSettingsForm({
       await telegramUnlink.mutateAsync()
       // Disable the local toggle immediately (query cache invalidation follows)
       setFormData((prev) => ({ ...prev, notify_telegram_enabled: false }))
-    } catch {
+    } catch (err) {
       setTelegramError('Could not unlink Telegram. Please try again.')
+      console.error('[handleUnlinkTelegram] unexpected:', err)
     } finally {
       setUnlinkLoading(false)
     }
@@ -254,7 +255,9 @@ export function NotificationSettingsForm({
   /**
    * Registers the Telegram webhook via the server action (TEL-02, D-10).
    * Mirrors handleUnlinkTelegram: clear error → set loading → call action → update state.
-   * Never throws — server action returns discriminated union.
+   * Never throws — server action returns discriminated union. Catch block handles
+   * unexpected runtime errors (network interruption, framework error) so the button
+   * does not stay permanently disabled.
    */
   const handleActivateTelegramWebhook = async () => {
     setWebhookError(null)
@@ -266,6 +269,9 @@ export function NotificationSettingsForm({
       } else {
         setWebhookError(result.error)
       }
+    } catch (err) {
+      setWebhookError('An unexpected error occurred. Please try again.')
+      console.error('[handleActivateTelegramWebhook] unexpected:', err)
     } finally {
       setWebhookActivating(false)
     }
@@ -282,6 +288,11 @@ export function NotificationSettingsForm({
     'placeholder:text-fg-4 disabled:opacity-50 disabled:cursor-not-allowed'
 
   const checkboxClass = 'w-4 h-4 accent-highlight'
+
+  // CR-03: NEXT_PUBLIC_ vars are inlined at build time. No production fallback —
+  // an empty username makes misconfiguration visible rather than silently pointing
+  // all environments at a hardcoded production bot.
+  const botUsername = process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME ?? ''
 
   // ── Render ─────────────────────────────────────────────────────────────────
 
@@ -479,16 +490,23 @@ export function NotificationSettingsForm({
               Tap the link below to start a chat with the VoiceDesk bot. Once you send /start,
               your account will be linked automatically.
             </p>
-            {/* WR-04: Bot username is read from NEXT_PUBLIC_TELEGRAM_BOT_USERNAME so staging
-                and production bots are independent. Falls back to known production username. */}
-            <a
-              href={`https://t.me/${process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME ?? 'voiceDeskTelBot'}?start=${contractorId ?? ''}`}
-              target="_blank"
-              rel="noreferrer"
-              className="text-highlight underline hover:opacity-80 transition-opacity"
-            >
-              Open @{process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME ?? 'voiceDeskTelBot'} (opens in new tab)
-            </a>
+            {/* CR-03: botUsername comes from NEXT_PUBLIC_TELEGRAM_BOT_USERNAME inlined at
+                build time. Empty string fallback makes misconfiguration visible (broken link)
+                rather than silently pointing to a hardcoded production bot. */}
+            {botUsername ? (
+              <a
+                href={`https://t.me/${botUsername}?start=${contractorId ?? ''}`}
+                target="_blank"
+                rel="noreferrer"
+                className="text-highlight underline hover:opacity-80 transition-opacity"
+              >
+                Open @{botUsername} (opens in new tab)
+              </a>
+            ) : (
+              <p className="text-sm text-fg-3">
+                Bot setup link unavailable — NEXT_PUBLIC_TELEGRAM_BOT_USERNAME is not configured.
+              </p>
+            )}
           </div>
         )}
       </div>
