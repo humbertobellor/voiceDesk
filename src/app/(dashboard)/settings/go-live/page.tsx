@@ -119,7 +119,7 @@ export default function GoLivePage() {
           <button
             type="button"
             onClick={() => setStatus('detecting')}
-            className="w-full sm:w-auto px-6 py-3 bg-accent hover:bg-accent-hover text-white font-semibold rounded-lg transition-colors min-h-[48px]"
+            className="w-full sm:w-auto px-6 py-3 bg-accent hover:bg-accent-hover text-fg-on-dark font-semibold rounded-lg transition-colors min-h-[48px]"
           >
             I've Called — Detect Test Call
           </button>

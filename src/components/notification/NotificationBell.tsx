@@ -106,7 +106,7 @@ export function NotificationBell({ className }: NotificationBellProps) {
             {hasUnread && (
               <span
                 aria-label={`${unreadCount} unread notifications`}
-                className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-highlight text-white"
+                className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-highlight text-fg-on-dark"
                 style={{ fontSize: '10px', fontWeight: 600 }}
               >
                 {badgeText}
