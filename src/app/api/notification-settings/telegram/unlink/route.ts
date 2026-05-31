@@ -54,7 +54,7 @@ export async function POST() {
 
   if (updateErr) {
     console.error('[notification-settings/telegram/unlink] update failed:', updateErr.message)
-    throw updateErr
+    return NextResponse.json({ error: 'Failed to unlink Telegram' }, { status: 500 })
   }
 
   return NextResponse.json(data, { status: 200 })
