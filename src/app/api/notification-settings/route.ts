@@ -91,7 +91,7 @@ export async function PATCH(req: Request) {
 
   const parseResult = updateNotificationSettingsSchema.safeParse(body)
   if (!parseResult.success) {
-    return NextResponse.json({ error: 'Invalid request body', details: parseResult.error.flatten() }, { status: 422 })
+    return NextResponse.json({ error: 'Invalid request body' }, { status: 422 })
   }
 
   const updates = parseResult.data
