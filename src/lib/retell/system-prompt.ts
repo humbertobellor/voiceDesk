@@ -9,6 +9,14 @@ import type { ContractorSettings } from '@/types/database'
 import { buildSlotSection } from '@/lib/scheduling/inject-slots'
 import type { SlotWindow } from '@/lib/scheduling/slots'
 
+function sanitizePromptField(value: string): string {
+  return value
+    .replace(/[\r\n\x00]/g, ' ')
+    .replace(/"{3,}/g, '"')
+    .replace(/-{3,}/g, '-')
+    .trim()
+}
+
 export function buildSystemPrompt(settings: ContractorSettings, availableSlots?: SlotWindow[]): string {
   const hasSpanish = settings.supported_languages.includes('es')
   const languageInstruction = hasSpanish
@@ -19,31 +27,36 @@ export function buildSystemPrompt(settings: ContractorSettings, availableSlots?:
   if (!rawKeywords) {
     console.warn('[system-prompt] emergency_keywords.en is empty for contractor — falling back to hard-coded keywords')
   }
-  const emergencyKeywords = rawKeywords || 'gas smell, CO alarm'
+  const emergencyKeywords = sanitizePromptField(rawKeywords || 'gas smell, CO alarm')
 
-  const existingContent = `You are ${settings.business_name}'s AI receptionist — professional, warm, and helpful.
+  const businessName = sanitizePromptField(settings.business_name)
+  const serviceArea = sanitizePromptField(settings.service_area)
+  const afterHoursMessage = sanitizePromptField(settings.after_hours_message)
+
+  const existingContent = `You are ${businessName}'s AI receptionist — professional, warm, and helpful.
 
 ${languageInstruction}
 
 Your role:
-1. Answer every call and greet callers: "Thank you for calling ${settings.business_name}. How can I help you today?"
-2. Qualify the caller's need (service type, urgency, location in ${settings.service_area}).
+1. Answer every call and greet callers: "Thank you for calling ${businessName}. How can I help you today?"
+2. Qualify the caller's need (service type, urgency, location in ${serviceArea}).
 3. If the caller asks about services not offered, say: "I'm not able to help with that directly, but I can take your contact info and have the team follow up with you." Never hang up before capturing their name and phone number.
-4. After-hours: Acknowledge with "${settings.after_hours_message}", capture their contact info, and offer to schedule for the next available slot.
+4. After-hours: Acknowledge with "${afterHoursMessage}", capture their contact info, and offer to schedule for the next available slot.
 5. Emergency keywords (${emergencyKeywords}): If the caller mentions any of these, ask "Is this happening right now?" before classifying as an emergency.
 
-Business: ${settings.business_name}
+Business: ${businessName}
 Trade: ${settings.trade_type}
-Service area: ${settings.service_area}
-After-hours message: "${settings.after_hours_message}"`
+Service area: ${serviceArea}
+After-hours message: "${afterHoursMessage}"`
 
   return `${existingContent}${buildSlotSection(availableSlots ?? [])}`.trim()
 }
 
 export function buildBeginMessage(settings: ContractorSettings): string {
   const hasSpanish = settings.supported_languages.includes('es')
+  const businessName = sanitizePromptField(settings.business_name)
   if (hasSpanish) {
-    return `Thank you for calling ${settings.business_name}. For English, stay on the line. Para español, oprima dos.`
+    return `Thank you for calling ${businessName}. For English, stay on the line. Para español, oprima dos.`
   }
-  return `Thank you for calling ${settings.business_name}, this is your AI receptionist. How can I help you today?`
+  return `Thank you for calling ${businessName}, this is your AI receptionist. How can I help you today?`
 }

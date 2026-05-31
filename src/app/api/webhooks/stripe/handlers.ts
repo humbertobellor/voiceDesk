@@ -88,6 +88,14 @@ export async function handleCheckoutCompleted(session: CheckoutSession) {
     return
   }
 
+  if (!session.customer || !session.subscription) {
+    console.warn(
+      { sessionId: session.id },
+      'checkout.session.completed missing customer or subscription — skipping activation'
+    )
+    return
+  }
+
   // D-04: trial_ends_at is reliably set by handleSubscriptionUpdated (primary path).
   // The checkout.session.completed payload does not include subscription.trial_end —
   // that field lives on the Stripe Subscription object, not the CheckoutSession.
@@ -309,11 +317,19 @@ export async function handleSubscriptionUpdated(
       console.log(`[webhook/stripe] contractor ${contractorId} reactivated: is_active set to true`)
 
       // D-11: Re-link Retell only if both IDs are present
-      const { data: contractorFull } = await db
+      const { data: contractorFull, error: contractorFetchError } = await db
         .from('contractors')
         .select('retell_agent_id, twilio_number')
         .eq('id', contractorId)
         .single()
+
+      if (contractorFetchError) {
+        console.error(
+          { contractorId, error: contractorFetchError },
+          'Failed to fetch contractor for Retell re-link'
+        )
+        return
+      }
 
       if (contractorFull?.retell_agent_id && contractorFull?.twilio_number) {
         try {
@@ -338,11 +354,19 @@ export async function handleSubscriptionUpdated(
     } else {
       // Existing behavior: contractor was already active — just re-link Retell as before.
       // (This path fires for routine subscription renewals or plan changes.)
-      const { data: contractorFull } = await db
+      const { data: contractorFull, error: contractorFetchError } = await db
         .from('contractors')
         .select('retell_agent_id, twilio_number')
         .eq('id', contractorId)
         .single()
+
+      if (contractorFetchError) {
+        console.error(
+          { contractorId, error: contractorFetchError },
+          'Failed to fetch contractor for Retell re-link'
+        )
+        return
+      }
 
       if (contractorFull?.retell_agent_id && contractorFull?.twilio_number) {
         try {
