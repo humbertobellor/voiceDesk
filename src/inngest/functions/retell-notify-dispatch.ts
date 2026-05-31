@@ -22,6 +22,13 @@ import { EmergencyNotificationEmail } from '@/lib/notifications/templates/Emerge
 import type { CallIntent, NotificationSettings } from '@/types/database'
 
 /**
+ * Set of all valid CallIntent values as stored in the DB, plus null.
+ * Used to validate the raw DB value before casting to the CallIntent union type.
+ * Update this set whenever the CallIntent type or DB CHECK constraint changes.
+ */
+const VALID_INTENTS = new Set<string | null>(['lead', 'emergency', 'info', 'no_action', 'unknown', null])
+
+/**
  * Pure function that computes which notification channels should fire for a given
  * call intent and contractor notification settings.
  *
@@ -52,6 +59,7 @@ export function computeChannels(
     if (intent === 'unknown') {
       console.warn('[voicedesk]', JSON.stringify({
         event: 'retell-notify-dispatch.skipped_unknown_intent',
+        level: 'warn',
       }))
     }
     return { shouldSendSms: false, shouldSendWhatsApp: false, shouldSendTelegram: false, shouldSendEmail: false }
@@ -207,8 +215,18 @@ export const retellNotifyDispatch = inngest.createFunction(
     })
 
     const { call, lead, settings } = notifyData
-    // WR-04: Use narrow CallIntent union so tsc flags unhandled intents when new values are added
-    const intent = call.intent as CallIntent | null
+
+    // CR-03: Validate the raw DB intent value before casting to CallIntent.
+    // Any value not in VALID_INTENTS indicates DB corruption or a schema drift —
+    // treat as non-retriable to avoid infinite retry loops on bad data.
+    const rawIntent = call.intent
+    if (!VALID_INTENTS.has(rawIntent)) {
+      throw new NonRetriableError(
+        `[retell-notify-dispatch] invalid intent value in DB: ${String(rawIntent).slice(0, 64)}`
+      )
+    }
+    // Safe cast: rawIntent is now known to be a member of CallIntent | null
+    const intent = rawIntent as CallIntent | null
 
     // D-03: Filter — skip all sends for no_action (hang-ups, wrong numbers, spam)
     // D-04: CR-04: computeChannels gates each channel on intent AND contractor's per-intent prefs.
