@@ -147,7 +147,7 @@ export function NotificationBell({ className }: NotificationBellProps) {
               notifications.map((notification) => (
                 <div
                   key={notification.id}
-                  className="flex items-stretch border-b border-rule hover:bg-[rgba(255,255,255,0.05)]"
+                  className="flex items-stretch border-b border-rule hover:bg-bg-sunken"
                 >
                   {/* Colored left border — 4px, event_type color */}
                   <div
