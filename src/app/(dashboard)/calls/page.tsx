@@ -9,12 +9,10 @@ import { CallPlaybackModal } from '@/components/calls/CallPlaybackModal'
 export default function CallsPage() {
   const { contractorId } = useContractor()
   const [selectedCallId, setSelectedCallId] = useState<string | null>(null)
-  const [realtimeStatus, setRealtimeStatus] = useState<'connecting' | 'connected' | 'disconnected'>('connecting')
 
-  // Set up real-time subscription
-  useCallsSubscription(contractorId ?? '', (callId) => {
-    // New call arrived - could show a notification
-    console.log('New call:', callId)
+  // Set up real-time subscription for live indicator
+  useCallsSubscription(contractorId ?? '', (_callId) => {
+    // New call arrived — trigger query invalidation via the subscription hook
   })
 
   return (
