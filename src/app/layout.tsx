@@ -1,13 +1,7 @@
 import type { Metadata } from 'next'
-import { Inter, Inter_Tight, JetBrains_Mono } from 'next/font/google'
+import { Inter_Tight, JetBrains_Mono } from 'next/font/google'
 import localFont from 'next/font/local'
 import './globals.css'
-
-/**
- * Inter — backward-compat alias for any existing `font-sans` references.
- * New code should use Inter Tight (--font-ui) instead.
- */
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 
 /**
  * Inter Tight — UI font for all dashboard chrome: nav, buttons, form labels,
@@ -73,7 +67,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="en"
-      className={`${bogart.variable} ${interTight.variable} ${jetbrainsMono.variable} ${inter.variable}`}
+      className={`${bogart.variable} ${interTight.variable} ${jetbrainsMono.variable}`}
     >
       <body className="font-ui antialiased bg-bg text-fg-1">
         {children}

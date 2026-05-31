@@ -1,9 +1,5 @@
 @import 'tailwindcss';
 
-/* Google Fonts — UI sans-serif and monospace families.
-   Must follow @import 'tailwindcss' and precede @font-face rules per CSS spec. */
-@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
-
 /* ============================================================
    Bogart trial @font-face declarations — 18 weight/style faces
    Indian Type Foundry — trial license, not for redistribution.
@@ -165,10 +161,13 @@
   --space-10: 144px;
 
   /* ---------- Type families ---------- */
+  /* --font-inter-tight and --font-jetbrains-mono are CSS variables injected by
+     next/font on the <html> element (layout.tsx). Reference them here so the
+     self-hosted optimised copies are actually used instead of the CDN versions. */
   --font-display: 'Bogart', 'Iowan Old Style', Georgia, serif;
   --font-body:    'Bogart', Georgia, 'Times New Roman', serif;
-  --font-ui:      'Inter Tight', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --font-ui:      var(--font-inter-tight), system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono:    var(--font-jetbrains-mono), ui-monospace, 'SF Mono', Menlo, monospace;
 
   /* ---------- Type scale (optical, modular ~1.22) ---------- */
   --fs-xs:   12px;
