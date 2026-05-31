@@ -9,8 +9,13 @@ export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url)
   const code = searchParams.get('code')
   const rawNext = searchParams.get('next') ?? '/setup/phone'
-  // Accept only relative paths that start with / but not // (prevents open redirect via protocol-relative URLs)
-  const next = rawNext.startsWith('/') && !rawNext.startsWith('//') ? rawNext : '/setup/phone'
+  // Accept only relative paths that start with / but not // or /\ (prevents open redirect via
+  // protocol-relative URLs — /\evil.com is treated as //evil.com on some browsers/platforms)
+  const isSafeRedirect =
+    rawNext.startsWith('/') &&
+    !rawNext.startsWith('//') &&
+    !rawNext.startsWith('/\\')
+  const next = isSafeRedirect ? rawNext : '/setup/phone'
 
   if (!code) {
     return NextResponse.redirect(`${origin}/auth/login?error=no_code`)
