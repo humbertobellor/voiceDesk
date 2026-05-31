@@ -59,7 +59,8 @@ export function computeAvailableSlots(params: {
     const dayKey = DAY_KEYS[candidateDayInTz.getDay()]
     const dayConfig = businessHours[dayKey]
 
-    if (dayConfig?.enabled) {
+    const TIME_RE = /^\d{2}:\d{2}$/
+    if (dayConfig?.enabled && TIME_RE.test(dayConfig.open) && TIME_RE.test(dayConfig.close)) {
       // Get the contractor-local date string for building true UTC boundaries via fromZonedTime
       const localDateStr = format(candidateDayInTz, 'yyyy-MM-dd', { timeZone: timezone })
 
