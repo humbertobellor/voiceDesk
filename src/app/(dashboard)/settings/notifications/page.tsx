@@ -26,14 +26,19 @@ export default async function NotificationsPage() {
 
   // Fetch Telegram webhook status for the webhook card (D-07, D-08).
   // Passes null if TELEGRAM_BOT_TOKEN is missing or the API call fails.
+  // WR-03: Distinguish missing token from API failure for operator clarity in logs.
   let initialWebhookInfo: Record<string, unknown> | null = null
   try {
     initialWebhookInfo = (await getBot().api.getWebhookInfo()) as unknown as Record<string, unknown>
   } catch (err) {
-    console.error(
-      '[NotificationsPage] getWebhookInfo failed:',
-      err instanceof Error ? err.message : String(err),
-    )
+    const msg = err instanceof Error ? err.message : String(err)
+    if (msg.includes('TELEGRAM_BOT_TOKEN')) {
+      // getBot() threw because the token env var is not set — expected in local/preview envs.
+      console.warn('[NotificationsPage] TELEGRAM_BOT_TOKEN not set — webhook card will show fallback')
+    } else {
+      // Unexpected API error from getWebhookInfo().
+      console.error('[NotificationsPage] getWebhookInfo failed:', msg)
+    }
   }
 
   // Fetch notification settings — RLS enforces ownership via user session
