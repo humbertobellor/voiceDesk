@@ -11,6 +11,7 @@
 //   T-10-01 (Elevation of Privilege): contractor_id from session, never from body
 //   T-10-02 (Tampering): E.164 normalization before DB write; invalid → 422
 //   T-10-04 (NULL contractor_id): getUser() null → 401 before any DB access
+import 'server-only'
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import { parsePhoneNumber, isValidPhoneNumber } from 'libphonenumber-js'
