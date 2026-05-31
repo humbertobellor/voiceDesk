@@ -26,8 +26,8 @@ export default function LeadsPage() {
             <p className="text-sm text-fg-3">Qualified leads from incoming calls</p>
           </div>
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-green-500"></span>
-            <span className="text-xs text-gray-400">Live</span>
+            <span className="w-2 h-2 rounded-full bg-success flex-shrink-0"></span>
+            <span className="text-xs text-fg-3">Live</span>
           </div>
         </div>
         <div className="border-b border-rule mt-6" />

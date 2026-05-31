@@ -338,7 +338,7 @@ export function NotificationSettingsForm({
 
         {/* SMS number input */}
         <div>
-          <label htmlFor="sms_number" className="block text-sm font-semibold text-gray-300 mb-2">
+          <label htmlFor="sms_number" className="block text-sm font-semibold text-fg-3 mb-2">
             SMS number
           </label>
           <input
@@ -391,7 +391,7 @@ export function NotificationSettingsForm({
         <div>
           <label
             htmlFor="whatsapp_number"
-            className="block text-sm font-semibold text-gray-300 mb-2"
+            className="block text-sm font-semibold text-fg-3 mb-2"
           >
             WhatsApp number
           </label>

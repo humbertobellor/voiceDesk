@@ -76,14 +76,14 @@ export default function AccountPage() {
 
       {/* D-09: Deactivated service banner — shown when is_active=false */}
       {loaded && subscription?.is_active === false && (
-        <div className="bg-red-900/30 border border-red-700 rounded-lg p-4 mb-6">
-          <p className="text-sm font-medium text-red-300 mb-2">
+        <div className="bg-danger/10 border border-danger/30 rounded-lg p-4 mb-6">
+          <p className="text-sm font-medium text-danger mb-2">
             Service suspended. Update your payment method to restore your VoiceDesk agent.
           </p>
           <button
             onClick={handleManageSubscription}
             disabled={isLoading}
-            className="px-4 py-2 bg-red-700 hover:bg-red-600 disabled:bg-fg-4 text-white text-sm font-medium rounded-md transition-colors"
+            className="px-4 py-2 bg-danger hover:bg-danger/90 disabled:bg-fg-4 text-fg-on-dark text-sm font-medium rounded-md transition-colors"
           >
             {isLoading ? 'Opening...' : 'Update Payment'}
           </button>
@@ -92,8 +92,8 @@ export default function AccountPage() {
 
       {/* D-01: Load error banner — shown when fetch returned non-ok or threw */}
       {loaded && loadError && (
-        <div className="bg-red-900/20 border border-red-800 rounded-lg p-3 mb-6">
-          <p className="text-sm text-red-400">Failed to load subscription details. Please refresh the page.</p>
+        <div className="bg-danger/10 border border-danger/30 rounded-lg p-3 mb-6">
+          <p className="text-sm text-danger">Failed to load subscription details. Please refresh the page.</p>
         </div>
       )}
 
@@ -109,11 +109,11 @@ export default function AccountPage() {
             <span
               className={`font-medium ${
                 subscription?.subscription_status === 'active'
-                  ? 'text-green-400'
+                  ? 'text-success'
                   : subscription?.subscription_status === 'past_due'
-                  ? 'text-yellow-400'
+                  ? 'text-highlight'
                   : subscription?.subscription_status === 'trialing'
-                  ? 'text-indigo-400'
+                  ? 'text-accent'
                   : 'text-fg-3'
               }`}
             >
@@ -151,7 +151,7 @@ export default function AccountPage() {
             <button
               onClick={handleManageSubscription}
               disabled={isLoading}
-              className="flex items-center gap-2 px-4 py-2 bg-accent hover:bg-accent-hover disabled:bg-fg-4 text-white text-sm font-medium rounded-md transition-colors"
+              className="flex items-center gap-2 px-4 py-2 bg-accent hover:bg-accent-hover disabled:bg-fg-4 text-fg-on-dark text-sm font-medium rounded-md transition-colors"
             >
               {isLoading ? (
                 <>
@@ -169,7 +169,7 @@ export default function AccountPage() {
         </div>
 
         {error && (
-          <p className="text-sm text-red-400 mt-3 pl-14">{error}</p>
+          <p className="text-sm text-danger mt-3 pl-14">{error}</p>
         )}
       </div>
       {/* D-03: Duplicate loading block removed — inline 'Loading...' in status span is the only indicator */}

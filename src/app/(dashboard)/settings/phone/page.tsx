@@ -200,8 +200,8 @@ export default function PhoneSettingsPage() {
           </div>
 
           {/* Advisory box */}
-          <div className="mt-4 bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4">
-            <p className="text-xs text-yellow-300">
+          <div className="mt-4 bg-highlight/10 border border-highlight/30 rounded-lg p-4">
+            <p className="text-xs text-highlight">
               After entering the forwarding code, wait for a confirmation tone or message.
               Test by calling your old business number — it should ring your VoiceDesk number.
             </p>
