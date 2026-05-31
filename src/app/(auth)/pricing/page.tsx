@@ -56,34 +56,41 @@ export default function PricingPage() {
   useEffect(() => {
     // Get current user and their contractor ID
     const supabase = createSupabaseBrowser()
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      if (!user) {
-        // Not logged in, redirect to signup
-        window.location.href = '/auth/signup'
-        return
-      }
-      // Query for contractor
-      supabase
-        .from('contractors')
-        .select('id, subscription_status')
-        .eq('user_id', user.id)
-        .maybeSingle()
-        .then(({ data, error }) => {
-          setIsLoading(false)
-          if (error) {
-            console.error('[pricing] error fetching contractor:', error)
-            return
-          }
-          if (data) {
-            setContractorId(data.id)
-            // Only redirect if subscription is ACTIVE (not trialing, not setup in progress)
-            // This allows users to resubscribe if their trial ended
-            if (data.subscription_status === 'active') {
-              window.location.href = '/dashboard'
+    supabase.auth.getUser()
+      .then(({ data: { user } }) => {
+        if (!user) {
+          // Not logged in, redirect to signup
+          window.location.href = '/auth/signup'
+          return
+        }
+        // Query for contractor
+        return supabase
+          .from('contractors')
+          .select('id, subscription_status')
+          .eq('user_id', user.id)
+          .maybeSingle()
+          .then(({ data, error }) => {
+            setIsLoading(false)
+            if (error) {
+              console.error('[pricing] error fetching contractor:', error)
+              return
             }
-          }
-        })
-    })
+            if (data) {
+              setContractorId(data.id)
+              // Only redirect if subscription is ACTIVE (not trialing, not setup in progress)
+              // This allows users to resubscribe if their trial ended
+              if (data.subscription_status === 'active') {
+                window.location.href = '/dashboard'
+              }
+            }
+          })
+      })
+      .catch((err: Error) => {
+        // getUser() network failure — stop the infinite loading spinner
+        setIsLoading(false)
+        setError('Failed to load account details.')
+        console.error({ error: 'getUser failed', message: err?.message })
+      })
   }, [])
 
   const handleSubscribe = async (tier: string) => {
