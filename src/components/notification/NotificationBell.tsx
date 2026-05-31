@@ -93,7 +93,7 @@ export function NotificationBell({ className }: NotificationBellProps) {
           <button
             type="button"
             aria-label="Notifications"
-            className="relative flex items-center justify-center rounded-md p-1 hover:bg-white/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            className="relative flex items-center justify-center rounded-md p-1 hover:bg-fg/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-highlight"
           >
             {/* Bell icon */}
             <Bell
