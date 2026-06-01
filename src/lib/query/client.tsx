@@ -512,3 +512,56 @@ export function useMarkAllRead() {
     },
   })
 }
+
+/**
+ * Mutation that PATCHes /api/notifications/{id}/mark-as-read to mark a single
+ * notification as read for the authenticated contractor.
+ *
+ * Mirrors the useMarkAllRead pattern but operates on a single notification.
+ * Applies optimistic update to the notifications array (find by id, set is_read=true).
+ * Invalidates both the notifications list and unread count on settle.
+ *
+ * @param notificationId - The ID of the notification to mark as read
+ * @returns UseMutationResult for managing the mutation state.
+ */
+export function useMarkNotificationAsRead() {
+  const queryClient = useQueryClient()
+  const { contractorId } = useContractor()
+
+  return useMutation({
+    mutationFn: async (notificationId: string): Promise<void> => {
+      const response = await fetch(`/api/notifications/${notificationId}/mark-as-read`, {
+        method: 'PATCH',
+      })
+      if (!response.ok) {
+        const text = await response.text()
+        throw new Error(`Failed to mark notification as read: ${text}`)
+      }
+    },
+    onMutate: (notificationId: string) => {
+      // Optimistic update: find the notification in the cache and set is_read=true.
+      // Guard against null contractorId (e.g. during initial render before
+      // ContractorContext resolves).
+      if (contractorId) {
+        queryClient.setQueryData(
+          ['notifications', contractorId],
+          (old: AppNotification[] | undefined) => {
+            if (!old) return old
+            return old.map((n) =>
+              n.id === notificationId ? { ...n, is_read: true, read_at: new Date().toISOString() } : n
+            )
+          }
+        )
+        // Also decrement unread count by 1 (if the notification was unread).
+        queryClient.setQueryData(
+          ['notifications-unread', contractorId],
+          (old: number | undefined) => (old && old > 0 ? old - 1 : 0)
+        )
+      }
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['notifications', contractorId] })
+      queryClient.invalidateQueries({ queryKey: ['notifications-unread', contractorId] })
+    },
+  })
+}

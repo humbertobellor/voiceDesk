@@ -20,9 +20,9 @@ import {
   Trigger as PopoverTrigger,
   Content as PopoverContent,
 } from '@radix-ui/react-popover'
-import { Bell } from 'lucide-react'
+import { Bell, CheckCircle } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
-import { useNotifications, useUnreadCount, useMarkAllRead } from '@/lib/query/client'
+import { useNotifications, useUnreadCount, useMarkAllRead, useMarkNotificationAsRead } from '@/lib/query/client'
 import { cn } from '@/lib/utils'
 import type { AppNotification } from '@/types/database'
 
@@ -81,6 +81,7 @@ export function NotificationBell({ className }: NotificationBellProps) {
 
   // Mutations
   const markAllRead = useMarkAllRead()
+  const markAsRead = useMarkNotificationAsRead()
 
   // Realtime subscription is mounted in DashboardProviders (exactly once per layout).
   // Do NOT add useNotificationsSubscription here — Sidebar and BottomTabBar both
@@ -153,7 +154,7 @@ export function NotificationBell({ className }: NotificationBellProps) {
               notifications.map((notification) => (
                 <div
                   key={notification.id}
-                  className="flex items-stretch border-b border-rule hover:bg-bg-sunken"
+                  className={cn('flex items-stretch border-b border-rule hover:bg-bg-sunken', notification.is_read && 'opacity-50')}
                 >
                   {/* Colored left border — 4px, event_type color */}
                   <div
@@ -178,6 +179,18 @@ export function NotificationBell({ className }: NotificationBellProps) {
                       })}
                     </p>
                   </div>
+
+                  {/* Mark-as-read button */}
+                  <button
+                    type="button"
+                    onClick={() => markAsRead.mutate(notification.id)}
+                    disabled={notification.is_read || markAsRead.isPending}
+                    title={notification.is_read ? 'Already marked as read' : 'Mark as read'}
+                    className="flex-shrink-0 px-3 py-2 hover:text-highlight disabled:opacity-50 disabled:cursor-not-allowed text-fg-3"
+                    aria-label="Mark notification as read"
+                  >
+                    <CheckCircle size={16} />
+                  </button>
                 </div>
               ))
             )}
