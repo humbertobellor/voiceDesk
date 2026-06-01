@@ -1,5 +1,5 @@
 import 'server-only'
-import { Html, Body, Section, Text, Button } from '@react-email/components'
+import { Html, Body, Section, Text, Button, Img } from '@react-email/components'
 
 /**
  * Props for the EmergencyNotificationEmail template.
@@ -24,7 +24,7 @@ export interface EmergencyNotificationEmailProps {
  * to sendEmail(). Never imported by client components (import 'server-only').
  *
  * Styling: light red background (#ffebee), red text (#d32f2f) for EMERGENCY header.
- * Content: prominent EMERGENCY label, caller phone, service type, CTA to dashboard.
+ * Content: Logo header, prominent EMERGENCY label, caller phone, service type, CTA to dashboard.
  * No appointmentStatus — emergency notifications intentionally omit booking status.
  *
  * @param props - EmergencyNotificationEmailProps
@@ -32,11 +32,24 @@ export interface EmergencyNotificationEmailProps {
  */
 export function EmergencyNotificationEmail(props: EmergencyNotificationEmailProps) {
   const { callerPhone, serviceRequested, dashboardUrl } = props
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://app.koolable.com'
 
   return (
     <Html>
-      <Body style={{ backgroundColor: '#ffebee', fontFamily: 'Arial, sans-serif', padding: '24px' }}>
-        <Section>
+      <Body style={{ backgroundColor: '#ffebee', fontFamily: 'Arial, sans-serif', padding: '0' }}>
+        {/* Logo Header */}
+        <Section style={{ backgroundColor: '#fff8f8', padding: '24px', textAlign: 'center' }}>
+          <Img
+            src={`${appUrl}/logo.svg`}
+            alt="Koolable logo"
+            width={32}
+            height={32}
+            style={{ margin: '0 auto' }}
+          />
+        </Section>
+
+        {/* Content */}
+        <Section style={{ padding: '24px' }}>
           <Text
             style={{
               fontSize: '24px',

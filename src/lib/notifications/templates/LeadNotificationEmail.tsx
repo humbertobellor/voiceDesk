@@ -1,5 +1,5 @@
 import 'server-only'
-import { Html, Body, Section, Text, Button } from '@react-email/components'
+import { Html, Body, Section, Text, Button, Img } from '@react-email/components'
 
 /**
  * Props for the LeadNotificationEmail template.
@@ -23,18 +23,31 @@ export interface LeadNotificationEmailProps {
  * to sendEmail(). Never imported by client components (import 'server-only').
  *
  * Styling: neutral white background, standard font — minimal functional HTML.
- * Content: caller phone, service type, appointment status, CTA to dashboard.
+ * Content: Logo header, caller phone, service type, appointment status, CTA to dashboard.
  *
  * @param props - LeadNotificationEmailProps
  * @returns JSX element compatible with @react-email/render
  */
 export function LeadNotificationEmail(props: LeadNotificationEmailProps) {
   const { callerPhone, serviceRequested, appointmentStatus, dashboardUrl } = props
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://app.koolable.com'
 
   return (
     <Html>
-      <Body style={{ backgroundColor: '#ffffff', fontFamily: 'Arial, sans-serif', padding: '24px' }}>
-        <Section>
+      <Body style={{ backgroundColor: '#ffffff', fontFamily: 'Arial, sans-serif', padding: '0' }}>
+        {/* Logo Header */}
+        <Section style={{ backgroundColor: '#f8f8f8', padding: '24px', textAlign: 'center' }}>
+          <Img
+            src={`${appUrl}/logo.svg`}
+            alt="Koolable logo"
+            width={32}
+            height={32}
+            style={{ margin: '0 auto' }}
+          />
+        </Section>
+
+        {/* Content */}
+        <Section style={{ padding: '24px' }}>
           <Text style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '16px' }}>
             New Lead Received
           </Text>

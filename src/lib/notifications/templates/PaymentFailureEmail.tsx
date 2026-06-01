@@ -1,5 +1,5 @@
 import 'server-only'
-import { Html, Body, Section, Text, Button } from '@react-email/components'
+import { Html, Body, Section, Text, Button, Img } from '@react-email/components'
 
 /**
  * Props for the PaymentFailureEmail template.
@@ -18,7 +18,7 @@ export interface PaymentFailureEmailProps {
  * to sendEmail(). Never imported by client components (import 'server-only').
  *
  * Styling: light yellow background (#fff3cd), amber/brown text (#856404) for PAYMENT FAILED header.
- * Content: prominent PAYMENT FAILED label, 72-hour deactivation timeline,
+ * Content: Logo header, prominent PAYMENT FAILED label, 72-hour deactivation timeline,
  * "Update Payment Method" CTA linking to billingUrl.
  *
  * @param props - PaymentFailureEmailProps
@@ -26,11 +26,24 @@ export interface PaymentFailureEmailProps {
  */
 export function PaymentFailureEmail(props: PaymentFailureEmailProps) {
   const { billingUrl } = props
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://app.koolable.com'
 
   return (
     <Html>
-      <Body style={{ backgroundColor: '#fff3cd', fontFamily: 'Arial, sans-serif', padding: '24px' }}>
-        <Section>
+      <Body style={{ backgroundColor: '#fff3cd', fontFamily: 'Arial, sans-serif', padding: '0' }}>
+        {/* Logo Header */}
+        <Section style={{ backgroundColor: '#fffbf0', padding: '24px', textAlign: 'center' }}>
+          <Img
+            src={`${appUrl}/logo.svg`}
+            alt="Koolable logo"
+            width={32}
+            height={32}
+            style={{ margin: '0 auto' }}
+          />
+        </Section>
+
+        {/* Content */}
+        <Section style={{ padding: '24px' }}>
           <Text
             style={{
               fontSize: '24px',
