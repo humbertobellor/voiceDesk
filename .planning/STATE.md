@@ -1,12 +1,12 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.1
-milestone_name: — Notifications & UI Brand
+milestone: v1.2
+milestone_name: — In-App Notifications & Brand Polish
 current_plan: 1
-status: executing
-stopped_at: v1.1 milestone complete — all code review fixes applied, STATE.md updated
-last_updated: "2026-06-01T03:24:45.787Z"
-last_activity: 2026-06-01 — Milestone 1.1 completed and archived
+status: planning
+stopped_at: v1.2 milestone planning complete — roadmap and requirements finalized
+last_updated: "2026-06-01T12:00:00.000Z"
+last_activity: 2026-06-01 — v1.2 milestone planning initialized
 progress:
   total_phases: 5
   completed_phases: 5
@@ -27,11 +27,11 @@ See: .planning/PROJECT.md (updated 2026-05-24)
 
 ## Current Phase
 
-Phase: 14
+Phase: 17 (v1.2 planning)
 Status: Ready to execute
 Started: —
 Completed: —
-Target: —
+Target: 2026-06-14
 
 Current Plan: 1
 
@@ -138,17 +138,19 @@ Current Plan: 1
 
 ## Session Continuity
 
-Last session: 2026-05-31T00:00:00.000Z
-Stopped at: v1.1 milestone complete — all code review fixes applied, STATE.md updated
-Resume: Start v1.2 milestone planning (`/gsd:new-milestone`)
+Last session: 2026-06-01T12:00:00.000Z
+Stopped at: v1.2 milestone planning complete — roadmap and requirements defined
+Resume: Start Phase 17 execution with `/gsd:plan-phase 17`
 
 ## Current Position
 
-Phase: Milestone 1.1 complete
+Phase: 17 (In-App Notification Bell)
 Plan: —
-Status: Awaiting next milestone
-Last activity: 2026-06-01 — Milestone 1.1 completed and archived
+Status: Ready to plan
+Last activity: 2026-06-01 — v1.2 milestone roadmap finalized
 
 ## Operator Next Steps
 
-- Start the next milestone with /gsd-new-milestone
+- Run `/gsd:plan-phase 17` to create Phase 17 execution plan (In-App Notification Bell)
+- Run `/gsd:plan-phase 18` to create Phase 18 execution plan (Logo Integration)
+- Or run `/gsd:execute-phase` to execute all phases in v1.2

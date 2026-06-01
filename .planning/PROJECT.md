@@ -1,31 +1,26 @@
-# VoiceDesk
+# Koolable
 
-**Current State:** v1.1 SHIPPED 2026-06-01 — Notifications & UI Brand complete. Production deployed and verified. Ready for v1.2 planning.
+**Current State:** v1.1 SHIPPED 2026-06-01 — Notifications & UI Brand complete. Production deployed and verified. v1.2 planning underway.
 
-## Milestone v1.1 Shipped (2026-06-01)
+## Milestone v1.2 — In-App Notifications & Brand Polish (In Progress)
 
-**Delivered:** Notifications & UI Brand — Full notification layer (email via Resend, in-app notification persistence), complete Telegram webhook activation flow, and comprehensive Wolknitive Design System token application across all pages.
+**Goal:** Complete the in-app notification bell UI (BELL-01, BELL-02, BELL-03), implement per-notification mark-as-read and batch mark-all-read actions, integrate the company logo across all pages and dashboard, and resolve any planned-but-unshipped work from v1.1.
 
-**Shipped Features:**
-- [x] Email notifications via Resend — call/lead/emergency alerts to contractor + payment failure billing alerts
-- [x] In-app notification persistence — unread count displayed in database, real-time subscription ready
-- [x] Notification preferences per event — contractor toggles via settings form (SMS, WhatsApp, email)
-- [x] Telegram webhook status display and one-click activation — platform-level bot integration
-- [x] Wolknitive Design System applied — 14/14 CSS token replacements, zero hardcoded hex values in components
-- [x] Production deployment and E2E verification — all core flows tested live
+**Target ship:** 2026-06-14
 
-**Deferred to v1.2:**
-- In-app bell UI component and mark-all-read (BELL-01, BELL-02, BELL-03) — scaffolded and ready
-- Per-notification mark-as-read action — design approved, ready for implementation
-- Dark mode and additional theme variants
+**Deferred from v1.1, now active:**
+- In-app bell UI component (BELL-01, BELL-02, BELL-03) — scaffolded and ready for implementation
+- Per-notification mark-as-read action — design approved, ready to build
+- Mark-all-read functionality — companion to mark-as-read
+- Logo integration on all pages (auth, dashboard, settings, email templates)
 
 ## What This Is
 
-VoiceDesk is a 24/7 AI phone receptionist for independent and small-fleet home-service contractors (HVAC, plumbing, electrical). It answers missed calls in real time, qualifies leads, books estimate slots into Google Calendar, and escalates genuine emergencies via WhatsApp/Telegram/SMS. Contractors forward their existing phone number — no behavior change required.
+Koolable is a 24/7 AI phone receptionist for independent and small-fleet home-service contractors (HVAC, plumbing, electrical). It answers missed calls in real time, qualifies leads, books estimate slots into Google Calendar, and escalates genuine emergencies via WhatsApp/Telegram/SMS. Contractors forward their existing phone number — no behavior change required.
 
 ## Core Value
 
-Every missed call is lost revenue — VoiceDesk ensures contractors never lose a booked job to voicemail again.
+Every missed call is lost revenue — Koolable ensures contractors never lose a booked job to voicemail again.
 
 ## Requirements
 
@@ -44,6 +39,26 @@ Every missed call is lost revenue — VoiceDesk ensures contractors never lose a
 - [x] Account page: subscription status, trialing badge, deactivated state with Update Payment CTA
 - [x] is_active deactivation on payment failure; auto-reactivation on payment recovery
 
+### Validated (v1.1)
+
+- [x] Email notifications via Resend — call/lead/emergency alerts to contractor + payment failure billing alerts
+- [x] In-app notification persistence — `app_notifications` table with Supabase Realtime subscription ready
+- [x] Notification preferences per event — contractor toggles via settings form (SMS, WhatsApp, email)
+- [x] Telegram webhook status display and one-click activation — platform-level bot integration
+- [x] Wolknitive Design System applied — 14/14 CSS token replacements, zero hardcoded hex values in components
+
+### Active (v1.2)
+
+- [ ] **BELL-01**: A bell icon in the dashboard header displays an unread badge count that updates in real-time (via Supabase Realtime) without a page refresh
+- [ ] **BELL-02**: Clicking the bell opens a panel listing the 50 most recent notifications, each showing event type, title, body excerpt, and relative time
+- [ ] **BELL-03**: Contractor can mark all notifications as read with one action, clearing the unread badge
+- [ ] **BELL-05**: Per-notification mark-as-read action — individual notifications can be marked read one at a time; UI shows read/unread state
+- [ ] **LOGO-01**: Company logo appears on all authentication pages (login, signup)
+- [ ] **LOGO-02**: Company logo appears in the dashboard header (alongside/in place of text branding)
+- [ ] **LOGO-03**: Company logo appears in the Sidebar (top or bottom section)
+- [ ] **LOGO-04**: Company logo is included in email notification templates (new lead, emergency, payment failure)
+- [ ] **LOGO-05**: Logo sizing, placement, and contrast all pass accessibility and readability standards across mobile and desktop
+
 ### Partial / Operational Dependencies
 
 - [ ] WhatsApp notifications (WABA approval pending — placeholder Content SIDs in code)
@@ -59,6 +74,8 @@ Every missed call is lost revenue — VoiceDesk ensures contractors never lose a
 - iOS/Android mobile app — web portal sufficient for v1
 - Custom voice cloning — Retell stock voices cover v1
 - Automated follow-up sequences — out of scope; inbound-only focus
+- Dark mode toggle (dark palette is fixed theme in v1.x)
+- Landing / marketing page (app UI only for v1.x)
 
 ## Context
 
@@ -75,7 +92,7 @@ Every missed call is lost revenue — VoiceDesk ensures contractors never lose a
 
 - **Budget**: $2,800–$3,800 total build cost including incorporation (Stripe Atlas ~$500)
 - **Timeline**: Revenue-generating within 90 days of start
-- **Tech stack**: Retell (voice), Supabase (backend/auth), Vercel (frontend), Stripe (billing), Twilio (telephony)
+- **Tech stack**: Retell (voice), Supabase (backend/auth), Next.js 16 (App Router), Vercel (frontend), Stripe (billing), Twilio (telephony), Inngest (background jobs), Resend (email)
 - **Infra cost**: Retell ~$0.05–$0.10/min, Supabase free tier, Vercel $0–$20/mo, Twilio $1/mo/number
 - **Solo/small team build**: Architecture must stay simple — no microservices, no custom ML
 - **Latency**: Voice AI latency must be tuned; Retell chosen specifically for lower latency than Vapi
@@ -93,6 +110,8 @@ Every missed call is lost revenue — VoiceDesk ensures contractors never lose a
 | Haitian Creole removed | Retell does not support it natively; removed in Phase 2 (D-01) | ✓ Resolved |
 | Settings tabs over wizard modal | Wizard too linear; settings tabs accessible anytime — refactored in Phase 8 | ✓ Good |
 | is_active boolean for deactivation | Replaces agent_sync_status hack; proper deactivation state machine | ✓ Good |
+| Wolknitive Design System | CSS-only token architecture, no new packages, full component sweep | ✓ Good |
+| Logo in all pages | Brand consistency across user touchpoints (auth, dashboard, email) | — In Progress |
 
 ---
 
@@ -114,4 +133,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-05-24 — v1.0 SHIPPED. 11 phases, 55 plans, 311 commits, 21 days. Production deployment live. E2E regression suite 15/15 green. See [.planning/milestones/v1.0-mvp.md](milestones/v1.0-mvp.md) for full archive.*
+*Last updated: 2026-06-01 — v1.1 SHIPPED. 16 phases, 55 plans, 311 commits. v1.2 planning in progress.*

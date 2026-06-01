@@ -606,3 +606,115 @@ Plans:
 | 14. In-App Notification Bell | 5/5 | Complete   | 2026-05-29 |
 | 15. Telegram Activation | 2/2 | Complete   | 2026-05-30 |
 | 16. Design System Sweep | 6/6 | Complete   | 2026-05-30 |
+
+---
+
+## Milestone v1.2 — In-App Notifications & Brand Polish
+
+**Goal:** Complete the in-app notification bell UI (BELL-01, BELL-02, BELL-03), implement per-notification mark-as-read and mark-all-read, integrate the company logo across all pages, and resolve any planned-but-unshipped work from v1.1.
+
+**Shipped:** — | Target 2026-06-14 | 2 phases | ~8 plans | ~30 commits
+
+## Phases
+
+- [ ] **Phase 17: In-App Notification Bell** - Bell icon, panel UI, mark-all-read, per-notification mark-as-read actions *(in progress)*
+- [ ] **Phase 18: Logo Integration** - Logo on auth pages, dashboard header, sidebar, email templates, responsive + accessible
+
+---
+
+## Phase Details
+
+### Phase 17: In-App Notification Bell
+
+**Goal:** Contractors can click a bell icon to view recent notifications, mark individual notifications as read, and batch mark all as read — with real-time updates via Supabase Realtime.
+
+**Depends on:** Phase 16 (design system complete), v1.1 schema (app_notifications table + Inngest integration already exist)
+
+**Requirements:** BELL-01, BELL-02, BELL-03, BELL-05
+
+**Success Criteria** (what must be TRUE):
+
+  1. A bell icon appears in the dashboard header with an unread badge count; the count updates in real-time without page refresh when new notifications arrive
+  2. Clicking the bell opens a panel showing the 50 most recent notifications, each with event type, title, body excerpt, and relative timestamp (e.g., "3 minutes ago")
+  3. Contractor can click "Mark all read" to clear all unread flags with one action; the unread badge disappears and the cleared state persists across sessions
+  4. Each notification displays a mark-as-read button; clicking it updates that notification's read state immediately without closing the panel
+  5. Read vs. unread state is visually distinct (opacity, checkmark, color change, or similar)
+  6. Supabase Realtime subscription filters by contractor_id to prevent cross-tenant notification visibility (IDOR guard)
+  7. All 15 v1.0 regression tests pass — no regressions introduced
+
+**Plans:** 4 plans
+
+- [ ] 17-01-PLAN.md — Wave 0: scaffold RED test stubs (bell icon, panel, mark-all, per-notif mark) + React Query hook updates
+- [ ] 17-02-PLAN.md — TDD: NotificationBell component (icon + badge) + NotificationPanel component (list + timestamps)
+- [ ] 17-03-PLAN.md — TDD: mark-all-read API route PATCH + per-notification mark-as-read PATCH
+- [ ] 17-04-PLAN.md — Wiring: integrate NotificationBell into Sidebar/header + Realtime subscription + regression test pass
+
+**Wave dependency notes:**
+
+- **Wave 1** (`17-01`): no dependencies — creates RED test stubs and hook scaffolds
+- **Wave 2** (`17-02`): blocked on 17-01 — component TDD (GREEN)
+- **Wave 3** (`17-03`): blocked on 17-02 — API route TDD (GREEN)
+- **Wave 4** (`17-04`): blocked on 17-03 — wiring + regression pass
+
+**Cross-cutting constraints:**
+
+- Supabase Realtime subscription must filter `contractor_id=eq.{contractorId}` (IDOR guard)
+- `is_read` JSONB field (or separate column) tracks per-notification read state
+- No new packages — use existing React Query, Supabase, Radix UI (@radix-ui/react-popover from v1.1)
+- Mark-all-read must be idempotent: calling it twice produces same result as once
+
+**UI hint:** yes
+
+---
+
+### Phase 18: Logo Integration Across All Pages
+
+**Goal:** The company logo appears consistently across all authentication pages, dashboard pages, sidebar, and email templates — reinforcing brand identity throughout the user experience.
+
+**Depends on:** Phase 17 (parallel or sequential — no dependencies)
+
+**Requirements:** LOGO-01, LOGO-02, LOGO-03, LOGO-04, LOGO-05
+
+**Success Criteria** (what must be TRUE):
+
+  1. Logo file(s) are in `public/` directory (SVG for scalability, PNG for fallback) with proper alt text
+  2. Logo appears on `/auth/login` and `/auth/signup` pages in a consistent, accessible position
+  3. Logo appears in the dashboard header (Sidebar top or Header component) on all dashboard pages (`/dashboard/*`)
+  4. Logo appears in the Sidebar footer or header for consistent navigation branding
+  5. Logo is included in all email notification templates: `LeadNotificationEmail`, `EmergencyNotificationEmail`, `PaymentFailureEmail` (rendered via React Email)
+  6. Logo contrast ratio ≥4.5:1 against background colors (WCAG AA compliance)
+  7. Logo is responsive — appropriately sized on mobile (≤768px viewport) and desktop (≥1024px)
+  8. No console errors related to image loading, missing alt text, or layout shift (CLS)
+  9. `npm run build` exits 0 with no TypeScript or Tailwind errors
+  10. All 15 v1.0 regression tests pass — no visual regressions
+
+**Plans:** 3 plans
+
+- [ ] 18-01-PLAN.md — Wave 0: add logo asset(s) to public/; update .gitignore if needed; create Logo component wrapper with alt text + sizing
+- [ ] 18-02-PLAN.md — Logo on auth pages (login, signup) + dashboard header + sidebar; responsive snapshot tests before/after
+- [ ] 18-03-PLAN.md — Logo in email templates + accessibility audit (contrast, CLS, alt text) + build + regression tests
+
+**Wave dependency notes:**
+
+- **Wave 1** (`18-01`): no dependencies — adds assets and creates Logo component
+- **Wave 2** (`18-02`): blocked on 18-01 — page integration + responsive testing
+- **Wave 3** (`18-03`): blocked on 18-02 — email templates + audit + regression pass
+
+**Cross-cutting constraints:**
+
+- Logo must be SVG (preferred for scalability) or PNG with transparent background
+- Alt text required on all img elements: `alt="Koolable logo"`
+- Sizing: auth pages (fixed height, e.g., 40px), dashboard header (40–50px), sidebar (30–40px)
+- Email logo: inlined via React Email `src` prop, absolute URL or data URI
+- No CSS filters or transforms that degrade accessibility (e.g., brightness, blur)
+
+**UI hint:** yes
+
+---
+
+## Progress Table (v1.2)
+
+| Phase | Plans Complete | Status | Completed |
+|-------|----------------|--------|-----------|
+| 17. In-App Notification Bell | 0/4 | Pending | — |
+| 18. Logo Integration | 0/3 | Pending | — |

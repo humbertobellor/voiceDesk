@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { PhoneCall, Users, Settings } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { NotificationBell } from '@/components/notification/NotificationBell'
 import type { Route } from 'next'
 
 const tabs: { href: Route; icon: typeof PhoneCall; label: string }[] = [
@@ -39,6 +40,10 @@ export function BottomTabBar() {
           </Link>
         )
       })}
+      <div className="flex-1 flex flex-col items-center justify-center gap-0.5 min-h-[56px] text-fg-3">
+        <NotificationBell />
+        <span className="text-xs">Alerts</span>
+      </div>
     </nav>
   )
 }
