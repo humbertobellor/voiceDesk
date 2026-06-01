@@ -320,7 +320,7 @@
 /* ============================================================
    Dark mode — semantic token remapping only.
    Primitive scales stay the same; only semantic aliases change.
-   Structure supports future .dark class toggle without rework.
+   Supports both data-theme attribute (user toggle) and system preference.
    ============================================================ */
 @media (prefers-color-scheme: dark) {
   :root {
@@ -344,6 +344,29 @@
     --success: var(--moss-500);
     --danger:  var(--brick-500);
   }
+}
+
+/* Override system preference when user explicitly sets dark mode */
+html[data-theme="dark"] {
+  --bg:          #0F172A;
+  --bg-elevated: #1E293B;
+  --bg-sunken:   #0B1120;
+
+  --fg-1:       #F8FAFC;
+  --fg-2:       #CBD5E1;
+  --fg-3:       #94A3B8;
+  --fg-4:       #64748B;
+
+  --rule:        #334155;
+  --rule-strong: #475569;
+  --rule-soft:   #1E293B;
+
+  --accent:       var(--teal-400);
+  --accent-hover: var(--teal-300);
+  --accent-soft:  rgba(27, 78, 74, 0.20);
+
+  --success: var(--moss-500);
+  --danger:  var(--brick-500);
 }
 
 html, body {

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter_Tight, JetBrains_Mono } from 'next/font/google'
 import localFont from 'next/font/local'
+import { ThemeProvider } from '@/lib/theme/provider'
 import './globals.css'
 
 /**
@@ -70,7 +71,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${bogart.variable} ${interTight.variable} ${jetbrainsMono.variable}`}
     >
       <body className="font-ui antialiased bg-bg text-fg-1">
-        {children}
+        <ThemeProvider>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   )
