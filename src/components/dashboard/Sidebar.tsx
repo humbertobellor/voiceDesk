@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils'
 import { createSupabaseBrowser } from '@/lib/supabase/browser'
 import type { Route } from 'next'
 import { NotificationBell } from '@/components/notification/NotificationBell'
+import { Logo } from '@/components/ui/Logo'
 
 interface SidebarProps {
   businessName?: string | null
@@ -47,10 +48,9 @@ export function Sidebar({ businessName, userEmail, phoneNumber }: SidebarProps) 
       aria-label="Primary"
     >
       {/* Logo area */}
-      <div className="h-16 flex items-center gap-2 px-6 border-b border-rule">
-        <Mic size={20} className="text-highlight" />
-        <span className="text-xl font-semibold text-fg-1">Koolable</span>
-        <NotificationBell className="ml-auto" />
+      <div className="flex flex-col items-center justify-center py-6 px-6 border-b border-rule gap-3">
+        <Logo size="md" />
+        <NotificationBell />
       </div>
 
       {/* Nav */}
