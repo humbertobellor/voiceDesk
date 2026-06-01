@@ -128,7 +128,7 @@ describe('NotificationSettingsForm', () => {
 
     expect(screen.getByText('Connect your Telegram account')).toBeInTheDocument()
 
-    const link = screen.getByRole('link', { name: /open @voicedesktelbot/i })
+    const link = screen.getByRole('link', { name: /open @koolableTelBot/i })
     expect(link).toHaveAttribute(
       'href',
       'https://t.me/koolableTelBot?start=contractor-abc-123',
