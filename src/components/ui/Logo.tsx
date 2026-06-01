@@ -10,8 +10,8 @@ const sizeMap: Record<'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl', string> = {
   sm: 'w-12 h-12',
   md: 'w-16 h-16',
   lg: 'w-20 h-20',
-  xl: 'w-[100px] h-32',
-  '2xl': 'w-[172px] h-[39px]',
+  xl: 'w-100 h-32',
+  2xl: 'w-172 h-39',
 };
 
 export function Logo({
