@@ -1,8 +1,0 @@
-[      -1ms] [ERROR] Failed to load resource: the server responded with a status of 400 (Bad Request) @ http://localhost/api/v1/workspace/export/demo:0
-[  151239ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost/api/v1/workspace/state/demo:0
-[  151239ms] [ERROR] Failed to load workspace: Error: Workspace state fetch failed: 404
-    at Ya (http://localhost/assets/index-C_7b4mja.js:12:59539)
-    at async Promise.all (index 0)
-    at async n (http://localhost/assets/index-C_7b4mja.js:156:10342) @ http://localhost/assets/index-C_7b4mja.js:155
-[  151243ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost/api/v1/workspace/demo/context:0
-[  373829ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost/api/v1/draft/generate?rfp_result_key=rt&tone_formality=professional&tone_technical_level=moderate&compliance_enabled=true&tone_alignment_enabled=true:0

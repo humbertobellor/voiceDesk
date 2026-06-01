@@ -9,7 +9,7 @@ export default function SignupPage() {
     <main className="min-h-screen bg-bg flex items-center justify-center px-4">
       <div className="w-full max-w-sm">
         <div className="flex justify-center mb-8">
-          <Logo size="md" />
+          <Logo size="xl" />
         </div>
         <SignupForm />
       </div>

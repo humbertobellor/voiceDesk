@@ -1,7 +1,0 @@
-[     526ms] [ERROR] Failed to load resource: net::ERR_NAME_NOT_RESOLVED @ https://ogads-pa.clients6.google.com/$rpc/google.internal.onegoogle.asyncdata.v1.AsyncDataService/GetAsyncData:0
-[   19194ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost/api/v1/workspace/demo/context:0
-[   19194ms] [ERROR] Failed to load workspace: Error: Context fetch failed: 404
-    at Xa (http://localhost/assets/index-C_7b4mja.js:12:59728)
-    at async Promise.all (index 1)
-    at async n (http://localhost/assets/index-C_7b4mja.js:156:10342) @ http://localhost/assets/index-C_7b4mja.js:155
-[   19293ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost/api/v1/workspace/state/demo:0
