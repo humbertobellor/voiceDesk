@@ -49,7 +49,7 @@ export function Sidebar({ businessName, userEmail, phoneNumber }: SidebarProps) 
     >
       {/* Logo area */}
       <div className="flex flex-col items-center justify-center py-6 px-6 border-b border-rule gap-3">
-        <Logo size="md" />
+        <Logo size="2xl" />
         <NotificationBell />
       </div>
 

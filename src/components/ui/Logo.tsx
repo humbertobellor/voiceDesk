@@ -1,16 +1,17 @@
 export interface LogoProps {
   variant?: 'default' | 'white';
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
   className?: string;
   alt?: string;
 }
 
-const sizeMap: Record<'xs' | 'sm' | 'md' | 'lg' | 'xl', string> = {
+const sizeMap: Record<'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl', string> = {
   xs: 'w-8 h-8',
   sm: 'w-12 h-12',
   md: 'w-16 h-16',
   lg: 'w-20 h-20',
   xl: 'w-128 h-64',
+  '2xl': 'w-[200px] h-8',
 };
 
 export function Logo({

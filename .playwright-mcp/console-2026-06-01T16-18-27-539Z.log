@@ -1,0 +1,629 @@
+[    3680ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    3737ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    3874ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    3964ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    3969ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    4136ms] [LOG] [Fast Refresh] done in 370ms @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    4306ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    4309ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    4314ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    4385ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    4391ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    4396ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    4464ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    4467ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    4473ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    4545ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    4547ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    4552ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    4620ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    4623ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    4627ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    4702ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    4706ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    4713ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    4789ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    4794ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    4800ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    4872ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    4877ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    4884ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    4952ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    4955ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    4960ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    5031ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    5034ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    5037ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    5194ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    5197ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    5200ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    5268ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    5271ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    5277ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    5364ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    5367ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    5370ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    5440ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    5443ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    5446ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    5516ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    5520ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    5525ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    5596ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    5598ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    5601ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    5669ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    5672ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    5674ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    5741ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    5744ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    5747ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    5815ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    5818ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    5824ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    5901ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    5905ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    5910ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    5988ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    5991ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    5995ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    6067ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    6072ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    6077ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    6145ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    6149ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    6153ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    6310ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    6314ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    6318ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    6386ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    6391ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    6396ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    6478ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    6482ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    6487ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    6556ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    6562ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    6568ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    6640ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    6645ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    6650ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    6727ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    6730ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    6733ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    6819ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    6823ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    6831ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    6904ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    6908ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    6913ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    6983ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    6987ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    6991ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    7058ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    7061ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    7065ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    7135ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    7139ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    7145ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    7293ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    7296ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    7299ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    7369ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    7372ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    7378ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    7456ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    7459ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    7465ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    7545ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    7547ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    7551ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    7626ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    7628ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    7631ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    7699ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    7703ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    7708ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    7789ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    7792ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    7796ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    7869ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    7875ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    7882ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    7951ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    7955ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    7960ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    8029ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    8032ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    8037ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    8106ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    8111ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    8115ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    8185ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    8188ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    8192ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    8340ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    8343ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    8346ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    8422ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    8425ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    8429ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    8506ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    8508ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    8511ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    8585ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    8588ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    8591ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    8664ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    8667ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    8670ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    8745ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    8748ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    8751ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    8838ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    8841ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    8847ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    8933ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    8937ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    8942ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    9028ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    9031ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    9035ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    9104ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    9108ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    9114ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    9184ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    9188ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    9192ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    9267ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    9271ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    9277ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    9503ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    9506ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    9509ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    9580ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    9583ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    9589ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    9659ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    9663ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    9668ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    9742ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    9744ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    9751ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    9821ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    9825ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    9833ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    9901ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    9905ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    9909ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    9981ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    9984ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[    9987ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   10059ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   10063ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   10067ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   10148ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   10151ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   10156ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   10225ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   10228ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   10232ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   10300ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   10302ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   10306ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   10437ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   10439ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   10443ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   10511ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   10513ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   10516ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   10598ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   10600ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   10603ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   10671ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   10674ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   10676ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   10744ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   10747ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   10750ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   10829ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   10832ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   10838ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   10906ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   10909ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   10913ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   10981ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   10984ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   10990ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   11059ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   11062ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   11066ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   11143ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   11145ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   11149ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   11225ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   11229ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   11233ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   11313ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   11318ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   11322ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   11485ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   11489ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   11492ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   11559ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   11562ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   11564ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   11634ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   11636ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   11639ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   11721ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   11724ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   11728ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   11798ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   11801ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   11804ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   11872ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   11875ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   11881ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   11950ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   11953ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   11956ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   12026ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   12030ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   12034ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   12126ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   12129ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   12132ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   12204ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   12207ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   12213ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   12284ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   12287ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   12291ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   12363ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   12367ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   12368ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   12370ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   12372ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   12442ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   12444ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   12445ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   12449ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   12456ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   12602ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   12604ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   12605ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   12608ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   12610ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   12680ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   12682ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   12683ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   12685ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   12693ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   12756ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   12758ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   12759ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   12761ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   12762ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   12833ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   12836ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   12838ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   12841ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   12849ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   12914ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   12918ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   12919ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   12922ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   12925ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   12993ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   12996ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   12997ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   13000ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   13004ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   13070ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   13073ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   13074ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   13079ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   13084ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   13156ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   13159ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   13162ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   13166ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   13169ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   13236ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   13238ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   13238ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   13242ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   13253ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   13309ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   13312ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   13313ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   13315ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   13320ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   13365ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=5LDZjudSmwF-HW2lFF3C4' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_client_0_8ysy-._.js:13299
+[   13420ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   13423ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   13423ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   13426ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   13437ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   13583ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   13584ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   13585ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   13587ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   13591ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   14049ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   14050ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   14051ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   14053ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   14062ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   14124ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   14126ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   14127ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   14132ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   14133ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   14146ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   14201ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   14204ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   14205ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   14210ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   14216ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   14279ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   14282ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   14283ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   14286ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   14288ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   14359ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   14362ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   14363ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   14367ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   14370ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   14371ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=5LDZjudSmwF-HW2lFF3C4' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_client_0_8ysy-._.js:13299
+[   14435ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   14437ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   14438ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   14441ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   14452ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   14517ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   14520ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   14521ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   14524ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   14525ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   14536ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   14634ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   14638ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   14639ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   14641ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   14643ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   14717ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   14719ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   14720ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   14722ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   14724ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   14796ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   14798ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   14798ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   14801ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   14808ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   14877ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   14880ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   14881ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   14884ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   14893ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   14962ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   14966ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   14967ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   14969ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   14973ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   15040ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   15043ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   15044ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   15049ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   15056ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   15121ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   15124ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   15125ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   15128ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   15138ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   15199ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   15201ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   15202ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   15204ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   15206ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   15288ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   15290ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   15290ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   15293ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   15293ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   15307ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   15373ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=5LDZjudSmwF-HW2lFF3C4' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_client_0_8ysy-._.js:13299
+[   15468ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   15470ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   15471ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   15473ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   15476ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   15543ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   15546ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   15547ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   15549ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   15551ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   15680ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   15682ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   15683ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   15686ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   15696ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   15754ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   15756ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   15757ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   15760ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   15767ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   15827ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   15830ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   15831ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   15834ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   15838ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   15912ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   15915ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   15916ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   15920ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   15922ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   15994ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   15997ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   15998ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   16000ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   16003ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   16067ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   16069ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   16071ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   16075ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   16077ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   16164ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   16167ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   16168ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   16171ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   16173ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   16238ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   16241ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   16242ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   16245ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   16247ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   16313ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   16316ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   16317ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   16319ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   16326ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   16375ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=5LDZjudSmwF-HW2lFF3C4' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_client_0_8ysy-._.js:13299
+[   16388ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   16389ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   16390ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   16393ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   16394ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   16460ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   16463ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   16463ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   16465ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   16476ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   16535ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   16537ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   16538ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   16540ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   16546ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   16609ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   16612ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   16613ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   16616ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   16617ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   16630ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   16730ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   16734ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   16735ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   16738ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   16739ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   16748ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   16812ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   16815ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   16816ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   16819ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   16827ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   16890ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   16893ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   16894ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   16897ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   16899ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   16964ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   16968ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   16970ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   16974ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   16977ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   17046ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   17049ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   17049ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   17053ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   17058ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   17122ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   17125ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   17126ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   17129ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   17131ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   17197ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   17200ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   17201ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   17205ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   17211ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   17272ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   17274ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   17275ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   17278ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   17280ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   17374ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   17376ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   17377ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   17383ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   17384ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   17384ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=5LDZjudSmwF-HW2lFF3C4' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_client_0_8ysy-._.js:13299
+[   17455ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   17457ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   17457ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   17459ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   17465ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   17528ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   17531ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   17532ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   17534ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   17535ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   17549ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   17617ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   17618ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   17619ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   17621ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   17633ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   17777ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   17779ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   17779ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   17782ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   17787ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   17851ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   17853ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   17854ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   17857ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   17858ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   17872ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   17927ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   17929ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   17930ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   17932ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   17939ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   18019ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   18022ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   18023ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   18026ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   18028ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   18097ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   18100ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   18101ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   18106ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   18113ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   18172ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   18175ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   18177ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   18180ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   18183ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   18252ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   18255ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   18256ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   18260ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   18267ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   18329ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   18334ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   18335ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   18338ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   18340ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   18408ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   18411ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   18411ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   18414ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   18419ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   18484ms] [LOG] [Realtime] Calls subscription connected @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   18487ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   18487ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
+[   18490ms] [LOG] [Realtime] Calls subscription status: CLOSED @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2431
+[   18491ms] [ERROR] WebSocket is already in CLOSING or CLOSED state. @ http://localhost:3000/_next/static/chunks/03l7_next_dist_0v7cnc-._.js:2790
