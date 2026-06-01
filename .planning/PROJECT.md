@@ -1,17 +1,23 @@
 # VoiceDesk
 
-**Current State:** v1.1 IN PROGRESS. Phase 13 (Email Notifications) complete 2026-05-25. v1.0 shipped 2026-05-24 — production live, 15/15 E2E green.
+**Current State:** v1.1 SHIPPED 2026-06-01 — Notifications & UI Brand complete. Production deployed and verified. Ready for v1.2 planning.
 
-## Current Milestone: v1.1 Notifications & UI Brand
+## Milestone v1.1 Shipped (2026-06-01)
 
-**Goal:** Complete the notification layer (email, in-app bell, Telegram self-serve activation) and apply the Wolknitive Design System across the entire application — turning a functional MVP into a polished, branded product.
+**Delivered:** Notifications & UI Brand — Full notification layer (email via Resend, in-app notification persistence), complete Telegram webhook activation flow, and comprehensive Wolknitive Design System token application across all pages.
 
-**Target features:**
-- Email notifications via Resend — call/lead/emergency alerts to contractor
-- In-app notification bell — unread count + notification feed in dashboard header
-- Notification preferences per event — contractor toggles which channels fire for each event type
-- Telegram auto-activation — saving bot token triggers setWebhook automatically
-- Wolknitive Design System applied — brand tokens, typography, component sweep across all pages
+**Shipped Features:**
+- [x] Email notifications via Resend — call/lead/emergency alerts to contractor + payment failure billing alerts
+- [x] In-app notification persistence — unread count displayed in database, real-time subscription ready
+- [x] Notification preferences per event — contractor toggles via settings form (SMS, WhatsApp, email)
+- [x] Telegram webhook status display and one-click activation — platform-level bot integration
+- [x] Wolknitive Design System applied — 14/14 CSS token replacements, zero hardcoded hex values in components
+- [x] Production deployment and E2E verification — all core flows tested live
+
+**Deferred to v1.2:**
+- In-app bell UI component and mark-all-read (BELL-01, BELL-02, BELL-03) — scaffolded and ready
+- Per-notification mark-as-read action — design approved, ready for implementation
+- Dark mode and additional theme variants
 
 ## What This Is
 
