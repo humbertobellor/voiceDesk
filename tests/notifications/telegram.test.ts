@@ -7,11 +7,15 @@ const { mockSendMessage } = vi.hoisted(() => {
   return { mockSendMessage }
 })
 
-vi.mock('grammy', () => ({
-  Bot: vi.fn(function () {
-    return { api: { sendMessage: mockSendMessage } }
-  }),
-}))
+vi.mock('grammy', () => {
+  class MockBot {
+    api = { sendMessage: mockSendMessage }
+    command = vi.fn()
+  }
+  return {
+    Bot: MockBot,
+  }
+})
 
 import { sendTelegram } from '@/lib/notifications/telegram'
 

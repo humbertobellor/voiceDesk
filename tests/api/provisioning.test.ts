@@ -16,7 +16,7 @@ vi.mock('@/lib/supabase/service', () => ({
 // Mock Retell client
 vi.mock('@/lib/retell/client', () => ({
   getRetellClient: vi.fn(),
-  toRetellLanguage: vi.fn((langs: string[]) => langs.length === 1 ? `${langs[0]}-US` : langs.map(l => `${l.toUpperCase()}`)),
+  toRetellLanguage: vi.fn((langs: string[]) => (langs && langs.length) === 1 ? `${langs[0]}-US` : 'en-US'),
 }))
 
 // Mock system prompt builder
@@ -58,23 +58,31 @@ function makeRequest(body: Record<string, unknown>) {
 
 function mockSupabaseChain(result: unknown) {
   const chain = {
-    from: vi.fn().mockReturnThis(),
-    select: vi.fn().mockReturnThis(),
-    eq: vi.fn().mockReturnThis(),
+    from: vi.fn(function() {
+      return chain
+    }),
+    select: vi.fn(function() {
+      return chain
+    }),
+    eq: vi.fn(function() {
+      return chain
+    }),
     maybeSingle: vi.fn().mockResolvedValue({ data: result, error: null }),
-    update: vi.fn().mockReturnThis(),
+    update: vi.fn(function() {
+      return chain
+    }),
     single: vi.fn().mockResolvedValue({ data: result, error: null }),
+    insert: vi.fn(function() {
+      return chain
+    }),
   }
-  // Make update return a thenable that resolves to { error: null }
-  ;(chain.update as ReturnType<typeof vi.fn>).mockReturnValue({
-    eq: vi.fn().mockResolvedValue({ error: null }),
-  })
   return chain
 }
 
 describe('POST /api/provisioning/create', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    process.env.APP_URL = 'http://localhost:3000'
   })
 
   it('returns 401 when no authenticated user', async () => {

@@ -78,6 +78,7 @@ function renderForm(settings: NotificationSettings) {
 describe('NotificationSettingsForm', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME = 'voiceDeskTelBot'
     mockMutateAsync.mockResolvedValue(makeSettings())
     mockUnlinkMutateAsync.mockResolvedValue(makeSettings({ telegram_chat_id: null }))
   })

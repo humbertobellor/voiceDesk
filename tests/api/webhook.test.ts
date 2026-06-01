@@ -2,13 +2,11 @@
 // Covers: CALL-01 (webhook returns 200 immediately), D-02 (401 on forged signature), D-05 (idempotency upsert)
 // Security: T-03-01 (forged webhook → 401), T-03-02 (contractor_id never from payload)
 import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { createHmac } from 'crypto'
 
 vi.mock('server-only', () => ({}))
 vi.mock('next/server', () => ({
   after: vi.fn((fn) => fn()),
-}))
-vi.mock('retell-sdk', () => ({
-  verify: vi.fn(),
 }))
 
 // Mutable mock state for Supabase chains — reset per test
@@ -41,10 +39,14 @@ vi.mock('@/inngest/client', () => ({
 }))
 
 // Imports after mocks
-import { verify } from 'retell-sdk'
 import { processCallEnded } from '@/app/api/webhooks/retell/handlers'
 
-const mockVerify = vi.mocked(verify)
+// Helper: generate a valid HMAC signature for testing
+function generateSignature(rawBody: string, webhookKey: string): string {
+  const timestamp = Date.now()
+  const mac = createHmac('sha256', webhookKey).update(rawBody + timestamp).digest('hex')
+  return `v=${timestamp},d=${mac}`
+}
 
 // Helper: build a minimal RetellCallPayload
 function makeCall(overrides = {}) {
@@ -60,14 +62,16 @@ function makeCall(overrides = {}) {
 }
 
 // Helper: make a Request object for the POST handler
-function makeRequest(body: object, signature = 'valid-sig') {
+function makeRequest(body: object, signature?: string) {
   const rawBody = JSON.stringify(body)
+  // If no signature provided, generate a valid one using test webhook key
+  const finalSignature = signature ?? generateSignature(rawBody, 'test-webhook-key')
   return new Request('http://localhost/api/webhooks/retell', {
     method: 'POST',
     body: rawBody,
     headers: {
       'content-type': 'application/json',
-      'x-retell-signature': signature,
+      'x-retell-signature': finalSignature,
     },
   })
 }
@@ -76,6 +80,7 @@ describe('POST /api/webhooks/retell', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     process.env.RETELL_API_KEY = 'test-retell-key'
+    process.env.RETELL_WEBHOOK_KEY = 'test-webhook-key'
 
     // Default: contractor not found (safe default for upsert tests)
     mockMaybeSingleContractor.mockResolvedValue({ data: null, error: null })
@@ -90,8 +95,6 @@ describe('POST /api/webhooks/retell', () => {
   })
 
   it('returns 200 for valid call_ended event', async () => {
-    mockVerify.mockResolvedValue(true)
-
     const { POST } = await import('@/app/api/webhooks/retell/route')
     const req = makeRequest({ event: 'call_ended', call: makeCall() })
     const res = await POST(req)
@@ -102,8 +105,6 @@ describe('POST /api/webhooks/retell', () => {
   })
 
   it('returns 401 for invalid signature (T-03-01)', async () => {
-    mockVerify.mockResolvedValue(false)
-
     const { POST } = await import('@/app/api/webhooks/retell/route')
     const req = makeRequest({ event: 'call_ended', call: makeCall() }, 'bad-sig')
     const res = await POST(req)

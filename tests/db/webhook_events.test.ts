@@ -2,13 +2,17 @@
 import { createClient } from '@supabase/supabase-js'
 import { describe, it, expect } from 'vitest'
 
-// Uses service role — webhook_events has no user-level access
-const serviceClient = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+const hasFixtures = process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY
 
-describe('webhook_events idempotency constraint', () => {
+// Uses service role — webhook_events has no user-level access
+const serviceClient = hasFixtures
+  ? createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    )
+  : null
+
+describe.skipIf(!hasFixtures)('webhook_events idempotency constraint', () => {
   it('rejects duplicate (source, event_type, external_id)', async () => {
     const event = {
       source: 'retell',

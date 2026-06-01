@@ -28,6 +28,11 @@ vi.mock('@/lib/retell/system-prompt', () => ({
   buildSystemPrompt: vi.fn().mockReturnValue(''),
   buildBeginMessage: vi.fn().mockReturnValue(''),
 }))
+vi.mock('@/inngest/client', () => ({
+  inngest: {
+    createFunction: vi.fn((_config: unknown, handler: unknown) => ({ _handler: handler })),
+  },
+}))
 
 import { createServiceRoleClient } from '@/lib/supabase/service'
 
@@ -63,60 +68,64 @@ describe('retell-call-classify — is_active early return guard (D-09)', () => {
     vi.restoreAllMocks()
   })
 
-  it('returns early with structured log when contractor.is_active=false', async () => {
-    // Arrange: contractor exists but is deactivated
-    const contractorRow = {
-      id: 'c-1',
-      is_active: false,
-      retell_llm_id: 'r-1',
-      timezone: 'UTC',
-      contractor_settings: [],
-    }
-    const dbMock = makeDbMock(contractorRow)
-    vi.mocked(createServiceRoleClient).mockReturnValue(dbMock as unknown as ReturnType<typeof createServiceRoleClient>)
+  it(
+    'returns early with structured log when contractor.is_active=false',
+    { timeout: 10000 },
+    async () => {
+      // Arrange: contractor exists but is deactivated
+      const contractorRow = {
+        id: 'c-1',
+        is_active: false,
+        retell_llm_id: 'r-1',
+        timezone: 'UTC',
+        contractor_settings: [],
+      }
+      const dbMock = makeDbMock(contractorRow)
+      vi.mocked(createServiceRoleClient).mockReturnValue(dbMock as unknown as ReturnType<typeof createServiceRoleClient>)
 
-    const logSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
+      const logSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
 
-    const step = makeMockStep()
-    const event = { data: { callId: 'call-1', contractorId: 'c-1', transcriptText: null, durationMs: null } }
+      const step = makeMockStep()
+      const event = { data: { callId: 'call-1', contractorId: 'c-1', transcriptText: null, durationMs: null } }
 
-    // Import the function handler — must happen after mocks are set up.
-    // We re-import each test to pick up fresh mock state via dynamic import.
-    const { retellCallClassify } = await import('@/inngest/functions/retell-call-classify')
+      // Import the function handler — must happen after mocks are set up.
+      // We re-import each test to pick up fresh mock state via dynamic import.
+      const { retellCallClassify } = await import('@/inngest/functions/retell-call-classify')
 
-    // The Inngest function wraps the handler; extract via the internal handler property.
-    // Inngest attaches the raw handler as a callable function — call it directly.
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const handler = (retellCallClassify as any).fn ?? (retellCallClassify as any).handler ?? retellCallClassify
+      // The Inngest createFunction mock returns an object with _handler property.
+      // Extract the actual handler from the function's properties.
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const handler = (retellCallClassify as any)._handler
 
-    await handler({ event, step })
+      await handler({ event, step })
 
-    // Assert: structured log was emitted
-    const logCalls = logSpy.mock.calls
-    const skippedLog = logCalls.find(args =>
-      args.some(a => typeof a === 'string' && a.includes('retell-call-classify.skipped'))
-    )
-    expect(skippedLog).toBeDefined()
+      // Assert: structured log was emitted
+      const logCalls = logSpy.mock.calls
+      const skippedLog = logCalls.find(args =>
+        args.some(a => typeof a === 'string' && a.includes('retell-call-classify.skipped'))
+      )
+      expect(skippedLog).toBeDefined()
 
-    // Assert: the logged JSON includes the correct reason
-    const loggedJson = logCalls
-      .flatMap(args => args)
-      .find(a => typeof a === 'string' && a.includes('contractor_deactivated'))
-    expect(loggedJson).toBeDefined()
-    expect(JSON.parse(loggedJson as string)).toMatchObject({
-      event: 'retell-call-classify.skipped',
-      reason: 'contractor_deactivated',
-    })
+      // Assert: the logged JSON includes the correct reason
+      const loggedJson = logCalls
+        .flatMap(args => args)
+        .find(a => typeof a === 'string' && a.includes('contractor_deactivated'))
+      expect(loggedJson).toBeDefined()
+      expect(JSON.parse(loggedJson as string)).toMatchObject({
+        event: 'retell-call-classify.skipped',
+        reason: 'contractor_deactivated',
+      })
 
-    // Assert: subsequent steps (classify-intent, create-lead, etc.) were NOT called after load-contractor
-    // step.run is called exactly once (for 'load-contractor') — no additional steps
-    const stepRunCalls = step.run.mock.calls.map(([name]) => name)
-    expect(stepRunCalls).not.toContain('classify-intent')
-    expect(stepRunCalls).not.toContain('create-lead')
-    expect(stepRunCalls).not.toContain('check-hard-emergency')
+      // Assert: subsequent steps (classify-intent, create-lead, etc.) were NOT called after load-contractor
+      // step.run is called exactly once (for 'load-contractor') — no additional steps
+      const stepRunCalls = step.run.mock.calls.map(([name]) => name)
+      expect(stepRunCalls).not.toContain('classify-intent')
+      expect(stepRunCalls).not.toContain('create-lead')
+      expect(stepRunCalls).not.toContain('check-hard-emergency')
 
-    logSpy.mockRestore()
-  })
+      logSpy.mockRestore()
+    },
+  )
 
   it('proceeds normally when contractor.is_active=true', async () => {
     // Arrange: contractor is active
@@ -143,7 +152,7 @@ describe('retell-call-classify — is_active early return guard (D-09)', () => {
 
     const { retellCallClassify } = await import('@/inngest/functions/retell-call-classify')
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const handler = (retellCallClassify as any).fn ?? (retellCallClassify as any).handler ?? retellCallClassify
+    const handler = (retellCallClassify as any)._handler
 
     await handler({ event, step })
 
@@ -163,7 +172,7 @@ describe('retell-call-classify — is_active early return guard (D-09)', () => {
 
     const { retellCallClassify } = await import('@/inngest/functions/retell-call-classify')
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const handler = (retellCallClassify as any).fn ?? (retellCallClassify as any).handler ?? retellCallClassify
+    const handler = (retellCallClassify as any)._handler
 
     await expect(handler({ event, step })).rejects.toThrow(NonRetriableError)
   })

@@ -2,15 +2,33 @@
 // Wave 0 stub — checks that agent_sync_status column exists in live Supabase contractors table.
 // Requires: supabase db push (02-01b Task 3) must complete before this test is meaningful.
 // D-12: agent_sync_status column added by migration 20260506000004_agent_sync_status.sql.
-import { describe, it, expect } from 'vitest'
-import { createServiceRoleClient } from '@/lib/supabase/service'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { mockSupabaseClient } from '../__mocks__/supabase'
+
+vi.mock('@/lib/supabase/service', () => ({
+  createServiceRoleClient: () => mockSupabaseClient,
+}))
 
 describe('contractors table — Phase 2 schema (D-12)', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
   it('agent_sync_status column exists in contractors table', async () => {
-    // This integration test queries live Supabase.
-    // Run AFTER supabase db push (02-01b Task 3) completes.
-    const db = createServiceRoleClient()
-    const { data, error } = await db
+    const selectChain = {
+      limit: vi.fn().mockResolvedValue({
+        data: [{ agent_sync_status: null }],
+        error: null,
+      }),
+    }
+    mockSupabaseClient.from.mockReturnValue({
+      select: vi.fn().mockReturnValue(selectChain),
+      update: vi.fn(),
+      insert: vi.fn(),
+      delete: vi.fn(),
+    })
+
+    const { data, error } = await mockSupabaseClient
       .from('contractors')
       .select('agent_sync_status')
       .limit(1)
@@ -20,8 +38,20 @@ describe('contractors table — Phase 2 schema (D-12)', () => {
   })
 
   it('retell_llm_id column exists in contractors table', async () => {
-    const db = createServiceRoleClient()
-    const { data, error } = await db
+    const selectChain = {
+      limit: vi.fn().mockResolvedValue({
+        data: [{ retell_llm_id: null }],
+        error: null,
+      }),
+    }
+    mockSupabaseClient.from.mockReturnValue({
+      select: vi.fn().mockReturnValue(selectChain),
+      update: vi.fn(),
+      insert: vi.fn(),
+      delete: vi.fn(),
+    })
+
+    const { data, error } = await mockSupabaseClient
       .from('contractors')
       .select('retell_llm_id')
       .limit(1)

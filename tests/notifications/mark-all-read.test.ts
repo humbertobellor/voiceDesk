@@ -90,26 +90,30 @@ describe('PATCH /api/notifications/mark-all-read', () => {
       },
     } as unknown as Awaited<ReturnType<typeof createSupabaseServer>>)
 
-    // Contractor lookup chain: from('contractors').select().eq().maybeSingle()
-    // Update chain: from('app_notifications').update().eq().eq()
-    const contractorChain = {
-      select: vi.fn().mockReturnThis(),
-      eq: vi.fn().mockReturnThis(),
-      maybeSingle: vi.fn().mockResolvedValue({ data: { id: 'cid-456' }, error: null }),
+    // Create reusable chain builder that properly resolves
+    const createChain = (resolveValue: unknown = { error: null }) => {
+      const chain = {
+        select: vi.fn(function() { return createChain(resolveValue) }),
+        eq: vi.fn(function() { return createChain(resolveValue) }),
+        update: vi.fn(function() { return createChain(resolveValue) }),
+        limit: vi.fn(function() { return createChain(resolveValue) }),
+        in: vi.fn(function() { return createChain(resolveValue) }),
+        maybeSingle: vi.fn().mockResolvedValue(resolveValue),
+      }
+      // Make the chain awaitable (returns the resolveValue)
+      return Object.assign(Promise.resolve(resolveValue), chain)
     }
-    const notificationsChain = {
-      update: vi.fn().mockReturnThis(),
-      eq: vi.fn().mockReturnThis(),
-      // Resolve with no error (success)
-      then: undefined as unknown,
-    }
-    // Make the notifications chain thenable so await works
-    notificationsChain.then = (resolve: (v: { error: null }) => unknown) => Promise.resolve({ error: null }).then(resolve)
 
     const mockFrom = vi.fn((table: string) => {
-      if (table === 'contractors') return contractorChain
-      if (table === 'app_notifications') return notificationsChain
-      return contractorChain
+      if (table === 'contractors') {
+        return createChain({ data: { id: 'cid-456' }, error: null })
+      } else if (table === 'app_notifications') {
+        // First call: select unread notifications
+        // Second call: update them
+        let callCount = 0
+        return createChain({ data: callCount === 0 ? [{ id: 'notif-1' }] : null, error: null })
+      }
+      return createChain()
     })
     vi.mocked(createServiceRoleClient).mockReturnValue({ from: mockFrom } as unknown as ReturnType<typeof createServiceRoleClient>)
 

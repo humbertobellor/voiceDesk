@@ -91,8 +91,8 @@ describe('NotificationSettingsForm webhook card', () => {
     expect(screen.getByText(/not registered/i)).toBeInTheDocument()
   })
 
-  // ── Test 3 (15-W0-03-c): Registered URL shown when initialWebhookInfo has url ──
-  it('renders truncated webhook URL when initialWebhookInfo has url field populated', () => {
+  // ── Test 3 (15-W0-03-c): Registered status shown when initialWebhookInfo has url ──
+  it('renders "Registered" status when initialWebhookInfo has url field populated', () => {
     render(
       <NotificationSettingsForm
         initialSettings={initialSettings}
@@ -100,8 +100,8 @@ describe('NotificationSettingsForm webhook card', () => {
       />,
     )
 
-    // Expect webhook URL (or truncation) to appear
-    expect(screen.getByText(/voicedesk\.vercel\.app/i)).toBeInTheDocument()
+    // Expect "Registered" status (WR-01: URL is not shown in client HTML for security)
+    expect(screen.getByText('Registered')).toBeInTheDocument()
   })
 
   // ── Test 4 (15-W0-03-d): Activate button present and enabled by default ───
@@ -131,8 +131,8 @@ describe('NotificationSettingsForm webhook card', () => {
     })
   })
 
-  // ── Test 6 (15-W0-03-f): Status updates after successful activation ───────
-  it('status updates to registered URL after successful activation', async () => {
+  // ── Test 6 (15-W0-03-f): Status updates to "Registered" after successful activation ───────
+  it('status updates to "Registered" after successful activation', async () => {
     // Arrange: action resolves successfully
     vi.mocked(activateTelegramWebhook).mockResolvedValue({
       ok: true,
@@ -148,9 +148,9 @@ describe('NotificationSettingsForm webhook card', () => {
     const button = screen.getByRole('button', { name: /activate telegram webhook/i })
     fireEvent.click(button)
 
-    // After success, status should show the registered URL
+    // After success, status should show "Registered" (WR-01: URL hidden in client HTML)
     await waitFor(() => {
-      expect(screen.getByText(/voicedesk\.vercel\.app/i)).toBeInTheDocument()
+      expect(screen.getByText('Registered')).toBeInTheDocument()
     })
   })
 

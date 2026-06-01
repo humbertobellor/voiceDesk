@@ -43,7 +43,7 @@ function makeRequest(body: object) {
   })
 }
 
-const mockContractor = { id: 'contractor-uuid', subscription_status: null }
+const mockContractor = { id: 'contractor-uuid', subscription_status: null, stripe_subscription_id: null }
 
 describe('POST /api/stripe/checkout', () => {
   beforeEach(() => {
@@ -91,7 +91,7 @@ describe('POST /api/stripe/checkout', () => {
   it('returns 400 when contractor already has an active subscription', async () => {
     mockGetUser.mockResolvedValue({ data: { user: { id: 'user-1' } } })
     mockMaybySingle.mockResolvedValue({
-      data: { ...mockContractor, subscription_status: 'active' },
+      data: { ...mockContractor, subscription_status: 'active', stripe_subscription_id: 'sub_123' },
       error: null,
     })
 
@@ -104,7 +104,7 @@ describe('POST /api/stripe/checkout', () => {
   it('returns 400 when contractor has trialing subscription (BLOCKER-05)', async () => {
     mockGetUser.mockResolvedValue({ data: { user: { id: 'user-1' } } })
     mockMaybySingle.mockResolvedValue({
-      data: { ...mockContractor, subscription_status: 'trialing' },
+      data: { ...mockContractor, subscription_status: 'trialing', stripe_subscription_id: 'sub_123' },
       error: null,
     })
 
@@ -117,7 +117,7 @@ describe('POST /api/stripe/checkout', () => {
   it('returns 400 when contractor has past_due subscription (BLOCKER-05)', async () => {
     mockGetUser.mockResolvedValue({ data: { user: { id: 'user-1' } } })
     mockMaybySingle.mockResolvedValue({
-      data: { ...mockContractor, subscription_status: 'past_due' },
+      data: { ...mockContractor, subscription_status: 'past_due', stripe_subscription_id: 'sub_123' },
       error: null,
     })
 
