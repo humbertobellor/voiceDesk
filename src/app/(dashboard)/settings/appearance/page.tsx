@@ -1,6 +1,6 @@
-import { ThemeToggle } from '@/components/theme/ThemeToggle'
+'use client'
 
-export const metadata = { title: 'Appearance — Koolable' }
+import { ThemeToggle } from '@/components/theme/ThemeToggle'
 
 export default function AppearancePage() {
   return (
