@@ -1,6 +1,6 @@
 'use client'
 // src/app/(dashboard)/settings/phone/page.tsx
-// Two-state VoiceDesk number page:
+// Two-state Koolable number page:
 //   State A (twilio_number is null)  — area-code input + "Provision My Number" button
 //   State B (twilio_number is set)   — number display + carrier call-forwarding instructions
 // Security invariant: fetch body sends { area_code } only; contractor_id is never included.
@@ -101,16 +101,16 @@ export default function PhoneSettingsPage() {
       <div className="mb-6">
         <h1 className="text-xl font-semibold text-fg-1 mb-1">Phone Number</h1>
         <p className="text-sm text-fg-3">
-          Your dedicated VoiceDesk number and call forwarding instructions.
+          Your dedicated Koolable number and call forwarding instructions.
         </p>
         <div className="border-b border-rule mt-6" />
       </div>
 
-      {/* Section A — VoiceDesk Number Display */}
+      {/* Section A — Koolable Number Display */}
       <div className="bg-bg-elevated rounded-lg p-4 mb-6">
         <div className="flex items-center gap-2 mb-2">
           <Phone className="w-4 h-4 text-fg-4" />
-          <span className="text-sm text-fg-3">Your VoiceDesk Number</span>
+          <span className="text-sm text-fg-3">Your Koolable Number</span>
         </div>
         <div className="flex items-center gap-3">
           {twilioNumber ? (
@@ -132,7 +132,7 @@ export default function PhoneSettingsPage() {
           ) : (
             <div className="w-full">
               <p className="text-sm text-fg-3 mb-3">
-                No number assigned yet. Enter your preferred area code to provision your VoiceDesk number.
+                No number assigned yet. Enter your preferred area code to provision your Koolable number.
               </p>
               <div className="flex items-center gap-3">
                 <input
@@ -177,7 +177,7 @@ export default function PhoneSettingsPage() {
             <h2 className="text-sm font-semibold text-fg-1">Call Forwarding Setup</h2>
           </div>
           <p className="text-sm text-fg-3 mb-4">
-            Forward calls from your existing business number to your VoiceDesk number using these carrier codes.
+            Forward calls from your existing business number to your Koolable number using these carrier codes.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -203,7 +203,7 @@ export default function PhoneSettingsPage() {
           <div className="mt-4 bg-highlight/10 border border-highlight/30 rounded-lg p-4">
             <p className="text-xs text-highlight">
               After entering the forwarding code, wait for a confirmation tone or message.
-              Test by calling your old business number — it should ring your VoiceDesk number.
+              Test by calling your old business number — it should ring your Koolable number.
             </p>
           </div>
         </div>

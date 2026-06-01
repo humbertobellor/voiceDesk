@@ -52,7 +52,7 @@
  * For a fully self-contained run that creates its own account:
  *   set SIGNUP_MODE=1 — the beforeAll will sign up rather than log in.
  *   (requires Supabase email confirmation to be disabled in dev, which
- *   it is for the VoiceDesk project.)
+ *   it is for the Koolable project.)
  */
 
 import { test, expect, type Page, type BrowserContext } from '@playwright/test'
@@ -77,7 +77,7 @@ async function login(page: Page): Promise<void> {
   await page.goto(url('/auth/login'))
   await page.getByRole('textbox', { name: 'Email' }).fill(EMAIL)
   await page.getByRole('textbox', { name: 'Password', exact: true }).fill(PASSWORD)
-  await page.getByRole('button', { name: 'Sign in to VoiceDesk' }).click()
+  await page.getByRole('button', { name: 'Sign in to Koolable' }).click()
   await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {})
 }
 
@@ -305,7 +305,7 @@ test.describe('Phase 10 — Notification Settings Form', () => {
     await expect(sharedPage.getByText('Telegram', { exact: true })).toBeVisible()
 
     // Either the "Connect" link (not-connected state) or the "Telegram connected" badge
-    const connectLink = sharedPage.getByRole('link', { name: /voiceDeskTelBot/i })
+    const connectLink = sharedPage.getByRole('link', { name: /koolableTelBot/i })
     const connectedBadge = sharedPage.getByText('Telegram connected')
 
     const isConnected = await connectedBadge.isVisible().catch(() => false)
@@ -315,7 +315,7 @@ test.describe('Phase 10 — Notification Settings Form', () => {
 
     if (hasConnectLink) {
       // Link must point to the correct bot
-      await expect(connectLink).toHaveAttribute('href', /t\.me\/voiceDeskTelBot/)
+      await expect(connectLink).toHaveAttribute('href', /t\.me\/koolableTelBot/)
     }
   })
 

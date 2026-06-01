@@ -63,7 +63,7 @@ export function LoginForm({ initialError }: { initialError?: string | null }) {
     <div className="w-full max-w-[400px] mx-auto">
       <div className="bg-bg-elevated border border-rule rounded-xl p-8">
         <h1 className="text-[28px] font-semibold text-fg-1 mb-1">Welcome back</h1>
-        <p className="text-sm text-fg-3 mb-6">Sign in to your VoiceDesk account</p>
+        <p className="text-sm text-fg-3 mb-6">Sign in to your Koolable account</p>
 
         {submitError && (
           <div role="alert" className="bg-danger/10 border border-danger/30 text-danger rounded-lg p-3 text-sm mb-4">
@@ -134,13 +134,13 @@ export function LoginForm({ initialError }: { initialError?: string | null }) {
             disabled={isSubmitting}
             className="w-full border-rule text-fg-1 hover:bg-rule min-h-[44px]"
           >
-            {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Sign in to VoiceDesk'}
+            {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Sign in to Koolable'}
           </Button>
         </form>
 
         <p className="text-sm text-center mt-6 text-fg-3">
           <Link href="/auth/signup" className="text-highlight hover:underline">
-            New to VoiceDesk? Create an account
+            New to Koolable? Create an account
           </Link>
         </p>
       </div>

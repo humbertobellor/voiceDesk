@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation'
 import { createSupabaseServer } from '@/lib/supabase/server'
 import { PhoneCaptureForm } from '@/components/auth/PhoneCaptureForm'
 
-export const metadata = { title: 'Account Setup — VoiceDesk' }
+export const metadata = { title: 'Account Setup — Koolable' }
 
 export default async function PhoneCapturePage() {
   const supabase = await createSupabaseServer()

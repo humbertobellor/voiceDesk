@@ -1,0 +1,38 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary "Primary" [ref=e3]:
+      - generic [ref=e4]:
+        - img [ref=e5]
+        - generic [ref=e8]: VoiceDesk
+        - button "Notifications" [ref=e10]:
+          - img [ref=e11]
+      - navigation [ref=e14]:
+        - paragraph [ref=e15]: NAVIGATION
+        - link "Calls" [ref=e16] [cursor=pointer]:
+          - /url: /calls
+          - img [ref=e17]
+          - generic [ref=e21]: Calls
+        - link "Leads" [ref=e22] [cursor=pointer]:
+          - /url: /leads
+          - img [ref=e23]
+          - generic [ref=e28]: Leads
+        - link "Settings" [ref=e29] [cursor=pointer]:
+          - /url: /settings/agent
+          - img [ref=e30]
+          - generic [ref=e33]: Settings
+      - generic [ref=e34]:
+        - generic [ref=e35]:
+          - generic [ref=e36]: T
+          - generic [ref=e37]:
+            - paragraph [ref=e38]: Test HVAC Co.
+            - paragraph [ref=e39]: uitest@voicedesk-test.com
+        - button "Sign out" [ref=e40]:
+          - img [ref=e41]
+          - generic [ref=e44]: Sign out
+    - main [ref=e45]:
+      - generic [ref=e49]:
+        - generic [ref=e50]:
+          - heading "Calls" [level=1] [ref=e51]
+          - paragraph [ref=e52]: Recent inbound calls
+        - generic [ref=e55]: Live
+  - alert [ref=e59]

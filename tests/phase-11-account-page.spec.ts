@@ -46,7 +46,7 @@ async function login(page: Page): Promise<void> {
   await page.goto(url('/auth/login'))
   await page.getByRole('textbox', { name: 'Email' }).fill(EMAIL)
   await page.getByRole('textbox', { name: 'Password', exact: true }).fill(PASSWORD)
-  await page.getByRole('button', { name: 'Sign in to VoiceDesk' }).click()
+  await page.getByRole('button', { name: 'Sign in to Koolable' }).click()
   await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {})
 }
 
@@ -187,7 +187,7 @@ test.describe('Phase 11 — Account Page Subscription Fixes', () => {
 
     // Red "Service suspended" banner
     await expect(
-      sharedPage.getByText('Service suspended. Update your payment method to restore your VoiceDesk agent.')
+      sharedPage.getByText('Service suspended. Update your payment method to restore your Koolable agent.')
     ).toBeVisible({ timeout: 5_000 })
 
     // "Update Payment" button present in banner

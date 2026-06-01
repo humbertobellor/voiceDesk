@@ -129,7 +129,7 @@ export const stripePaymentFailureHandler = inngest.createFunction(
 
         const result = await sendEmail({
           to: ns.email_address,
-          subject: 'Action required: VoiceDesk payment failed',
+          subject: 'Action required: Koolable payment failed',
           html: emailHtml,
         })
 

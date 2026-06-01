@@ -10,7 +10,7 @@ export interface RetellCallPayload {
   call_id: string
   agent_id: string
   from_number?: string | undefined  // E.164 caller phone — absent on anonymous/blocked calls → calls.caller_phone
-  to_number: string            // VoiceDesk number → calls.twilio_number
+  to_number: string            // Koolable number → calls.twilio_number
   direction: 'inbound' | 'outbound'
   call_status: string
   start_timestamp?: number     // ms epoch → new Date(start_timestamp) → calls.started_at

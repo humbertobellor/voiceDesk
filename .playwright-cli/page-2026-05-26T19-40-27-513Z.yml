@@ -1,0 +1,1319 @@
+- generic [ref=e1]:
+  - link [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+    - text: Skip to main content
+  - banner [ref=e3]:
+    - navigation [ref=e4]:
+      - link [ref=e5] [cursor=pointer]:
+        - /url: /?trk=public_profile_nav-header-logo
+        - generic [ref=e6]: LinkedIn
+      - list [ref=e8]:
+        - listitem [ref=e9]:
+          - link [ref=e10] [cursor=pointer]:
+            - /url: https://www.linkedin.com/top-content?trk=public_profile_guest_nav_menu_topContent
+            - generic [ref=e12]: Top Content
+        - listitem [ref=e13]:
+          - link [ref=e14] [cursor=pointer]:
+            - /url: https://www.linkedin.com/pub/dir/+/+?trk=public_profile_guest_nav_menu_people
+            - generic [ref=e16]: People
+        - listitem [ref=e17]:
+          - link [ref=e18] [cursor=pointer]:
+            - /url: https://www.linkedin.com/learning/search?trk=public_profile_guest_nav_menu_learning
+            - generic [ref=e20]: Learning
+        - listitem [ref=e21]:
+          - link [ref=e22] [cursor=pointer]:
+            - /url: https://www.linkedin.com/jobs/jobs-in-kagoshima-metropolitan-area?trk=public_profile_guest_nav_menu_jobs
+            - generic [ref=e24]: Jobs
+        - listitem [ref=e25]:
+          - link [ref=e26] [cursor=pointer]:
+            - /url: https://www.linkedin.com/games?trk=public_profile_guest_nav_menu_games
+            - generic [ref=e28]: Games
+      - generic [ref=e29]:
+        - link [ref=e30] [cursor=pointer]:
+          - /url: https://www.linkedin.com/signup/public-profile-join?vieweeVanityName=humbertobello&session_redirect=https%3A%2F%2Fwww.linkedin.com%2Fin%2Fhumbertobello&trk=public_profile_nav-header-join
+          - text: Join now
+        - link [ref=e31] [cursor=pointer]:
+          - /url: https://www.linkedin.com/login?session_redirect=https%3A%2F%2Fwww%2Elinkedin%2Ecom%2Fin%2Fhumbertobello&fromSignIn=true&trk=public_profile_nav-header-signin
+          - text: Sign in
+  - main [ref=e32]:
+    - generic [ref=e35]:
+      - generic [ref=e36]:
+        - figure [ref=e37]:
+          - img [ref=e40]
+        - generic [ref=e41]:
+          - button [ref=e43] [cursor=pointer]:
+            - img [ref=e46]
+          - generic [ref=e47]:
+            - generic [ref=e48]:
+              - button [ref=e49] [cursor=pointer]:
+                - heading [level=1] [ref=e50]: 🔵 Humberto B.
+              - heading [level=3] [ref=e51]:
+                - generic [ref=e52]:
+                  - text: Miami-Fort Lauderdale Area
+                  - generic [ref=e53]: ·
+                  - button [ref=e54] [cursor=pointer]: Contact Info
+                  - generic [ref=e55]: 2K followers · 500+ connections
+              - heading [level=4] [ref=e56]:
+                - generic [ref=e58]:
+                  - generic [ref=e59]:
+                    - img [ref=e60]
+                    - img [ref=e61]
+                    - img [ref=e62]
+                  - button [ref=e63] [cursor=pointer]: See your mutual connections
+              - generic [ref=e64]:
+                - link [ref=e65] [cursor=pointer]:
+                  - /url: https://www.linkedin.com/signup/public-profile-join?vieweeVanityName=humbertobello&trk=public_profile_top-card-primary-button-join-to-view-profile
+                  - text: Join to view profile
+                - button [ref=e67] [cursor=pointer]: Message
+            - generic [ref=e69]:
+              - link [ref=e71] [cursor=pointer]:
+                - /url: https://ve.linkedin.com/school/universidad-simon-bolivar/?trk=public_profile_topcard-school
+                - img [ref=e72]
+                - generic [ref=e73]: Universidad Simón Bolívar
+              - link [ref=e75] [cursor=pointer]:
+                - /url: https://www.linkedin.com/redir/redirect?url=https%3A%2F%2Fbertjbello%2Ecom&urlhash=L9DS&trk=public_profile_topcard-website
+                - img [ref=e76]
+                - generic [ref=e77]:
+                  - text: Portfolio
+                  - img [ref=e78]
+          - button [ref=e81] [cursor=pointer]
+      - generic [ref=e82]:
+        - heading [level=2] [ref=e83]: About
+        - generic [ref=e85]:
+          - text: Engineering Leader and Architect with 20+ years scaling enterprise-grade digital…
+          - button [ref=e87] [cursor=pointer]:
+            - generic [ref=e88]: see more
+      - generic [ref=e89]:
+        - heading [level=2] [ref=e90]: Services
+        - generic [ref=e91]:
+          - list [ref=e92]:
+            - listitem [ref=e93]:
+              - link [ref=e94] [cursor=pointer]:
+                - /url: https://www.linkedin.com/services/l2/researchers?trk=public_profile_services_pill
+                - text: Research Skills
+            - listitem [ref=e95]:
+              - link [ref=e96] [cursor=pointer]:
+                - /url: https://www.linkedin.com/services/l2/web-developers?trk=public_profile_services_pill
+                - text: Web Development
+            - listitem [ref=e97]:
+              - link [ref=e98] [cursor=pointer]:
+                - /url: https://www.linkedin.com/services/l2/saas-developers?trk=public_profile_services_pill
+                - text: SaaS Development
+            - listitem [ref=e99]:
+              - link [ref=e100] [cursor=pointer]:
+                - /url: https://www.linkedin.com/services/l2/project-managers?trk=public_profile_services_pill
+                - text: Project Management
+            - listitem [ref=e101]:
+              - link [ref=e102] [cursor=pointer]:
+                - /url: https://www.linkedin.com/services/l2/database-developers?trk=public_profile_services_pill
+                - text: Database Development
+            - listitem [ref=e103]:
+              - link [ref=e104] [cursor=pointer]:
+                - /url: https://www.linkedin.com/services/l2/information-security-consultants?trk=public_profile_services_pill
+                - text: Information Security
+            - listitem [ref=e105]:
+              - link [ref=e106] [cursor=pointer]:
+                - /url: https://www.linkedin.com/services/l2/information-management-professionals?trk=public_profile_services_pill
+                - text: Information Management
+            - listitem [ref=e107]:
+              - link [ref=e108] [cursor=pointer]:
+                - /url: https://www.linkedin.com/services/l2/application-developers?trk=public_profile_services_pill
+                - text: Application Development
+            - listitem [ref=e109]:
+              - link [ref=e110] [cursor=pointer]:
+                - /url: https://www.linkedin.com/services/l2/software-developers?trk=public_profile_services_pill
+                - text: Custom Software Development
+            - listitem [ref=e111]:
+              - link [ref=e112] [cursor=pointer]:
+                - /url: https://www.linkedin.com/services/l2/cloud-application-developers?trk=public_profile_services_pill
+                - text: Cloud Application Development
+          - link [ref=e113] [cursor=pointer]:
+            - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww%2Elinkedin%2Ecom%2Fservices%2Fpage%2Fa8276032a72196316b%2Frequest-proposal
+            - text: Request proposal
+      - generic [ref=e114]:
+        - heading [level=2] [ref=e115]: Articles by 🔵 Humberto
+        - list [ref=e117]:
+          - listitem [ref=e118]:
+            - generic [ref=e119]:
+              - link [ref=e120] [cursor=pointer]:
+                - /url: https://www.linkedin.com/pulse/dora-framework-ai-augmented-software-engineering-bello--lqn7e
+                - generic [ref=e121]: DORA framework and the AI-augmented software engineering paradox
+              - generic [ref=e123]:
+                - generic [ref=e124]: May 20, 2026
+                - heading [level=3] [ref=e125]: DORA framework and the AI-augmented software engineering paradox
+                - paragraph [ref=e126]: May 19, 2026 Summary Software delivery measurement has never been more contested. The DORA framework, built on two…
+                - generic [ref=e129]: "6"
+          - listitem [ref=e130]:
+            - generic [ref=e131]:
+              - link [ref=e132] [cursor=pointer]:
+                - /url: https://www.linkedin.com/pulse/ai-right-fit-your-situation-humberto-bello--5ui3e
+                - generic [ref=e133]: Is AI the right fit for your situation?
+              - generic [ref=e135]:
+                - generic [ref=e136]: May 10, 2026
+                - heading [level=3] [ref=e137]: Is AI the right fit for your situation?
+                - paragraph [ref=e138]: A pragmatic decision framework driven by TCO When the conversation in your room is revolving around “what can we build…
+                - generic [ref=e141]: "6"
+      - generic [ref=e142]:
+        - heading [level=2] [ref=e143]: Activity
+        - heading [level=3] [ref=e144]: 2K followers
+        - generic [ref=e145]:
+          - generic [ref=e146]:
+            - tablist [ref=e147]:
+              - tab [selected] [ref=e148] [cursor=pointer]: Posts
+              - tab [ref=e149] [cursor=pointer]: Comments
+              - tab [ref=e150] [cursor=pointer]: Reactions
+            - tabpanel [ref=e151]:
+              - generic [ref=e152]:
+                - list [ref=e154]:
+                  - listitem [ref=e155]:
+                    - generic [ref=e156]:
+                      - generic [ref=e158]:
+                        - link [ref=e159] [cursor=pointer]:
+                          - /url: https://www.linkedin.com/in/humbertobello?trk=public_profile__posts_face-pile-cta
+                          - generic [ref=e161]: 🔵 Humberto B. reposted this
+                        - button [ref=e164] [cursor=pointer]
+                      - generic [ref=e165]:
+                        - link [ref=e166] [cursor=pointer]:
+                          - /url: https://www.linkedin.com/posts/andrewyng_harvard-university-just-voted-to-limit-the-activity-7463639698607886337-661s
+                          - generic [ref=e167]: 🔵 Humberto B. reposted this
+                        - generic [ref=e168]:
+                          - generic [ref=e170]:
+                            - link [ref=e171] [cursor=pointer]:
+                              - /url: https://www.linkedin.com/in/andrewyng
+                              - generic [ref=e172]: Andrew Ng
+                            - img [ref=e173]
+                            - generic [ref=e174]:
+                              - heading [level=3] [ref=e175]: Andrew Ng
+                              - generic [ref=e176]: 4d
+                          - generic [ref=e177]:
+                            - link [ref=e178] [cursor=pointer]:
+                              - /url: https://www.linkedin.com/posts/andrewyng_harvard-university-just-voted-to-limit-the-activity-7463639698607886337-661s
+                              - generic [ref=e179]: 🔵 Humberto B. reposted this
+                            - generic [ref=e180]:
+                              - text: "Harvard University just voted to limit the number of A grades given in undergraduate classes to about 20% of the class. I’m not in favor of this. It deeply runs counter to how I believe education should be. We should hold a high bar, but also work mightily to support the success of 100% of learners, rather than a fraction. Harvard’s administration took this step — over the objections of a large fraction of the student body — to counter grade inflation. Grade inflation is real: Many universities have been awarding A and B grades to ever larger fractions of students, and this has caused grade point averages (GPAs) to become less useful as signals of student skill. At the same time, we want students to succeed. The heart of the question is the role of educational institutions. Should our goal be: - To help students succeed? - To judge students? Both of these have value. But my focus when working in education is almost entirely helping students succeed. To me, it is clear that many people want to learn, to be empowered, to build skills that let them do new things! This is what we focus on at DeepLearningAI. This philosophy is also why my online courses (going back to my early online Stanford courses on Coursera) permitted an unlimited number of retries for graded assignments. I believe in letting — and even encouraging — someone to redo something until they succeed. This is as opposed to standing in judgement of the fact they didn’t get it right the first time. Further, I want homework assignments to be designed primarily to help people practice and learn, rather than to judge their skill level. This is why I prefer to create “Practice Problems” and “Practice Labs” — questions that, when you think through them, help you to gain practice and reinforce what you know. As opposed to “Assessment Problems” designed primarily to judge skill. But won’t Harvard’s move make GPAs more meaningful and help prospective employers identify strong candidates? Having hired a large number of people from Harvard and other institutions, I can say confidently that GPA is not an important signal. We have screening and interviewing processes that give far more accurate ways to figure out if someone is truly skilled. I do not need a wider spread in applicant GPA scores to figure out who's really good! Harvard is often described as an “elite” educational institution. There are two ways to be elite: One option involves limiting enrollments, and then even among admitted students, cap the number of people that do well at 20%. I would rather pursue a different path: Set a high bar and teach elite, cutting-edge skills, but strive relentlessly to help everyone succeed. This way, eliteness is defined not by excluding people but by helping as many people as possible to be excellent. [Shortened for length; full text in The Batch newsletter]"
+                              - link [ref=e181] [cursor=pointer]:
+                                - /url: https://www.linkedin.com/posts/andrewyng_harvard-university-just-voted-to-limit-the-activity-7463639698607886337-661s
+                                - text: ...more
+                              - link [ref=e182] [cursor=pointer]:
+                                - /url: https://www.linkedin.com/posts/andrewyng_harvard-university-just-voted-to-limit-the-activity-7463639698607886337-661s
+                                - text: ...more
+                      - generic [ref=e183]:
+                        - generic [ref=e184]:
+                          - link [ref=e185] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww%2Elinkedin%2Ecom%2Fin%2Fhumbertobello%2Frecent-activity%2F&trk=public_profile__posts_social-actions-reactions
+                            - generic [ref=e186]: 6,502
+                          - link [ref=e187] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww%2Elinkedin%2Ecom%2Fin%2Fhumbertobello%2Frecent-activity%2F&trk=public_profile__posts_social-actions-comments
+                            - text: · 395 Comments
+                        - generic [ref=e188]:
+                          - link [ref=e190] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww%2Elinkedin%2Ecom%2Fin%2Fhumbertobello%2Frecent-activity%2F&trk=public_profile__posts_like-cta
+                          - link [ref=e193] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww%2Elinkedin%2Ecom%2Fin%2Fhumbertobello%2Frecent-activity%2F&trk=public_profile__posts_comment-cta
+                          - button [ref=e196] [cursor=pointer]
+                  - listitem [ref=e197]:
+                    - generic [ref=e198]:
+                      - generic [ref=e200]:
+                        - generic [ref=e201]:
+                          - link [ref=e202] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/in/humbertobello
+                            - generic [ref=e203]: 🔵 Humberto B.
+                          - img [ref=e204]
+                          - generic [ref=e205]:
+                            - heading [level=3] [ref=e206]: 🔵 Humberto B.
+                            - generic [ref=e207]: 6d
+                        - button [ref=e210] [cursor=pointer]
+                      - generic [ref=e211]:
+                        - link [ref=e212] [cursor=pointer]:
+                          - /url: https://www.linkedin.com/posts/humbertobello_dora-framework-and-the-ai-augmented-software-activity-7462692554954928129-4caH
+                          - generic [ref=e213]: 🔵 Humberto B. shared this
+                        - generic [ref=e214]:
+                          - text: The 2024 DORA report found a 7.2% drop in delivery stability as AI adoption hit 75.9%. Three-quarters of engineers felt more productive. The delivery data disagreed. AI augmentation didn't fix engineering organizations, It scales them. Strong foundations get stronger. Weak ones break faster, at higher volume. As a gold standard for DevOps organization performance, the DORA framework was built for humans writing code, It was not conceived for agents merging PRs faster than teams can review them. The numbers still matter, they're just not telling you the whole story anymore. I broke down what the 2023–2025 DORA reports actually say, why the low-performer cohort grew from 17% to 25% in one year, and what leaders need to measure differently.
+                          - link [ref=e215] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww.linkedin.com%2Ffeed%2Fhashtag%2Fdora&trk=public_profile__posts-text
+                            - text: "#DORA"
+                          - link [ref=e216] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww.linkedin.com%2Ffeed%2Fhashtag%2Fdevops&trk=public_profile__posts-text
+                            - text: "#DevOps"
+                          - link [ref=e217] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww.linkedin.com%2Ffeed%2Fhashtag%2Fengineeringleadership&trk=public_profile__posts-text
+                            - text: "#EngineeringLeadership"
+                          - link [ref=e218] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww.linkedin.com%2Ffeed%2Fhashtag%2Faiengineering&trk=public_profile__posts-text
+                            - text: "#AIEngineering"
+                          - link [ref=e219] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww.linkedin.com%2Ffeed%2Fhashtag%2Fplatformengineering&trk=public_profile__posts-text
+                            - text: "#PlatformEngineering"
+                          - link [ref=e220] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww.linkedin.com%2Ffeed%2Fhashtag%2Fdeveloperproductivity&trk=public_profile__posts-text
+                            - text: "#DeveloperProductivity"
+                          - link [ref=e221] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww.linkedin.com%2Ffeed%2Fhashtag%2Ftechleadership&trk=public_profile__posts-text
+                            - text: "#TechLeadership"
+                          - link [ref=e222] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/posts/humbertobello_dora-framework-and-the-ai-augmented-software-activity-7462692554954928129-4caH
+                            - text: ...more
+                        - generic [ref=e223]:
+                          - link [ref=e224] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/pulse/dora-framework-ai-augmented-software-engineering-bello--lqn7e
+                            - generic [ref=e225]: DORA framework and the AI-augmented software engineering paradox
+                          - img [ref=e229]
+                          - generic [ref=e230]:
+                            - generic [ref=e231]: DORA framework and the AI-augmented software engineering paradox
+                            - generic [ref=e232]: 🔵 Humberto B.
+                      - generic [ref=e233]:
+                        - link [ref=e235] [cursor=pointer]:
+                          - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww%2Elinkedin%2Ecom%2Fin%2Fhumbertobello%2Frecent-activity%2F&trk=public_profile__posts_social-actions-reactions
+                          - generic [ref=e236]: "6"
+                        - generic [ref=e237]:
+                          - link [ref=e239] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww%2Elinkedin%2Ecom%2Fin%2Fhumbertobello%2Frecent-activity%2F&trk=public_profile__posts_like-cta
+                          - button [ref=e243] [cursor=pointer]
+                  - listitem [ref=e244]:
+                    - generic [ref=e245]:
+                      - generic [ref=e247]:
+                        - link [ref=e248] [cursor=pointer]:
+                          - /url: https://www.linkedin.com/in/humbertobello?trk=public_profile__posts_face-pile-cta
+                          - generic [ref=e250]: 🔵 Humberto B. reposted this
+                        - button [ref=e253] [cursor=pointer]
+                      - generic [ref=e254]:
+                        - link [ref=e255] [cursor=pointer]:
+                          - /url: https://www.linkedin.com/posts/jamesgosling_data-centers-in-space-a-pipe-dream-or-ai-activity-7461902613647724544-ucS8
+                          - generic [ref=e256]: 🔵 Humberto B. reposted this
+                        - generic [ref=e257]:
+                          - generic [ref=e259]:
+                            - link [ref=e260] [cursor=pointer]:
+                              - /url: https://www.linkedin.com/in/jamesgosling
+                              - generic [ref=e261]: James Gosling
+                            - img [ref=e262]
+                            - generic [ref=e263]:
+                              - heading [level=3] [ref=e264]: James Gosling
+                              - generic [ref=e265]: 1w
+                          - generic [ref=e266]:
+                            - link [ref=e267] [cursor=pointer]:
+                              - /url: https://www.linkedin.com/posts/jamesgosling_data-centers-in-space-a-pipe-dream-or-ai-activity-7461902613647724544-ucS8
+                              - generic [ref=e268]: 🔵 Humberto B. reposted this
+                            - generic [ref=e269]:
+                              - text: The math for data centers in space is insanely bad. It only makes sense for SpaceX, who would make tons of cash from it. Oh right… They’ve got an IPO coming up. Musk does not hesitate to exploit a conflict of interest. When stock price influences planning, craziness ensues. An Nvidia GB300 rack weighs about a ton and a half. Double that for support goo like shielding, assume SpaceX achieves a 100-ton payload, and you get 30ish racks per launch. 100 launches for a small data center. At least a hundred thousand launches to get close to the AI hypster's dreams. The racks will only be cutting-edge for a couple of years. So… 50,000 launches a year? SpaceX would be hugely profitable. But what goes up must come down. They’ll have to deorbit 50,000 a year, each weighing 100 tons-ish. This sounds less like a cleanup job than a kinetic weapon. Maybe the DoD would subsidize the scheme?
+                              - link [ref=e270] [cursor=pointer]:
+                                - /url: https://lnkd.in/gief6aNF?trk=public_profile__posts-text
+                                - text: https://lnkd.in/gief6aNF
+                              - link [ref=e271] [cursor=pointer]:
+                                - /url: https://www.linkedin.com/posts/jamesgosling_data-centers-in-space-a-pipe-dream-or-ai-activity-7461902613647724544-ucS8
+                                - text: ...more
+                              - link [ref=e272] [cursor=pointer]:
+                                - /url: https://www.linkedin.com/posts/jamesgosling_data-centers-in-space-a-pipe-dream-or-ai-activity-7461902613647724544-ucS8
+                                - text: ...more
+                      - generic [ref=e273]:
+                        - generic [ref=e274]:
+                          - link [ref=e275] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww%2Elinkedin%2Ecom%2Fin%2Fhumbertobello%2Frecent-activity%2F&trk=public_profile__posts_social-actions-reactions
+                            - generic [ref=e276]: "748"
+                          - link [ref=e277] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww%2Elinkedin%2Ecom%2Fin%2Fhumbertobello%2Frecent-activity%2F&trk=public_profile__posts_social-actions-comments
+                            - text: · 102 Comments
+                        - generic [ref=e278]:
+                          - link [ref=e280] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww%2Elinkedin%2Ecom%2Fin%2Fhumbertobello%2Frecent-activity%2F&trk=public_profile__posts_like-cta
+                          - link [ref=e283] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww%2Elinkedin%2Ecom%2Fin%2Fhumbertobello%2Frecent-activity%2F&trk=public_profile__posts_comment-cta
+                          - button [ref=e286] [cursor=pointer]
+                  - listitem [ref=e287]:
+                    - generic [ref=e288]:
+                      - generic [ref=e290]:
+                        - generic [ref=e291]:
+                          - link [ref=e292] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/in/humbertobello
+                            - generic [ref=e293]: 🔵 Humberto B.
+                          - img [ref=e294]
+                          - generic [ref=e295]:
+                            - heading [level=3] [ref=e296]: 🔵 Humberto B.
+                            - generic [ref=e297]: 2w
+                        - button [ref=e300] [cursor=pointer]
+                      - generic [ref=e301]:
+                        - link [ref=e302] [cursor=pointer]:
+                          - /url: https://www.linkedin.com/posts/humbertobello_is-ai-the-right-fit-for-your-situation-activity-7459283895524487168-Zo_e
+                          - generic [ref=e303]: 🔵 Humberto B. shared this
+                        - generic [ref=e304]:
+                          - text: Still asking “How do we use AI?”. Take a step back. Start asking “Should we?” That question alone would save most business organizations a ton of money and 12 months of distraction. Here’s a simple decision framework built around TCO, just because the right AI technique doesn’t matter if the economics don’t work.
+                          - link [ref=e305] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww.linkedin.com%2Ffeed%2Fhashtag%2Faistrategy&trk=public_profile__posts-text
+                            - text: "#AIStrategy"
+                          - link [ref=e306] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww.linkedin.com%2Ffeed%2Fhashtag%2Fentrepreneurship&trk=public_profile__posts-text
+                            - text: "#Entrepreneurship"
+                          - link [ref=e307] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww.linkedin.com%2Ffeed%2Fhashtag%2Ftechleadership&trk=public_profile__posts-text
+                            - text: "#TechLeadership"
+                          - link [ref=e308] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww.linkedin.com%2Ffeed%2Fhashtag%2Fstartupadvice&trk=public_profile__posts-text
+                            - text: "#StartupAdvice"
+                          - link [ref=e309] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww.linkedin.com%2Ffeed%2Fhashtag%2Fdigitaltransformation&trk=public_profile__posts-text
+                            - text: "#DigitalTransformation"
+                          - link [ref=e310] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/posts/humbertobello_is-ai-the-right-fit-for-your-situation-activity-7459283895524487168-Zo_e
+                            - text: ...more
+                        - generic [ref=e311]:
+                          - link [ref=e312] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/pulse/ai-right-fit-your-situation-humberto-bello--5ui3e
+                            - generic [ref=e313]: Is AI the right fit for your situation?
+                          - img [ref=e317]
+                          - generic [ref=e318]:
+                            - generic [ref=e319]: Is AI the right fit for your situation?
+                            - generic [ref=e320]: 🔵 Humberto B.
+                      - generic [ref=e321]:
+                        - link [ref=e323] [cursor=pointer]:
+                          - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww%2Elinkedin%2Ecom%2Fin%2Fhumbertobello%2Frecent-activity%2F&trk=public_profile__posts_social-actions-reactions
+                          - generic [ref=e324]: "6"
+                        - generic [ref=e325]:
+                          - link [ref=e327] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww%2Elinkedin%2Ecom%2Fin%2Fhumbertobello%2Frecent-activity%2F&trk=public_profile__posts_like-cta
+                          - button [ref=e331] [cursor=pointer]
+                  - listitem [ref=e332]:
+                    - generic [ref=e333]:
+                      - generic [ref=e335]:
+                        - link [ref=e336] [cursor=pointer]:
+                          - /url: https://www.linkedin.com/in/humbertobello?trk=public_profile__posts_face-pile-cta
+                          - generic [ref=e338]: 🔵 Humberto B. reacted on this
+                        - button [ref=e341] [cursor=pointer]
+                      - generic [ref=e342]:
+                        - link [ref=e343] [cursor=pointer]:
+                          - /url: https://www.linkedin.com/posts/humbertobello_activity-7459274632513142784-MF8G
+                          - generic [ref=e344]: 🔵 Humberto B. reacted on this
+                        - generic [ref=e345]:
+                          - text: Still asking “How do we use AI?”. Take a step back. Start asking “Should we?” That question alone would save most business organizations a ton of money and 12 months of distraction. Here’s a simple decision framework built around TCO, just because the right AI technique doesn’t matter if the economics don’t work.
+                          - link [ref=e346] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww.linkedin.com%2Ffeed%2Fhashtag%2Faistrategy&trk=public_profile__posts-text
+                            - text: "#AIStrategy"
+                          - link [ref=e347] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww.linkedin.com%2Ffeed%2Fhashtag%2Fentrepreneurship&trk=public_profile__posts-text
+                            - text: "#Entrepreneurship"
+                          - link [ref=e348] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww.linkedin.com%2Ffeed%2Fhashtag%2Ftechleadership&trk=public_profile__posts-text
+                            - text: "#TechLeadership"
+                          - link [ref=e349] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww.linkedin.com%2Ffeed%2Fhashtag%2Fstartupadvice&trk=public_profile__posts-text
+                            - text: "#StartupAdvice"
+                          - link [ref=e350] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww.linkedin.com%2Ffeed%2Fhashtag%2Fdigitaltransformation&trk=public_profile__posts-text
+                            - text: "#DigitalTransformation"
+                          - link [ref=e351] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/posts/humbertobello_activity-7459274632513142784-MF8G
+                            - text: ...more
+                        - generic [ref=e352]:
+                          - link [ref=e353] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/redir/redirect?url=https%3A%2F%2Fhumbertobellor%2Esubstack%2Ecom%2Fp%2Fis-ai-the-right-fit-for-your-situation&urlhash=NF0f
+                            - generic [ref=e354]: Is AI the right fit for your situation?
+                          - img [ref=e358]
+                          - generic [ref=e360]: Is AI the right fit for your situation?
+                      - generic [ref=e361]:
+                        - link [ref=e363] [cursor=pointer]:
+                          - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww%2Elinkedin%2Ecom%2Fin%2Fhumbertobello%2Frecent-activity%2F&trk=public_profile__posts_social-actions-reactions
+                          - generic [ref=e364]: "1"
+                        - generic [ref=e365]:
+                          - link [ref=e367] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww%2Elinkedin%2Ecom%2Fin%2Fhumbertobello%2Frecent-activity%2F&trk=public_profile__posts_like-cta
+                          - link [ref=e370] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww%2Elinkedin%2Ecom%2Fin%2Fhumbertobello%2Frecent-activity%2F&trk=public_profile__posts_comment-cta
+                          - button [ref=e373] [cursor=pointer]
+                  - listitem [ref=e374]:
+                    - generic [ref=e375]:
+                      - generic [ref=e377]:
+                        - link [ref=e378] [cursor=pointer]:
+                          - /url: https://www.linkedin.com/in/humbertobello?trk=public_profile__posts_face-pile-cta
+                          - generic [ref=e380]: 🔵 Humberto B. reposted this
+                        - button [ref=e383] [cursor=pointer]
+                      - generic [ref=e384]:
+                        - link [ref=e385] [cursor=pointer]:
+                          - /url: https://www.linkedin.com/posts/russpearlman_aigovernance-cybersecurity-copyrightlaw-activity-7444797889337470976-mDmg
+                          - generic [ref=e386]: 🔵 Humberto B. reposted this
+                        - generic [ref=e387]:
+                          - generic [ref=e389]:
+                            - link [ref=e390] [cursor=pointer]:
+                              - /url: https://www.linkedin.com/in/russpearlman
+                              - generic [ref=e391]: Russ Pearlman
+                            - img [ref=e392]
+                            - generic [ref=e393]:
+                              - heading [level=3] [ref=e394]: Russ Pearlman
+                              - generic [ref=e395]: 1mo
+                          - generic [ref=e396]:
+                            - link [ref=e397] [cursor=pointer]:
+                              - /url: https://www.linkedin.com/posts/russpearlman_aigovernance-cybersecurity-copyrightlaw-activity-7444797889337470976-mDmg
+                              - generic [ref=e398]: 🔵 Humberto B. reposted this
+                            - generic [ref=e399]:
+                              - text: "Anthropic accidentally published the entire source code of Claude Code to a public registry. All 512,000 lines of it. A debugging file that should never have been included in the package got shipped to npm, and within 30 minutes the whole thing was mirrored on GitHub and being picked apart by thousands of developers. For those unfamiliar, Claude Code is Anthropic's flagship AI coding tool. It generates an estimated $2.5 billion in annual revenue, with 80% of that coming from enterprise customers. This is not a side project. This is the engine. Two things stand out to me here. One as a CIO, the other as a technology attorney. First, the security implications. The leaked code reveals exactly how Claude Code handles permissions, executes commands, coordinates multiple AI agents, and manages its security guardrails. That is a roadmap for bad actors. If you want to craft an attack that tricks the tool into running something it shouldn't, you now have the blueprints. Even worse, the leak happened on the same morning as a separate supply chain attack that planted malware in a popular npm package. If your team installed or updated Claude Code via npm early this morning, you should assume the worst and rotate your credentials immediately. For enterprise customers, this is a trust problem. You can build the most sophisticated AI architecture in the world, but if a missing line in your build configuration ships the whole thing to a public registry, none of that matters. Second, the copyright question. And this one is fascinating. Anthropic has publicly said that Claude Code essentially built their Cowork product. The leaked source even includes something called \"Undercover Mode\" that specifically hides AI authorship from public code commits. There is strong reason to believe that much of this codebase was written by AI. Under current U.S. copyright law, a work needs meaningful human authorship to qualify for protection. If this code was substantially generated by AI, Anthropic may not be able to enforce copyright over it at all. Competitors studying the leaked source might be looking at material that is, legally speaking, unprotectable. The irony is hard to miss. The most advanced AI coding tool in the world may have coded itself out of its own IP protection. This is the exact tension I wrote about back in 2018 in my article on AI and authorship. The law still hasn't caught up. Incidents like this are going to force the conversation. If you're evaluating AI coding tools for your organization, two practical takeaways: 1. Audit your AI vendor's software supply chain practices the same way you'd audit any critical infrastructure provider. 2. Start asking questions about the IP status of AI-generated code. Not just the code your teams produce, but the code inside the tools themselves."
+                              - link [ref=e400] [cursor=pointer]:
+                                - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww.linkedin.com%2Ffeed%2Fhashtag%2Faigovernance&trk=public_profile__posts-text
+                                - text: "#AIGovernance"
+                              - link [ref=e401] [cursor=pointer]:
+                                - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww.linkedin.com%2Ffeed%2Fhashtag%2Fcybersecurity&trk=public_profile__posts-text
+                                - text: "#Cybersecurity"
+                              - link [ref=e402] [cursor=pointer]:
+                                - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww.linkedin.com%2Ffeed%2Fhashtag%2Fcopyrightlaw&trk=public_profile__posts-text
+                                - text: "#CopyrightLaw"
+                              - link [ref=e403] [cursor=pointer]:
+                                - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww.linkedin.com%2Ffeed%2Fhashtag%2Fcioleadership&trk=public_profile__posts-text
+                                - text: "#CIOLeadership"
+                              - link [ref=e404] [cursor=pointer]:
+                                - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww.linkedin.com%2Ffeed%2Fhashtag%2Fthecioattorney&trk=public_profile__posts-text
+                                - text: "#TheCIOAttorney"
+                              - link [ref=e405] [cursor=pointer]:
+                                - /url: https://www.linkedin.com/posts/russpearlman_aigovernance-cybersecurity-copyrightlaw-activity-7444797889337470976-mDmg
+                                - text: ...more
+                              - link [ref=e406] [cursor=pointer]:
+                                - /url: https://www.linkedin.com/posts/russpearlman_aigovernance-cybersecurity-copyrightlaw-activity-7444797889337470976-mDmg
+                                - text: ...more
+                      - generic [ref=e407]:
+                        - generic [ref=e408]:
+                          - link [ref=e409] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww%2Elinkedin%2Ecom%2Fin%2Fhumbertobello%2Frecent-activity%2F&trk=public_profile__posts_social-actions-reactions
+                            - generic [ref=e410]: 2,629
+                          - link [ref=e411] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww%2Elinkedin%2Ecom%2Fin%2Fhumbertobello%2Frecent-activity%2F&trk=public_profile__posts_social-actions-comments
+                            - text: · 267 Comments
+                        - generic [ref=e412]:
+                          - link [ref=e414] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww%2Elinkedin%2Ecom%2Fin%2Fhumbertobello%2Frecent-activity%2F&trk=public_profile__posts_like-cta
+                          - link [ref=e417] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww%2Elinkedin%2Ecom%2Fin%2Fhumbertobello%2Frecent-activity%2F&trk=public_profile__posts_comment-cta
+                          - button [ref=e420] [cursor=pointer]
+                  - listitem [ref=e421]:
+                    - generic [ref=e422]:
+                      - generic [ref=e424]:
+                        - link [ref=e425] [cursor=pointer]:
+                          - /url: https://www.linkedin.com/in/humbertobello?trk=public_profile__posts_face-pile-cta
+                          - generic [ref=e427]: 🔵 Humberto B. reposted this
+                        - button [ref=e430] [cursor=pointer]
+                      - generic [ref=e431]:
+                        - link [ref=e432] [cursor=pointer]:
+                          - /url: https://www.linkedin.com/posts/franciscoazuaje_the-proliferation-of-skill-files-targeting-activity-7444277870610276352-BuId
+                          - generic [ref=e433]: 🔵 Humberto B. reposted this
+                        - generic [ref=e434]:
+                          - generic [ref=e436]:
+                            - link [ref=e437] [cursor=pointer]:
+                              - /url: https://uk.linkedin.com/in/franciscoazuaje
+                              - generic [ref=e438]: Francisco A.
+                            - img [ref=e439]
+                            - generic [ref=e440]:
+                              - heading [level=3] [ref=e441]: Francisco A.
+                              - generic [ref=e442]: 1mo
+                          - generic [ref=e443]:
+                            - link [ref=e444] [cursor=pointer]:
+                              - /url: https://www.linkedin.com/posts/franciscoazuaje_the-proliferation-of-skill-files-targeting-activity-7444277870610276352-BuId
+                              - generic [ref=e445]: 🔵 Humberto B. reposted this
+                            - generic [ref=e446]:
+                              - text: "The proliferation of skill files targeting bioinformatics workflows (AI-generated and human-written alike) is growing fast, and so is the quality problem. Many lack validation, overstate what they can do, and use domain language without the required scientific rigour. Users who trust them uncritically risk results that appear sound but carry errors, a problem that extends to reproducibility as well. Crible is a small experimental tool I built to start addressing this: static quality assessment on bioinformatics skill files, flagging ambiguities, execution flow issues, and domain constraint violations before deployment. The underlying problem (LLM instruction sets with no quality gate) is not specific to bioinformatics. If you work with skill files, agent prompts, or structured LLM workflows in any technical field, this approach also applies. Early stage, honest about its limits, open source."
+                              - link [ref=e447] [cursor=pointer]:
+                                - /url: https://lnkd.in/edhuz9M3?trk=public_profile__posts-text
+                                - text: https://lnkd.in/edhuz9M3
+                              - link [ref=e448] [cursor=pointer]:
+                                - /url: https://www.linkedin.com/posts/franciscoazuaje_the-proliferation-of-skill-files-targeting-activity-7444277870610276352-BuId
+                                - text: ...more
+                              - link [ref=e449] [cursor=pointer]:
+                                - /url: https://www.linkedin.com/posts/franciscoazuaje_the-proliferation-of-skill-files-targeting-activity-7444277870610276352-BuId
+                                - text: ...more
+                            - generic [ref=e450]:
+                              - link [ref=e451] [cursor=pointer]:
+                                - /url: https://www.linkedin.com/posts/franciscoazuaje_the-proliferation-of-skill-files-targeting-activity-7444277870610276352-BuId
+                                - generic [ref=e452]: public_profile__posts
+                              - img [ref=e456]
+                      - generic [ref=e457]:
+                        - generic [ref=e458]:
+                          - link [ref=e459] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww%2Elinkedin%2Ecom%2Fin%2Fhumbertobello%2Frecent-activity%2F&trk=public_profile__posts_social-actions-reactions
+                            - generic [ref=e460]: "26"
+                          - link [ref=e461] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww%2Elinkedin%2Ecom%2Fin%2Fhumbertobello%2Frecent-activity%2F&trk=public_profile__posts_social-actions-comments
+                            - text: · 1 Comment
+                        - generic [ref=e462]:
+                          - link [ref=e464] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww%2Elinkedin%2Ecom%2Fin%2Fhumbertobello%2Frecent-activity%2F&trk=public_profile__posts_like-cta
+                          - link [ref=e467] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww%2Elinkedin%2Ecom%2Fin%2Fhumbertobello%2Frecent-activity%2F&trk=public_profile__posts_comment-cta
+                          - button [ref=e470] [cursor=pointer]
+                  - listitem [ref=e471]:
+                    - generic [ref=e472]:
+                      - generic [ref=e474]:
+                        - link [ref=e475] [cursor=pointer]:
+                          - /url: https://www.linkedin.com/in/humbertobello?trk=public_profile__posts_face-pile-cta
+                          - generic [ref=e477]: 🔵 Humberto B. reposted this
+                        - button [ref=e480] [cursor=pointer]
+                      - generic [ref=e481]:
+                        - link [ref=e482] [cursor=pointer]:
+                          - /url: https://www.linkedin.com/posts/julienchaumond_llamacpp-just-hit-100k-stars-on-github-activity-7444419695178452992-KJj3
+                          - generic [ref=e483]: 🔵 Humberto B. reposted this
+                        - generic [ref=e484]:
+                          - generic [ref=e486]:
+                            - link [ref=e487] [cursor=pointer]:
+                              - /url: https://www.linkedin.com/in/julienchaumond
+                              - generic [ref=e488]: Julien Chaumond
+                            - img [ref=e489]
+                            - generic [ref=e490]:
+                              - heading [level=3] [ref=e491]: Julien Chaumond
+                              - generic [ref=e492]: 1mo
+                          - generic [ref=e493]:
+                            - link [ref=e494] [cursor=pointer]:
+                              - /url: https://www.linkedin.com/posts/julienchaumond_llamacpp-just-hit-100k-stars-on-github-activity-7444419695178452992-KJj3
+                              - generic [ref=e495]: 🔵 Humberto B. reposted this
+                            - generic [ref=e496]:
+                              - text: "llama.cpp just hit 100k stars on GitHub 🔥 Here's a bold prediction: within 18 months, 90% of all AI agents will be running locally on your own machine. Here's why local agents are inevitable: → Models keep getting more efficient. MoE architectures like Qwen3.5-35B-A3B give you frontier-level quality while only activating 3B params at inference. → Quantization keeps getting better. The work from"
+                              - link [ref=e497] [cursor=pointer]:
+                                - /url: https://www.linkedin.com/company/unsloth?trk=public_profile__posts-text
+                                - text: Unsloth AI
+                              - text: among others is outstanding. → Apple Silicon and MLX made local inference fast and accessible. 64, then 128GB of unified memory will go a long way. → Agents don't just need 200 tok/s. They also need reliable tool use, good reasoning, and long context — all things local models are getting great at. Your data never leaves your machine. No API calls, no rate limits, no vendor lock-in. 2026 is the year of Local Agents.
+                              - link [ref=e498] [cursor=pointer]:
+                                - /url: https://www.linkedin.com/posts/julienchaumond_llamacpp-just-hit-100k-stars-on-github-activity-7444419695178452992-KJj3
+                                - text: ...more
+                              - link [ref=e499] [cursor=pointer]:
+                                - /url: https://www.linkedin.com/posts/julienchaumond_llamacpp-just-hit-100k-stars-on-github-activity-7444419695178452992-KJj3
+                                - text: ...more
+                            - generic [ref=e500]:
+                              - link [ref=e501] [cursor=pointer]:
+                                - /url: https://www.linkedin.com/posts/julienchaumond_llamacpp-just-hit-100k-stars-on-github-activity-7444419695178452992-KJj3
+                                - generic [ref=e502]: public_profile__posts
+                              - img [ref=e506]
+                      - generic [ref=e507]:
+                        - generic [ref=e508]:
+                          - link [ref=e509] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww%2Elinkedin%2Ecom%2Fin%2Fhumbertobello%2Frecent-activity%2F&trk=public_profile__posts_social-actions-reactions
+                            - generic [ref=e510]: 3,950
+                          - link [ref=e511] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww%2Elinkedin%2Ecom%2Fin%2Fhumbertobello%2Frecent-activity%2F&trk=public_profile__posts_social-actions-comments
+                            - text: · 227 Comments
+                        - generic [ref=e512]:
+                          - link [ref=e514] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww%2Elinkedin%2Ecom%2Fin%2Fhumbertobello%2Frecent-activity%2F&trk=public_profile__posts_like-cta
+                          - link [ref=e517] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww%2Elinkedin%2Ecom%2Fin%2Fhumbertobello%2Frecent-activity%2F&trk=public_profile__posts_comment-cta
+                          - button [ref=e520] [cursor=pointer]
+                - button [ref=e522] [cursor=pointer]
+            - text: · · · · · · · ·
+          - link [ref=e523] [cursor=pointer]:
+            - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww%2Elinkedin%2Ecom%2Fin%2Fhumbertobello%2Frecent-activity%2F&trk=public_profile
+            - text: See all activities
+      - generic [ref=e524]:
+        - heading [level=2] [ref=e525]: Experience & Education
+        - generic [ref=e527]:
+          - list [ref=e528]:
+            - listitem [ref=e529]:
+              - generic [ref=e530]:
+                - heading [level=3] [ref=e531]: Universidad Simón Bolívar
+                - heading [level=4] [ref=e532]:
+                  - paragraph [ref=e533]: "******** ** *********** * ** ********* undefined"
+          - list [ref=e535]:
+            - listitem [ref=e536]:
+              - generic [ref=e537]:
+                - heading [level=3] [ref=e538]: "*********** ***** *******"
+                - heading [level=4] [ref=e539]:
+                  - paragraph [ref=e540]: "**** ****** ******* ******** *******"
+          - generic [ref=e541]:
+            - heading [level=2] [ref=e542]: View 🔵 Humberto’s full experience
+            - paragraph [ref=e543]:
+              - text: By clicking Continue to join or sign in, you agree to LinkedIn’s
+              - link [ref=e544] [cursor=pointer]:
+                - /url: /legal/user-agreement?trk=public_profile_auth-button_user-agreement
+                - text: User Agreement
+              - text: ","
+              - link [ref=e545] [cursor=pointer]:
+                - /url: /legal/privacy-policy?trk=public_profile_auth-button_privacy-policy
+                - text: Privacy Policy
+              - text: ", and"
+              - link [ref=e546] [cursor=pointer]:
+                - /url: /legal/cookie-policy?trk=public_profile_auth-button_cookie-policy
+                - text: Cookie Policy
+              - text: .
+            - generic [ref=e547]:
+              - button [ref=e549] [cursor=pointer]:
+                - generic [ref=e550]: Sign in
+              - button [ref=e552]:
+                - button [ref=e555] [cursor=pointer]:
+                  - generic [ref=e557]:
+                    - img [ref=e559]
+                    - generic [ref=e566]: Continue with Google
+      - generic [ref=e567]:
+        - heading [level=2] [ref=e568]: Licenses & Certifications
+        - generic [ref=e569]:
+          - list [ref=e570]:
+            - listitem [ref=e571]:
+              - link [ref=e572] [cursor=pointer]:
+                - /url: https://www.linkedin.com/company/linkedin?trk=public_profile_profile-section-card_image-click
+                - img [ref=e573]
+              - generic [ref=e574]:
+                - heading [level=3] [ref=e575]:
+                  - link [ref=e576] [cursor=pointer]:
+                    - /url: https://www.linkedin.com/learning/certificates/8cabecfbcdec3397b4228d6e4701a8ebed9387ac11632517e143bd1750950f99?trk=public_profile_certification-title
+                    - text: Context Engineering for Developers
+                - heading [level=4] [ref=e577]:
+                  - link [ref=e578] [cursor=pointer]:
+                    - /url: https://www.linkedin.com/company/linkedin?trk=public_profile_profile-section-card_subtitle-click
+                    - text: LinkedIn
+                - generic [ref=e579]:
+                  - generic [ref=e581]:
+                    - text: Issued
+                    - time [ref=e582]: May 2026
+                  - link [ref=e584] [cursor=pointer]:
+                    - /url: https://www.linkedin.com/learning/certificates/8cabecfbcdec3397b4228d6e4701a8ebed9387ac11632517e143bd1750950f99?trk=public_profile_see-credential
+                    - text: See credential
+            - listitem [ref=e585]:
+              - link [ref=e586] [cursor=pointer]:
+                - /url: https://www.linkedin.com/company/anthropicresearch?trk=public_profile_profile-section-card_image-click
+                - img [ref=e587]
+              - generic [ref=e588]:
+                - heading [level=3] [ref=e589]:
+                  - link [ref=e590] [cursor=pointer]:
+                    - /url: http://verify.skilljar.com/c/c2xjqubbthbk?trk=public_profile_certification-title
+                    - text: Claude Code
+                - heading [level=4] [ref=e591]:
+                  - link [ref=e592] [cursor=pointer]:
+                    - /url: https://www.linkedin.com/company/anthropicresearch?trk=public_profile_profile-section-card_subtitle-click
+                    - text: Anthropic
+                - generic [ref=e593]:
+                  - generic [ref=e595]:
+                    - text: Issued
+                    - time [ref=e596]: Feb 2026
+                  - link [ref=e598] [cursor=pointer]:
+                    - /url: http://verify.skilljar.com/c/c2xjqubbthbk?trk=public_profile_see-credential
+                    - text: See credential
+            - listitem [ref=e599]:
+              - link [ref=e600] [cursor=pointer]:
+                - /url: https://www.linkedin.com/company/linkedin?trk=public_profile_profile-section-card_image-click
+                - img [ref=e601]
+              - generic [ref=e602]:
+                - heading [level=3] [ref=e603]:
+                  - link [ref=e604] [cursor=pointer]:
+                    - /url: https://www.linkedin.com/learning/certificates/c0069e686b4f2a461ee047d770aab298b03b48575380fb855b954bc6a09a5864?trk=public_profile_certification-title
+                    - text: "OpenAI ChatGPT: Creating Custom GPTs"
+                - heading [level=4] [ref=e605]:
+                  - link [ref=e606] [cursor=pointer]:
+                    - /url: https://www.linkedin.com/company/linkedin?trk=public_profile_profile-section-card_subtitle-click
+                    - text: LinkedIn
+                - generic [ref=e607]:
+                  - generic [ref=e609]:
+                    - text: Issued
+                    - time [ref=e610]: Aug 2025
+                  - link [ref=e612] [cursor=pointer]:
+                    - /url: https://www.linkedin.com/learning/certificates/c0069e686b4f2a461ee047d770aab298b03b48575380fb855b954bc6a09a5864?trk=public_profile_see-credential
+                    - text: See credential
+            - listitem [ref=e613]:
+              - link [ref=e614] [cursor=pointer]:
+                - /url: https://www.linkedin.com/company/scaled-agile-inc-?trk=public_profile_profile-section-card_image-click
+                - img [ref=e615]
+              - generic [ref=e616]:
+                - heading [level=3] [ref=e617]:
+                  - link [ref=e618] [cursor=pointer]:
+                    - /url: https://community.scaledagile.com/apex/PrintAchievement?aid=a0t0W00000DYb0MQAT&aaid=a0r0W00000GYe2tQAD&trk=public_profile_certification-title
+                    - text: SAFe for Architects 5.0
+                - heading [level=4] [ref=e619]:
+                  - link [ref=e620] [cursor=pointer]:
+                    - /url: https://www.linkedin.com/company/scaled-agile-inc-?trk=public_profile_profile-section-card_subtitle-click
+                    - text: Scaled Agile, Inc.
+                - generic [ref=e621]:
+                  - generic [ref=e623]:
+                    - text: Issued
+                    - time [ref=e624]: Dec 2020
+                  - generic [ref=e625]: Credential ID 78275687-9493
+                  - link [ref=e627] [cursor=pointer]:
+                    - /url: https://community.scaledagile.com/apex/PrintAchievement?aid=a0t0W00000DYb0MQAT&aaid=a0r0W00000GYe2tQAD&trk=public_profile_see-credential
+                    - text: See credential
+            - listitem [ref=e628]:
+              - link [ref=e629] [cursor=pointer]:
+                - /url: https://ca.linkedin.com/company/globalknowledgesolutions?trk=public_profile_profile-section-card_image-click
+                - img [ref=e630]
+              - generic [ref=e631]:
+                - heading [level=3] [ref=e632]: Architecting with AWS
+                - heading [level=4] [ref=e633]:
+                  - link [ref=e634] [cursor=pointer]:
+                    - /url: https://ca.linkedin.com/company/globalknowledgesolutions?trk=public_profile_profile-section-card_subtitle-click
+                    - text: GlobalKnowledgeSolutions
+                - generic [ref=e637]:
+                  - text: Issued
+                  - time [ref=e638]: Jun 2020
+            - listitem [ref=e639]:
+              - link [ref=e640] [cursor=pointer]:
+                - /url: https://www.linkedin.com/company/coursera?trk=public_profile_profile-section-card_image-click
+                - img [ref=e641]
+              - generic [ref=e642]:
+                - heading [level=3] [ref=e643]:
+                  - link [ref=e644] [cursor=pointer]:
+                    - /url: https://www.coursera.org/account/accomplishments/certificate/9PMLGL9V6V2E?trk=public_profile_certification-title
+                    - text: "Google Cloud Platform Fundamentals: Core Infrastructure"
+                - heading [level=4] [ref=e645]:
+                  - link [ref=e646] [cursor=pointer]:
+                    - /url: https://www.linkedin.com/company/coursera?trk=public_profile_profile-section-card_subtitle-click
+                    - text: Coursera
+                - generic [ref=e647]:
+                  - generic [ref=e649]:
+                    - text: Issued
+                    - time [ref=e650]: May 2020
+                  - generic [ref=e651]: Credential ID 9PMLGL9V6V2E
+                  - link [ref=e653] [cursor=pointer]:
+                    - /url: https://www.coursera.org/account/accomplishments/certificate/9PMLGL9V6V2E?trk=public_profile_see-credential
+                    - text: See credential
+            - listitem [ref=e654]:
+              - link [ref=e655] [cursor=pointer]:
+                - /url: https://www.linkedin.com/company/scrum-org?trk=public_profile_profile-section-card_image-click
+                - img [ref=e656]
+              - generic [ref=e657]:
+                - heading [level=3] [ref=e658]:
+                  - link [ref=e659] [cursor=pointer]:
+                    - /url: https://www.credly.com/badges/11d523f0-7bab-45dc-ae16-ca87007ecd72?source=linked_in_profile&trk=public_profile_certification-title
+                    - text: Professional Scrum Master™ I (PSM I)
+                - heading [level=4] [ref=e660]:
+                  - link [ref=e661] [cursor=pointer]:
+                    - /url: https://www.linkedin.com/company/scrum-org?trk=public_profile_profile-section-card_subtitle-click
+                    - text: Scrum.org
+                - generic [ref=e662]:
+                  - generic [ref=e664]:
+                    - text: Issued
+                    - time [ref=e665]: May 2020
+                  - link [ref=e667] [cursor=pointer]:
+                    - /url: https://www.credly.com/badges/11d523f0-7bab-45dc-ae16-ca87007ecd72?source=linked_in_profile&trk=public_profile_see-credential
+                    - text: See credential
+            - listitem [ref=e668]:
+              - link [ref=e669] [cursor=pointer]:
+                - /url: https://www.linkedin.com/company/coursera?trk=public_profile_profile-section-card_image-click
+                - img [ref=e670]
+              - generic [ref=e671]:
+                - heading [level=3] [ref=e672]:
+                  - link [ref=e673] [cursor=pointer]:
+                    - /url: https://www.coursera.org/account/accomplishments/specialization/C25NJC6TCA2N?trk=public_profile_certification-title
+                    - text: Install and Manage Google Cloud's Apigee API Platform Specialization
+                - heading [level=4] [ref=e674]:
+                  - link [ref=e675] [cursor=pointer]:
+                    - /url: https://www.linkedin.com/company/coursera?trk=public_profile_profile-section-card_subtitle-click
+                    - text: Coursera
+                - generic [ref=e676]:
+                  - generic [ref=e678]:
+                    - text: Issued
+                    - time [ref=e679]: Feb 2020
+                  - generic [ref=e680]: Credential ID C25NJC6TCA2N
+                  - link [ref=e682] [cursor=pointer]:
+                    - /url: https://www.coursera.org/account/accomplishments/specialization/C25NJC6TCA2N?trk=public_profile_see-credential
+                    - text: See credential
+            - listitem [ref=e683]:
+              - generic [ref=e684]:
+                - heading [level=3] [ref=e685]:
+                  - link [ref=e686] [cursor=pointer]:
+                    - /url: http://coursera.org/verify/specialization/AR45BK3RMZ2Y?trk=public_profile_certification-title
+                    - text: Developing APIs with Google Cloud's Apigee API Platform specialization
+                - heading [level=4] [ref=e687]: Coursera Course Certificates
+                - generic [ref=e688]:
+                  - generic [ref=e690]:
+                    - text: Issued
+                    - time [ref=e691]: Jul 2019
+                  - generic [ref=e692]: Credential ID Install and Manage Google Cloud's Apigee API Platform Specialization
+                  - link [ref=e694] [cursor=pointer]:
+                    - /url: http://coursera.org/verify/specialization/AR45BK3RMZ2Y?trk=public_profile_see-credential
+                    - text: See credential
+            - listitem [ref=e695]:
+              - link [ref=e696] [cursor=pointer]:
+                - /url: https://www.linkedin.com/company/ibm?trk=public_profile_profile-section-card_image-click
+                - img [ref=e697]
+              - generic [ref=e698]:
+                - heading [level=3] [ref=e699]:
+                  - link [ref=e700] [cursor=pointer]:
+                    - /url: https://www.youracclaim.com/badges/37a3be6c-9513-43a6-80c1-a4a0a13414e0/linked_in_profile?trk=public_profile_certification-title
+                    - text: Principles of Reactive ArchitectureIBM
+                - heading [level=4] [ref=e701]:
+                  - link [ref=e702] [cursor=pointer]:
+                    - /url: https://www.linkedin.com/company/ibm?trk=public_profile_profile-section-card_subtitle-click
+                    - text: IBM
+                - generic [ref=e703]:
+                  - generic [ref=e705]:
+                    - text: Issued
+                    - time [ref=e706]: Nov 2018
+                  - link [ref=e708] [cursor=pointer]:
+                    - /url: https://www.youracclaim.com/badges/37a3be6c-9513-43a6-80c1-a4a0a13414e0/linked_in_profile?trk=public_profile_see-credential
+                    - text: See credential
+          - link [ref=e709] [cursor=pointer]:
+            - /url: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww%2Elinkedin%2Ecom%2Fin%2Fhumbertobello%2Fdetails%2Fcertifications&trk=public_profile_see-all-certifications
+            - text: Join now to see all certifications
+      - generic [ref=e710]:
+        - heading [level=2] [ref=e711]: Volunteer Experience
+        - list [ref=e713]:
+          - listitem [ref=e714]:
+            - generic [ref=e715]:
+              - heading [level=3] [ref=e716]: Leader/Cofounder
+              - heading [level=4] [ref=e717]: The Amigonian Light
+              - generic [ref=e718]:
+                - paragraph [ref=e719]:
+                  - generic [ref=e720]:
+                    - time [ref=e721]: Jul 1989
+                    - text: "- Present ·36 years 11 months"
+                - paragraph [ref=e722]: Poverty Alleviation
+                - paragraph [ref=e724]: Cofounded as a high-school community initiative in 1989; continues today as a non-profit dedicated to educating and empowering communities living in extreme poverty with infrastructure and social services. Crowdfunded and supported by the local Catholic church.
+          - listitem [ref=e725]:
+            - generic [ref=e726]:
+              - heading [level=3] [ref=e727]: Coach
+              - heading [level=4] [ref=e728]: Skyisthelimit.org
+              - generic [ref=e729]:
+                - paragraph [ref=e730]:
+                  - generic [ref=e731]:
+                    - time [ref=e732]: Jan 2020
+                    - text: "-"
+                    - time [ref=e733]: Jun 2020
+                    - text: ·6 months
+                - paragraph [ref=e734]: Civil Rights and Social Action
+      - generic [ref=e735]:
+        - heading [level=2] [ref=e736]: Publications
+        - list [ref=e738]:
+          - listitem [ref=e739]:
+            - generic [ref=e740]:
+              - heading [level=3] [ref=e741]: An optimal reduction strategy for the untyped Lambda Calculus
+              - heading [level=4] [ref=e742]:
+                - text: University Simón Bolívar
+                - generic [ref=e743]:
+                  - text: ·
+                  - time [ref=e745]: May 1, 1999
+          - listitem [ref=e746]:
+            - generic [ref=e747]:
+              - heading [level=3] [ref=e748]: EPA a tool for the learning of algorithmic thought - compiler
+              - heading [level=4] [ref=e749]:
+                - text: Asovac - Venezuela
+                - generic [ref=e750]:
+                  - text: ·
+                  - time [ref=e752]: "1996"
+          - listitem [ref=e753]:
+            - generic [ref=e754]:
+              - heading [level=3] [ref=e755]: A tool for generation of Object Oriented recursive descending parsers
+              - heading [level=4] [ref=e756]:
+                - text: CLEI
+                - generic [ref=e757]:
+                  - text: ·
+                  - time [ref=e759]: "1995"
+      - generic [ref=e760]:
+        - heading [level=2] [ref=e761]: Courses
+        - list [ref=e763]:
+          - listitem [ref=e764]:
+            - generic [ref=e765]:
+              - heading [level=3] [ref=e766]: Architecting with AWS
+              - heading [level=4] [ref=e767]: "-"
+          - listitem [ref=e768]:
+            - generic [ref=e769]:
+              - heading [level=3] [ref=e770]: Claude Code in Action
+              - heading [level=4] [ref=e771]: http://verify.skilljar.com/c/c2xjqubbthbk
+          - listitem [ref=e772]:
+            - generic [ref=e773]:
+              - heading [level=3] [ref=e774]: Digital Decoupling for Architects
+              - heading [level=4] [ref=e775]: "-"
+          - listitem [ref=e776]:
+            - generic [ref=e777]:
+              - heading [level=3] [ref=e778]: Effective business meetings
+              - heading [level=4] [ref=e779]: "-"
+          - listitem [ref=e780]:
+            - generic [ref=e781]:
+              - heading [level=3] [ref=e782]: IBM Datapower development and administration workshops
+              - heading [level=4] [ref=e783]: "-"
+          - listitem [ref=e784]:
+            - generic [ref=e785]:
+              - heading [level=3] [ref=e786]: ITIL fundamental
+              - heading [level=4] [ref=e787]: "-"
+          - listitem [ref=e788]:
+            - generic [ref=e789]:
+              - heading [level=3] [ref=e790]: Kaizen
+              - heading [level=4] [ref=e791]: "-"
+          - listitem [ref=e792]:
+            - generic [ref=e793]:
+              - heading [level=3] [ref=e794]: Oracle Fusion Middleware
+              - heading [level=4] [ref=e795]: "-"
+          - listitem [ref=e796]:
+            - generic [ref=e797]:
+              - heading [level=3] [ref=e798]: RAD methodology
+              - heading [level=4] [ref=e799]: "-"
+          - listitem [ref=e800]:
+            - generic [ref=e801]:
+              - heading [level=3] [ref=e802]: Reactive Systems
+              - heading [level=4] [ref=e803]: "-"
+          - listitem [ref=e804]:
+            - generic [ref=e805]:
+              - heading [level=3] [ref=e806]: SAFe for architects
+              - heading [level=4] [ref=e807]: "-"
+          - listitem [ref=e808]:
+            - generic [ref=e809]:
+              - heading [level=3] [ref=e810]: SOA Workshop
+              - heading [level=4] [ref=e811]: "-"
+          - listitem [ref=e812]:
+            - generic [ref=e813]:
+              - heading [level=3] [ref=e814]: Stakeholder Management
+              - heading [level=4] [ref=e815]: CTS
+          - listitem [ref=e816]:
+            - generic [ref=e817]:
+              - heading [level=3] [ref=e818]: Team Building
+              - heading [level=4] [ref=e819]: "-"
+      - generic [ref=e820]:
+        - heading [level=2] [ref=e821]: Projects
+        - list [ref=e823]:
+          - listitem [ref=e824]:
+            - generic [ref=e825]:
+              - heading [level=3] [ref=e826]: AI Skills
+              - heading [level=4] [ref=e827]: "-"
+              - paragraph [ref=e830]: A collection of agent skills to enhance capabilities across software architecture, development, and tooling.
+      - generic [ref=e831]:
+        - heading [level=2] [ref=e832]: Languages
+        - list [ref=e834]:
+          - listitem [ref=e835]:
+            - generic [ref=e836]:
+              - heading [level=3] [ref=e837]: Spanish
+              - heading [level=4] [ref=e838]: Native or bilingual proficiency
+          - listitem [ref=e839]:
+            - generic [ref=e840]:
+              - heading [level=3] [ref=e841]: English
+              - heading [level=4] [ref=e842]: Native or bilingual proficiency
+      - generic [ref=e843]:
+        - heading [level=2] [ref=e844]: Recommendations received
+        - generic [ref=e845]:
+          - list [ref=e846]:
+            - listitem [ref=e847]:
+              - link [ref=e849] [cursor=pointer]:
+                - /url: https://www.linkedin.com/in/johnforman?trk=public_profile_recommendations
+                - img [ref=e850]
+                - generic [ref=e851]:
+                  - heading [level=3] [ref=e852]: John Forman ⎈ ☁️
+                  - paragraph [ref=e854]: “I would highly recommend Humberto in any strategic cloud role. He is a proven cloud engineer professional. If given the opportunity, I would not hesitate to bring Humberto into a new role.”
+            - listitem [ref=e855]:
+              - link [ref=e857] [cursor=pointer]:
+                - /url: https://www.linkedin.com/in/jsbali?trk=public_profile_recommendations
+                - img [ref=e858]
+                - generic [ref=e859]:
+                  - heading [level=3] [ref=e860]: Jasbinder Bali
+                  - paragraph [ref=e862]: “I had the pleasure to work with Bert on multiple occasions. It was always very easy and fun to solve tech problems with him collaboratively as he always came with an open mind in brainstorming sessions. He is technically adept, supportive team player, solid cloud native architect and a polyglot developer. Based on the variety of functional experience Bert has obtained over the years along with his strong technical skills, he would be a great addition in any team. Given the opportunity, I would like to work with Bert again.”
+          - generic [ref=e863]:
+            - paragraph [ref=e864]: 12 people have recommended 🔵 Humberto
+            - link [ref=e865] [cursor=pointer]:
+              - /url: https://www.linkedin.com/signup/public-profile-join?vieweeVanityName=humbertobello&trk=public_profile_recommendations
+              - text: Join now to view
+      - generic [ref=e868]:
+        - heading [level=2] [ref=e869]: View 🔵 Humberto’s full profile
+        - list [ref=e870]:
+          - listitem [ref=e871]:
+            - generic [ref=e874]: See who you know in common
+          - listitem [ref=e875]:
+            - generic [ref=e878]: Get introduced
+          - listitem [ref=e879]:
+            - generic [ref=e882]: Contact 🔵 Humberto directly
+        - link [ref=e883] [cursor=pointer]:
+          - /url: https://www.linkedin.com/signup/public-profile-join?vieweeVanityName=humbertobello&trk=public_profile_bottom-cta-banner
+          - text: Join to view full profile
+    - generic [ref=e884]:
+      - generic [ref=e885]:
+        - heading [level=2] [ref=e886]: Other similar profiles
+        - list [ref=e888]:
+          - listitem [ref=e889]:
+            - generic [ref=e890]:
+              - link [ref=e891] [cursor=pointer]:
+                - /url: https://www.linkedin.com/in/cmu2010
+                - generic [ref=e892]: Arvind Jain
+              - img [ref=e893]
+              - generic [ref=e894]:
+                - heading [level=3] [ref=e895]: Arvind Jain
+                - paragraph [ref=e896]: EXL
+                - generic [ref=e897]:
+                  - generic [ref=e898]: 6K followers
+                  - generic [ref=e899]: San Francisco Bay Area
+                - link [ref=e901] [cursor=pointer]:
+                  - /url: https://www.linkedin.com/in/cmu2010?trk=public_profile_browsemap_browse-map_connect-button
+                  - text: View Profile
+          - listitem [ref=e902]:
+            - generic [ref=e903]:
+              - link [ref=e904] [cursor=pointer]:
+                - /url: https://www.linkedin.com/in/kotubamowo
+                - generic [ref=e905]: Kehinde O.
+              - img [ref=e906]
+              - generic [ref=e907]:
+                - heading [level=3] [ref=e908]: Kehinde O.
+                - paragraph [ref=e909]: Oracle
+                - generic [ref=e910]:
+                  - generic [ref=e911]: 7K followers
+                  - generic [ref=e912]: Redmond, WA
+                - link [ref=e914] [cursor=pointer]:
+                  - /url: https://www.linkedin.com/in/kotubamowo?trk=public_profile_browsemap_browse-map_connect-button
+                  - text: View Profile
+          - listitem [ref=e915]:
+            - generic [ref=e916]:
+              - link [ref=e917] [cursor=pointer]:
+                - /url: https://www.linkedin.com/in/davidlee55
+                - generic [ref=e918]: David Lee
+              - img [ref=e919]
+              - generic [ref=e920]:
+                - heading [level=3] [ref=e921]: David Lee
+                - paragraph [ref=e922]: System Heros, LLC
+                - generic [ref=e923]:
+                  - generic [ref=e924]: 11K followers
+                  - generic [ref=e925]: Parrish, FL
+                - link [ref=e927] [cursor=pointer]:
+                  - /url: https://www.linkedin.com/in/davidlee55?trk=public_profile_browsemap_browse-map_connect-button
+                  - text: View Profile
+          - listitem [ref=e928]:
+            - generic [ref=e929]:
+              - link [ref=e930] [cursor=pointer]:
+                - /url: https://www.linkedin.com/in/yilmazke
+                - generic [ref=e931]: Kemal Yilmaz
+              - img [ref=e932]
+              - generic [ref=e933]:
+                - heading [level=3] [ref=e934]: Kemal Yilmaz
+                - paragraph [ref=e935]: Associated Bank
+                - generic [ref=e936]:
+                  - generic [ref=e937]: 6K followers
+                  - generic [ref=e938]: Greater Milwaukee
+                - link [ref=e940] [cursor=pointer]:
+                  - /url: https://www.linkedin.com/in/yilmazke?trk=public_profile_browsemap_browse-map_connect-button
+                  - text: View Profile
+          - listitem [ref=e941]:
+            - generic [ref=e942]:
+              - link [ref=e943] [cursor=pointer]:
+                - /url: https://www.linkedin.com/in/robertgarritano
+                - generic [ref=e944]: Robert L. Garritano
+              - img [ref=e945]
+              - generic [ref=e946]:
+                - heading [level=3] [ref=e947]: Robert L. Garritano
+                - paragraph [ref=e948]: Minuet Enterprises L.L.C.
+                - generic [ref=e949]:
+                  - generic [ref=e950]: 9K followers
+                  - generic [ref=e951]: Greater Chicago Area
+                - link [ref=e953] [cursor=pointer]:
+                  - /url: https://www.linkedin.com/in/robertgarritano?trk=public_profile_browsemap_browse-map_connect-button
+                  - text: View Profile
+          - listitem [ref=e954]:
+            - generic [ref=e955]:
+              - link [ref=e956] [cursor=pointer]:
+                - /url: https://www.linkedin.com/in/donthedataguy
+                - generic [ref=e957]: Don Hilborn
+              - generic [ref=e958]:
+                - heading [level=3] [ref=e959]: Don Hilborn
+                - paragraph [ref=e960]: DonTheDataGuy®
+                - generic [ref=e961]:
+                  - generic [ref=e962]: 12K followers
+                  - generic [ref=e963]: Whitethorn, CA
+                - link [ref=e965] [cursor=pointer]:
+                  - /url: https://www.linkedin.com/in/donthedataguy?trk=public_profile_browsemap_browse-map_connect-button
+                  - text: View Profile
+          - listitem [ref=e966]:
+            - generic [ref=e967]:
+              - link [ref=e968] [cursor=pointer]:
+                - /url: https://www.linkedin.com/in/atirmizi
+                - generic [ref=e969]: Azim Tirmizi,
+              - generic [ref=e970]:
+                - heading [level=3] [ref=e971]: Azim Tirmizi,
+                - paragraph [ref=e972]: Amazon Consulting LLC
+                - generic [ref=e973]:
+                  - generic [ref=e974]: 5K followers
+                  - generic [ref=e975]: McKinney, TX
+                - link [ref=e977] [cursor=pointer]:
+                  - /url: https://www.linkedin.com/in/atirmizi?trk=public_profile_browsemap_browse-map_connect-button
+                  - text: View Profile
+          - listitem [ref=e978]:
+            - generic [ref=e979]:
+              - link [ref=e980] [cursor=pointer]:
+                - /url: https://www.linkedin.com/in/saravananprabhagaran
+                - generic [ref=e981]: Saravanan Prabhagaran
+              - generic [ref=e982]:
+                - heading [level=3] [ref=e983]: Saravanan Prabhagaran
+                - paragraph [ref=e984]: FINRA
+                - generic [ref=e985]:
+                  - generic [ref=e986]: 13K followers
+                  - generic [ref=e987]: Chantilly, VA
+                - link [ref=e989] [cursor=pointer]:
+                  - /url: https://www.linkedin.com/in/saravananprabhagaran?trk=public_profile_browsemap_browse-map_connect-button
+                  - text: View Profile
+          - listitem [ref=e990]:
+            - generic [ref=e991]:
+              - link [ref=e992] [cursor=pointer]:
+                - /url: https://www.linkedin.com/in/macribas
+                - generic [ref=e993]: Marcel Ribas
+              - generic [ref=e994]:
+                - heading [level=3] [ref=e995]: Marcel Ribas
+                - paragraph [ref=e996]: Google
+                - generic [ref=e997]:
+                  - generic [ref=e998]: 7K followers
+                  - generic [ref=e999]: Austin, Texas Metropolitan Area
+                - link [ref=e1001] [cursor=pointer]:
+                  - /url: https://www.linkedin.com/in/macribas?trk=public_profile_browsemap_browse-map_connect-button
+                  - text: View Profile
+          - listitem [ref=e1002]:
+            - generic [ref=e1003]:
+              - link [ref=e1004] [cursor=pointer]:
+                - /url: https://www.linkedin.com/in/vkouznetsov
+                - generic [ref=e1005]: Vladimir Kouznetsov
+              - generic [ref=e1006]:
+                - heading [level=3] [ref=e1007]: Vladimir Kouznetsov
+                - paragraph [ref=e1008]: Stryker
+                - generic [ref=e1009]:
+                  - generic [ref=e1010]: 5K followers
+                  - generic [ref=e1011]: Irvine, CA
+                - link [ref=e1013] [cursor=pointer]:
+                  - /url: https://www.linkedin.com/in/vkouznetsov?trk=public_profile_browsemap_browse-map_connect-button
+                  - text: View Profile
+      - generic [ref=e1014]:
+        - heading [level=2] [ref=e1015]: Explore more posts
+        - generic [ref=e1017]:
+          - list [ref=e1018]:
+            - listitem [ref=e1019]:
+              - generic [ref=e1020]:
+                - link [ref=e1021] [cursor=pointer]:
+                  - /url: https://mx.linkedin.com/in/gerardo-epitacio?trk=public_profile_relatedPosts_face-pile-cta
+                  - generic [ref=e1023]:
+                    - paragraph [ref=e1024]: JUAN GERARDO EPITACIO GALVEZ
+                    - paragraph [ref=e1025]: Kata Software • 534 followers
+                - link [ref=e1026] [cursor=pointer]:
+                  - /url: https://www.linkedin.com/posts/gerardo-epitacio_programming-deflation-activity-7378170660159901696-vLN0?trk=public_profile_relatedPosts
+                  - paragraph [ref=e1028]: "\"The bottleneck isn't writing code anymore. It's making all these cheap software pieces work together coherently.\" ... \"When anyone can build anything, knowing what's worth building becomes the skill.\" On programming Deflation by Kent Beck https://lnkd.in/eWreEB9u"
+                  - img [ref=e1030]
+            - listitem [ref=e1031]:
+              - generic [ref=e1032]:
+                - link [ref=e1033] [cursor=pointer]:
+                  - /url: https://es.linkedin.com/in/rhortal?trk=public_profile_relatedPosts_face-pile-cta
+                  - generic [ref=e1035]:
+                    - paragraph [ref=e1036]: Roberto Hortal
+                    - paragraph [ref=e1037]: Wall Street English • 6K followers
+                - link [ref=e1038] [cursor=pointer]:
+                  - /url: https://www.linkedin.com/posts/rhortal_building-engineering-culture-through-autonomy-activity-7387085981822205952-NGUB?trk=public_profile_relatedPosts
+                  - generic [ref=e1039]:
+                    - paragraph [ref=e1040]: "Autonomy with accountability is the engine for scalable engineering. Marcos Arribas argues ICs own the product with feature flags: empower teams, guardrails, lead by example. Dive into the InfoQ chat: https://buff.ly/8uJV6YZ #EngineeringCulture"
+                    - generic [ref=e1044]: "2"
+                  - img [ref=e1046]
+            - listitem [ref=e1047]:
+              - generic [ref=e1048]:
+                - link [ref=e1049] [cursor=pointer]:
+                  - /url: https://in.linkedin.com/in/sunilrawatdun?trk=public_profile_relatedPosts_face-pile-cta
+                  - generic [ref=e1051]:
+                    - paragraph [ref=e1052]: Sunil Rawat
+                    - paragraph [ref=e1053]: flynas • 2K followers
+                - link [ref=e1054] [cursor=pointer]:
+                  - /url: https://www.linkedin.com/posts/sunilrawatdun_ai-genai-cag-activity-7390724518677274624-tPwD?trk=public_profile_relatedPosts
+                  - generic [ref=e1055]:
+                    - paragraph [ref=e1056]: "🚀 From RAG to CAG — The Quiet Shift Powering the Next Wave of Enterprise AI: A year ago, every GenAI conversation started with \"We’ll build a RAG app\". Today, that’s just the baseline. RAG (Retrieval-Augmented Generation) taught LLMs how to \"look up\" facts before answering, connecting them to enterprise knowledge bases. But enterprises quickly realized something was missing i.e. the \"Context\". When a user asks: \"Show me last quarter’s route performance\". RAG retrieves the report. CAG (Context-Augmented Generation), on the other hand, understands who is asking, why they’re asking, and what action should follow. It adds dynamic context like user profile, task intent, APIs, memory etc to produce answers that are not only factual but actionable. 🧩 Think of CAG as RAG with a brain and memory. It’s the bridge between today’s retrieval systems and tomorrow’s agentic AI copilots which will not just chat, but act. In enterprises and airlines, this evolution means copilots that: Understand operations, schedules, loyalty, and passenger behavior and fetch real-time data from APIs and data lakes/data warehouser/enterprise data platforms etc and deliver insights that drive business decisions. As architects, the real question isn’t \"RAG or CAG?\": It’s \"Are we designing for static retrieval, or dynamic intelligence?\". The shift is subtle, but it’s defining the next generation of enterprise AI. #AI #GenAI #CAG #RAG #EnterpriseArchitecture #AgenticAI #AzureOpenAI #SemanticKernel #AviationTech #DigitalTransformation"
+                    - generic [ref=e1058]:
+                      - generic [ref=e1060]: "19"
+                      - generic [ref=e1061]: · 1 Comment
+            - listitem [ref=e1062]:
+              - generic [ref=e1063]:
+                - link [ref=e1064] [cursor=pointer]:
+                  - /url: https://il.linkedin.com/in/vlad-mystetskyi-b3413941?trk=public_profile_relatedPosts_face-pile-cta
+                  - generic [ref=e1066]:
+                    - paragraph [ref=e1067]: Vlad Mystetskyi
+                    - paragraph [ref=e1068]: monday.com • 3K followers
+                - link [ref=e1069] [cursor=pointer]:
+                  - /url: https://www.linkedin.com/posts/vlad-mystetskyi-b3413941_your-apis-are-costing-more-than-you-think-activity-7374090838085230593-kQIE?trk=public_profile_relatedPosts
+                  - generic [ref=e1070]:
+                    - paragraph [ref=e1071]: Great article written by Saqib J. about the importance of API cost control, featuring our insights from building one of the biggest GraphQL APIs in the world. https://lnkd.in/dMGfMsXk
+                    - generic [ref=e1073]:
+                      - generic [ref=e1075]: "17"
+                      - generic [ref=e1076]: · 1 Comment
+                  - img [ref=e1078]
+            - text: · · · · · · ·
+          - button [ref=e1079] [cursor=pointer]: Show more posts
+      - generic [ref=e1083]:
+        - heading [level=2] [ref=e1085]: Explore top content on LinkedIn
+        - paragraph [ref=e1086]: Find curated posts and insights for relevant topics all in one place.
+        - link [ref=e1087] [cursor=pointer]:
+          - /url: https://www.linkedin.com/top-content/
+          - text: View top content
+      - generic [ref=e1088]:
+        - heading [level=2] [ref=e1089]: Add new skills with these courses
+        - generic [ref=e1090]:
+          - list [ref=e1091]:
+            - listitem [ref=e1092]:
+              - link [ref=e1093] [cursor=pointer]:
+                - /url: https://www.linkedin.com/learning/advanced-data-processing-batch-real-time-and-cloud-architectures-for-ai?trk=public_profile_recommended-course
+                - generic [ref=e1095]: 1h 32m
+                - heading [level=3] [ref=e1098]: "Advanced Data Processing: Batch, Real-Time, and Cloud Architectures for AI"
+            - listitem [ref=e1099]:
+              - link [ref=e1100] [cursor=pointer]:
+                - /url: https://www.linkedin.com/learning/guided-lab-ai-assisted-sql?trk=public_profile_recommended-course
+                - generic [ref=e1102]: 1h 48m
+                - heading [level=3] [ref=e1105]: "Guided Lab: AI-Assisted SQL"
+            - listitem [ref=e1106]:
+              - link [ref=e1107] [cursor=pointer]:
+                - /url: https://www.linkedin.com/learning/leveraging-postgresql-with-rag?trk=public_profile_recommended-course
+                - generic [ref=e1109]: 53m
+                - heading [level=3] [ref=e1112]: Leveraging PostgreSQL with RAG
+          - link [ref=e1113] [cursor=pointer]:
+            - /url: https://www.linkedin.com/learning/?trk=seo_pp_d_cymbii_more_m015_learning
+            - text: See all courses
+  - contentinfo [ref=e1114]:
+    - list [ref=e1115]:
+      - listitem [ref=e1116]:
+        - generic [ref=e1117]: LinkedIn
+        - generic [ref=e1119]: © 2026
+      - listitem [ref=e1120]:
+        - link [ref=e1121] [cursor=pointer]:
+          - /url: https://about.linkedin.com?trk=public_profile_v3_desktop_footer-about
+          - text: About
+      - listitem [ref=e1122]:
+        - link [ref=e1123] [cursor=pointer]:
+          - /url: https://www.linkedin.com/accessibility?trk=public_profile_v3_desktop_footer-accessibility
+          - text: Accessibility
+      - listitem [ref=e1124]:
+        - link [ref=e1125] [cursor=pointer]:
+          - /url: https://www.linkedin.com/legal/user-agreement?trk=public_profile_v3_desktop_footer-user-agreement
+          - text: User Agreement
+      - listitem [ref=e1126]:
+        - link [ref=e1127] [cursor=pointer]:
+          - /url: https://www.linkedin.com/legal/privacy-policy?trk=public_profile_v3_desktop_footer-privacy-policy
+          - text: Privacy Policy
+      - listitem [ref=e1128]:
+        - link [ref=e1129] [cursor=pointer]:
+          - /url: https://www.linkedin.com/legal/california-privacy-disclosure?trk=public_profile_v3_desktop_footer-california-privacy-rights-act
+          - text: Your California Privacy Choices
+      - listitem [ref=e1130]:
+        - link [ref=e1131] [cursor=pointer]:
+          - /url: https://www.linkedin.com/legal/cookie-policy?trk=public_profile_v3_desktop_footer-cookie-policy
+          - text: Cookie Policy
+      - listitem [ref=e1132]:
+        - link [ref=e1133] [cursor=pointer]:
+          - /url: https://www.linkedin.com/legal/copyright-policy?trk=public_profile_v3_desktop_footer-copyright-policy
+          - text: Copyright Policy
+      - listitem [ref=e1134]:
+        - link [ref=e1135] [cursor=pointer]:
+          - /url: https://brand.linkedin.com/policies?trk=public_profile_v3_desktop_footer-brand-policy
+          - text: Brand Policy
+      - listitem [ref=e1136]:
+        - link [ref=e1137] [cursor=pointer]:
+          - /url: https://www.linkedin.com/psettings/guest-controls?trk=public_profile_v3_desktop_footer-guest-controls
+          - text: Guest Controls
+      - listitem [ref=e1138]:
+        - link [ref=e1139] [cursor=pointer]:
+          - /url: https://www.linkedin.com/legal/professional-community-policies?trk=public_profile_v3_desktop_footer-community-guide
+          - text: Community Guidelines
+      - listitem [ref=e1140]:
+        - button [ref=e1142]: Language
+  - dialog "View 🔵 Humberto’s full profile" [active] [ref=e1145]:
+    - button "Dismiss" [ref=e1146] [cursor=pointer]
+    - generic [ref=e1148]:
+      - generic [ref=e1149]:
+        - img [ref=e1150]
+        - heading "View 🔵 Humberto’s full profile" [level=2] [ref=e1151]
+      - generic [ref=e1152]:
+        - button "Continue with google" [ref=e1155]:
+          - generic [ref=e1156]:
+            - button "Continue with Google" [ref=e1158] [cursor=pointer]:
+              - generic [ref=e1160]:
+                - img [ref=e1163]
+                - generic [ref=e1170]: Continue with Google
+            - iframe
+        - button "Sign in with Email" [ref=e1171] [cursor=pointer]:
+          - generic [ref=e1173]: Sign in with Email
+        - paragraph [ref=e1175]: or
+        - button "Continue with google" [ref=e1177]:
+          - generic [ref=e1178]:
+            - button "Continue with Google" [ref=e1180] [cursor=pointer]:
+              - generic [ref=e1182]:
+                - img [ref=e1184]
+                - generic [ref=e1191]: Continue with Google
+            - iframe
+        - paragraph [ref=e1192]:
+          - text: New to LinkedIn?
+          - link "Join now" [ref=e1193] [cursor=pointer]:
+            - /url: https://www.linkedin.com/signup/public-profile-join?vieweeVanityName=humbertobello&trk=public_profile_contextual-sign-in-modal_join-link
+        - paragraph [ref=e1194]:
+          - text: By clicking Continue to join or sign in, you agree to LinkedIn’s
+          - link "User Agreement" [ref=e1195] [cursor=pointer]:
+            - /url: /legal/user-agreement?trk=linkedin-tc_auth-button_user-agreement
+          - text: ","
+          - link "Privacy Policy" [ref=e1196] [cursor=pointer]:
+            - /url: /legal/privacy-policy?trk=linkedin-tc_auth-button_privacy-policy
+          - text: ", and"
+          - link "Cookie Policy" [ref=e1197] [cursor=pointer]:
+            - /url: /legal/cookie-policy?trk=linkedin-tc_auth-button_cookie-policy
+          - text: .

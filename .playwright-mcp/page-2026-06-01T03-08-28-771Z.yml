@@ -1,0 +1,30 @@
+- generic [active] [ref=e1]:
+  - button "Open Next.js Dev Tools" [ref=e30] [cursor=pointer]:
+    - img [ref=e31]
+  - alert [ref=e34]: Create account — VoiceDesk
+  - main [ref=e35]:
+    - generic [ref=e37]:
+      - heading "Create your account" [level=1] [ref=e38]
+      - paragraph [ref=e39]: Start answering calls in minutes
+      - button "Sign up with Google" [ref=e40]
+      - generic [ref=e43]: or continue with email
+      - generic [ref=e45]:
+        - generic [ref=e46]:
+          - text: Email
+          - textbox "Email" [ref=e47]
+        - generic [ref=e48]:
+          - text: Password
+          - generic [ref=e49]:
+            - textbox "Password" [ref=e50]
+            - button "Show password" [ref=e51]:
+              - img [ref=e52]
+        - generic [ref=e55]:
+          - text: Confirm password
+          - generic [ref=e56]:
+            - textbox "Confirm password" [ref=e57]
+            - button "Show confirm password" [ref=e58]:
+              - img [ref=e59]
+        - button "Create account" [ref=e62]
+      - paragraph [ref=e63]:
+        - link "Already have an account? Sign in" [ref=e64] [cursor=pointer]:
+          - /url: /auth/login

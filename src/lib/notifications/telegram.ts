@@ -54,13 +54,13 @@ export function getBot(): Bot {
       const contractorId = parts[1]?.trim()
 
       if (!contractorId) {
-        await ctx.reply('❌ Invalid link. Please use the setup link from your VoiceDesk dashboard.')
+        await ctx.reply('❌ Invalid link. Please use the setup link from your Koolable dashboard.')
         return
       }
 
       const UUID_V4_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
       if (!UUID_V4_REGEX.test(contractorId)) {
-        await ctx.reply('❌ Invalid link. Please use the setup link from your VoiceDesk dashboard.')
+        await ctx.reply('❌ Invalid link. Please use the setup link from your Koolable dashboard.')
         return
       }
 
@@ -75,7 +75,7 @@ export function getBot(): Bot {
         .maybeSingle()
 
       if (!contractor) {
-        await ctx.reply('❌ Invalid link. Please use the setup link from your VoiceDesk dashboard.')
+        await ctx.reply('❌ Invalid link. Please use the setup link from your Koolable dashboard.')
         return
       }
 
@@ -98,7 +98,7 @@ export function getBot(): Bot {
       }
 
       // D-19: Confirmation message
-      await ctx.reply('✅ VoiceDesk connected. You will receive call alerts here.')
+      await ctx.reply('✅ Koolable connected. You will receive call alerts here.')
     })
 
     _bot = bot
@@ -108,7 +108,7 @@ export function getBot(): Bot {
   return _bot
 }
 
-// D-18: Single @voiceDeskTelBot for the entire platform. One TELEGRAM_BOT_TOKEN env var.
+// D-18: Single @koolableTelBot for the entire platform. One TELEGRAM_BOT_TOKEN env var.
 // D-22: grammY webhook mode (not polling) — Bot instance reused across calls via singleton.
 // NOTIF-03: Sends plain text notification to contractor's linked Telegram account.
 export async function sendTelegram(params: SendTelegramParams): Promise<SendTelegramResult> {

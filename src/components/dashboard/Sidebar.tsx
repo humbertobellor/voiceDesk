@@ -48,7 +48,7 @@ export function Sidebar({ businessName, userEmail, phoneNumber }: SidebarProps) 
       {/* Logo area */}
       <div className="h-16 flex items-center gap-2 px-6 border-b border-rule">
         <Mic size={20} className="text-highlight" />
-        <span className="text-xl font-semibold text-fg-1">VoiceDesk</span>
+        <span className="text-xl font-semibold text-fg-1">Koolable</span>
         <NotificationBell className="ml-auto" />
       </div>
 
@@ -109,7 +109,7 @@ export function Sidebar({ businessName, userEmail, phoneNumber }: SidebarProps) 
             {(businessName?.[0] ?? userEmail?.[0] ?? 'V').toUpperCase()}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-semibold text-fg-1 truncate">{businessName ?? 'VoiceDesk'}</p>
+            <p className="text-sm font-semibold text-fg-1 truncate">{businessName ?? 'Koolable'}</p>
             {phoneNumber && (
               <p className="text-xs font-mono text-fg-3 flex items-center gap-1 truncate">
                 <Phone size={10} />

@@ -42,7 +42,7 @@ export function PaymentFailureEmail(props: PaymentFailureEmailProps) {
             PAYMENT FAILED — Action Required
           </Text>
           <Text style={{ marginBottom: '8px' }}>
-            Your VoiceDesk payment could not be processed.
+            Your Koolable payment could not be processed.
           </Text>
           <Text style={{ marginBottom: '8px' }}>
             Your account will be deactivated within <strong>72 hours</strong> if payment is not updated.

@@ -171,7 +171,7 @@ export function PhoneCaptureForm() {
               </p>
             ) : (
               <p id="area-code-hint" className="text-sm text-fg-3 mt-1">
-                We'll provision a local VoiceDesk number with this area code.
+                We'll provision a local Koolable number with this area code.
               </p>
             )}
           </div>

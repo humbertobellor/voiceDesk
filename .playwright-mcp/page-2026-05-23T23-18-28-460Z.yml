@@ -1,0 +1,47 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary "Primary" [ref=e3]:
+      - generic [ref=e4]:
+        - img [ref=e5]
+        - generic [ref=e8]: VoiceDesk
+      - navigation [ref=e9]:
+        - paragraph [ref=e10]: NAVIGATION
+        - link "Calls" [ref=e11] [cursor=pointer]:
+          - /url: /calls
+          - img [ref=e12]
+          - generic [ref=e16]: Calls
+        - link "Leads" [ref=e17] [cursor=pointer]:
+          - /url: /leads
+          - img [ref=e18]
+          - generic [ref=e23]: Leads
+        - link "Settings" [ref=e24] [cursor=pointer]:
+          - /url: /settings/agent
+          - img [ref=e25]
+          - generic [ref=e28]: Settings
+      - generic [ref=e29]:
+        - generic [ref=e30]:
+          - generic [ref=e31]: Q
+          - generic [ref=e32]:
+            - paragraph [ref=e33]: QA Test HVAC Co.
+            - paragraph [ref=e34]:
+              - img [ref=e35]
+              - text: "+17868081252"
+            - paragraph [ref=e37]: test.voicedesk.qa+001@mailinator.com
+        - button "Sign out" [ref=e38]:
+          - img [ref=e39]
+          - generic [ref=e42]: Sign out
+    - main [ref=e43]:
+      - generic [ref=e45]:
+        - generic [ref=e46]:
+          - heading "Dashboard" [level=1] [ref=e47]
+          - paragraph [ref=e48]: Overview of your AI receptionist
+        - status [ref=e50]:
+          - text: Link Telegram for instant call alerts.
+          - link "Connect @voiceDeskTelBot" [ref=e51] [cursor=pointer]:
+            - /url: https://t.me/voiceDeskTelBot?start=6620251d-a306-46da-b4ae-2c9c7486b4db
+          - text: to receive SMS, WhatsApp, and Telegram notifications within 60 seconds of every call.
+        - generic [ref=e52]:
+          - img [ref=e53]
+          - heading "Your dashboard is ready" [level=2] [ref=e58]
+          - paragraph [ref=e59]: Once your setup is complete, you'll see today's calls, active leads, and your agent status here.
+  - alert [ref=e60]

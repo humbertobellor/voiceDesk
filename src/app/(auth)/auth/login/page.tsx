@@ -1,7 +1,7 @@
 // src/app/(auth)/auth/login/page.tsx
 import { LoginForm } from '@/components/auth/LoginForm'
 
-export const metadata = { title: 'Sign in — VoiceDesk' }
+export const metadata = { title: 'Sign in — Koolable' }
 
 export default async function LoginPage({
   searchParams,

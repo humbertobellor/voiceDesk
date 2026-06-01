@@ -65,7 +65,7 @@ export default function GoLivePage() {
       <div className="mb-6">
         <h1 className="text-xl font-semibold text-fg-1 mb-1">Go Live</h1>
         <p className="text-sm text-fg-3">
-          Make a test call to verify your setup, then activate your VoiceDesk.
+          Make a test call to verify your setup, then activate your Koolable.
         </p>
         <div className="border-b border-rule mt-6" />
       </div>
@@ -85,13 +85,13 @@ export default function GoLivePage() {
             <div>
               <h2 className="text-lg font-semibold text-fg-1">You're Live!</h2>
               <p className="text-sm text-fg-3">
-                Your VoiceDesk is active. Customers calling your business number are being answered by your AI receptionist.
+                Your Koolable is active. Customers calling your business number are being answered by your AI receptionist.
               </p>
             </div>
           </div>
           {twilioNumber && (
             <div className="mt-4 border-t border-rule pt-4">
-              <p className="text-xs text-fg-3 mb-1">Your VoiceDesk Number</p>
+              <p className="text-xs text-fg-3 mb-1">Your Koolable Number</p>
               <p className="text-xl font-bold text-highlight">{twilioNumber}</p>
             </div>
           )}
@@ -103,7 +103,7 @@ export default function GoLivePage() {
         <div className="space-y-4">
           {twilioNumber && (
             <div className="bg-bg-elevated rounded-lg p-4">
-              <p className="text-xs text-fg-3 mb-1">Your VoiceDesk Number</p>
+              <p className="text-xs text-fg-3 mb-1">Your Koolable Number</p>
               <p className="text-2xl font-bold text-highlight">{twilioNumber}</p>
               <p className="text-sm text-fg-3 mt-2">
                 Make sure call forwarding is set up from your business number to the number above.
@@ -113,7 +113,7 @@ export default function GoLivePage() {
           <div className="flex items-center gap-3">
             <Phone className="w-5 h-5 text-fg-4" />
             <p className="text-sm text-fg-3">
-              Forward your business number to your VoiceDesk number, then call it to make a test call.
+              Forward your business number to your Koolable number, then call it to make a test call.
             </p>
           </div>
           <button
@@ -177,7 +177,7 @@ export default function GoLivePage() {
             <CheckCircle className="w-8 h-8 text-green-400" />
             <div>
               <h2 className="text-lg font-semibold text-fg-1">Test Call Verified!</h2>
-              <p className="text-sm text-fg-3">Your VoiceDesk is now live.</p>
+              <p className="text-sm text-fg-3">Your Koolable is now live.</p>
             </div>
           </div>
         </div>

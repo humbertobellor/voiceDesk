@@ -1,5 +1,5 @@
 -- 20260504000001_initial_schema.sql
--- VoiceDesk Phase 1 Foundation: all 9 tables, RLS enabled, indexes, constraints.
+-- Koolable Phase 1 Foundation: all 9 tables, RLS enabled, indexes, constraints.
 -- Source: .planning/phases/01-foundation/01-RESEARCH.md (Full Database Schema)
 -- Decisions: D-08, D-09, D-10, D-11, D-16, D-17, LANG-02
 

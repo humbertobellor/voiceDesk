@@ -31,7 +31,7 @@ export function ConnectCalendarForm({ isConnected }: ConnectCalendarFormProps) {
         </div>
       )}
       <p className="text-sm text-fg-3 mb-4">
-        Connect your Google Calendar to allow VoiceDesk to book estimate appointments automatically.
+        Connect your Google Calendar to allow Koolable to book estimate appointments automatically.
         Your calendar events will only be created — not read or deleted.
       </p>
       <Button

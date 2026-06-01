@@ -78,7 +78,7 @@ export default function AccountPage() {
       {loaded && subscription?.is_active === false && (
         <div className="bg-danger/10 border border-danger/30 rounded-lg p-4 mb-6">
           <p className="text-sm font-medium text-danger mb-2">
-            Service suspended. Update your payment method to restore your VoiceDesk agent.
+            Service suspended. Update your payment method to restore your Koolable agent.
           </p>
           <button
             onClick={handleManageSubscription}

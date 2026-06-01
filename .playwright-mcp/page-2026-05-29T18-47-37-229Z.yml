@@ -1,0 +1,34 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - main [ref=e3]:
+      - generic [ref=e5]:
+        - generic [ref=e6]:
+          - heading "Dashboard" [level=1] [ref=e7]
+          - paragraph [ref=e8]: Overview of your AI receptionist
+        - status [ref=e10]:
+          - text: Link Telegram for instant call alerts.
+          - link "Connect @voiceDeskTelBot" [ref=e11] [cursor=pointer]:
+            - /url: https://t.me/voiceDeskTelBot?start=6305b2f7-558d-443a-a58d-6ef87fbe4d68
+          - text: to receive SMS, WhatsApp, and Telegram notifications within 60 seconds of every call.
+        - generic [ref=e12]:
+          - img [ref=e13]
+          - heading "Your dashboard is ready" [level=2] [ref=e18]
+          - paragraph [ref=e19]: Once your setup is complete, you'll see today's calls, active leads, and your agent status here.
+    - navigation "Primary mobile" [ref=e20]:
+      - link "Calls" [ref=e21] [cursor=pointer]:
+        - /url: /calls
+        - img [ref=e22]
+        - generic [ref=e26]: Calls
+      - link "Leads" [ref=e27] [cursor=pointer]:
+        - /url: /leads
+        - img [ref=e28]
+        - generic [ref=e33]: Leads
+      - link "Settings" [ref=e34] [cursor=pointer]:
+        - /url: /settings/agent
+        - img [ref=e35]
+        - generic [ref=e38]: Settings
+      - generic [ref=e39]:
+        - button "Notifications" [ref=e41]:
+          - img [ref=e42]
+        - generic [ref=e45]: Alerts
+  - alert [ref=e46]

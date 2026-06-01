@@ -263,7 +263,7 @@ export const retellCallClassify = inngest.createFunction(
               `Caller: ${leadRow?.caller_name ?? 'Unknown'} (${leadRow?.caller_phone ?? ''})`,
               `Service: ${leadRow?.service_requested ?? 'General'}`,
               `Address: ${serviceAddr}`,
-              `Booked via VoiceDesk`,
+              `Booked via Koolable`,
             ].join('\n'),
             start: {
               dateTime: appointment.starts_at,

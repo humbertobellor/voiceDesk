@@ -1,5 +1,5 @@
 /**
- * VoiceDesk v1.0 — Full UI Navigation Regression Suite
+ * Koolable v1.0 — Full UI Navigation Regression Suite
  *
  * Covers the entire authenticated navigation flow for a contractor account:
  *
@@ -20,7 +20,7 @@
  * SYNTHETIC TEST ACCOUNT
  *
  *   Email:    voicedesk-e2e-regression@example.com
- *   Password: VoiceDesk_E2E!2026
+ *   Password: Koolable_E2E!2026
  *
  * The account must exist and have completed onboarding (setup/phone) so
  * the dashboard is accessible. To provision it run once in SIGNUP_MODE:
@@ -48,7 +48,7 @@ import { test, expect, type Page, type BrowserContext } from '@playwright/test'
 // ── Synthetic credentials (override via env) ──────────────────────────────────
 
 const SYNTHETIC_EMAIL = 'voicedesk-e2e-regression@example.com'
-const SYNTHETIC_PASSWORD = 'VoiceDesk_E2E!2026'
+const SYNTHETIC_PASSWORD = 'Koolable_E2E!2026'
 const SIGNUP_MODE = !!process.env.SIGNUP_MODE
 
 const BASE_URL = process.env.E2E_BASE_URL ?? process.env.BASE_URL ?? ''
@@ -64,7 +64,7 @@ async function login(page: Page): Promise<void> {
   await page.waitForLoadState('domcontentloaded')
   await page.getByRole('textbox', { name: 'Email' }).fill(EMAIL)
   await page.getByRole('textbox', { name: 'Password', exact: true }).fill(PASSWORD)
-  await page.getByRole('button', { name: 'Sign in to VoiceDesk' }).click()
+  await page.getByRole('button', { name: 'Sign in to Koolable' }).click()
   await page.waitForLoadState('networkidle', { timeout: 20_000 }).catch(() => {})
 }
 
@@ -109,7 +109,7 @@ async function mockSubscription(
 
 // ── Suite ─────────────────────────────────────────────────────────────────────
 
-test.describe('VoiceDesk v1.0 — Navigation Regression', () => {
+test.describe('Koolable v1.0 — Navigation Regression', () => {
   // Serial mode: tests share a single page + route mocks — parallel execution causes races.
   test.describe.configure({ mode: 'serial' })
   let sharedContext: BrowserContext
@@ -155,10 +155,10 @@ test.describe('VoiceDesk v1.0 — Navigation Regression', () => {
 
       await expect(freshPage.getByRole('textbox', { name: 'Email' })).toBeVisible()
       await expect(freshPage.getByRole('textbox', { name: 'Password', exact: true })).toBeVisible()
-      await expect(freshPage.getByRole('button', { name: 'Sign in to VoiceDesk' })).toBeVisible()
+      await expect(freshPage.getByRole('button', { name: 'Sign in to Koolable' })).toBeVisible()
       // Google OAuth CTA — button text is "Continue with Google"
       await expect(freshPage.getByRole('button', { name: /continue with google/i })).toBeVisible()
-      // Link to signup — text is "New to VoiceDesk? Create an account"
+      // Link to signup — text is "New to Koolable? Create an account"
       await expect(freshPage.getByRole('link', { name: /create an account/i })).toBeVisible()
     } finally {
       await ctx.close()
@@ -288,7 +288,7 @@ test.describe('VoiceDesk v1.0 — Navigation Regression', () => {
     // 4 sections from Phase 10 — use exact section labels to avoid strict-mode collisions
     await expect(sharedPage.getByText('SMS number')).toBeVisible({ timeout: 10_000 })
     await expect(sharedPage.getByText('WhatsApp number')).toBeVisible()
-    await expect(sharedPage.getByText(/voiceDeskTelBot/i)).toBeVisible()
+    await expect(sharedPage.getByText(/koolableTelBot/i)).toBeVisible()
     await expect(sharedPage.getByText('Notify me about')).toBeVisible()
   })
 

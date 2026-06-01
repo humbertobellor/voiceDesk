@@ -487,7 +487,7 @@ export function NotificationSettingsForm({
           <div className="bg-accent/10 border border-accent/30 text-accent rounded-lg p-3 text-sm">
             <p className="font-medium mb-1">Connect your Telegram account</p>
             <p className="mb-2">
-              Tap the link below to start a chat with the VoiceDesk bot. Once you send /start,
+              Tap the link below to start a chat with the Koolable bot. Once you send /start,
               your account will be linked automatically.
             </p>
             {/* CR-03: botUsername comes from NEXT_PUBLIC_TELEGRAM_BOT_USERNAME inlined at

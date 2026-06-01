@@ -59,7 +59,7 @@ const bogart = localFont({
 })
 
 export const metadata: Metadata = {
-  title: 'VoiceDesk',
+  title: 'Koolable',
   description: '24/7 AI phone receptionist for HVAC, plumbing, and electrical contractors',
 }
 

@@ -1,4 +1,4 @@
-project_id = "voicedesk-local"
+project_id = "koolable-local"
 
 [api]
 enabled = true

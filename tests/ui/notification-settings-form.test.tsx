@@ -78,7 +78,7 @@ function renderForm(settings: NotificationSettings) {
 describe('NotificationSettingsForm', () => {
   beforeEach(() => {
     vi.clearAllMocks()
-    process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME = 'voiceDeskTelBot'
+    process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME = 'koolableTelBot'
     mockMutateAsync.mockResolvedValue(makeSettings())
     mockUnlinkMutateAsync.mockResolvedValue(makeSettings({ telegram_chat_id: null }))
   })
@@ -131,7 +131,7 @@ describe('NotificationSettingsForm', () => {
     const link = screen.getByRole('link', { name: /open @voicedesktelbot/i })
     expect(link).toHaveAttribute(
       'href',
-      'https://t.me/voiceDeskTelBot?start=contractor-abc-123',
+      'https://t.me/koolableTelBot?start=contractor-abc-123',
     )
     expect(link).toHaveAttribute('target', '_blank')
     expect(link).toHaveAttribute('rel', 'noreferrer')

@@ -1,0 +1,76 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary "Primary" [ref=e3]:
+      - generic [ref=e4]:
+        - img [ref=e5]
+        - generic [ref=e8]: VoiceDesk
+        - button "Notifications" [ref=e10]:
+          - img [ref=e11]
+      - navigation [ref=e14]:
+        - paragraph [ref=e15]: NAVIGATION
+        - link "Calls" [ref=e16] [cursor=pointer]:
+          - /url: /calls
+          - img [ref=e17]
+          - generic [ref=e21]: Calls
+        - link "Leads" [ref=e22] [cursor=pointer]:
+          - /url: /leads
+          - img [ref=e23]
+          - generic [ref=e28]: Leads
+        - link "Settings" [ref=e29] [cursor=pointer]:
+          - /url: /settings/agent
+          - img [ref=e30]
+          - generic [ref=e33]: Settings
+        - generic [ref=e34]:
+          - link "Agent Config" [ref=e35] [cursor=pointer]:
+            - /url: /settings/agent
+            - img [ref=e36]
+            - generic [ref=e39]: Agent Config
+          - link "Calendar" [ref=e40] [cursor=pointer]:
+            - /url: /settings/calendar
+            - img [ref=e41]
+            - generic [ref=e43]: Calendar
+          - link "Phone" [ref=e44] [cursor=pointer]:
+            - /url: /settings/phone
+            - img [ref=e45]
+            - generic [ref=e47]: Phone
+          - link "Go Live" [ref=e48] [cursor=pointer]:
+            - /url: /settings/go-live
+            - img [ref=e49]
+            - generic [ref=e55]: Go Live
+          - link "Account & Billing" [ref=e56] [cursor=pointer]:
+            - /url: /settings/account
+            - img [ref=e57]
+            - generic [ref=e59]: Account & Billing
+          - link "Notifications" [ref=e60] [cursor=pointer]:
+            - /url: /settings/notifications
+            - img [ref=e61]
+            - generic [ref=e64]: Notifications
+      - generic [ref=e65]:
+        - generic [ref=e66]:
+          - generic [ref=e67]: V
+          - generic [ref=e68]:
+            - paragraph [ref=e69]: Visual Test HVAC
+            - paragraph [ref=e70]: visual-test-20260531@voicedesk.dev
+        - button "Sign out" [ref=e71]:
+          - img [ref=e72]
+          - generic [ref=e75]: Sign out
+    - main [ref=e76]:
+      - generic [ref=e78]:
+        - generic [ref=e79]:
+          - heading "Agent Configuration" [level=1] [ref=e80]
+          - paragraph [ref=e81]: Configure your AI receptionist's business details, availability, emergency triggers, and voice.
+        - generic [ref=e84]:
+          - button "Business Info" [ref=e85]:
+            - img [ref=e86]
+            - text: Business Info
+          - button "Hours" [ref=e90]:
+            - img [ref=e91]
+            - text: Hours
+          - button "Keywords" [ref=e94]:
+            - img [ref=e95]
+            - text: Keywords
+          - button "Voice" [ref=e97]:
+            - img [ref=e98]
+            - text: Voice
+  - button "Open Next.js Dev Tools" [ref=e110] [cursor=pointer]:
+    - img [ref=e111]

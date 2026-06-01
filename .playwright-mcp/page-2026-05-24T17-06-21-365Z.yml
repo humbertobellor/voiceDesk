@@ -1,0 +1,24 @@
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e4]:
+      - paragraph [ref=e5]: Step 1 of 1 — Account Setup
+      - heading "One more thing" [level=1] [ref=e6]
+      - paragraph [ref=e7]: We'll send call alerts to this number. You can change it later in Settings.
+      - generic [ref=e8]:
+        - generic [ref=e9]:
+          - text: Business name
+          - textbox "Business name" [ref=e10]:
+            - /placeholder: e.g. South Florida HVAC Co.
+        - generic [ref=e11]:
+          - text: Your mobile number
+          - textbox "Your mobile number" [ref=e12]:
+            - /placeholder: +1 (305) 555-0100
+          - paragraph [ref=e13]: US numbers only. We'll send you call alerts here.
+        - generic [ref=e14]:
+          - text: Preferred area code
+          - textbox "Preferred area code" [ref=e15]:
+            - /placeholder: "305"
+          - paragraph [ref=e16]: We'll provision a local VoiceDesk number with this area code.
+        - button "Complete Setup" [ref=e17]
+      - button "Sign out instead" [ref=e18]
+  - alert [ref=e19]

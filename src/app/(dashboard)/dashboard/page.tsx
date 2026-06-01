@@ -6,7 +6,7 @@ import { LayoutDashboard } from 'lucide-react'
 import { EmptyState } from '@/components/dashboard/EmptyState'
 import { createSupabaseServer } from '@/lib/supabase/server'
 
-export const metadata = { title: 'Dashboard — VoiceDesk' }
+export const metadata = { title: 'Dashboard — Koolable' }
 
 interface DashboardPageProps {
   searchParams: Promise<{ calendarConnected?: string; calendarError?: string }>
@@ -76,12 +76,12 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
         >
           <span className="font-medium">Link Telegram for instant call alerts.</span>{' '}
           <a
-            href={`https://t.me/voiceDeskTelBot?start=${contractorId ?? ''}`}
+            href={`https://t.me/koolableTelBot?start=${contractorId ?? ''}`}
             target="_blank"
             rel="noopener noreferrer"
             className="underline hover:text-accent transition-colors"
           >
-            Connect @voiceDeskTelBot
+            Connect @koolableTelBot
           </a>
           {' '}to receive SMS, WhatsApp, and Telegram notifications within 60 seconds of every call.
         </div>

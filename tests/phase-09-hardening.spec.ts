@@ -2,7 +2,7 @@
  * Phase 9 — Hardening & UX Polish regression suite
  *
  * Covers the five SC checkpoints verified manually on 2026-05-23:
- *   SC-1  Telegram bot name is @voiceDeskTelBot everywhere
+ *   SC-1  Telegram bot name is @koolableTelBot everywhere
  *   SC-2  settings/phone: two-state provisioning form
  *   SC-3  Provisioned number appears in Sidebar without hard reload
  *   SC-4  settings/agent > Keywords: hardcoded baseline + editable fields
@@ -34,7 +34,7 @@ async function login(page: Page) {
   await page.goto(url('/auth/login'))
   await page.getByRole('textbox', { name: 'Email' }).fill(EMAIL)
   await page.getByRole('textbox', { name: 'Password', exact: true }).fill(PASSWORD)
-  await page.getByRole('button', { name: 'Sign in to VoiceDesk' }).click()
+  await page.getByRole('button', { name: 'Sign in to Koolable' }).click()
   // Give Supabase time to respond; don't assert URL here — beforeEach handles skipping
   await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {})
 }
@@ -53,17 +53,17 @@ test.describe('Phase 9 — Hardening & UX Polish', () => {
 
   // ── SC-1: Telegram bot name ────────────────────────────────────────────────
 
-  test('SC-1: dashboard Telegram banner links to @voiceDeskTelBot', async ({ page }) => {
+  test('SC-1: dashboard Telegram banner links to @koolableTelBot', async ({ page }) => {
     await page.goto(url('/dashboard'))
-    const banner = page.getByText('@voiceDeskTelBot')
+    const banner = page.getByText('@koolableTelBot')
     await expect(banner).toBeVisible()
 
     // Old name must not appear anywhere in the rendered page
-    await expect(page.getByText('VoiceDeskBot', { exact: false })).toHaveCount(0)
+    await expect(page.getByText('KoolableBot', { exact: false })).toHaveCount(0)
 
     // The Connect link href points to the correct bot
-    const link = page.getByRole('link', { name: /voiceDeskTelBot/i })
-    await expect(link).toHaveAttribute('href', /voiceDeskTelBot/)
+    const link = page.getByRole('link', { name: /koolableTelBot/i })
+    await expect(link).toHaveAttribute('href', /koolableTelBot/)
   })
 
   // ── SC-2: settings/phone two-state form ───────────────────────────────────

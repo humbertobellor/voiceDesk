@@ -1,0 +1,67 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary "Primary" [ref=e3]:
+      - generic [ref=e4]:
+        - img [ref=e5]
+        - generic [ref=e8]: VoiceDesk
+      - navigation [ref=e9]:
+        - paragraph [ref=e10]: NAVIGATION
+        - link "Calls" [ref=e11] [cursor=pointer]:
+          - /url: /calls
+          - img [ref=e12]
+          - generic [ref=e16]: Calls
+        - link "Leads" [ref=e17] [cursor=pointer]:
+          - /url: /leads
+          - img [ref=e18]
+          - generic [ref=e23]: Leads
+        - link "Settings" [ref=e24] [cursor=pointer]:
+          - /url: /settings/agent
+          - img [ref=e25]
+          - generic [ref=e28]: Settings
+        - generic [ref=e29]:
+          - link "Agent Config" [ref=e30] [cursor=pointer]:
+            - /url: /settings/agent
+            - img [ref=e31]
+            - generic [ref=e34]: Agent Config
+          - link "Calendar" [ref=e35] [cursor=pointer]:
+            - /url: /settings/calendar
+            - img [ref=e36]
+            - generic [ref=e38]: Calendar
+          - link "Phone" [ref=e39] [cursor=pointer]:
+            - /url: /settings/phone
+            - img [ref=e40]
+            - generic [ref=e42]: Phone
+          - link "Go Live" [ref=e43] [cursor=pointer]:
+            - /url: /settings/go-live
+            - img [ref=e44]
+            - generic [ref=e50]: Go Live
+          - link "Account & Billing" [ref=e51] [cursor=pointer]:
+            - /url: /settings/account
+            - img [ref=e52]
+            - generic [ref=e54]: Account & Billing
+          - link "Notifications" [ref=e55] [cursor=pointer]:
+            - /url: /settings/notifications
+            - img [ref=e56]
+            - generic [ref=e59]: Notifications
+      - generic [ref=e60]:
+        - generic [ref=e61]:
+          - generic [ref=e62]: Q
+          - generic [ref=e63]:
+            - paragraph [ref=e64]: QA Test HVAC Co.
+            - paragraph [ref=e65]:
+              - img [ref=e66]
+              - text: "+17868081252"
+            - paragraph [ref=e68]: test.voicedesk.qa+001@mailinator.com
+        - button "Sign out" [ref=e69]:
+          - img [ref=e70]
+          - generic [ref=e73]: Sign out
+    - main [ref=e74]:
+      - generic [ref=e76]:
+        - generic [ref=e77]:
+          - heading "Notifications" [level=1] [ref=e78]
+          - paragraph [ref=e79]: Manage your notification channels
+        - generic [ref=e81]:
+          - img [ref=e82]
+          - heading "Set up notifications" [level=2] [ref=e85]
+          - paragraph [ref=e86]: Add your WhatsApp and Telegram accounts to receive instant call alerts.
+  - alert [ref=e87]

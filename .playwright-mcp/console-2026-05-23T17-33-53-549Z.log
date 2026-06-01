@@ -1,0 +1,9 @@
+[ 1922349ms] [ERROR] Failed to load resource: net::ERR_NAME_NOT_RESOLVED @ https://sbkfhwybkwmbevcfzwdv.supabase.co/rest/v1/contractor_settings?select=*&contractor_id=eq.6620251d-a306-46da-b4ae-2c9c7486b4db:0
+[ 1983360ms] [ERROR] Failed to load resource: net::ERR_NAME_NOT_RESOLVED @ https://sbkfhwybkwmbevcfzwdv.supabase.co/rest/v1/contractor_settings?select=*&contractor_id=eq.6620251d-a306-46da-b4ae-2c9c7486b4db:0
+[ 2045369ms] [ERROR] Failed to load resource: net::ERR_NAME_NOT_RESOLVED @ https://sbkfhwybkwmbevcfzwdv.supabase.co/rest/v1/contractor_settings?select=*&contractor_id=eq.6620251d-a306-46da-b4ae-2c9c7486b4db:0
+[ 2109379ms] [ERROR] Failed to load resource: net::ERR_NAME_NOT_RESOLVED @ https://sbkfhwybkwmbevcfzwdv.supabase.co/rest/v1/contractor_settings?select=*&contractor_id=eq.6620251d-a306-46da-b4ae-2c9c7486b4db:0
+[ 2151393ms] [ERROR] Failed to load resource: net::ERR_NAME_NOT_RESOLVED @ https://sbkfhwybkwmbevcfzwdv.supabase.co/rest/v1/contractor_settings?select=*&contractor_id=eq.6620251d-a306-46da-b4ae-2c9c7486b4db:0
+[ 2212403ms] [ERROR] Failed to load resource: net::ERR_NAME_NOT_RESOLVED @ https://sbkfhwybkwmbevcfzwdv.supabase.co/rest/v1/contractor_settings?select=*&contractor_id=eq.6620251d-a306-46da-b4ae-2c9c7486b4db:0
+[ 2274414ms] [ERROR] Failed to load resource: net::ERR_NAME_NOT_RESOLVED @ https://sbkfhwybkwmbevcfzwdv.supabase.co/rest/v1/contractor_settings?select=*&contractor_id=eq.6620251d-a306-46da-b4ae-2c9c7486b4db:0
+[ 2338459ms] [ERROR] Failed to load resource: net::ERR_NAME_NOT_RESOLVED @ https://sbkfhwybkwmbevcfzwdv.supabase.co/rest/v1/contractor_settings?select=*&contractor_id=eq.6620251d-a306-46da-b4ae-2c9c7486b4db:0
+[ 2343138ms] [ERROR] Failed to load resource: net::ERR_NETWORK_CHANGED @ https://sbkfhwybkwmbevcfzwdv.supabase.co/rest/v1/contractor_settings?select=*&contractor_id=eq.6620251d-a306-46da-b4ae-2c9c7486b4db:0

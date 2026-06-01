@@ -1,5 +1,5 @@
 // src/inngest/client.ts
-// Inngest client singleton for VoiceDesk.
+// Inngest client singleton for Koolable.
 // D-12: Inngest provides durable retry for Retell agent sync failures (max 5 retries).
 // NOTE: import 'server-only' to prevent accidental client-side bundle inclusion.
 import 'server-only'

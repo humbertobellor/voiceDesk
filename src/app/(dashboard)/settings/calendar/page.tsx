@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation'
 import { createSupabaseServer } from '@/lib/supabase/server'
 import { ConnectCalendarForm } from '@/app/(dashboard)/connect-calendar/_components/ConnectCalendarForm'
 
-export const metadata = { title: 'Calendar — VoiceDesk' }
+export const metadata = { title: 'Calendar — Koolable' }
 
 export default async function CalendarSettingsPage() {
   const supabase = await createSupabaseServer()
@@ -31,7 +31,7 @@ export default async function CalendarSettingsPage() {
       <div className="mb-6">
         <h1 className="text-xl font-semibold text-fg-1 mb-1">Calendar</h1>
         <p className="text-sm text-fg-3">
-          Connect your Google Calendar to allow VoiceDesk to book appointments automatically.
+          Connect your Google Calendar to allow Koolable to book appointments automatically.
         </p>
         <div className="border-b border-rule mt-6" />
       </div>

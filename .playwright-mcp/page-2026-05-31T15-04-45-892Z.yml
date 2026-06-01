@@ -1,0 +1,44 @@
+- generic [ref=e2]:
+  - complementary "Primary" [ref=e3]:
+    - generic [ref=e4]:
+      - img [ref=e5]
+      - generic [ref=e8]: VoiceDesk
+      - button "Notifications" [ref=e10]:
+        - img [ref=e11]
+    - navigation [ref=e14]:
+      - paragraph [ref=e15]: NAVIGATION
+      - link "Calls" [ref=e16] [cursor=pointer]:
+        - /url: /calls
+        - img [ref=e17]
+        - generic [ref=e21]: Calls
+      - link "Leads" [ref=e22] [cursor=pointer]:
+        - /url: /leads
+        - img [ref=e23]
+        - generic [ref=e28]: Leads
+      - link "Settings" [ref=e29] [cursor=pointer]:
+        - /url: /settings/agent
+        - img [ref=e30]
+        - generic [ref=e33]: Settings
+    - generic [ref=e34]:
+      - generic [ref=e35]:
+        - generic [ref=e36]: V
+        - generic [ref=e37]:
+          - paragraph [ref=e38]: Visual Test HVAC
+          - paragraph [ref=e39]: visual-test-20260531@voicedesk.dev
+      - button "Sign out" [ref=e40]:
+        - img [ref=e41]
+        - generic [ref=e44]: Sign out
+  - main [ref=e45]:
+    - generic [ref=e47]:
+      - generic [ref=e48]:
+        - heading "Dashboard" [level=1] [ref=e49]
+        - paragraph [ref=e50]: Overview of your AI receptionist
+      - status [ref=e52]:
+        - text: Link Telegram for instant call alerts.
+        - link "Connect @voiceDeskTelBot" [ref=e53] [cursor=pointer]:
+          - /url: https://t.me/voiceDeskTelBot?start=e9062c32-e986-43d0-aa6f-3df1db7c27c7
+        - text: to receive SMS, WhatsApp, and Telegram notifications within 60 seconds of every call.
+      - generic [ref=e54]:
+        - img [ref=e55]
+        - heading "Your dashboard is ready" [level=2] [ref=e60]
+        - paragraph [ref=e61]: Once your setup is complete, you'll see today's calls, active leads, and your agent status here.

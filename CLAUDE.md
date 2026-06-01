@@ -1,8 +1,8 @@
-# VoiceDesk — Project Guide
+# Koolable — Project Guide
 
 ## What This Project Is
 
-VoiceDesk is a 24/7 AI phone receptionist SaaS for HVAC, plumbing, and electrical contractors. It answers missed calls via Retell voice AI, qualifies leads, books appointments to Google Calendar, and dispatches emergencies via WhatsApp/Telegram/SMS. The agent supports English, Spanish, and Haitian Creole (South Florida market focus).
+Koolable is a 24/7 AI phone receptionist SaaS for HVAC, plumbing, and electrical contractors. It answers missed calls via Retell voice AI, qualifies leads, books appointments to Google Calendar, and dispatches emergencies via WhatsApp/Telegram/SMS. The agent supports English, Spanish, and Haitian Creole (South Florida market focus).
 
 ## Stack
 

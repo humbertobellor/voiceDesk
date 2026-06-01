@@ -10,7 +10,7 @@ import { createSupabaseServer } from '@/lib/supabase/server'
 import { getBot } from '@/lib/notifications/telegram'
 import { NotificationSettingsForm } from '@/components/notification/NotificationSettingsForm'
 
-export const metadata = { title: 'Notifications — VoiceDesk' }
+export const metadata = { title: 'Notifications — Koolable' }
 
 export default async function NotificationsPage() {
   const supabase = await createSupabaseServer()

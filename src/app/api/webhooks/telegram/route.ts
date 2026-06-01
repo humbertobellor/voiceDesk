@@ -1,5 +1,5 @@
 // src/app/api/webhooks/telegram/route.ts
-// Telegram bot webhook handler for @voiceDeskTelBot.
+// Telegram bot webhook handler for @koolableTelBot.
 // D-22: grammY webhook mode (not polling — serverless compatible).
 // D-19: Processes /start <contractor_uuid> messages from Telegram deep link.
 // D-20: Upserts telegram_chat_id — re-linking always overwrites.
