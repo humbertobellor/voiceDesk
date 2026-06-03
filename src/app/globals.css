@@ -369,6 +369,29 @@ html[data-theme="dark"] {
   --danger:  var(--brick-500);
 }
 
+/* Override system preference when user explicitly sets light mode */
+html[data-theme="light"] {
+  --bg:          var(--vellum-50);
+  --bg-elevated: var(--vellum-100);
+  --bg-sunken:   #FFFBF5;
+
+  --fg-1:       var(--ink);
+  --fg-2:       var(--vellum-600);
+  --fg-3:       var(--vellum-500);
+  --fg-4:       var(--vellum-400);
+
+  --rule:        var(--vellum-200);
+  --rule-strong: var(--vellum-300);
+  --rule-soft:   var(--vellum-100);
+
+  --accent:       var(--teal-500);
+  --accent-hover: var(--teal-600);
+  --accent-soft:  rgba(27, 78, 74, 0.08);
+
+  --success: var(--moss-600);
+  --danger:  var(--brick-600);
+}
+
 html, body {
   background-color: var(--bg);
   color: var(--fg-1);
