@@ -59,7 +59,7 @@ export function LeadTable({ filters }: LeadTableProps) {
 
   return (
     <div>
-      <div className="overflow-x-auto">
+      <div className="w-full">
         <table className="w-full">
           <thead>
             <tr className="text-left text-sm text-gray-400 border-b border-gray-700">
