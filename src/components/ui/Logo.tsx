@@ -6,12 +6,12 @@ export interface LogoProps {
 }
 
 const sizeMap: Record<'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl', string> = {
-  xs: 'w-8 h-8',
-  sm: 'w-12 h-12',
-  md: 'w-16 h-16',
-  lg: 'w-20 h-20',
-  xl: 'w-100 h-32',
-  '2xl': 'w-172 h-39'
+  xs: 'w-6 h-6',
+  sm: 'w-8 h-8',
+  md: 'w-10 h-10',
+  lg: 'w-12 h-12',
+  xl: 'w-16 h-16',
+  '2xl': 'w-60 h-30'
 };
 
 export function Logo({
@@ -20,7 +20,7 @@ export function Logo({
   className = '',
   alt = 'Koolable logo',
 }: LogoProps): React.ReactElement {
-  const logoFile = variant === 'white' ? '/logo-white.svg' : '/main-logo-trans.png';
+  const logoFile = variant === 'white' ? '/logo-white.svg' : '/logo.svg';
   const sizeClasses = sizeMap[size];
 
   return (
