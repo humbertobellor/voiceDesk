@@ -20,7 +20,7 @@ export function Logo({
   className = '',
   alt = 'Koolable logo',
 }: LogoProps): React.ReactElement {
-  const logoFile = variant === 'white' ? '/logo-white.svg' : '/logo.svg';
+  const logoFile = variant === 'white' ? '/main-logo-trans.png' : '/main-logo-trans.png';
   const sizeClasses = sizeMap[size];
 
   return (
